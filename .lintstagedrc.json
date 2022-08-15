@@ -1,11 +1,9 @@
 {
-    "**/*.{ts,jsx,tsx}": [
-      "tsc-files --noEmit",
-      "eslint --fix",
-      "eslint --max-warnings=0",
-      "jest test --bail --watchAll=false --findRelatedTests --changedSince"  ],
-    "src/*.json": [
-      "prettier --write"
-    ]
-  }
-  
+  "**/*.{ts,jsx,tsx}": [
+    "tsc-files --noEmit",
+    "eslint --fix",
+    "eslint --max-warnings=0",
+    "jest test --passWithNoTests  --bail --watchAll=false --findRelatedTests --changedSince",
+    "prettier --write"
+  ]
+}
