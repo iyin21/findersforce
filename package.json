@@ -11,6 +11,7 @@
     "lint-staged": "lint-staged --config .lintstagedrc.json",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
+    "test:ui": "vite build && vitest --ui",
     "coverage": "vitest run --coverage"
   },
   "dependencies": {
