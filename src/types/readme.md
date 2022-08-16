@@ -1,0 +1,1 @@
+This folder should contain base types used across the project
