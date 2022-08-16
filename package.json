@@ -5,12 +5,13 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc --noEmit && vite build",
+    "build": "tsc && vite build",
     "preview": "vite preview",
-    "test": "jest",
+    "test": "vitest",
     "lint-staged": "lint-staged --config .lintstagedrc.json",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
+    "coverage": "vitest run --coverage"
   },
   "dependencies": {
     "@sentry/react": "^7.10.0",
@@ -42,6 +43,7 @@
     "@types/react": "^18.0.17",
     "@types/react-dom": "^18.0.6",
     "@vitejs/plugin-react": "^2.0.1",
+    "@vitest/ui": "^0.22.0",
     "autoprefixer": "^10.4.8",
     "babel-loader": "^8.2.5",
     "eslint": "^8.14.0",
@@ -68,9 +70,12 @@
     "tailwindcss": "^3.1.8",
     "tsc-files": "^1.1.3",
     "typescript": "^4.6.4",
-    "vite": "^3.0.7"
+    "vite": "^3.0.7",
+    "vite-jest": "^0.1.4",
+    "vitest": "^0.22.0"
   },
   "jest": {
+    "preset": "vite-jest",
     "setupFilesAfterEnv": [
       "<rootDir>/jest.setup.ts"
     ],
@@ -78,7 +83,7 @@
       "node_modules",
       "<rootDir>/"
     ],
-    "testEnvironment": "jsdom",
+    "testEnvironment": "jest-environment-jsdom",
     "moduleNameMapper": {
       "^@components/(.*)$": "<rootDir>/components/$1",
       "^@components(.*)$": "<rootDir>/components/$1",

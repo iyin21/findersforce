@@ -1,8 +1,5 @@
 import '@testing-library/jest-dom'
-import { server } from './src/mocks/server.js'
-
-
-// const pusher = new PusherMock();
+import { server } from '../src/mocks/server'
 
 // Establish API mocking before all tests.
 beforeAll(() => {
@@ -24,4 +21,3 @@ afterEach(() => server.resetHandlers())
 
 // Clean up after the tests are finished.
 afterAll(() => server.close())
-
