@@ -1,5 +1,6 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
+import { PasswordInput } from "@mantine/core";
 import LandingPageText from "./components/landing-page-txt";
 import backIcon from "../../assets/backIcon.svg";
 import showIcon from "../../assets/show.svg";
@@ -29,24 +30,72 @@ const ResetPassword = () => {
                             <span className="text-base pt-2.5 text-blac">Your new password must be different from the old one.</span>
                     
                             <form className="pt-8">
-                                <label className="font-bold text-base text-blaq" id="password">Enter new password</label>
-                                <div className="w-full rounded-lg border mt-2.5 mb-6 pr-6 flex justify-between items-center focus:border-none">
-                                    <input 
-                                        id="password" 
-                                        className="text-black p-6 w-full focus:outline-none" 
-                                        type="text"
-                                        placeholder="new password" />
-                                    <img src={showIcon} alt="show password"></img>
-                                </div>
-                                <label className="font-bold text-base text-blaq" id="password">Confirm password</label>
-                                <div className="w-full rounded-lg border mt-2.5 mb-8 pr-6 flex justify-between items-center focus:border-none">
-                                    <input 
-                                        id="password" 
-                                        className="text-black p-6 w-full focus:outline-none" 
-                                        type="text"
-                                        placeholder="new password" />
-                                    <img src={showIcon} alt="show password"></img>
-                                </div>
+                                <PasswordInput
+                                    placeholder="new password"
+                                    label="Enter new password"
+                                    withAsterisk
+                                    radius="md"
+                                    size="xl"
+                                    styles={() => ({
+                                        innerInput: {
+                                            color: "rgba(15, 13, 0, 0.8)",
+                                            fontSize: "16px",
+                                            '&::placeholder': {
+                                                color: "rgba(15, 13, 0, 0.3)",
+                                                fontSize: '16px',
+                                                lineHeight: '19px',
+                                            }
+                                        },
+                                        input: {
+                                            marginTop: '10px',
+                                            border: '1px solid rgba(15, 13, 0, 0.1)',
+                                            height: '64px',
+                                            marginBottom: '11px',
+                                            borderRadius: '10px',
+                                            paddingLeft: '25px'
+                                        },
+                                        label: {
+                                            color: '#0500010',
+                                            fontSize: '16px',
+                                            fontWeight: '800'
+                                        }
+                                    })}
+                                />
+
+                                <PasswordInput
+                                    placeholder="new password"
+                                    label="Confirm password"
+                                    withAsterisk
+                                    radius="md"
+                                    size="xl"
+                                    styles={() => ({
+                                        innerInput: {
+                                            color: "rgba(15, 13, 0, 0.8)",
+                                            fontSize: "16px",
+                                            '&::placeholder': {
+                                                color: "rgba(15, 13, 0, 0.3)",
+                                                fontSize: '16px',
+                                                lineHeight: '19px',
+                                            }
+                                        },
+                                        input: {
+                                            marginTop: '10px',
+                                            border: '1px solid rgba(15, 13, 0, 0.1)',
+                                            height: '64px',
+                                            marginBottom: '32px',
+                                            borderRadius: '10px',
+                                            paddingLeft: '25px'
+                                        },
+                                        label: {
+                                            color: '#0500010',
+                                            fontSize: '16px',
+                                            fontWeight: '800',
+                                            paddingTop: '20px'
+                                        }
+                                    })}
+                                />
+                                
+                                
                                 <div onClick={e => {
                                         e.preventDefault();
                                         setPasswordChanged(!passwordChanged)

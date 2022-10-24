@@ -3,6 +3,7 @@ import RecoverPassword from "./components/auth/forgot-password";
 import Login from "./components/auth/login"
 import ResetPassword from "./components/auth/reset-password";
 import VerifyEmailAddress from "./components/auth/verify-email";
+import Profile from "./components/profile";
 import "./global.scss"
 
 function App() {
@@ -14,6 +15,7 @@ function App() {
                 <Route path="/recover-password" element={<RecoverPassword />} />
                 <Route path="/verify-email" element={<VerifyEmailAddress />} />
                 <Route path="/reset-password" element={<ResetPassword />} />
+                <Route path="/profile" element={<Profile />} />
             </Routes>
         </BrowserRouter>
     )

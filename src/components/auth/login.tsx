@@ -1,6 +1,6 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import showIcon from "../../assets/show.svg";
+import { TextInput, PasswordInput } from "@mantine/core";
 import Button from "./components/button";
 import LandingPageText from "./components/landing-page-txt";
 
@@ -16,22 +16,69 @@ const Login = () => {
                     <a href="" className="text-lg text-state-green font-normal">Request access</a>
                 </div>
                 <form className="pt-14">
-                    <label className="text-form-black font-bold text-base" htmlFor="email">Email Address</label>
-                    <input 
-                        id="email" 
-                        className="w-full p-6 rounded-lg text-black border mt-2.5 mb-6 focus:outline-none" 
-                        type="email"
-                        placeholder="example@gmail.com" />
-                    <label className="text-form-black font-bold text-base" htmlFor="password">Password</label>
-                    <div className="w-full rounded-lg border mt-2.5 mb-8 pr-6 flex justify-between items-center focus:border-none">
-                        <input 
-                            id="password" 
-                            className="text-black p-6 w-full focus:outline-none" 
-                            type="text"
-                            placeholder="password" />
-                        <img src={showIcon} alt="show password"></img>
-                    </div>
-                    <Button buttonText="Enter finders force"/>
+                    <TextInput 
+                        placeholder="example@gmail.com"
+                        label="Email Address"
+                        withAsterisk
+                        styles={() => ({
+                            innerInput: {
+                                color: "rgba(15, 13, 0, 0.8)",  
+                                '&::placeholder': {
+                                    color: "#E7E7E5",
+                                    fontSize: '16px',
+                                    lineHeight: '19px'
+                                }
+                            },
+                            input: {
+                                marginTop: '10px',
+                                border: '1px solid rgba(15, 13, 0, 0.1)',
+                                height: '64px',
+                                marginBottom: '11px',
+                                borderRadius: '10px',
+                                paddingLeft: '23px',
+                                fontSize: '16px',
+                            },
+                            label: {
+                                color: '#0F0D00',
+                                fontSize: '16px',
+                                fontWeight: '800'
+                            }
+                        })}
+                    />
+                    <PasswordInput
+                        placeholder="password"
+                        label="Password"
+                        withAsterisk
+                        radius="md"
+                        size="xl"
+                        styles={() => ({
+                            innerInput: {
+                                color: "rgba(15, 13, 0, 0.8)",
+                                fontSize: "16px",
+                                '&::placeholder': {
+                                    color: "rgba(15, 13, 0, 0.3)",
+                                    fontSize: '16px',
+                                    lineHeight: '19px',
+                                }
+                            },
+                            input: {
+                                marginTop: '10px',
+                                border: '1px solid rgba(15, 13, 0, 0.1)',
+                                height: '64px',
+                                marginBottom: '11px',
+                                borderRadius: '10px',
+                                paddingLeft: '25px'
+                            },
+                            label: {
+                                color: '#0F0D00',
+                                fontSize: '16px',
+                                fontWeight: '800'
+                            }
+                        })}
+                    />
+                    <NavLink to="/profile">
+                        <Button buttonText="Enter finders force"/>
+                    </NavLink>
                 </form>
                 <div className="text-end mt-14 pb-32">
                     <span className="text-base font-normal text-fg-black">Forgot password?</span>

@@ -16,8 +16,12 @@ module.exports = {
           'light-green': 'rgba(77, 178, 93, 0.9)',
           'blac': 'rgba(19, 32, 19, 0.8)',
           'pas': 'rgba(15, 13, 0, 0.6)',
+          'tex': 'rgba(15, 13, 0, 0.7)',
+          'con': 'rgba(15, 13, 0, 0.02)',
+          'neutral-black': '#132013',
         },
         borderRadius: {
+          'md': '8px',
           'lg': '10px',
           '3lg': '30px',
           'haf': '50%',
