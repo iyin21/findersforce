@@ -1,75 +1,141 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
-  font-size: 16px;
-  line-height: 24px;
-  font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-text-size-adjust: 100%;
+.btn {
+    @apply min-w-[134px] text-lg rounded-tr-2xl rounded-b-md rounded-tl-md;
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
+.btn--small {
+    @apply py-3 px-1 md:px-4;
 }
 
-body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
+.btn--primary {
+    @apply bg-yellow-100 text-black-100;
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+.btn--green {
+    @apply bg-green-100  text-white-100;
 }
 
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+.btn--clear {
+    @apply bg-transparent;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
+.btn--danger {
+    @apply bg-red-100  text-black-100;
+}
+
+.btn--warning {
+    @apply bg-red-10  text-black-100;
+}
+
+input[type="radio"] + label > .checkmark {
+    @apply bg-yellow-100 hidden;
+}
+
+@font-face {
+    font-family: "CreatoDisplayBold";
+    src: local("CreatoDisplayBold"),
+        url("./fonts/CreatoDisplay/CreatoDisplay-Black.otf") format("truetype");
+    font-weight: bold;
+}
+@font-face {
+    font-family: "CreatoDisplayItalic";
+    src: local("CreatoDisplayItalic"),
+        url("./fonts/CreatoDisplay/CreatoDisplay-BlackItalic.otf")
+            format("truetype");
+    font-weight: italic;
+}
+@font-face {
+    font-family: "CreatoDisplayMedium";
+    src: local("CreatoDisplayMedium"),
+        url("./fonts/CreatoDisplay/CreatoDisplay-Medium.otf") format("truetype");
+    font-weight: medium;
+}
+@font-face {
+    font-family: "CreatoDisplay";
+    src: local("CreatoDisplay"),
+        url("./fonts/CreatoDisplay/CreatoDisplay-Regular.otf")
+            format("truetype");
+    font-weight: normal;
+}
+@font-face {
+    font-family: "CreatoDisplayLight";
+    src: local("CreatoDisplayLight"),
+        url("./fonts/CreatoDisplay/CreatoDisplay-Light.otf") format("truetype");
+    font-weight: light;
+}
+
+.mantine-1e1m5s4 {
+    border-bottom: 2px solid rgba(254, 215, 10, 1);
+    @media screen and (max-width: 768px) {
+        border: none;
+        padding: 0;
+        margin: 0;
+    }
+}
+
+.mantine-6jy0zj {
+    @media screen and (max-width: 768px) {
+        padding: 0;
+        margin-right: 1rem;
+    }
+}
+
+.mantine-1s8spa1.mantine-Tabs-tabsListWrapper {
+    border-bottom: 1px solid rgba(15, 13, 0, 0.1);
+    @media screen and (max-width: 768px) {
+        border: none;
+    }
+}
+
+.table tbody tr td {
+    border-bottom: 1px solid rgba(19, 32, 19, 0.05);
+}
+
+.table tbody tr:last-of-type td {
+    border-bottom: 1px solid rgba(19, 32, 19, 0.05);
+}
+
+.active {
+    // padding: 20px;
+    // padding-bottom: 25px;
+    font-weight: 600;
+    // color: #2a431d;
+    mix-blend-mode: normal;
+    border-radius: 16px 16px 0px 0px;
+    margin-left: 0;
+    @media screen and (max-width: 526px) {
+        padding: 10px;
+        border-radius: 25px;
+        color: #ffffff;
+        background-color: #000000;
+    }
+}
+.inactive {
+    padding: 20px;
+    // padding-bottom: 25px;
+    mix-blend-mode: normal;
+    border-radius: 16px 16px 0px 0px;
+    @media screen and (max-width: 526px) {
+        padding: 10px;
+        border-radius: 25px;
+        background-color: #0f0d000d;
+        // padding: 0;
+        margin: 0;
+    }
+}
+
+input[type="radio"] + label span {
+    transition: background 0.2s, transform 0.2s;
+}
+
+input[type="radio"]:checked + label .radio_span {
+    background-color: #ffb733;
+    box-shadow: 0px 0px 0px 2px white inset;
+}
+
+input[type="radio"]:checked + label {
+    background-color: transparent;
 }
