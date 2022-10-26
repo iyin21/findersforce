@@ -1,11 +1,83 @@
-import React from "react";
-import { NavLink } from "react-router-dom";
-import { TextInput, PasswordInput } from "@mantine/core";
+import React, { MutableRefObject, useContext } from "react";
+import { NavLink, useNavigate, Link, useLocation } from "react-router-dom";
+import { TextInput, PasswordInput, Alert } from "@mantine/core";
+import { useForm } from '@mantine/form';
 import Button from "./components/button";
 import LandingPageText from "./components/landing-page-txt";
+import { emailInputStyle, passwordInputStyle } from "./utils";
+import axios from "./utils";
+import useAuth from "./hooks/useAuth";
 
+const LOGINURL = '/auth/login'
 
 const Login = () => {
+    const [error, showError] = React.useState(false);
+    const [isSubmitting, setIsSubmitting] = React.useState(false);
+    const [errorMsg, setErrorMsg] = React.useState('');
+    const { setAuth }  = useAuth();
+    const userRef = React.useRef<HTMLInputElement>(null) as MutableRefObject<HTMLInputElement>
+    const loginForm = useForm({
+        initialValues: {
+          email: '',
+          password: '',
+        },
+    
+        validate: {
+          email: (value) => (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(value) ? null : 'Invalid email'),
+        },
+    });
+
+
+    let navigate = useNavigate();
+    const location = useLocation();
+    const from = location.state?.from?.pathname || "/dashboard";
+
+    const handleLogin = ({email, password}: {email: string, password: string} ) => {
+        setIsSubmitting(true)
+        axios.post(LOGINURL, JSON.stringify({email: email, password: password}), {
+            headers: {'Content-Type': 'application/json'},  
+            withCredentials: true
+        }).then((response) => {
+            console.log(response?.data);
+            const accessToken = response.data?.data?.jwt?.token;
+            const user = response.data?.data?.user;
+            if (user.accountType === "DEPOT") {
+                setAuth({email, password, accessToken, user})
+                navigate(from, { replace: true });
+            }
+            else {
+                showError(true);
+                setErrorMsg("Unauthorized! You have to be a Depot manager to have access")
+                setIsSubmitting(false);
+            }
+            
+        }).catch(err => {
+            try {
+                console.log(err?.response);
+                if (err?.response.status === 400) {
+                    setErrorMsg(err.response.data.error)
+                }
+                else if (err?.response.status === 422) {
+                    setErrorMsg(err.response.data.error)
+                }
+                else {
+                    setErrorMsg("Hmmm, something went wrong, try again later.")
+                }
+            }
+            catch (error) {
+                setErrorMsg("Hmmm, something went wrong, try again later.");
+            }
+            finally {
+                showError(true);
+                setIsSubmitting(false);
+            }
+        })
+    }
+
+    React.useEffect(() => {
+        userRef.current.focus();
+    }, [])
+
     return (
         <div className="grid grid-cols-2 text-white h-fit bg-black">
             <LandingPageText />
@@ -15,71 +87,41 @@ const Login = () => {
                     <span className="text-light-black text-lg font-normal">Don't have an account? </span>
                     <a href="" className="text-lg text-state-green font-normal">Request access</a>
                 </div>
-                <form className="pt-14">
-                    <TextInput 
-                        placeholder="example@gmail.com"
-                        label="Email Address"
-                        withAsterisk
-                        styles={() => ({
-                            innerInput: {
-                                color: "rgba(15, 13, 0, 0.8)",  
-                                '&::placeholder': {
-                                    color: "#E7E7E5",
-                                    fontSize: '16px',
-                                    lineHeight: '19px'
-                                }
-                            },
-                            input: {
-                                marginTop: '10px',
-                                border: '1px solid rgba(15, 13, 0, 0.1)',
-                                height: '64px',
-                                marginBottom: '11px',
-                                borderRadius: '10px',
-                                paddingLeft: '23px',
-                                fontSize: '16px',
-                            },
-                            label: {
-                                color: '#0F0D00',
-                                fontSize: '16px',
-                                fontWeight: '800'
-                            }
-                        })}
-                    />
+                
+                <form onSubmit={loginForm.onSubmit((values) => handleLogin(values))} className="pt-14">
+                    <div
+                        onFocusCapture={() => showError(false)}
+                        >
+                        <TextInput 
+                            placeholder="example@gmail.com"
+                            label="Email Address"
+                            withAsterisk
+                            required
+                            ref={userRef}
+                            {...loginForm.getInputProps('email')}
+                            styles={() => (emailInputStyle)}
+                        />
+                    </div>
+                    <div></div>
                     <PasswordInput
                         placeholder="password"
                         label="Password"
                         withAsterisk
                         radius="md"
                         size="xl"
-                        styles={() => ({
-                            innerInput: {
-                                color: "rgba(15, 13, 0, 0.8)",
-                                fontSize: "16px",
-                                '&::placeholder': {
-                                    color: "rgba(15, 13, 0, 0.3)",
-                                    fontSize: '16px',
-                                    lineHeight: '19px',
-                                }
-                            },
-                            input: {
-                                marginTop: '10px',
-                                border: '1px solid rgba(15, 13, 0, 0.1)',
-                                height: '64px',
-                                marginBottom: '11px',
-                                borderRadius: '10px',
-                                paddingLeft: '25px'
-                            },
-                            label: {
-                                color: '#0F0D00',
-                                fontSize: '16px',
-                                fontWeight: '800'
-                            }
-                        })}
+                        required
+                        {...loginForm.getInputProps('password')}
+                        styles={() => (passwordInputStyle)}
+                        onFocusCapture={() => showError(false)}
                     />
-                    <NavLink to="/profile">
-                        <Button buttonText="Enter finders force"/>
-                    </NavLink>
+                    <Button buttonText={!isSubmitting ? "Enter finders force" : "Loading..."} submit={isSubmitting}/>
                 </form>
+                {error && (
+                    <Alert title="Error!" color="red" styles={() => ({root: {marginTop: "20px"}})}>
+                        {errorMsg}
+                    </Alert>
+                )}
+                
                 <div className="text-end mt-14 pb-32">
                     <span className="text-base font-normal text-fg-black">Forgot password?</span>
                     <NavLink to="/recover-password" className="text-fg-black font-semibold pl-1.5">
