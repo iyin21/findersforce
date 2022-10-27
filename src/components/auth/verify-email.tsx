@@ -1,12 +1,15 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import backIcon from "../../assets/backIcon.svg";
-import Button from "./components/button";
 import LandingPageText from "./components/landing-page-txt";
 import OtpContainer from "./components/otp-container";
 
 const VerifyEmailAddress = () => {
-    let otpContainer = [];
+    let navigate = useNavigate();
+    const handleVerifyEmail = (values: any) => {
+        const otp = Object.values(values).join("");
+        navigate('/reset-password')
+    }
     return (
         <div className="bg-black grid grid-cols-2 text-white">
             <LandingPageText />
@@ -27,10 +30,7 @@ const VerifyEmailAddress = () => {
                     <a href="" className="text-orange underline">Resend OTP</a>
                 </div>
                 <h2 className="text-base text-blaq font-bold pb-4">Enter OTP</h2>
-                <OtpContainer />
-                <NavLink to="/reset-password">
-                    <Button buttonText="Reset password"/>
-                </NavLink>
+                <OtpContainer handleSubmit={handleVerifyEmail} />
                 <span className="underline text-center text-base text-light-green pt-8 font-medium cursor-pointer">Not my email</span>
             </div>
         </div>

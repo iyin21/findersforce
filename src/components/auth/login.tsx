@@ -8,7 +8,7 @@ import { emailInputStyle, passwordInputStyle } from "./utils";
 import axios from "./utils";
 import useAuth from "./hooks/useAuth";
 
-const LOGINURL = '/auth/login'
+const LOGINURL = '/login'
 
 const Login = () => {
     const [error, showError] = React.useState(false);

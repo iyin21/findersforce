@@ -5,23 +5,19 @@ import React from "react";
 
 const UseRefreshToken = ({refreshToken}: any) => {
     const { setAuth } = useAuth();
-    const [obj, setObj] = React.useState({
-        name: 'timothu',
-        age: 50
-    })
+    
     const refresh = async () => {
         const response = await axios.get('/auth/refresh-token', {
             withCredentials: true,
             headers: {'Cookie': `refreshToken=${refreshToken}`}
         });
         setAuth((prev) => {
-            console.log(response.data.jwt.accessToken);
-            return { ...prev, accessToken: response.data.jwt.accessToken }
+            console.log(response.data.data.jwt.accessToken);
+            return { ...prev, accessToken: response.data.data.jwt.token }
         });
-        return response.data.jwt.accessToken;
+        return response.data.data.jwt.token;
     }
 
-    setObj(state => ({...state, age: 54}))
     
     return refresh
 }

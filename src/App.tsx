@@ -7,6 +7,7 @@ import Profile from "./components/profile";
 import { AuthProvider } from "./components/auth/context/authContext";
 import Layout from "./components/Layout";
 import RequireAuth from "./components/auth/RequireAuth";
+import PersistLogin from "./components/auth/persist-login";
 import "./global.scss"
 
 function App() {
@@ -18,12 +19,14 @@ function App() {
                         {/* public routes */}
                         <Route path="/" element={<Navigate replace to="/login" />} />
                         <Route path="/login" element={<Login />} />
+                        <Route path="/recover-password" element={<RecoverPassword />} />
+                        <Route path="/reset-password" element={<ResetPassword />} />
+                        <Route path="/verify-email" element={<VerifyEmailAddress />} />
                         {/* private routes */}
-                        <Route element={<RequireAuth />}>
-                            <Route path="/recover-password" element={<RecoverPassword />} />
-                            <Route path="/verify-email" element={<VerifyEmailAddress />} />
-                            <Route path="/reset-password" element={<ResetPassword />} />
-                            <Route path="/profile" element={<Profile />} />
+                        <Route element={<PersistLogin />}>
+                            <Route element={<RequireAuth />}>
+                                <Route path="/profile" element={<Profile />} />
+                            </Route>
                         </Route>
                     </Route>
                 </Routes>
