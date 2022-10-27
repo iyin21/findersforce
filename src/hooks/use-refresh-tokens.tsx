@@ -1,13 +1,12 @@
 import useAuth from "./useAuth";
-import axios from "../utils";
-import { authType } from "../context/authContext";
-import React from "react";
+import axios from "../pages/auth/utils";
+
 
 const UseRefreshToken = ({refreshToken}: any) => {
     const { setAuth } = useAuth();
     
     const refresh = async () => {
-        const response = await axios.get('/auth/refresh-token', {
+        const response = await axios.get('/refresh-token', {
             withCredentials: true,
             headers: {'Cookie': `refreshToken=${refreshToken}`}
         });

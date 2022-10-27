@@ -1,12 +1,12 @@
 import React from "react";
 import { Modal, PasswordInput, Text, Popover, Box } from "@mantine/core";
 import { useForm } from '@mantine/form';
-import LandingPageText from "./auth/components/landing-page-txt";
-import successIcon from ".././assets/check.svg";
-import Button from "./auth/components/button";
+import LandingPageText from "../../components/landing-page-txt";
+import Button from "../../components/button";
+import successIcon from "../../assets/success.svg";
 import styles from "./profile.module.scss";
 import { NavLink } from "react-router-dom";
-import { passwordInputStyle } from "./auth/utils";
+import { passwordInputStyle } from "../auth/utils";
 
 
 const CheckBox = ({check}: {check: boolean}) => {

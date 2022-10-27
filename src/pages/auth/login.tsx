@@ -1,12 +1,13 @@
-import React, { MutableRefObject, useContext } from "react";
-import { NavLink, useNavigate, Link, useLocation } from "react-router-dom";
+import React, { MutableRefObject } from "react";
+import { NavLink, useNavigate, useLocation } from "react-router-dom";
 import { TextInput, PasswordInput, Alert } from "@mantine/core";
 import { useForm } from '@mantine/form';
-import Button from "./components/button";
-import LandingPageText from "./components/landing-page-txt";
+import Button from "../../components/button";
+import LandingPageText from "../../components/landing-page-txt";
 import { emailInputStyle, passwordInputStyle } from "./utils";
 import axios from "./utils";
-import useAuth from "./hooks/useAuth";
+import useAuth from "../../hooks/useAuth";
+
 
 const LOGINURL = '/login'
 

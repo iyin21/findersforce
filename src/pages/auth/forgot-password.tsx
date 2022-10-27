@@ -1,9 +1,9 @@
 import React, { MutableRefObject } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { TextInput, Alert } from "@mantine/core";
-import LandingPageText from "./components/landing-page-txt";
+import LandingPageText from "../../components/landing-page-txt";
 import backIcon from "../../assets/backIcon.svg";
-import Button from "./components/button";
+import Button from "../../components/button";
 import { emailInputStyle } from "./utils";
 import { useForm } from "@mantine/form";
 import axios from "./utils";

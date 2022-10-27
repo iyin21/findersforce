@@ -1,21 +1,21 @@
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
-import RecoverPassword from "./components/auth/forgot-password";
-import Login from "./components/auth/login"
-import ResetPassword from "./components/auth/reset-password";
-import VerifyEmailAddress from "./components/auth/verify-email";
-import Profile from "./components/profile";
-import { AuthProvider } from "./components/auth/context/authContext";
 import Layout from "./components/Layout";
-import RequireAuth from "./components/auth/RequireAuth";
-import PersistLogin from "./components/auth/persist-login";
+import { AuthProvider } from "./pages/auth/context/authContext";
+import PersistLogin from "./pages/auth/persist-login";
 import "./global.scss"
+import Login from "./pages/auth/login";
+import RecoverPassword from "./pages/auth/forgot-password";
+import VerifyEmailAddress from "./pages/auth/verify-email";
+import ResetPassword from "./pages/auth/reset-password";
+import Profile from "./pages/profile/profile";
+import RequireAuth from "./pages/auth/RequireAuth";
 
 function App() {
     return (
         <BrowserRouter>
             <AuthProvider>
                 <Routes>
-                    <Route  path="/" element={<Layout />}>
+                    <Route path="/" element={<Layout />}>
                         {/* public routes */}
                         <Route path="/" element={<Navigate replace to="/login" />} />
                         <Route path="/login" element={<Login />} />
@@ -24,9 +24,9 @@ function App() {
                         <Route path="/verify-email" element={<VerifyEmailAddress />} />
                         {/* private routes */}
                         <Route element={<PersistLogin />}>
-                            <Route element={<RequireAuth />}>
-                                <Route path="/profile" element={<Profile />} />
-                            </Route>
+                        <Route element={<RequireAuth />}>
+                            <Route path="/profile" element={<Profile />} />
+                        </Route>
                         </Route>
                     </Route>
                 </Routes>
