@@ -1,10 +1,9 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import { PasswordInput } from "@mantine/core";
-import LandingPageText from "./components/landing-page-txt";
+import LandingPageText from "../../components/landing-page-txt";
 import backIcon from "../../assets/backIcon.svg";
-import showIcon from "../../assets/show.svg";
-import Button from "./components/button";
+import Button from "../../components/button";
 import successIcon from "../../assets/success.svg";
 
 const ResetPassword = () => {

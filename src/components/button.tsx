@@ -13,7 +13,7 @@ const Button: React.FC<propType> = ({buttonText, submit}) => {
                 :
                 "text-neutral-900 bg-orange font-bold text-base w-full text-center py-6 rounded-l rounded-tr-2xl rounded-br opacity-70"
             } 
-            type="submit" 
+             
             disabled={submit}>
                 {buttonText}
         </button>

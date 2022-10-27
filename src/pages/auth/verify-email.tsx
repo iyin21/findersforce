@@ -1,8 +1,8 @@
 import React from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import backIcon from "../../assets/backIcon.svg";
-import LandingPageText from "./components/landing-page-txt";
-import OtpContainer from "./components/otp-container";
+import LandingPageText from "../../components/landing-page-txt";
+import OtpContainer from "../../components/otp-container";
 
 const VerifyEmailAddress = () => {
     let navigate = useNavigate();

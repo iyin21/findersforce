@@ -1,7 +1,7 @@
 import React from "react";
-import logo from "../../../assets/logo.svg";
-import profileImg from "../../../assets/profile.png";
-import quoteIcon from "../../../assets/quote.svg";
+import logo from "../assets/logo.svg";
+import profileImg from "../assets/profile.png";
+import quoteIcon from "../assets/quote.svg";
 
 
 const LandingPageText = () => {
