@@ -2,19 +2,7 @@ import { Table } from "@mantine/core"
 import { AiOutlineArrowUp } from "react-icons/ai"
 import { BsFillStarFill } from "react-icons/bs"
 import { IoIosArrowForward } from "react-icons/io"
-
-interface ApplicationJobInterface {
-    elements: {
-        id: string
-        name: string
-        qualification: string
-        match: string
-        rating: string
-        date_applied: string
-        time_applied: string
-        status: string
-    }[]
-}
+import { ApplicationJobInterface } from "../../../../../types/job-board.type"
 
 const ApplicationJobTable = ({ elements }: ApplicationJobInterface) => {
     const renderStatus = (status: string) => {

@@ -1,17 +1,18 @@
 import { Button } from "../../components/index"
 import { FiPlus } from "react-icons/fi"
-import { BiFilter } from "react-icons/bi"
 import { useState } from "react"
 import { Tabs } from "@mantine/core"
 import JobBoardTable from "./components/table/job-table"
 import styles from "./job.module.scss"
 import PostJob from "../../components/Modals/PostJob"
 import JobSuccessful from "../../components/Modals/PostJob/components/success"
+import Filter, { FilterRequest } from "../../components/Filter"
 
 const JobBoards = () => {
     const [activeTab, setActiveTab] = useState(0)
     const [openJobPost, setOpenJobPost] = useState(false)
     const [openSuccess, setOpenSuccess] = useState(false)
+    const applyFilter = (filter: FilterRequest) => {}
 
     return (
         <div className="md:p-6 p-6">
@@ -38,13 +39,7 @@ const JobBoards = () => {
                 {" "}
                 <div className="relative lg:pb-4 bottom-0 lg:bottom-0">
                     <div className="absolute right-0 ">
-                        {" "}
-                        <Button
-                            variant="clear"
-                            iconLeft={<BiFilter size={30} />}
-                        >
-                            Filter
-                        </Button>
+                        <Filter applyFilter={applyFilter} />
                     </div>
                 </div>
                 <div>

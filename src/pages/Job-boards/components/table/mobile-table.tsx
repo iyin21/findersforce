@@ -1,6 +1,6 @@
 import { IoIosArrowForward } from "react-icons/io"
+import { JobBoardInterface } from "../../../../types/job-board.type"
 import { Checkbox } from "../../../../components/index"
-import { JobBoardInterface } from "./job-table"
 
 const MobileJobTable = ({ elements, status }: JobBoardInterface) => {
     return (

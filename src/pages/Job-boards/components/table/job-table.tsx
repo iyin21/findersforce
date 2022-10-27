@@ -5,20 +5,7 @@ import { IoIosArrowForward } from "react-icons/io"
 import { AiOutlineArrowUp } from "react-icons/ai"
 import { useNavigate } from "react-router-dom"
 import MobileJobTable from "./mobile-table"
-
-export interface JobBoardInterface {
-    status: "active" | "draft"
-    elements: {
-        id: string
-        type: string
-        location: string
-        date: string
-        hourly_rate: string
-        duration: string
-        applicants: string
-        mode: string
-    }[]
-}
+import { JobBoardInterface } from "../../../../types/job-board.type"
 
 const JobBoardTable = ({ elements, status }: JobBoardInterface) => {
     // this navigate function is used to navigate to the single job board page

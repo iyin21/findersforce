@@ -19,4 +19,7 @@ export default defineConfig({
         exclude: [...configDefaults.exclude, "**/*.spec.ts"],
         open: true,
     },
+    server: {
+        port: 3000,
+    },
 })
