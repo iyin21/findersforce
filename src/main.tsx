@@ -6,6 +6,7 @@ import App from "./App"
 import "./global.scss"
 import { BrowserRouter } from "react-router-dom"
 import { MantineProvider } from "@mantine/core"
+import { AuthProvider } from "./pages/auth/context/authContext"
 
 Sentry.init({
     dsn: "https://af392b294aa4443d93f43b5e19d0b128@o1317059.ingest.sentry.io/6652714",
@@ -20,9 +21,11 @@ Sentry.init({
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
     <React.StrictMode>
         <BrowserRouter>
-            <MantineProvider>
-                <App />
-            </MantineProvider>
+            <AuthProvider>
+                <MantineProvider>
+                    <App />
+                </MantineProvider>
+            </AuthProvider>
         </BrowserRouter>
     </React.StrictMode>
 )
