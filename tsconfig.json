@@ -1,6 +1,15 @@
 {
     "compilerOptions": {
         "target": "ESNext",
+        // "paths": {
+        //     "@components/*": ["src/components/*"],
+        //     "@components": ["src/components"],
+        //     "@hooks/*": ["src/hooks/*"],
+        //     "@hooks": ["src/hooks"],
+        //     "@pages/*": ["src/pages/*"],
+        //     "@assets/*": ["assets/*"],
+        //     "@tests/*": ["./tests/*"]
+        // },
         "useDefineForClassFields": true,
         "lib": ["DOM", "DOM.Iterable", "ESNext"],
         "allowJs": false,
