@@ -1,11 +1,11 @@
 .inactive {
                 path {
-                    @apply fill-green-1 opacity-40;
+                    @apply fill-yellow-10 opacity-40;
                 }
             }
             
 .active {
-                @apply text-white-30 bg-yellow-1 font-normal;
+                @apply text-white-30 bg-yellow-10 font-normal;
                 svg, path {
                     @apply fill-yellow-10;
                 }

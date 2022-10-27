@@ -40,10 +40,11 @@ function App() {
                         <Route element={<PersistLogin />}>
                             <Route element={<RequireAuth />}>
                                 <Route path="/profile" element={<Profile />} />
-                                <Route path={"/dashboard"} element={<Dashboard/>}/>
+                                
                             </Route>
                         </Route>
                     </Route>
+                    <Route path={"/dashboard"} element={<Dashboard/>}/>
                 </Routes>
             </AuthProvider>
         </BrowserRouter>
