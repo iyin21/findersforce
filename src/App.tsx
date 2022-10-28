@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom"
+import {  Route, Routes, Navigate } from "react-router-dom"
 import Layout from "./components/Layout"
 import { AuthProvider } from "./pages/auth/context/authContext"
 import PersistLogin from "./pages/auth/persist-login"
@@ -9,12 +9,11 @@ import VerifyEmailAddress from "./pages/auth/verify-email"
 import ResetPassword from "./pages/auth/reset-password"
 import Profile from "./pages/profile/profile"
 import RequireAuth from "./pages/auth/RequireAuth"
-import Dashboard from "./dashboard/Dashboard"
+import Dashboard from "./pages/dashboard/Dashboard"
 
 
 function App() {
     return (
-        <BrowserRouter>
             <AuthProvider>
                 <Routes>
                     <Route path="/" element={<Layout />}>
@@ -40,14 +39,13 @@ function App() {
                         <Route element={<PersistLogin />}>
                             <Route element={<RequireAuth />}>
                                 <Route path="/profile" element={<Profile />} />
-                                
+                                <Route path={"/dashboard"} element={<Dashboard/>}/>
                             </Route>
                         </Route>
                     </Route>
-                    <Route path={"/dashboard"} element={<Dashboard/>}/>
+                    
                 </Routes>
             </AuthProvider>
-        </BrowserRouter>
     )
 }
 

@@ -6,7 +6,7 @@ import Search from "./assets/Search.svg"
 
 const NavBar = () => {
   return (
-    <nav className="w-full sticky top-0 h-10 flex items-center justify-end gap-12 bg-white-1 px-14 ">
+    <nav className="w-full sticky top-0 h-10 flex items-center justify-end gap-12 bg-white-100 px-14 ">
         <img src={Search} alt="search icon " className="cursor-pointer" />
         <img src={Messaging} alt="Messaging icon "  className="cursor-pointer"/>
         <img src={SettingsCog} alt="SettingsCog icon" className="cursor-pointer" />
