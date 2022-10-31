@@ -10,13 +10,13 @@ const ResetPassword = () => {
     const [passwordChanged, setPasswordChanged] = React.useState(false);
 
     return (
-        <div className="bg-black grid grid-cols-2 text-white">
+        <div className="bg-[black] grid grid-cols-2 text-white">
             <LandingPageText />
-            <div className="my-8 mr-8 bg-white  pt-[90px] px-16 flex flex-col rounded-lg">
+            <div className="my-8 mr-8 bg-white-100  pt-[90px] px-16 flex flex-col rounded-lg">
                 {!passwordChanged ? 
                     (
                         <>
-                            <div className="bg-arr w-fit h-fit rounded">
+                            <div className="bg-black-10 w-fit h-fit rounded">
                                 <NavLink to="/verify-email">
                                     <img 
                                         src={backIcon}
@@ -25,20 +25,23 @@ const ResetPassword = () => {
                                     />
                                 </NavLink>
                             </div>
-                            <h1 className="font-extrabold text-blaq text-4xl pt-4">Reset Password</h1>
-                            <span className="text-base pt-2.5 text-blac">Your new password must be different from the old one.</span>
+                            <h1 className="font-extrabold text-black-100 text-[36px] pt-4 m-0">Reset Password</h1>
+                            <span className="text-base pt-2.5 text-[#132013] opacity-80 font-normal">Your new password must be different from the old one.</span>
                     
                             <form className="pt-8">
                                 <PasswordInput
                                     placeholder="new password"
                                     label="Enter new password"
                                     withAsterisk
+                                    required
                                     radius="md"
                                     size="xl"
                                     styles={() => ({
                                         innerInput: {
                                             color: "rgba(15, 13, 0, 0.8)",
                                             fontSize: "16px",
+                                            paddingTop: "7px",
+                                            backgroundColor: "#FAFAFA",
                                             '&::placeholder': {
                                                 color: "rgba(15, 13, 0, 0.3)",
                                                 fontSize: '16px',
@@ -46,7 +49,6 @@ const ResetPassword = () => {
                                             }
                                         },
                                         input: {
-                                            marginTop: '10px',
                                             border: '1px solid rgba(15, 13, 0, 0.1)',
                                             height: '64px',
                                             marginBottom: '11px',
@@ -65,12 +67,15 @@ const ResetPassword = () => {
                                     placeholder="new password"
                                     label="Confirm password"
                                     withAsterisk
+                                    required
                                     radius="md"
                                     size="xl"
                                     styles={() => ({
                                         innerInput: {
                                             color: "rgba(15, 13, 0, 0.8)",
                                             fontSize: "16px",
+                                            paddingTop: "7px",
+                                            backgroundColor: "#FAFAFA",
                                             '&::placeholder': {
                                                 color: "rgba(15, 13, 0, 0.3)",
                                                 fontSize: '16px',
@@ -78,7 +83,6 @@ const ResetPassword = () => {
                                             }
                                         },
                                         input: {
-                                            marginTop: '10px',
                                             border: '1px solid rgba(15, 13, 0, 0.1)',
                                             height: '64px',
                                             marginBottom: '32px',
@@ -106,8 +110,8 @@ const ResetPassword = () => {
                     ) : 
                     (
                         <>
-                            <h1 className="pt-[60px] text-4xl font-extrabold text-blaq">Password changed</h1>
-                            <span className="pt-2 text-pas text-base">Your password has been changed successfully</span>
+                            <h1 className="pt-[60px] text-[36px] font-[800] text-[black]">Password changed</h1>
+                            <span className="pt-2 text-[#0F0D00] opacity-60 text-base">Your password has been changed successfully</span>
                             <figure className="self-center mt-8">
                                 <img src={successIcon} alt="password successfully changed" />
                             </figure>

@@ -5,8 +5,9 @@ import UseRefreshToken from "../../hooks/use-refresh-tokens";
 
 const PersistLogin = () => {
     const [isLoading, setIsLoading] = useState(true);
-    const { auth } = useAuth();
-    const refresh = UseRefreshToken(auth.accessToken);
+    const { state } = useAuth();
+    console.log(state)
+    const refresh = UseRefreshToken(state?.jwt?.token);
 
     useEffect(() => {
         const verifyRefreshToken = async () => {
@@ -20,7 +21,7 @@ const PersistLogin = () => {
                 setIsLoading(false)
             }
         }
-        auth.accessToken !== "" ? verifyRefreshToken() : setIsLoading(false);
+        state?.jwt !== null ? verifyRefreshToken() : setIsLoading(false);
     }, []);
     return (
         <>

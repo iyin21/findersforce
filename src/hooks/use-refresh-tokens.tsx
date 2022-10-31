@@ -1,19 +1,23 @@
-import useAuth from "./useAuth";
+import useAuthContext from "./useAuth";
 import axios from "../pages/auth/utils";
 
 
 const UseRefreshToken = ({refreshToken}: any) => {
-    const { setAuth } = useAuth();
+    const { state, dispatch} = useAuthContext();
     
     const refresh = async () => {
         const response = await axios.get('/refresh-token', {
             withCredentials: true,
             headers: {'Cookie': `refreshToken=${refreshToken}`}
         });
-        setAuth((prev) => {
-            console.log(response.data.data.jwt.accessToken);
-            return { ...prev, accessToken: response.data.data.jwt.token }
-        });
+        dispatch ({
+            type: "UPDATE_USER_DATA",
+                    payload: {
+                        user: state?.user,
+                        jwt: response.data.data.jwt,
+                    },
+        })
+        
         return response.data.data.jwt.token;
     }
 

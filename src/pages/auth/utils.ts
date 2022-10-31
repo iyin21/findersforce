@@ -22,7 +22,6 @@ export const emailInputStyle = {
         }
     },
     input: {
-        marginTop: '10px',
         border: '1px solid rgba(15, 13, 0, 0.1)',
         height: '64px',
         marginBottom: '11px',
@@ -39,14 +38,13 @@ export const emailInputStyle = {
 
 export const passwordInputStyle = {
     ...emailInputStyle,
-    innerInput: {
-        color: "rgba(15, 13, 0, 0.8)",
-        fontSize: "16px",
-        paddingTop: "7px",
-        '&::placeholder': {
-            color: "#E7E7E5",
-            fontSize: '16px',
-            lineHeight: '19px'
-        }
+    input: {
+        border: '1px solid rgba(15, 13, 0, 0.1)',
+        height: '64px',
+        marginBottom: '32px',
+        borderRadius: '10px',
+        display: 'flex',
+        alignItems: 'center'
     },
 }
+
