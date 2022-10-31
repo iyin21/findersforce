@@ -37,8 +37,7 @@ const RecoverPassword = () => {
             headers: {'Content-Type': 'application/json'},
             withCredentials: true
         }).then(response => {
-            console.log(response)
-            navigate('/verify-email')
+            navigate('/verify-email', {state: {email: email}})
         }).catch(err => {
             try {
                 setErrorMsg(err.response.data.error)

@@ -80,7 +80,6 @@ const Profile = () => {
     const strength = getStrength(password);
 
     const handleProfileSetUp = (values: any) => {
-        console.log(values);
         if (strength === 100) {
             showErrorText(false);
             setOpened(!opened)

@@ -1,13 +1,54 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
-import { PasswordInput } from "@mantine/core";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
+import { PasswordInput, Alert } from "@mantine/core";
 import LandingPageText from "../../components/landing-page-txt";
 import backIcon from "../../assets/backIcon.svg";
 import Button from "../../components/button";
 import successIcon from "../../assets/success.svg";
+import { useForm } from "@mantine/form";
+import axios from "./utils";
+
 
 const ResetPassword = () => {
     const [passwordChanged, setPasswordChanged] = React.useState(false);
+    const [error, showError] = React.useState(false);
+    const [isSubmitting, setIsSubmitting] = React.useState(false);
+    const [errorMsg, setErrorMsg] = React.useState("");
+    const location = useLocation();
+
+    const resetPasswordForm = useForm({
+        initialValues: {
+            newPassword: '',
+            confirmPassword: ''
+        },
+
+        validate: {
+            confirmPassword: (value, values) =>
+            value !== values.newPassword ? <span className="text-[14px]">Passwords did not match</span> : null,
+        }
+    });
+
+    const resetPassword = ({newPassword, confirmPassword}:{newPassword: string, confirmPassword: string}) => {
+        setIsSubmitting(true)
+        axios.patch('/change-password', JSON.stringify({password: newPassword, passwordConfirm: confirmPassword, resetCode: location.state?.otp}), {
+            headers: {'Content-Type': 'application/json'},
+            withCredentials: true
+        }).then(response => {
+            setPasswordChanged(!passwordChanged);
+        }).catch(err => {
+            try {
+                setErrorMsg(err.response.data.error)
+            }
+            catch (error) {
+                setErrorMsg("Hmmm, something went wrong, try again later.");
+            }
+            finally {
+                showError(true);
+                setPasswordChanged(false);
+                setIsSubmitting(false)
+            }
+        });
+    } 
 
     return (
         <div className="bg-[black] grid grid-cols-2 text-white">
@@ -28,7 +69,7 @@ const ResetPassword = () => {
                             <h1 className="font-extrabold text-black-100 text-[36px] pt-4 m-0">Reset Password</h1>
                             <span className="text-base pt-2.5 text-[#132013] opacity-80 font-normal">Your new password must be different from the old one.</span>
                     
-                            <form className="pt-8">
+                            <form className="pt-8" onSubmit={resetPasswordForm.onSubmit(values => resetPassword(values))}>
                                 <PasswordInput
                                     placeholder="new password"
                                     label="Enter new password"
@@ -36,6 +77,7 @@ const ResetPassword = () => {
                                     required
                                     radius="md"
                                     size="xl"
+                                    {...resetPasswordForm.getInputProps('newPassword')}
                                     styles={() => ({
                                         innerInput: {
                                             color: "rgba(15, 13, 0, 0.8)",
@@ -70,6 +112,7 @@ const ResetPassword = () => {
                                     required
                                     radius="md"
                                     size="xl"
+                                    {...resetPasswordForm.getInputProps('confirmPassword')}
                                     styles={() => ({
                                         innerInput: {
                                             color: "rgba(15, 13, 0, 0.8)",
@@ -97,15 +140,15 @@ const ResetPassword = () => {
                                         }
                                     })}
                                 />
+                
+                                <Button buttonText={!isSubmitting ? "Reset password" : "Loading..."} submit={isSubmitting}/>
                                 
-                                
-                                <div onClick={e => {
-                                        e.preventDefault();
-                                        setPasswordChanged(!passwordChanged)
-                                    }}>
-                                    <Button buttonText="Reset password"/>
-                                </div>
                             </form>
+                            {error && (
+                                <Alert title="Error!" color="red" styles={() => ({root: {marginTop: "20px"}})}>
+                                    {errorMsg}
+                                </Alert>
+                            )}
                         </>
                     ) : 
                     (

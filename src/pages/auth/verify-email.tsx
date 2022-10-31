@@ -1,14 +1,16 @@
 import React from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import backIcon from "../../assets/backIcon.svg";
 import LandingPageText from "../../components/landing-page-txt";
 import OtpContainer from "../../components/otp-container";
+import axios from "./utils";
 
 const VerifyEmailAddress = () => {
     let navigate = useNavigate();
+    const location = useLocation();
     const handleVerifyEmail = (values: any) => {
         const otp = Object.values(values).join("");
-        navigate('/reset-password')
+        navigate('/reset-password', {state: {otp: otp}});
     }
     return (
         <div className="bg-black-100 grid grid-cols-2 text-white">
@@ -24,7 +26,7 @@ const VerifyEmailAddress = () => {
                     </NavLink>
                 </div>
                 <h1 className="pt-[34px] text-[rgba(5,0,1,1)] font-extrabold text-[36px]">Verify Email Address</h1>
-                <span className="text-base text-[rgba(5,0,1,1)] max-w-[560px] w-fit pt-2">Enter the 6-digit OTP we sent to alisoneyo@email.com to proceed with your password reset process.</span>
+                <span className="text-base text-[rgba(5,0,1,1)] max-w-[560px] w-fit pt-2">Enter the 6-digit OTP we sent to <b>{location.state?.email}</b> to proceed with your password reset process.</span>
                 <div className="text-[rgba(5,0,1,1)] pt-[18px] pb-[37px]">
                     <span className="text-base">Didn't get an email? </span>
                     <a href="" className="text-yellow-100 underline">Resend OTP</a>
