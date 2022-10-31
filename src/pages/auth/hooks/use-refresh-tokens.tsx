@@ -1,5 +1,5 @@
 import useAuthContext from "./useAuth";
-import axios from "../pages/auth/utils";
+import axios from "../utils";
 
 
 const UseRefreshToken = ({refreshToken}: any) => {

@@ -6,7 +6,7 @@ import Button from "../../components/button";
 import LandingPageText from "../../components/landing-page-txt";
 import { emailInputStyle, passwordInputStyle } from "./utils";
 import axios from "./utils";
-import useAuthContext from "../../hooks/useAuth";
+import useAuthContext from "./hooks/useAuth";
 
 
 const LOGINURL = '/login'
@@ -15,7 +15,7 @@ const Login = () => {
     const [error, showError] = React.useState(false);
     const [isSubmitting, setIsSubmitting] = React.useState(false);
     const [errorMsg, setErrorMsg] = React.useState('');
-    const { state, dispatch }  = useAuthContext();
+    const { dispatch }  = useAuthContext();
     const userRef = React.useRef<HTMLInputElement>(null) as MutableRefObject<HTMLInputElement>
     const loginForm = useForm({
         initialValues: {

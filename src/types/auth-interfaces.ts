@@ -34,6 +34,6 @@ export type AuthState = {
 
 // An interface for our actions
 export type AuthActionType = {
-    type: "SET_USER_DATA" | "UPDATE_USER_DATA" | "CLEAR_USER_DATA" | "SET_DOCS_DATA";
+    type: "SET_USER_DATA" | "UPDATE_USER_DATA" | "CLEAR_USER_DATA";
     payload?: LoginResponse["data"];
 };

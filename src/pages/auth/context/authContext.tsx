@@ -1,5 +1,5 @@
 import React, { createContext } from "react";
-import { AuthActionType, AuthState } from "../interfaces";
+import { AuthActionType, AuthState } from "../../../types/auth-interfaces";
 import { reducer } from "../reducers";
 
 

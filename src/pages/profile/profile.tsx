@@ -7,7 +7,7 @@ import successIcon from "../../assets/check.svg";
 import styles from "./profile.module.scss";
 import { NavLink } from "react-router-dom";
 import { emailInputStyle, passwordInputStyle } from "../auth/utils";
-import useAuthContext from "../../hooks/useAuth";
+import useAuthContext from "../auth/hooks/useAuth";
 
 
 const CheckBox = ({check}: {check: boolean}) => {

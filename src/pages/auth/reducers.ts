@@ -1,4 +1,4 @@
-import { AuthActionType, AuthState, User } from "./interfaces";
+import { AuthActionType, AuthState, User } from "../../types/auth-interfaces";
 
 
 const reducer = (state: AuthState, action: AuthActionType): AuthState => {

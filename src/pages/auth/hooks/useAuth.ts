@@ -1,4 +1,4 @@
-import AuthContext from "../pages/auth/context/authContext";
+import AuthContext from "../context/authContext";
 import { useContext } from "react";
 
 
