@@ -7,6 +7,7 @@ import successIcon from "../../assets/check.svg";
 import styles from "./profile.module.scss";
 import { NavLink } from "react-router-dom";
 import { emailInputStyle, passwordInputStyle } from "../auth/utils";
+import useAuthContext from "../../hooks/useAuth";
 
 
 const CheckBox = ({check}: {check: boolean}) => {
@@ -57,6 +58,8 @@ const Profile = () => {
     const [opened, setOpened] = React.useState(false);
     const [password, setPassword] = React.useState('');
     const [errorText, showErrorText] = React.useState(false);
+    const { state } = useAuthContext();
+    
 
     const profileForm = useForm({
         initialValues: {

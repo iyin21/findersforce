@@ -31,7 +31,7 @@ const Login = () => {
 
     let navigate = useNavigate();
     const location = useLocation();
-    const from = location.state?.from?.pathname || "/dashboard";
+    const from = location.state?.from?.pathname || "/profile";
 
     const handleLogin = ({email, password}: {email: string, password: string} ) => {
         setIsSubmitting(true)
@@ -41,7 +41,6 @@ const Login = () => {
         }).then((response) => {
             const user = response.data?.data?.user;
             if (user.accountType === "DEPOT") {
-                console.log(dispatch)
                 dispatch({
                     type: "SET_USER_DATA",
                     payload: {
@@ -49,7 +48,6 @@ const Login = () => {
                         jwt: response.data.data.jwt,
                     },
                 });
-                console.log(state)
                 navigate(from, { replace: true });
             }
             else {
