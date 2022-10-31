@@ -1,95 +1,206 @@
-export interface ApplicationResponse{
-    status: true,
-  count: 3,
-  pagination: {
-    next: Pagination,
-    prev: Pagination
-  },
-  data: Data[]
+import { StringSchema } from "yup"
+import { StringLocale } from "yup/lib/locale"
+
+export interface ApplicationResponse {
+    status: true
+    count: number
+    pagination: {
+        next: Pagination
+        prev: Pagination
+    }
+    data: Data[]
 }
 export interface ApplicationDetailsResponse {
-    status: string;
-    message: string;
-    data: JobListing;
+    status: string
+    message: string
+    data: Data
 }
 
 export interface Data {
-    _id: string;
-    status: string;
-    jobListing: JobListing;
-    user: User;
-    experience: number;
-    createdAt: string;
+    _id: string
+    status: string
+    jobListing: JobListing
+    user: User
+    experience: number
+    createdAt: Date
     updatedAt: Date;
+    depot:string;
+    _v: number;
 }
 
 export interface JobListing {
-    _id: string;
-    companyName: string;
-    jobType: Job;
-    depot: User;
-    jobDate: Date;
-    shiftStartTime: string;
-    shiftDurationInHours: number;
-    jobMeetingPoint: string;
-    jobAccessibleTo: string;
-    operativeIds: string[];
-    numberOfOpsRequired: number;
-    jobQualification: Job;
-    jobRate: JobRate;
-    jobDescription: string;
-    jobLocation: JobLocation;
-    additionalInfoImageUrls: any[];
-    isPublished: boolean;
-    createdAt: Date;
-    updatedAt: Date;
-    jobMatchPercentage: number;
-    hasApplied: boolean;
-    hasFavorited: boolean;
+    _id: string
+    companyName: string
+    jobType: Job
+    depot: User
+    jobDate: Date
+    shiftStartTime: string
+    shiftEndTime: Date
+    shiftDurationInHours: number
+    jobMeetingPoint: string
+    jobAccessibleTo: string
+    operativeIds: string[]
+    numberOfOpsRequired: number
+    jobQualification: Job
+    jobRate: JobRate
+    jobDescription: string
+    jobLocation: JobLocation
+    additionalInfoImageUrls: any[]
+    isPublished: boolean
+    createdAt: Date
+    updatedAt: Date
+    jobMatchPercentage: number
+    hasApplied: boolean
+    hasFavorited: boolean
 }
 
 export interface User {
-    _id: string;
-    username: string;
-    firstName: string;
-    lastName: string;
-    email: string;
+    _id: string
+    username: string
+    firstName: string
+    lastName: string
+    email: string
+    averageRating: number
 }
 
 export interface JobLocation {
-    _id: string;
-    type: string;
-    coordinates: number[];
-    formattedAddress: string;
-    street: string;
-    city: string;
-    state: string;
-    zipcode: string;
-    country: string;
+    _id: string
+    type: string
+    coordinates: number[]
+    formattedAddress: string
+    street: string
+    city: string
+    state: string
+    zipcode: string
+    country: string
 }
 
 export interface Job {
-    _id: string;
-    name: string;
-    jobQualificationCategoryId?: Job;
-    createdAt: Date;
-    updatedAt: Date;
-    description?: string;
-    jobTypeCategoryId?: string;
+    _id: string
+    name: string
+    jobQualificationCategoryId?: Job
+    createdAt: Date
+    updatedAt: Date
+    description?: string
+    jobTypeCategoryId?: string
 }
 
 export interface JobRate {
-    _id: string;
-    currency: string;
-    jobQualification: string;
-    jobRatePerHourDisplayedToDepot: number;
-    jobRatePerHourDisplayedToOp: number;
-    depot: string;
+    _id: string
+    currency: string
+    jobQualification: string
+    jobRatePerHourDisplayedToDepot: number
+    jobRatePerHourDisplayedToOp: number
+    depot: string
 }
 
 export interface Pagination {
-    next: Next;
-    prev: Next;
+    next: Next
+    prev: Next
 }
 
 export interface Next {}
+
+export interface ShiftResponse {
+    message: string
+    status: string
+    data: {
+        currentPage: 1
+        nextPage: null
+        prevPage: null
+        totalRecords: number
+        totalPages: number
+
+        results: Result[]
+    }
+}
+
+export interface Result {
+    cancelReason: string
+    cancelReasonMoreDetails: string
+    cancelStatus: boolean
+    clockInLocationCoordinates: string
+    clockInStatus: boolean
+    clockInTime: null | Date
+    clockOutLocationCoordinates: null
+    clockOutStatus: boolean
+    clockOutTime: null | Date
+    createdAt: Date
+    depot: {
+        _id: string
+        username: string
+        firstName: string
+        lastName: string
+        accountActivated: boolean
+        accountType: string
+        averageRating: number
+        banned: boolean
+        companyName: string
+        createdAt: Date
+        email: string
+        emailVerified: boolean
+        gender: string
+        password: string
+        qualification: string[]
+        skillset: string[]
+        twoFa_enabled: boolean
+        twoFa_type: null
+        updatedAt: Date
+        __v: number
+    }
+    depotHasRated: boolean
+    depotRating: null | string
+    id: string
+    jobListing: JobListing
+    lastSeenLocationCoordinates: null
+    opHasRated: boolean
+    operative: {
+        averageRating: number
+        _id: string
+        username: string
+        firstName: string
+        accountActivated: boolean
+        accountType: string
+        banned: boolean
+        bio: string
+        createdAt: Date
+        email: string
+        emailVerified: boolean
+        gender: string
+        lastName: string
+        password: string
+        profileImageUrl: string
+        qualifiation: string
+        resumeURL: string
+        skillset: string[]
+        twoFa_enabled: boolean
+        twoFa_type: string
+        updatedAt: Date
+        __v: number
+    }
+    operativeRating: null
+    shiftEnded: boolean
+    shiftReminderSent: boolean
+    updatedAt: Date
+    __v: number
+    _id: string
+    // depot: string;
+    // operative: string;
+    // jobListing: string;
+    // clockInStatus: boolean
+    // clockOutStatus: boolean
+    // clockInTime: Date,
+    // clockOutTime: Date,
+    // clockInLocationCoordinates: null,
+    // clockOutLocationCoordinates: null,
+    // lastSeenLocationCoordinates: null,
+    // cancelStatus: boolean;
+    // cancelReason: null,
+    // cancelReasonMoreDetails: null,
+    // shiftEnded: boolean
+    // _id: string;
+    // createdAt: Date
+    // updatedAt: Date
+    // __v: 0
+}
+

@@ -160,9 +160,9 @@ h6 {
     }
 }
 
-// input[type="radio"] + label span {
-//     transition: background 0.2s, transform 0.2s;
-// }
+input[type="radio"] + label span {
+    transition: background 0.2s, transform 0.2s;
+}
 
 input[type="radio"]:checked + label .radio_span {
     background-color: #ffb733;

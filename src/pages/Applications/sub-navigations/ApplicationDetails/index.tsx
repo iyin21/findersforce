@@ -7,9 +7,14 @@ import Google from "../../assets/google.svg"
 import { BsCheck, BsX } from "react-icons/bs"
 import Download from "../../assets/downloadIcon.svg"
 import Message from "../../assets/message.svg"
+import { useParams } from "react-router-dom";
+import { useGetApplicationDetails } from "../../hooks/application.hook"
 
 const ApplicationDetails = () => {
+    const { applicationId } = useParams<{ applicationId: string }>()
     const navigate = useNavigate()
+
+    const {data,isLoading}=useGetApplicationDetails({id:applicationId||""})
     return (
         <div className="pt-4 px-6">
             <span

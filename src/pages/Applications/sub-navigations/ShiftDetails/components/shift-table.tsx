@@ -1,22 +1,23 @@
 import { Table } from "@mantine/core"
 //import { Data } from "src/pages/Applications/interface"
-
+import { Result } from "../../../interface"
 import Star from "../../../assets/star.svg"
+import dayjs from "dayjs"
 
 interface Prop {
     //status?: "pending" | "accepted" | "rejected" ;
-    //elements: Data[]
-    date: string
-    location: string
-    timeIn: string
-    timeOut: string
-    duration: string
-    amount: string
-    rating: string
-    status: string
+    elements: Result[]
+    // date: string
+    // location: string
+    // timeIn: string
+    // timeOut: string
+    // duration: string
+    // amount: string
+    // rating: string
+    // status: string
 }
-const ShiftTable = ({ elements }: { elements: Prop[] }) => {
-    //const ApplicationTable = ({ elements }: Prop) => {
+//const ShiftTable = ({ elements }: { elements: Prop[] }) => {
+const ShiftTable = ({ elements }: Prop) => {
     const tableData = [
         {
             date: "11 jan 2022",
@@ -32,32 +33,36 @@ const ShiftTable = ({ elements }: { elements: Prop[] }) => {
 
     const rows = elements.map((item, index) => (
         <tr key={index}>
-            {/* <td>{index}</td>
-            <td>{item.user.firstName + " " + item.user.lastName}</td>
-            <td>{item.jobListing.jobType.name}</td>
-            <td>{item.jobListing.jobMatchPercentage}%</td>
-            <td>4.9</td>
-            <td>{item.createdAt}</td>
-            <td>{item.createdAt}</td>
-             */}
+            <td>{dayjs(item?.createdAt).format("MMM D, YYYY")}</td>
+            <td>{item?.jobListing.jobLocation.formattedAddress}</td>
+            <td>{item.jobListing.shiftStartTime}</td>
+            <td>{dayjs(item?.jobListing.shiftEndTime).format("h:mm A")}</td>
+            <td>{item?.jobListing.shiftDurationInHours}</td>
+            <td>$140/hr</td>
+            <td>
+                <p className="flex">
+                    <img src={Star} alt="" />
+                    <span className="pl-1">{item?.depotRating}</span>
+                </p>
+            </td>
+            <td>
+                <p className="text-white-100 bg-green-100 pl-1.5 py-1 rounded-full w-20">
+                    completed
+                </p>
+            </td>
 
-            <td>{item.date}</td>
+            {/* <td>{item.date}</td>
             <td>{item.location}</td>
             <td>{item.timeIn}</td>
             <td>{item.timeOut}</td>
             <td>{item.duration}</td>
             <td>{item.amount}</td>
-            <td>
-                <p className="flex">
-                    <img src={Star} alt="" />
-                    <span className="pl-1">{item.rating}</span>
-                </p>
-            </td>
+            
             <td>
                 <p className="text-white-100 bg-green-100 pl-1.5 py-1 rounded-full w-20">
                     {item.status}
                 </p>
-            </td>
+            </td> */}
         </tr>
     ))
 

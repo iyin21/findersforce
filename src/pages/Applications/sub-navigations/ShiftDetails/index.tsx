@@ -3,10 +3,20 @@ import { HiArrowLeft } from "react-icons/hi"
 import { useNavigate } from "react-router-dom"
 import Message from "../../assets/message.svg"
 import ShiftTable from "./components/shift-table"
+import { useParams } from "react-router-dom"
+import { useGetShiftHistory } from "../../hooks/application.hook"
 
 const ShiftDetails = () => {
+    const { shiftId } = useParams<{ shiftId: string }>()
     const navigate = useNavigate()
 
+    const { data } = useGetShiftHistory({
+        operativeId: "6334119fc4127125020e3d13",
+        //completed:true
+    })
+    //6334119fc4127125020e3d13
+    console.log(data);
+    console.log(data?.results);
     return (
         <div className="pt-4 px-6">
             <span
@@ -40,16 +50,17 @@ const ShiftDetails = () => {
                 </button>
             </div>
             <ShiftTable
-                elements={new Array(5).fill({
-                    date: "11 jan 2022",
-                    location: "Iolaire Road, New Invent...",
-                    timeIn: "11:01AM",
-                    timeOut: "1:01AM",
-                    duration: "2 hrs 2 mins",
-                    amount: "$140/hr",
-                    rating: "4.9",
-                    status: "completed",
-                })}
+                 elements={data?.results||[]}
+                //{new Array(5).fill({
+                //     date: "11 jan 2022",
+                //     location: "Iolaire Road, New Invent...",
+                //     timeIn: "11:01AM",
+                //     timeOut: "1:01AM",
+                //     duration: "2 hrs 2 mins",
+                //     amount: "$140/hr",
+                //     rating: "4.9",
+                //     status: "completed",
+                // })}
             />
         </div>
     )
