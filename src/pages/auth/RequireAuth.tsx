@@ -5,7 +5,7 @@ const RequireAuth = () => {
     const { state } = useAuth();
     const location = useLocation();
     return (
-        state?.user?.accountType === "DEPOT" ? <Outlet /> : <Navigate to="/login" state={{from: location}} replace/>
+        state?.isAuthenticated ? <Outlet /> : <Navigate to="/login" state={{from: location}} replace/>
     );
 }
 

@@ -9,6 +9,7 @@ const reducer = (state: AuthState, action: AuthActionType): AuthState => {
                 isAuthenticated: true,
                 user: action?.payload?.user as User,
                 jwt: action.payload!.jwt,
+                persist: true
             };
         case "UPDATE_USER_DATA":
             return {
@@ -16,6 +17,7 @@ const reducer = (state: AuthState, action: AuthActionType): AuthState => {
                 isAuthenticated: true,
                 user: action.payload?.user as User,
                 jwt: action.payload!.jwt,
+                persist: true
             };
         case "CLEAR_USER_DATA":
             return {
@@ -23,6 +25,7 @@ const reducer = (state: AuthState, action: AuthActionType): AuthState => {
                 isAuthenticated: false,
                 user: null,
                 jwt: null,
+                persist: false
             };
 
         default:

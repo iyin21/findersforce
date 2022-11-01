@@ -12,6 +12,18 @@ export interface User {
     verified: boolean;
     createdAt: Date | string;
     updatedAt: Date | string;
+    accountActivated?: boolean;
+    averageRating?: number;
+    bio?: string;
+    banned?: boolean;
+    qualification?: Array<string>;
+    profileImageUrl?: any;
+    emailVerified?: boolean;
+    resume?: any;
+    skillSets?: Array<string>;
+    username?: string;
+    twoFa_enabled?: boolean;
+    twoFa_type?: any;
 }
 
 export interface LoginResponse {
@@ -30,6 +42,7 @@ export type AuthState = {
     isAuthenticated: boolean;
     user: User | null;
     jwt: jwtData | null;
+    persist: boolean
 };
 
 // An interface for our actions
