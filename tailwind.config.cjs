@@ -102,7 +102,7 @@ module.exports = {
         },
         extend: {
             backgroundImage: {
-                "dashboard-pattern" : "url('/src/pages/dashboard/assets/Thumbnail.svg')",
+                "dashboard-pattern" : "url('./src/assets/Thumbnail.svg')",
             }
         },
     },

@@ -1,5 +1,5 @@
 
-import Star from "../../assets/Star.svg"
+import Star from "../../../../assets/Star.svg"
 
 
 

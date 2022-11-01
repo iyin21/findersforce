@@ -1,8 +1,8 @@
-import Logout from "./assets/Logout.svg" 
-import Messaging from "./assets/Messaging.svg" 
-import SettingsCog from "./assets/SettingsCog.svg" 
-import User from "./assets/User.svg" 
-import Search from "./assets/Search.svg" 
+import Logout from "../../../assets/LogoutNavBar.svg" 
+import Messaging from "../../../assets/Messaging.svg" 
+import SettingsCog from "../../../assets/SettingsCog.svg" 
+import User from "../../../assets/User.svg" 
+import Search from "../../../assets/Search.svg" 
 
 const NavBar = () => {
   return (

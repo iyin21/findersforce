@@ -1,9 +1,9 @@
 import { RegionalManagerRoute } from "./utils/routes"
-import RlatterLogo from "./assets/RlatterLogo.svg"
-import Profile from "./assets/Profile.svg"
-import Setting from "./assets/Setting.svg"
-import Logout from "./assets/Logout.svg"
-import FindersForceLogo from "./assets/FindersForceLogo.svg"
+import RlatterLogo from "../../../assets/RlatterLogo.svg"
+import Profile from "../../../assets/Profile.svg"
+import Setting from "../../../assets/Setting.svg"
+import Logout from "../../../assets/Logout.svg"
+import FindersForceLogo from "../../../assets/FindersForceLogo.svg"
 import { NavLink } from "react-router-dom"
 import styles from "./sidebar.module.scss";
 

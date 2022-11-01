@@ -1,7 +1,7 @@
-import CanceledShifts from "../assets/CanceledShifts.svg"
-import Charts from "../assets/Chart.svg"
-import Arrow from "../assets/Arrow.svg"
-import UpperRightArrow from "../assets/UpperRightArrow.svg"
+import CanceledShifts from "../../../assets/CanceledShifts.svg"
+import Charts from "../../../assets/Chart.svg"
+import Arrow from "../../../assets/Arrow.svg"
+import UpperRightArrow from "../../../assets/UpperRightArrow.svg"
 
 const Chart = () => {
   return (

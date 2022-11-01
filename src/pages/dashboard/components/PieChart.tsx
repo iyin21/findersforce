@@ -1,4 +1,4 @@
-import PieCharts from "../assets/PieChart.svg"
+import PieCharts from "../../../assets/PieChart.svg"
 
 const PieChart = () => {
   return (

@@ -1,8 +1,8 @@
 import { showNotification } from "@mantine/notifications";
 import { AxiosError } from "axios";
 import { useQuery } from "react-query";
-import { axiosInstance } from "../../../services/api.service"
-import { IDepotRating } from "./interfaces";
+import { axiosInstance } from "../services/api.service"
+import { IDepotRating } from "../types/dashboard/interfaces";
 
 function useRating ({ id }: { id: string }) {
     
