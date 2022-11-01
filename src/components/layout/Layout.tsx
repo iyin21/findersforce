@@ -1,13 +1,10 @@
 import Sidebar from "./sidebar/Sidebar"
 import NavBar from "./navbar/NavBar"
-import { ReactNode } from "react";
+import { LayoutProps } from "../../types/layout/interface";
 
-interface Props {
-               pageTitle: string;
-               children: ReactNode;
-            }
 
-const Layout = ({ children }: Props) => {
+
+const Layout = ({ children }: LayoutProps) => {
   return (
     <div className="h-screen relative overflow-hidden">
       <div className="w-5/6 fixed right-0">

@@ -1,9 +1,5 @@
-type CardProps = {
-              title:string,
-              amount:string,
-              icon: string,
-              style: string,
-            }
+import { CardProps } from "../../../types/dashboard/interfaces"
+
 const Card:React.FC<CardProps> = ({title,amount,icon, style}) => {
   return (
     <div className="bg-white-100 border border-black-10 rounded-xl text-left flex gap-x-8 py-3 px-2 ">

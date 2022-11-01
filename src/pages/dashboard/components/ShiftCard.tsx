@@ -1,20 +1,6 @@
-type CardProps = {
-                profileImage:string,
-                profileName: string,
-                calenderIcon: string,
-                date: string,
-                clockIcon: string,
-                time: string,
-                locationIcon: string,
-                location: string,
-                taskIcon: string,
-                task: string,
-                hour: string,
-                minute: string,
-                second: string,
-                messageIcon:string;
-              }
-const Card:React.FC<CardProps> = ({profileImage,profileName,messageIcon,calenderIcon,date,clockIcon,time,locationIcon,location,taskIcon,task,hour,minute,second}) => {
+import { ShiftCardProps } from "../../../types/dashboard/interfaces"
+
+const Card:React.FC<ShiftCardProps> = ({profileImage,profileName,messageIcon,calenderIcon,date,clockIcon,time,locationIcon,location,taskIcon,task,hour,minute,second}) => {
   return (
     <div className=" bg-gray-100 rounded-b-lg pb-4 px-4 relative">
         
