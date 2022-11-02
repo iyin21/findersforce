@@ -51,9 +51,9 @@ const ResetPassword = () => {
     } 
 
     return (
-        <div className="bg-[black] grid grid-cols-2 text-white">
+        <div className="bg-black-1 grid grid-cols-2 text-white">
             <LandingPageText />
-            <div className="my-8 mr-8 bg-white-100  pt-[90px] px-16 flex flex-col rounded-lg">
+            <div className="my-8 mr-8 bg-white-100  pt-90 px-16 flex flex-col rounded-lg">
                 {!passwordChanged ? 
                     (
                         <>
@@ -153,8 +153,8 @@ const ResetPassword = () => {
                     ) : 
                     (
                         <>
-                            <h1 className="pt-[60px] text-[36px] font-[800] text-[black]">Password changed</h1>
-                            <span className="pt-2 text-[#0F0D00] opacity-60 text-base">Your password has been changed successfully</span>
+                            <h1 className="pt-60 text-3.5xl font-[800] text-black-1">Password changed</h1>
+                            <span className="pt-2 text-black-100 opacity-60 text-base">Your password has been changed successfully</span>
                             <figure className="self-center mt-8">
                                 <img src={successIcon} alt="password successfully changed" />
                             </figure>

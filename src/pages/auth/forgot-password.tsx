@@ -53,9 +53,9 @@ const RecoverPassword = () => {
     }
 
     return (
-        <div className="bg-[black] grid grid-cols-2 text-white">
+        <div className="bg-black-1 grid grid-cols-2 text-white">
             <LandingPageText />
-            <div className="my-8 mr-8 bg-white-100 pt-[82px] px-16 flex flex-col rounded-lg">
+            <div className="my-8 mr-8 bg-white-100 pt-82 px-16 flex flex-col rounded-lg">
                 <div className="bg-black-10 w-fit h-fit rounded">
                     <NavLink to="/login">
                         <img 
@@ -65,8 +65,8 @@ const RecoverPassword = () => {
                         />
                     </NavLink>
                 </div>
-                <h1 className="pt-[34px] text-black-100 font-extrabold text-[36px]">Forgot Password</h1>
-                <span className="text-2md text-blaq-0 pt-2 pb-[35px] max-w-[439px]">Enter your email address linked to your accout below and we'll send you an OTP to reset your password.</span>
+                <h1 className="pt-34 text-black-100 font-extrabold text-3.5xl">Forgot Password</h1>
+                <span className="text-2md text-blaq-0 pt-2 pb-35 max-w-[439px]">Enter your email address linked to your accout below and we'll send you an OTP to reset your password.</span>
                 <form onSubmit={recoverPasswordForm.onSubmit(values => handleSubmit(values))}>
                     <TextInput 
                         placeholder="example@gmail.com"
