@@ -31,7 +31,7 @@ const Login = () => {
 
     let navigate = useNavigate();
     const location = useLocation();
-    const from = location.state?.from?.pathname || "/profile";
+    const from = location.state?.from?.pathname || "/dashboard";
 
     const handleLogin = ({email, password}: {email: string, password: string} ) => {
         setIsSubmitting(true)

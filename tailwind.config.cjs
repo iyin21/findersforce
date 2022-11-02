@@ -4,7 +4,11 @@ module.exports = {
     content: ["./index.html", "./src/**/*.{ts,jsx,tsx}"],
     theme: {
         colors: {
+            ash:{
+                10: "rgba(38, 38, 38, 1)",
+            },
             yellow: {
+                5: "rgba(254, 215, 10, 0.05)",
                 10: "rgba(254, 215, 10, 0.1)",
                 20: "rgba(254, 215, 10, 0.2)",
                 30: "rgba(254, 215, 10, 0.3)",
@@ -110,7 +114,11 @@ module.exports = {
             "md": "4px",
             DEFAULT: '4px',
         },
-        extend: {},
+        extend: {
+            backgroundImage: {
+                "dashboard-pattern" : "url('./src/assets/Thumbnail.svg')",
+            }
+        },
     },
     plugins: [],
 }

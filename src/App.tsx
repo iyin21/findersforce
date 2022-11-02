@@ -9,6 +9,8 @@ import VerifyEmailAddress from "./pages/auth/verify-email"
 import ResetPassword from "./pages/auth/reset-password"
 import Profile from "./pages/profile/profile"
 import RequireAuth from "./pages/auth/RequireAuth"
+import Dashboard from "./pages/dashboard/Dashboard"
+
 
 function App() {
     return (
@@ -38,6 +40,7 @@ function App() {
                     <Route element={<PersistLogin />}>
                         <Route element={<RequireAuth />}>
                             <Route path="/profile" element={<Profile />} />
+                            <Route path={"/dashboard"} element={<Dashboard/>}/>
                         </Route>
                     </Route>
                 </Route>
