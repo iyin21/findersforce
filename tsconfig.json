@@ -24,13 +24,27 @@
         "isolatedModules": true,
         "noEmit": true,
         "jsx": "react-jsx",
-        "baseUrl": ".",
+        "baseUrl": "./src",
         "types": [
             "vite/client",
             "jest",
             "@types/testing-library__jest-dom",
             "@types/react"
-        ]
+        ],
+        "paths": {
+            
+            "@pages/*": [
+              "pages/*"
+            ],
+            
+            "@services/*": [
+              "services/*"
+            ],
+            "@assets/*": [
+              "public/assets/*"
+            ],
+            
+          },
     },
     "include": ["./src"],
     "references": [{ "path": "./tsconfig.node.json" }]
