@@ -57,6 +57,7 @@ module.exports = {
                 100: "rgba(233, 68, 68, 1)",
             },
             black: {
+                1: "rgba(0, 0, 0, 0)",
                 2: "rgba(0, 0, 0, 0.02)",
                 5: "rgba(0, 0, 0, 0.05)",
                 10: "rgba(15, 13, 0, 0.1)",
@@ -69,6 +70,10 @@ module.exports = {
                 80: "rgba(15, 13, 0, 0.8)",
                 90: "rgba(15, 13, 0, 0.9)",
                 100: "rgba(15, 13, 0, 1)",
+            },
+            blaq: {
+                0: "rgba(5, 0, 1, 1)",
+                7: "rgba(5, 0, 1, 0.7)",
             },
             transparent: "transparent",
         },
@@ -97,6 +102,13 @@ module.exports = {
             creatoBlack: ["CreatoDisplayBlack", "sans-serif"],
             creatoLight: ["CreatoDisplayLight", "sans-serif"],
             creatoDisplayItalic: ["CreatoDisplayItalic", "sans-serif"],
+        },
+        borderRadius: {
+            "lg": "10px",
+            "3lg": "30px",
+            "2xl": "16px",
+            "md": "4px",
+            DEFAULT: '4px',
         },
         extend: {},
     },

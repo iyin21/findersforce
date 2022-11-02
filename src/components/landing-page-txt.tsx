@@ -6,10 +6,10 @@ import quoteIcon from "../assets/quote.svg";
 
 const LandingPageText = () => {
     return (
-        <section className="pt-[80px] pl-[93px] pr-[91px] pb-[78px] bg-[black] text-white-100">
+        <section className="pt-[80px] pl-[93px] pr-[91px] pb-[78px] bg-black-1 text-white-100">
                 <div className="flex items-center">
                     <img src={logo} alt="finders force logo" />
-                    <div className="flex flex-row items-center ml-3 rounded-[30px] bg-white-20 w-fit p-2.5 h-fit">
+                    <div className="flex flex-row items-center ml-3 rounded-3lg bg-white-20 w-fit p-2.5 h-fit">
                         <span className="text-sm">We're hiring!</span>
                         <span role="img" aria-label="celebration" className="pl-0.5">🎉 </span>
                     </div>

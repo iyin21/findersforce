@@ -66,7 +66,7 @@ const RecoverPassword = () => {
                     </NavLink>
                 </div>
                 <h1 className="pt-[34px] text-black-100 font-extrabold text-[36px]">Forgot Password</h1>
-                <span className="text-2md text-blaq pt-2 pb-[35px] max-w-[439px]">Enter your email address linked to your accout below and we'll send you an OTP to reset your password.</span>
+                <span className="text-2md text-blaq-0 pt-2 pb-[35px] max-w-[439px]">Enter your email address linked to your accout below and we'll send you an OTP to reset your password.</span>
                 <form onSubmit={recoverPasswordForm.onSubmit(values => handleSubmit(values))}>
                     <TextInput 
                         placeholder="example@gmail.com"

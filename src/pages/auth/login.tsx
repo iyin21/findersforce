@@ -6,7 +6,7 @@ import Button from "../../components/button";
 import LandingPageText from "../../components/landing-page-txt";
 import { emailInputStyle, passwordInputStyle } from "./utils";
 import axios from "./utils";
-import useAuthContext from "./hooks/useAuth";
+import useAuthContext from "../../hooks/auth-hooks/useAuth";
 
 
 const LOGINURL = '/login'
@@ -85,10 +85,10 @@ const Login = () => {
     return (
         <div className="grid grid-cols-2 text-white h-fit bg-[black]">
             <LandingPageText />
-            <section className="my-8 mr-8 bg-white-100 pt-12 px-16 flex flex-col rounded-[10px]">
-                <h1 className="text-[rgb(5,0,1)] font-extrabold text-4xl pb-2.5">Log In</h1>
+            <section className="my-8 mr-8 bg-white-100 pt-12 px-16 flex flex-col rounded-lg">
+                <h1 className="text-blaq-0 font-extrabold text-4xl pb-2.5">Log In</h1>
                 <div>
-                    <span className="text-[rgba(5, 0, 1, 0.7)] text-2lg font-normal">Don't have an account? </span>
+                    <span className="text-blaq-7 text-2lg font-normal">Don't have an account? </span>
                     <a href="" className="text-2lg text-green-100 font-normal">Request access</a>
                 </div>
                 
