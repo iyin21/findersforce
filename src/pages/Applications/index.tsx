@@ -3,6 +3,8 @@ import ApplicationTable from "./components/application-table"
 import { useState } from "react"
 import { useGetApplications } from "./hooks/application.hook"
 import { useAuthContext } from "../auth/context/authContext"
+import { CgSpinner } from "react-icons/cg";
+import { IoFilterSharp } from "react-icons/io5";
 
 const Applications = () => {
     const { auth } = useAuthContext()
@@ -32,107 +34,63 @@ const Applications = () => {
                 Operatives who apply for shifts appear here
             </p>
 
-            <Tabs
-                variant="unstyled"
-                active={activeTab}
-                onTabChange={setActiveTab}
-            >
-                <Tabs.Tab
-                    label="Pending"
-                    className={`body-regular mr-6 ${
-                        activeTab === 0 ? "text-yellow-100" : "text-black-60"
-                    }`}
-                >
-                    <ApplicationTable
-                        elements={pendingData?.data || []}
-                        // elements={new Array(5).fill({
-                        //     name: "Shaquan Roberts",
-                        //     jobType: "2-WAY",
-                        //     qualification: "T1/T2",
-                        //     match: "90%",
-                        //     rating: "4.9%",
-                        //     dateApplied: "Nov 15, 2022",
-                        //     timeApplied: "14:13PM",
-                        // })}
-                    />
-                </Tabs.Tab>
-                <Tabs.Tab
-                    label="Accepted "
-                    className={`body-regular mr-6 ${
-                        activeTab === 1 ? "text-yellow-100" : "text-black-60"
-                    }`}
-                >
-                    <ApplicationTable
-                        elements={acceptedData?.data || []}
-                        // elements={new Array(5).fill({
-                        //     name: "Shaquan Roberts",
-                        //     jobType: "2-WAY",
-                        //     qualification: "T1/T2",
-                        //     match: "90%",
-                        //     rating: "4.9%",
-                        //     dateApplied: "Nov 15, 2022",
-                        //     timeApplied: "14:13PM",
-                        // })}
-                    />
-                </Tabs.Tab>
-                <Tabs.Tab
-                    label="Rejected"
-                    className={`body-regular ${
-                        activeTab === 2 ? "text-yellow-100" : "text-black-60"
-                    }`}
-                >
-                    <ApplicationTable elements={rejectedData?.data || []} />
-                </Tabs.Tab>
-            </Tabs>
-            {/* <Tabs defaultValue="pending">
-                <Tabs.List>
-                    <Tabs.Tab value="pending">Pending</Tabs.Tab>
-                    <Tabs.Tab value="accepted">Accepted</Tabs.Tab>
-                    <Tabs.Tab value="rejected">Rejected</Tabs.Tab>
-                </Tabs.List>
-
-                <Tabs.Panel value="pending" pt="xs">
-                    <ApplicationTable
-                        elements={new Array(5).fill({
-                            name: "Shaquan Roberts",
-                            jobType: "2-Way",
-                            qualification: "T1/T2",
-                            match: "90%",
-                            rating: "4.9%",
-                            dateApplied: "Nov 15, 2022",
-                            timeApplied: "14:13PM",
-                        })}
-                    />
-                </Tabs.Panel>
-
-                <Tabs.Panel value="accepted" pt="xs">
-                    <ApplicationTable
-                        elements={new Array(5).fill({
-                            name: "Shaquan Roberts",
-                            jobType: "2-Way",
-                            qualification: "T1/T2",
-                            match: "90%",
-                            rating: "4.9%",
-                            dateApplied: "Nov 15, 2022",
-                            timeApplied: "14:13PM",
-                        })}
-                    />
-                </Tabs.Panel>
-
-                <Tabs.Panel value="rejected" pt="xs">
-                    <ApplicationTable
-                        elements={new Array(5).fill({
-                            name: "Shaquan Roberts",
-                            jobType: "2-Way",
-                            qualification: "T1/T2",
-                            match: "90%",
-                            rating: "4.9%",
-                            dateApplied: "Nov 15, 2022",
-                            timeApplied: "14:13PM",
-                        })}
-                    />
-                </Tabs.Panel>
-            </Tabs> */}
+            {isLoadingPendingData ||
+            isLoadingAcceptedData ||
+            isLoadingRejectedData ? (
+                <div className="h-screen w-full flex mt-24 justify-center">
+                    <CgSpinner className="animate-spin text-primary-90 text-4xl" />
+                </div>
+            ) : (
+                <div>
+                    <div className="flex absolute right-10 items-center cursor-pointer">
+                    <IoFilterSharp /><p className="pl-2">Filter</p>
+                        </div>
+                    <Tabs
+                        variant="unstyled"
+                        active={activeTab}
+                        onTabChange={setActiveTab}
+                    >
+                        <Tabs.Tab
+                            label="Pending"
+                            className={`body-regular mr-6 ${
+                                activeTab === 0
+                                    ? "text-yellow-100"
+                                    : "text-black-60"
+                            }`}
+                        >
+                            <ApplicationTable
+                                elements={pendingData?.data || []}
+                               
+                            />
+                        </Tabs.Tab>
+                        <Tabs.Tab
+                            label="Accepted "
+                            className={`body-regular mr-6 ${
+                                activeTab === 1
+                                    ? "text-yellow-100"
+                                    : "text-black-60"
+                            }`}
+                        >
+                            <ApplicationTable
+                                elements={acceptedData?.data || []}
+                                
+                            />
+                        </Tabs.Tab>
+                        <Tabs.Tab
+                            label="Rejected"
+                            className={`body-regular ${
+                                activeTab === 2
+                                    ? "text-yellow-100"
+                                    : "text-black-60"
+                            }`}
+                        >
+                            <ApplicationTable
+                                elements={rejectedData?.data || []}
+                            />
+                        </Tabs.Tab>
+                    </Tabs>
+                </div>
+            )}
         </div>
     )
 }

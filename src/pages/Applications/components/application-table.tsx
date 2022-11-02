@@ -9,28 +9,11 @@ import dayjs from "dayjs"
 interface Prop {
     //status?: "pending" | "accepted" | "rejected" ;
     elements: Data[]
-    // name: string
-    // jobType: string
-    // qualification: string
-    // match: string
-    // rating: string
-    // dateApplied: string
-    // timeApplied: string
+   
 }
 const ApplicationTable = ({ elements }: Prop) => {
     const navigate = useNavigate()
-    //const ApplicationTable = ({ elements }: Prop) => {
-    const tableData = [
-        {
-            name: "Shaquan Roberts",
-            jobType: "2-Way",
-            qualification: "T1/T2",
-            match: "90%",
-            rating: "4.9%",
-            dateApplied: "Nov 15, 2022",
-            timeApplied: "14:13PM",
-        },
-    ]
+    
 
     const rows = elements.map((item, index) => (
         <tr key={index}>
@@ -45,6 +28,7 @@ const ApplicationTable = ({ elements }: Prop) => {
             </td>
 
             <td>{item.jobListing.jobType.name}</td>
+            <td>{item.jobListing.jobQualification.name}</td>
             <td className="text-green-100 font-medium">
                 {item.jobListing.jobMatchPercentage}%
             </td>
@@ -62,28 +46,6 @@ const ApplicationTable = ({ elements }: Prop) => {
             >
                 <HiChevronRight size={30} style={{ color: "#889088" }} />
             </td>
-
-            {/* <td className="flex">
-                <img src={Avatar} alt="" />
-                <span className="pl-2">{item.name}</span>
-            </td>
-            <td>{item.jobType}</td>
-            <td>{item.qualification}</td>
-            <td className="text-green-100 font-medium">{item.match}</td>
-            <td>
-                <p className="flex">
-                    <img src={Star} alt="" />
-                    <span className="pl-1">{item.rating}</span>
-                </p>
-            </td>
-            <td>{item.dateApplied}</td>
-            <td>{item.timeApplied}</td>
-            <td
-                className="cursor-pointer"
-                onClick={() => navigate("/applications/33")}
-            >
-                <HiChevronRight size={30} style={{ color: "#889088" }} />
-            </td> */}
         </tr>
     ))
 
@@ -91,6 +53,7 @@ const ApplicationTable = ({ elements }: Prop) => {
         "NO",
         "name",
         "job Type",
+        "Qualification",
         "match",
         "rating",
         "date Applied",
@@ -116,7 +79,7 @@ const ApplicationTable = ({ elements }: Prop) => {
                     ))}
                 </tr>
             </thead>
-            <tbody> {rows}</tbody>
+            <tbody>{rows}</tbody>
         </Table>
     )
 }

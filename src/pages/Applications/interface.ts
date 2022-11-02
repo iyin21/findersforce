@@ -23,11 +23,25 @@ export interface Data {
     user: User
     experience: number
     createdAt: Date
-    updatedAt: Date;
-    depot:string;
-    _v: number;
+    updatedAt: Date
+    depot: string
+    _v: number
+    completedShfts: number;
+    certificates: Certificates[];
 }
-
+export interface Certificates {
+    _id:string;
+    user: string;
+    name: string;
+    status: string;
+    issuingOrganisation: string;
+    credentialId: string;
+    dateIssued: Date;
+    createdAt: Date;
+    updatedAt: Date;
+    __v: number;
+    deleted: boolean
+}
 export interface JobListing {
     _id: string
     companyName: string
@@ -61,6 +75,9 @@ export interface User {
     lastName: string
     email: string
     averageRating: number
+    resumeUrl: string
+    bio: string
+    profileImageUrl: string
 }
 
 export interface JobLocation {
@@ -184,23 +201,4 @@ export interface Result {
     updatedAt: Date
     __v: number
     _id: string
-    // depot: string;
-    // operative: string;
-    // jobListing: string;
-    // clockInStatus: boolean
-    // clockOutStatus: boolean
-    // clockInTime: Date,
-    // clockOutTime: Date,
-    // clockInLocationCoordinates: null,
-    // clockOutLocationCoordinates: null,
-    // lastSeenLocationCoordinates: null,
-    // cancelStatus: boolean;
-    // cancelReason: null,
-    // cancelReasonMoreDetails: null,
-    // shiftEnded: boolean
-    // _id: string;
-    // createdAt: Date
-    // updatedAt: Date
-    // __v: 0
 }
-

@@ -38,7 +38,7 @@ const ShiftTable = ({ elements }: Prop) => {
             <td>{item.jobListing.shiftStartTime}</td>
             <td>{dayjs(item?.jobListing.shiftEndTime).format("h:mm A")}</td>
             <td>{item?.jobListing.shiftDurationInHours}</td>
-            <td>$140/hr</td>
+            <td>${item.jobListing.jobRate.jobRatePerHourDisplayedToDepot * item.jobListing.shiftDurationInHours}/hr</td>
             <td>
                 <p className="flex">
                     <img src={Star} alt="" />
