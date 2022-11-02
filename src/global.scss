@@ -67,7 +67,8 @@ input[type="radio"] + label > .checkmark {
     font-weight: light;
 }
 
-.mantine-1e1m5s4 {
+.mantine-123gri0[data-active],
+.mantine-123gri0[data-active]:active {
     border-bottom: 2px solid rgba(254, 215, 10, 1);
     @media screen and (max-width: 768px) {
         border: none;
@@ -99,10 +100,7 @@ input[type="radio"] + label > .checkmark {
 }
 
 .active {
-    // padding: 20px;
-    // padding-bottom: 25px;
     font-weight: 600;
-    // color: #2a431d;
     mix-blend-mode: normal;
     border-radius: 16px 16px 0px 0px;
     margin-left: 0;
@@ -113,17 +111,13 @@ input[type="radio"] + label > .checkmark {
         background-color: #000000;
     }
 }
-.inactive {
-    padding: 20px;
-    // padding-bottom: 25px;
+.mantine-o8x4z2 [role="tab"] {
     mix-blend-mode: normal;
     border-radius: 16px 16px 0px 0px;
     @media screen and (max-width: 526px) {
-        padding: 10px;
+        margin: 10px;
         border-radius: 25px;
         background-color: #0f0d000d;
-        // padding: 0;
-        margin: 0;
     }
 }
 

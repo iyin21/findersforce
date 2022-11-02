@@ -9,7 +9,7 @@ const datePicker = ({
     label,
     name,
     required,
-    value,
+    defaultValue,
     onChange,
     className,
     ...rest
@@ -17,7 +17,7 @@ const datePicker = ({
     return (
         <div>
             <DatePicker
-                value={value}
+                defaultValue={defaultValue}
                 onChange={onChange}
                 placeholder={placeholder}
                 label={label}
@@ -25,8 +25,8 @@ const datePicker = ({
                 required={required}
                 classNames={{
                     input: "w-full h-14 px-4 border border-neutral-40 rounded",
-                    defaultVariant: "text-neutral-80",
-                    filledVariant: "text-neutral-80",
+                    // defaultVariant: "text-neutral-80",
+                    // filledVariant: "text-neutral-80",
                     wrapper: "text-neutral-80",
                     label: "text-neutral-80 font-semibold font-sans",
                 }}

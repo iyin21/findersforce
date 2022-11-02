@@ -2,9 +2,10 @@ import { RingProgress } from "@mantine/core"
 
 interface IHeadProps {
     step: number
+    draftStatus: string
 }
 
-export const Header = ({ step }: IHeadProps) => {
+export const Header = ({ step, draftStatus }: IHeadProps) => {
     return (
         <div className="px-4">
             {step === 2 ? (
@@ -16,12 +17,23 @@ export const Header = ({ step }: IHeadProps) => {
                 </div>
             ) : (
                 <div className="flex justify-between items-center">
-                    <div>
-                        <h1 className="text-3xl font-bold">Post a Job</h1>
-                        <p className="text-black-60 text-2md font-normal">
-                            This is a subtext describing what users can see here
-                        </p>
-                    </div>
+                    {draftStatus === "draft" ? (
+                        <div>
+                            <h1 className="text-3xl font-bold">Drafts</h1>
+                            <p className="text-black-60 text-2md font-normal">
+                                Complete your shift requirements
+                            </p>
+                        </div>
+                    ) : (
+                        <div>
+                            <h1 className="text-3xl font-bold">Post a Job</h1>
+                            <p className="text-black-60 text-2md font-normal">
+                                This is a subtext describing what users can see
+                                here
+                            </p>
+                        </div>
+                    )}
+
                     <div>
                         <RingProgress
                             size={95}

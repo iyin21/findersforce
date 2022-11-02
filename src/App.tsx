@@ -1,5 +1,5 @@
 import { Route, Routes, Navigate } from "react-router-dom"
-import Layout from "./components/Layout"
+import Layout from "./components/Layout/Layout"
 import PersistLogin from "./pages/auth/persist-login"
 import "./global.scss"
 import Login from "./pages/auth/login"
@@ -25,14 +25,14 @@ function App() {
                 <Route element={<PersistLogin />}>
                     <Route element={<RequireAuth />}>
                         <Route path="/profile" element={<Profile />} />
+                        <Route path="job-boards" element={<JobBoards />} />
+                        <Route
+                            path="job-boards/:jobBoardId"
+                            element={<SingleJobBoard />}
+                        />
                     </Route>
-                </Route>
-                <Route path="job-boards" element={<JobBoards />} />
-                <Route
-                    path="job-boards/:jobBoardId"
-                    element={<SingleJobBoard />}
-                />
-            </Route>
+                </Route>{" "}
+            </Route>{" "}
         </Routes>
     )
 }
