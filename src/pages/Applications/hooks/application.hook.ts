@@ -7,7 +7,8 @@ import {
     ShiftResponse,
     ApplicationDetailsResponse,
 } from "../interface"
-import { useAuthContext } from "../../auth/context/authContext"
+//import { useAuthContext } from "../../auth/context/authContext"
+//import useAuth from "../../../hooks/useAuth";
 
 interface ApplicationRequest {
     status: string
@@ -17,13 +18,13 @@ interface UpdateApplicationRequest {
     status: string
 }
 function useGetApplications({ status, page }: ApplicationRequest) {
-    const { auth } = useAuthContext()
+    //const { auth } =  useAuth()
     //console.log(auth)
     const getApplications = async () => {
         const { data } = await axiosInstance.get("/applications", {
             params: { status, page },
             headers: {
-                Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzM2QzNDNjNTQ1M2U2YTQ1YzczM2I4ZiIsImlhdCI6MTY2NzM3Mjk4MSwiZXhwIjoxNjY3MzczOTgxfQ.cM4m0u6wJIonmAvXoRxQG6uOYgi-5LeAiefO0lwndBs`,
+                Authorization: `Bearer ${auth.accessToken}`,
             },
         })
         return data
@@ -50,7 +51,7 @@ function useGetApplicationDetails({ id }: { id: string }) {
     const getApplicationDetails = async () => {
         const { data } = await axiosInstance.get(`/applications/${id}`, {
             headers: {
-                Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzM2QzNDNjNTQ1M2U2YTQ1YzczM2I4ZiIsImlhdCI6MTY2NzM3Mjk4MSwiZXhwIjoxNjY3MzczOTgxfQ.cM4m0u6wJIonmAvXoRxQG6uOYgi-5LeAiefO0lwndBs`,
+                Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzM2QzNDNjNTQ1M2U2YTQ1YzczM2I4ZiIsImlhdCI6MTY2NzM3NDI4NCwiZXhwIjoxNjY3Mzc1Mjg0fQ.KG4POjiP1_HlM1cDjxgyWt6OGevg3d11rI4RHoNQ_P8`,
             },
         })
         return data.data
@@ -78,7 +79,7 @@ function useUpdateApplication({ id }: { id: string }) {
     const updateApplication = async ({ status }: UpdateApplicationRequest) => {
         const config: AxiosRequestConfig = {
             headers: {
-                Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzM2QzNDNjNTQ1M2U2YTQ1YzczM2I4ZiIsImlhdCI6MTY2NzM3Mjk4MSwiZXhwIjoxNjY3MzczOTgxfQ.cM4m0u6wJIonmAvXoRxQG6uOYgi-5LeAiefO0lwndBs`,
+                Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzM2QzNDNjNTQ1M2U2YTQ1YzczM2I4ZiIsImlhdCI6MTY2NzM3NDI4NCwiZXhwIjoxNjY3Mzc1Mjg0fQ.KG4POjiP1_HlM1cDjxgyWt6OGevg3d11rI4RHoNQ_P8`,
             },
         }
         const { data } = await axiosInstance.patch(
@@ -118,7 +119,7 @@ function useGetShiftHistory({
         const { data } = await axiosInstance.get(`/schedule`, {
             params: { operativeId, completed },
             headers: {
-                Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzM2QzNDNjNTQ1M2U2YTQ1YzczM2I4ZiIsImlhdCI6MTY2NzM3Mjk4MSwiZXhwIjoxNjY3MzczOTgxfQ.cM4m0u6wJIonmAvXoRxQG6uOYgi-5LeAiefO0lwndBs`,
+                Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzM2QzNDNjNTQ1M2U2YTQ1YzczM2I4ZiIsImlhdCI6MTY2NzM3NDI4NCwiZXhwIjoxNjY3Mzc1Mjg0fQ.KG4POjiP1_HlM1cDjxgyWt6OGevg3d11rI4RHoNQ_P8`,
             },
         })
         return data.data

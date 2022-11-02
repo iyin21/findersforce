@@ -5,6 +5,9 @@ module.exports = {
   theme: {
 
     colors: {
+        ash:{
+            10: "rgba(38, 38, 38, 1)",
+        },
       yellow: {
           10: "rgba(254, 215, 10, 0.1)",
           20: "rgba(254, 215, 10, 0.2)",
@@ -97,10 +100,15 @@ module.exports = {
       creatoLight: ["CreatoDisplayLight", "sans-serif"],
       creatoDisplayItalic: ["CreatoDisplayItalic", "sans-serif"],
   },
-      extend: {},
+      extend: {
+        backgroundImage: {
+            "dashboard-pattern" : "url('./src/assets/Thumbnail.svg')",
+        }
+      },
   },
   plugins: [],
     
     
         
+    
 }

@@ -1,0 +1,9 @@
+         
+.active {
+                @apply text-white-100 bg-yellow-20 font-normal;
+                svg, path {
+                    @apply fill-yellow-100;
+                }
+            }
+            
+            
