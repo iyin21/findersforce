@@ -1,18 +1,18 @@
-import { axiosPrivate } from "../pages/auth/utils";
+import { axiosPrivate } from "../../pages/auth/utils";
 import { useEffect } from "react";
 import useRefreshToken from "./use-refresh-tokens";
-import useAuth from "./useAuth";
+import useAuthContext from "../../hooks/auth-hooks/useAuth";
 
 const useAxiosPrivate = () => {
-    const { auth } = useAuth();
-    const refresh = useRefreshToken(auth.accessToken);
+    const { state } = useAuthContext();
+    const refresh = useRefreshToken();
 
     useEffect(() => {
 
         const requestIntercept = axiosPrivate.interceptors.request.use(
             config => {
                 if (!config.headers['Authorization']) {
-                    config.headers['Authorization'] = `Bearer ${auth?.accessToken}`;
+                    config.headers['Authorization'] = `Bearer ${state?.jwt.token}`;
                 }
                 return config;
             }, (error) => Promise.reject(error)

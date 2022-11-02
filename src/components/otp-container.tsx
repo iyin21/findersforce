@@ -3,7 +3,7 @@ import { useForm } from "@mantine/form";
 import Button from "./button";
 
 const OtpContainer = ({ handleSubmit }: { handleSubmit: (values: any) => void }) => {
-    const value = ['one', 'two', 'three', 'four', 'five'];
+    const value: string[] = ['one', 'two', 'three', 'four', 'five'];
     const otpForm = useForm({
         initialValues: {
             'one': '',
@@ -27,7 +27,6 @@ const OtpContainer = ({ handleSubmit }: { handleSubmit: (values: any) => void })
                 placeholder="0"
                 label=""
                 key={num}
-                withAsterisk
                 required
                 autoComplete="false"
                 {...otpForm.getInputProps(`${num}`)}
@@ -43,7 +42,6 @@ const OtpContainer = ({ handleSubmit }: { handleSubmit: (values: any) => void })
                         }
                     },
                     input: {
-                        marginTop: '10px',
                         border: '1px solid rgba(15, 13, 0, 0.1)',
                         height: '64px',
                         borderRadius: '10px',

@@ -1,12 +1,13 @@
 import React from "react";
-import { Modal, PasswordInput, Text, Popover, Box } from "@mantine/core";
+import { Modal, PasswordInput, Text } from "@mantine/core";
 import { useForm } from '@mantine/form';
 import LandingPageText from "../../components/landing-page-txt";
 import Button from "../../components/button";
-import successIcon from "../../assets/success.svg";
+import successIcon from "../../assets/check.svg";
 import styles from "./profile.module.scss";
 import { NavLink } from "react-router-dom";
-import { passwordInputStyle } from "../auth/utils";
+import { emailInputStyle, passwordInputStyle } from "../auth/utils";
+import useAuthContext from "../../hooks/auth-hooks/useAuth";
 
 
 const CheckBox = ({check}: {check: boolean}) => {
@@ -56,8 +57,9 @@ const getStrength = (password: string) => {
 const Profile = () => {
     const [opened, setOpened] = React.useState(false);
     const [password, setPassword] = React.useState('');
-    const [popoverOpened, setPopoverOpened] = React.useState(false);
     const [errorText, showErrorText] = React.useState(false);
+    const { state } = useAuthContext();
+    
 
     const profileForm = useForm({
         initialValues: {
@@ -67,7 +69,7 @@ const Profile = () => {
     
         validate: {
             confirmPassword: (value) =>
-                value !== password ? <span className="text-sm">Passwords did not match</span> : null,
+                value !== password ? <span className="text-[14px]">Passwords did not match</span> : null,
             },
     });
 
@@ -78,7 +80,6 @@ const Profile = () => {
     const strength = getStrength(password);
 
     const handleProfileSetUp = (values: any) => {
-        console.log(values);
         if (strength === 100) {
             showErrorText(false);
             setOpened(!opened)
@@ -88,41 +89,34 @@ const Profile = () => {
 
     
     return (
-        <div className="grid grid-cols-2 text-white h-fit bg-black">
+        <div className="grid grid-cols-2 text-white h-fit bg-[black]">
             <LandingPageText />
-            <div className="my-8 mr-8 bg-white pt-12 px-16 flex flex-col rounded-lg">
-                <h1 className="text-blaq text-4xl font-extrabold">Set up your Profile</h1>
-                <span className="text-tex pt-2">Please provide the following information</span>
-                <form onSubmit={profileForm.onSubmit((values) => handleProfileSetUp(values))} className="pt-7">
-                    <Popover opened={popoverOpened} position="bottom" width="target" transition="pop" styles={() => ({dropdown: {borderRadius: '10px'}})}>
-                        <Popover.Target>
-                        <div
-                            onFocusCapture={() => {
-                                setPopoverOpened(true);
-                                showErrorText(false);
-                            }}
-                            onBlurCapture={() => setPopoverOpened(false)}
-                        >
-                            <PasswordInput
-                                placeholder="password"
-                                label="Create password"
-                                withAsterisk
-                                radius="md"
-                                size="xl"
-                                required
-                                value={password}
-                                onChange={e => {setPassword(e.currentTarget.value)}}
-                                
-                                styles={() => (passwordInputStyle)}
-                            />
-                        </div>
-                        </Popover.Target>
-                        <Popover.Dropdown>
-                            <span className="text-neutral-black font-medium text-sm">Your password should contain:</span>
-                            <PasswordRequirement label="Includes at least 8 characters" meets={password.length >= 8} />
-                            {checks}
-                        </Popover.Dropdown>
-                    </Popover>
+            <div className="my-8 mr-8 bg-white-100 pt-12 px-16 flex flex-col rounded-lg">
+                <h1 className="text-[#050001] text-[32px] font-extrabold">Set up your Profile</h1>
+                <span className="text-[#0F0D00] opacity-70 pt-2">Please provide the following information</span>
+                <form onSubmit={profileForm.onSubmit((values) => handleProfileSetUp(values))} className="pt-7"> 
+                    <div
+                        onFocusCapture={() => {  
+                            showErrorText(false);
+                        }}
+                    >
+                        <PasswordInput
+                            placeholder="password"
+                            label="Create password"
+                            withAsterisk
+                            radius="md"
+                            size="xl"
+                            required
+                            value={password}
+                            onChange={e => {setPassword(e.currentTarget.value)}}
+                            styles={() => (emailInputStyle)}
+                        />
+                    </div>
+                    <div className="rounded bg-black-2 p-5">
+                        <span className="text-[#132013] font-medium text-[14px]">Your password should contain:</span>
+                        <PasswordRequirement label="Includes at least 8 characters" meets={password.length >= 8} />
+                        {checks}
+                    </div>
                     <div className="mb-7" />
                     <div
                         onFocusCapture={() => showErrorText(false)} 
@@ -138,7 +132,7 @@ const Profile = () => {
                             styles={() => (passwordInputStyle)}
                         />
                     </div>
-                    {errorText && (<span className="text-sm text-blaq text-[#f01e2c]">Password must meet requirements</span>)}
+                    {errorText && (<span className="text-[14px] text-[#f01e2c]">Password must meet requirements</span>)}
                     <div className="mb-[25px]" onClick={() => {profileForm.setFieldValue('password', password)}}>
                         <Button buttonText="Proceed"/>
                     </div>
@@ -160,8 +154,8 @@ const Profile = () => {
                 }} >
                 <div className="flex flex-col items-center">
                     <img src={successIcon} alt="success" className="pt-7"></img>
-                    <h1 className="font-extrabold text-[28px] text-blaq pt-2">You are all set!</h1>
-                    <span className="text-tex text-sm">Please provide the following information</span>
+                    <h1 className="font-extrabold text-[28px] text-[#050001] pt-2">You are all set!</h1>
+                    <span className="text-[#0F0D00B2] opacity-70 text-[14px]">Please provide the following information</span>
                     <NavLink to="/login" className="w-[183px] pt-7">
                         <Button buttonText="Get In"/>
                     </NavLink>

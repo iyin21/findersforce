@@ -6,7 +6,7 @@ import Button from "../../components/button";
 import LandingPageText from "../../components/landing-page-txt";
 import { emailInputStyle, passwordInputStyle } from "./utils";
 import axios from "./utils";
-import useAuth from "../../hooks/useAuth";
+import useAuthContext from "../../hooks/auth-hooks/useAuth";
 
 
 const LOGINURL = '/login'
@@ -15,7 +15,7 @@ const Login = () => {
     const [error, showError] = React.useState(false);
     const [isSubmitting, setIsSubmitting] = React.useState(false);
     const [errorMsg, setErrorMsg] = React.useState('');
-    const { setAuth }  = useAuth();
+    const { dispatch }  = useAuthContext();
     const userRef = React.useRef<HTMLInputElement>(null) as MutableRefObject<HTMLInputElement>
     const loginForm = useForm({
         initialValues: {
@@ -39,11 +39,15 @@ const Login = () => {
             headers: {'Content-Type': 'application/json'},  
             withCredentials: true
         }).then((response) => {
-            console.log(response?.data);
-            const accessToken = response.data?.data?.jwt?.token;
             const user = response.data?.data?.user;
             if (user.accountType === "DEPOT") {
-                setAuth({email, password, accessToken, user})
+                dispatch({
+                    type: "SET_USER_DATA",
+                    payload: {
+                        user: user,
+                        jwt: response.data.data.jwt,
+                    },
+                });
                 navigate(from, { replace: true });
             }
             else {
@@ -54,7 +58,6 @@ const Login = () => {
             
         }).catch(err => {
             try {
-                console.log(err?.response);
                 if (err?.response.status === 400) {
                     setErrorMsg(err.response.data.error)
                 }
@@ -80,13 +83,13 @@ const Login = () => {
     }, [])
 
     return (
-        <div className="grid grid-cols-2 text-white h-fit bg-black">
+        <div className="grid grid-cols-2 text-white h-fit bg-black-1">
             <LandingPageText />
-            <section className="my-8 mr-8 bg-white pt-12 px-16 flex flex-col rounded-lg">
-                <h1 className="text-blaq font-extrabold text-4xl pb-2.5">Log In</h1>
+            <section className="my-8 mr-8 bg-white-100 pt-12 px-16 flex flex-col rounded-lg">
+                <h1 className="text-blaq-0 font-extrabold text-4xl pb-2.5">Log In</h1>
                 <div>
-                    <span className="text-light-black text-lg font-normal">Don't have an account? </span>
-                    <a href="" className="text-lg text-state-green font-normal">Request access</a>
+                    <span className="text-blaq-7 text-2lg font-normal">Don't have an account? </span>
+                    <a href="" className="text-2lg text-green-100 font-normal">Request access</a>
                 </div>
                 
                 <form onSubmit={loginForm.onSubmit((values) => handleLogin(values))} className="pt-14">
@@ -124,12 +127,12 @@ const Login = () => {
                 )}
                 
                 <div className="text-end mt-14 pb-32">
-                    <span className="text-base font-normal text-fg-black">Forgot password?</span>
-                    <NavLink to="/recover-password" className="text-fg-black font-semibold pl-1.5">
+                    <span className="text-base font-normal text-black-90">Forgot password?</span>
+                    <NavLink to="/recover-password" className="text-black-90 font-semibold pl-1.5">
                         Recover
                     </NavLink>
                     <div className="flex flex-row-reverse">
-                        <hr className="w-[61px] border-t-2 border-orange"/>
+                        <hr className="w-[61px] border-t-2 border-yellow-100"/>
                     </div>
                     
                 </div>

@@ -1,4 +1,4 @@
-import {  Route, Routes, Navigate } from "react-router-dom"
+import { Route, Routes, Navigate } from "react-router-dom"
 import Layout from "./components/Layout"
 import { AuthProvider } from "./pages/auth/context/authContext"
 import PersistLogin from "./pages/auth/persist-login"
@@ -14,38 +14,38 @@ import Dashboard from "./pages/dashboard/Dashboard"
 
 function App() {
     return (
-            <AuthProvider>
-                <Routes>
-                    <Route path="/" element={<Layout />}>
-                        {/* public routes */}
-                        <Route
-                            path="/"
-                            element={<Navigate replace to="/login" />}
-                        />
-                        <Route path="/login" element={<Login />} />
-                        <Route
-                            path="/recover-password"
-                            element={<RecoverPassword />}
-                        />
-                        <Route
-                            path="/reset-password"
-                            element={<ResetPassword />}
-                        />
-                        <Route
-                            path="/verify-email"
-                            element={<VerifyEmailAddress />}
-                        />
-                        {/* private routes */}
-                        <Route element={<PersistLogin />}>
-                            <Route element={<RequireAuth />}>
-                                <Route path="/profile" element={<Profile />} />
-                                <Route path={"/dashboard"} element={<Dashboard/>}/>
-                            </Route>
+        <AuthProvider>
+            <Routes>
+                <Route path="/" element={<Layout />}>
+                    {/* public routes */}
+                    <Route
+                        path="/"
+                        element={<Navigate replace to="/login" />}
+                    />
+                    <Route path="/login" element={<Login />} />
+                    <Route
+                        path="/recover-password"
+                        element={<RecoverPassword />}
+                    />
+                    <Route
+                        path="/reset-password"
+                        element={<ResetPassword />}
+                    />
+                    <Route
+                        path="/verify-email"
+                        element={<VerifyEmailAddress />}
+                    />
+                    
+                    {/* private routes */}
+                    <Route element={<PersistLogin />}>
+                        <Route element={<RequireAuth />}>
+                            <Route path="/profile" element={<Profile />} />
+                            <Route path={"/dashboard"} element={<Dashboard/>}/>
                         </Route>
                     </Route>
-                    
-                </Routes>
-            </AuthProvider>
+                </Route>
+            </Routes>
+        </AuthProvider>
     )
 }
 
