@@ -7,7 +7,7 @@ import Google from "../../assets/google.svg"
 import { BsCheck, BsX } from "react-icons/bs"
 import Download from "../../assets/downloadIcon.svg"
 import Message from "../../assets/message.svg"
-import { useParams } from "react-router-dom"
+
 import {
     useGetApplicationDetails,
     useUpdateApplication,
@@ -17,23 +17,32 @@ import { CgSpinner } from "react-icons/cg"
 import { useEffect } from "react"
 import { showNotification } from "@mantine/notifications"
 
-const ApplicationDetails = () => {
-    const { applicationId } = useParams<{ applicationId: string }>()
+interface Prop {
+    //status?: "pending" | "accepted" | "rejected" ;
+    
+    setPhase: (val: number) => void;
+
+    activeId: string;
+    setShiftId: (val: string) => void;
+   
+}
+const ApplicationDetails = ({setPhase, activeId, setShiftId }: Prop) => {
+    //const { applicationId } = useParams<{ applicationId: string }>()
     const navigate = useNavigate()
 
     const { data, isLoading } = useGetApplicationDetails({
-        id: applicationId || "",
+        id: activeId || "",
     })
     const {
         data: acceptedData,
         isLoading: isLoadingAcceptedData,
         mutate: acceptMutate,
-    } = useUpdateApplication({ id: applicationId || "" })
+    } = useUpdateApplication({ id: activeId || "" })
     const {
         data: rejectedData,
         isLoading: isLoadingRejectedData,
         mutate: rejectMutate,
-    } = useUpdateApplication({ id: applicationId || "" })
+    } = useUpdateApplication({ id: activeId || "" })
     console.log(data)
     const handleAccept = () => {
         acceptMutate({ status: "WON" })
@@ -63,8 +72,8 @@ const ApplicationDetails = () => {
             ) : (
                 <div className="pt-4 px-6">
                     <span
-                        onClick={() => navigate(-1)}
-                        onKeyDown={() => navigate(-1)}
+                        onClick={() => setPhase(1)}
+                        
                         className="p-3 rounded inline-flex items-center justify-center bg-black-10 cursor-pointer"
                         aria-hidden="true"
                     >
@@ -138,13 +147,21 @@ const ApplicationDetails = () => {
                                     />
                                     Message {data?.user.firstName}
                                 </button>
-                                <a
-                                    href={`/applications/${applicationId}/${data?.user._id}`}
-                                    className="flex ml-4 items-center font-bold"
+                                <p
+                                    // href={`/applications/${applicationId}/${data?.user._id}`}
+                                    className="flex ml-4 items-center font-bold cursor-pointer"
+                                    onClick={() => 
+                                        {
+                                            setShiftId(data?.user._id||"");
+                                            setPhase(3);
+                    
+                                        }
+                                        //navigate(`/applications/${item._id}`)
+                                        }
                                 >
                                     View shift history
                                     <HiChevronRight size="25px" />{" "}
-                                </a>
+                                </p>
                             </div>
                         )}
                     </div>
@@ -160,13 +177,21 @@ const ApplicationDetails = () => {
                                         />
                                         Message {data?.user.firstName}
                                     </button>
-                                    <a
-                                        href={`/applications/${applicationId}/${data?.user._id}`}
-                                        className="flex ml-4 items-center font-bold"
+                                    <p
+                                        //href={`/applications/${applicationId}/${data?.user._id}`}
+                                        className="flex ml-4 items-center font-bold cursor-pointer"
+                                        onClick={() => 
+                                            {
+                                                setShiftId(data?.user._id||"");
+                                                setPhase(3);
+                        
+                                            }
+                                            //navigate(`/applications/${item._id}`)
+                                            }
                                     >
                                         View shift history
                                         <HiChevronRight size="25px" />{" "}
-                                    </a>
+                                    </p>
                                 </div>
                             )}
 

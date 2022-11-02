@@ -11,8 +11,8 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import dayjs from "dayjs"
 dayjs.extend(relativeTime);
 
-const ShiftDetails = () => {
-    const { shiftId } = useParams<{ shiftId: string }>()
+const ShiftDetails = ({shiftId, setPhase}:{shiftId:string, setPhase: (val: number) => void}) => {
+    //const { shiftId } = useParams<{ shiftId: string }>()
     const navigate = useNavigate()
 
     const { data, isLoading } = useGetShiftHistory({
@@ -30,8 +30,8 @@ const ShiftDetails = () => {
             ) : (
                 <div className="pt-4 px-6">
                     <span
-                        onClick={() => navigate(-1)}
-                        onKeyDown={() => navigate(-1)}
+                        onClick={() => setPhase(2)}
+                        
                         className="p-3 rounded inline-flex items-center justify-center bg-black-10 cursor-pointer"
                         aria-hidden="true"
                     >

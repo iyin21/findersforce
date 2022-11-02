@@ -72,6 +72,10 @@ module.exports = {
           90: "rgba(15, 13, 0, 0.9)",
           100: "rgba(15, 13, 0, 1)",
       },
+      blaq: {
+        0: "rgba(5, 0, 1, 1)",
+        7: "rgba(5, 0, 1, 0.7)",
+    },
       pink:"rgba(255, 252, 235, 1)",
       transparent: "transparent",
   },
@@ -100,15 +104,15 @@ module.exports = {
       creatoLight: ["CreatoDisplayLight", "sans-serif"],
       creatoDisplayItalic: ["CreatoDisplayItalic", "sans-serif"],
   },
+
       extend: {
         backgroundImage: {
             "dashboard-pattern" : "url('./src/assets/Thumbnail.svg')",
         }
       },
+      
+   
   },
   plugins: [],
-    
-    
-        
     
 }

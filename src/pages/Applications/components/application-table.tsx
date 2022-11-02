@@ -3,16 +3,18 @@ import { Data } from "../interface"
 import { HiChevronRight } from "react-icons/hi"
 import Avatar from "../assets/avatar.svg"
 import Star from "../assets/star.svg"
-import { useNavigate } from "react-router-dom"
 import dayjs from "dayjs"
 
 interface Prop {
     //status?: "pending" | "accepted" | "rejected" ;
-    elements: Data[]
+    elements: Data[];
+    setPhase: (val: number) => void;
+
+    setActiveId: (val: string) => void;
    
 }
-const ApplicationTable = ({ elements }: Prop) => {
-    const navigate = useNavigate()
+const ApplicationTable = ({ elements, setPhase, setActiveId }: Prop) => {
+    
     
 
     const rows = elements.map((item, index) => (
@@ -42,7 +44,14 @@ const ApplicationTable = ({ elements }: Prop) => {
             <td>{dayjs(item.createdAt).format("h:mm A")}</td>
             <td
                 className="cursor-pointer"
-                onClick={() => navigate(`/applications/${item._id}`)}
+                onClick={() => 
+                    {
+                        setActiveId(item._id);
+                        setPhase(2);
+
+                    }
+                    //navigate(`/applications/${item._id}`)
+                    }
             >
                 <HiChevronRight size={30} style={{ color: "#889088" }} />
             </td>

@@ -1,12 +1,9 @@
-import {  Route, Routes, Navigate } from "react-router-dom"
+import { Route, Routes, Navigate } from "react-router-dom"
 import Layout from "./components/Layout"
 import { AuthProvider } from "./pages/auth/context/authContext"
 import PersistLogin from "./pages/auth/persist-login"
 import "./global.scss"
 import Applications from "./pages/Applications"
-import ApplicationDetails from "./pages/Applications/sub-navigations/ApplicationDetails"
-//import Applications from "./pages/Applications/application"
-import ShiftDetails from "./pages/Applications/sub-navigations/ShiftDetails"
 import Login from "./pages/auth/login"
 import RecoverPassword from "./pages/auth/forgot-password"
 import VerifyEmailAddress from "./pages/auth/verify-email"
@@ -15,54 +12,42 @@ import Profile from "./pages/profile/profile"
 import RequireAuth from "./pages/auth/RequireAuth"
 import Dashboard from "./pages/dashboard/Dashboard"
 
-
-
-
 function App() {
     return (
-            <AuthProvider>
-                <Routes>
-                    <Route path="/" element={<Layout />}>
-                        {/* public routes */}
-                        <Route
-                            path="/"
-                            element={<Navigate replace to="/login" />}
-                        />
-                        <Route path="/login" element={<Login />} />
-                        <Route
-                            path="/recover-password"
-                            element={<RecoverPassword />}
-                        />
-                        <Route
-                            path="/reset-password"
-                            element={<ResetPassword />}
-                        />
-                        <Route
-                            path="/verify-email"
-                            element={<VerifyEmailAddress />}
-                        />
-                        {/* private routes */}
-                        <Route element={<PersistLogin />}>
-                            <Route element={<RequireAuth />}>
-                                <Route path="/profile" element={<Profile />} />
-                                <Route path={"/dashboard"} element={<Dashboard/>}/>
-                            </Route>
-                            <Route path="/applications" element={<Applications />} />
+        <AuthProvider>
+            <Routes>
+                <Route path="/" element={<Layout />}>
+                    {/* public routes */}
+                    <Route
+                        path="/"
+                        element={<Navigate replace to="/login" />}
+                    />
+                    <Route path="/login" element={<Login />} />
+                    <Route
+                        path="/recover-password"
+                        element={<RecoverPassword />}
+                    />
+                    <Route path="/reset-password" element={<ResetPassword />} />
+                    <Route
+                        path="/verify-email"
+                        element={<VerifyEmailAddress />}
+                    />
+
+                    {/* private routes */}
+                    <Route element={<PersistLogin />}>
+                        <Route element={<RequireAuth />}>
+                            <Route path="/profile" element={<Profile />} />
                             <Route
-                                path="applications/:applicationId"
-                                element={<ApplicationDetails />}
+                                path={"/dashboard"}
+                                element={<Dashboard />}
                             />
-                            <Route
-                                path="applications/:applicationId/:shiftId"
-                                element={<ShiftDetails />}
-                            />
+                            <Route path="/pending" element={<Applications />} />
                         </Route>
                     </Route>
-                    
-                </Routes>
-            </AuthProvider>
-        
+                </Route>
+            </Routes>
+        </AuthProvider>
     )
 }
 
-export default App;
+export default App

@@ -5,18 +5,9 @@ import Star from "../../../assets/star.svg"
 import dayjs from "dayjs"
 
 interface Prop {
-    //status?: "pending" | "accepted" | "rejected" ;
     elements: Result[]
-    // date: string
-    // location: string
-    // timeIn: string
-    // timeOut: string
-    // duration: string
-    // amount: string
-    // rating: string
-    // status: string
+    
 }
-//const ShiftTable = ({ elements }: { elements: Prop[] }) => {
 const ShiftTable = ({ elements }: Prop) => {
     const tableData = [
         {
@@ -51,18 +42,7 @@ const ShiftTable = ({ elements }: Prop) => {
                 </p>
             </td>
 
-            {/* <td>{item.date}</td>
-            <td>{item.location}</td>
-            <td>{item.timeIn}</td>
-            <td>{item.timeOut}</td>
-            <td>{item.duration}</td>
-            <td>{item.amount}</td>
             
-            <td>
-                <p className="text-white-100 bg-green-100 pl-1.5 py-1 rounded-full w-20">
-                    {item.status}
-                </p>
-            </td> */}
         </tr>
     ))
 

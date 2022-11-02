@@ -7,7 +7,7 @@ import {
     ShiftResponse,
     ApplicationDetailsResponse,
 } from "../interface"
-//import { useAuthContext } from "../../auth/context/authContext"
+import useAuthContext from "../../../hooks/auth-hooks/useAuth"
 //import useAuth from "../../../hooks/useAuth";
 
 interface ApplicationRequest {
@@ -20,11 +20,12 @@ interface UpdateApplicationRequest {
 function useGetApplications({ status, page }: ApplicationRequest) {
     //const { auth } =  useAuth()
     //console.log(auth)
+    const { state } = useAuthContext()
     const getApplications = async () => {
         const { data } = await axiosInstance.get("/applications", {
             params: { status, page },
             headers: {
-                Authorization: `Bearer ${auth.accessToken}`,
+                Authorization: `Bearer ${state?.jwt?.token}`,
             },
         })
         return data
@@ -48,10 +49,11 @@ function useGetApplications({ status, page }: ApplicationRequest) {
 }
 
 function useGetApplicationDetails({ id }: { id: string }) {
+    const { state } = useAuthContext()
     const getApplicationDetails = async () => {
         const { data } = await axiosInstance.get(`/applications/${id}`, {
             headers: {
-                Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzM2QzNDNjNTQ1M2U2YTQ1YzczM2I4ZiIsImlhdCI6MTY2NzM3NDI4NCwiZXhwIjoxNjY3Mzc1Mjg0fQ.KG4POjiP1_HlM1cDjxgyWt6OGevg3d11rI4RHoNQ_P8`,
+                Authorization: `Bearer ${state?.jwt?.token}`,
             },
         })
         return data.data
@@ -74,12 +76,12 @@ function useGetApplicationDetails({ id }: { id: string }) {
     )
 }
 function useUpdateApplication({ id }: { id: string }) {
-    //const { state } = useAuthContext();
+    const { state } = useAuthContext()
 
     const updateApplication = async ({ status }: UpdateApplicationRequest) => {
         const config: AxiosRequestConfig = {
             headers: {
-                Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzM2QzNDNjNTQ1M2U2YTQ1YzczM2I4ZiIsImlhdCI6MTY2NzM3NDI4NCwiZXhwIjoxNjY3Mzc1Mjg0fQ.KG4POjiP1_HlM1cDjxgyWt6OGevg3d11rI4RHoNQ_P8`,
+                Authorization: `Bearer ${state?.jwt?.token}`,
             },
         }
         const { data } = await axiosInstance.patch(
@@ -115,11 +117,12 @@ function useGetShiftHistory({
     operativeId: string
     completed?: boolean
 }) {
+    const { state } = useAuthContext()
     const getShiftHistory = async () => {
         const { data } = await axiosInstance.get(`/schedule`, {
             params: { operativeId, completed },
             headers: {
-                Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzM2QzNDNjNTQ1M2U2YTQ1YzczM2I4ZiIsImlhdCI6MTY2NzM3NDI4NCwiZXhwIjoxNjY3Mzc1Mjg0fQ.KG4POjiP1_HlM1cDjxgyWt6OGevg3d11rI4RHoNQ_P8`,
+                Authorization: `Bearer ${state?.jwt?.token}`,
             },
         })
         return data.data
