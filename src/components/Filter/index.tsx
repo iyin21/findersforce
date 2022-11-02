@@ -4,7 +4,7 @@ import { BiFilter, BiX } from "react-icons/bi"
 import Button from "../Core/Buttons/Button"
 import Checkbox from "../Core/Checkbox/checkbox"
 import { useMediaQuery } from "@mantine/hooks"
-import { FilterRequest } from "../../types/filter"
+import { FilterRequest } from "../../types/filter/filter"
 
 const FilterContent = ({
     applyFilter,

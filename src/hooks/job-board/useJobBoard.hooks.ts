@@ -7,15 +7,13 @@ import {
     JobBoardResponse,
     JobBoardResponseInterface,
 } from "./interface"
-import useAuth from "../useAuth"
 import { showNotification } from "@mantine/notifications"
 import { FormikValues } from "formik"
+import useAuthContext from "../auth-hooks/useAuth"
 
 // get job listing
 function useJobBoards({ isPublished }: JobBoardRequest) {
-    const {
-        auth: { accessToken },
-    } = useAuth()
+    const { state } = useAuthContext()
 
     /** API methods */
     const getJobBoards = async ({ isPublished, signal }: JobBoardRequest) => {
@@ -23,7 +21,7 @@ function useJobBoards({ isPublished }: JobBoardRequest) {
             signal,
             params: { isPublished },
             headers: {
-                Authorization: `${accessToken}`,
+                Authorization: `${state?.jwt?.token}`,
             },
         })
         return data.data
@@ -50,15 +48,14 @@ function useGetSingleJobApplication({
 }: {
     jobListing: string | undefined
 }) {
-    const {
-        auth: { accessToken },
-    } = useAuth()
+    const { state } = useAuthContext()
+
     // /** API methods */
     const getSingleJobApplication = async (jobListing: string | undefined) => {
         const { data } = await axiosInstance.get(`/applications`, {
             params: { jobListing },
             headers: {
-                Authorization: `${accessToken}`,
+                Authorization: `${state?.jwt?.token}`,
             },
         })
         return data
@@ -81,15 +78,13 @@ function useGetSingleJobApplication({
 
 // get job types
 function useGetJobType() {
-    const {
-        auth: { accessToken },
-    } = useAuth()
+    const { state } = useAuthContext()
 
     /** API methods */
     const getJobType = async () => {
         const { data } = await axiosInstance.get("/job-listing/job-type", {
             headers: {
-                Authorization: `${accessToken}`,
+                Authorization: `${state?.jwt?.token}`,
             },
         })
         return data.data
@@ -112,9 +107,7 @@ function useGetJobType() {
 
 // get job qualification
 function useGetJobQualification() {
-    const {
-        auth: { accessToken },
-    } = useAuth()
+    const { state } = useAuthContext()
 
     /** API methods */
     const getJobType = async () => {
@@ -122,7 +115,7 @@ function useGetJobQualification() {
             "/job-listing/job-qualification",
             {
                 headers: {
-                    Authorization: `${accessToken}`,
+                    Authorization: `${state?.jwt?.token}`,
                 },
             }
         )
@@ -146,14 +139,13 @@ function useGetJobQualification() {
 
 // delete job listing
 function useDeleteJobList({ id }: { id: string | undefined }) {
-    const {
-        auth: { accessToken },
-    } = useAuth()
+    const { state } = useAuthContext()
+
     /** API methods */
     const deleteJob = async () => {
         const { data } = await axiosInstance.delete(`/job-listing/${id}`, {
             headers: {
-                Authorization: `${accessToken}`,
+                Authorization: `${state?.jwt?.token}`,
             },
         })
 
@@ -164,14 +156,13 @@ function useDeleteJobList({ id }: { id: string | undefined }) {
 
 // get job listing by id
 function useGetJobListingById({ id }: { id: string | undefined }) {
-    const {
-        auth: { accessToken },
-    } = useAuth()
+    const { state } = useAuthContext()
+
     // /** API methods */
     const getJobByID = async (id: string | undefined) => {
         const { data } = await axiosInstance.get(`/job-listing/${id}`, {
             headers: {
-                Authorization: `${accessToken}`,
+                Authorization: `${state?.jwt?.token}`,
             },
         })
         return data.data
@@ -194,9 +185,7 @@ function useGetJobListingById({ id }: { id: string | undefined }) {
 
 // create job listing
 function useCreateJobList() {
-    const {
-        auth: { accessToken },
-    } = useAuth()
+    const { state } = useAuthContext()
 
     const createJobListRequest = async (values: FormikValues) => {
         const formData: FormikValues = {
@@ -210,7 +199,7 @@ function useCreateJobList() {
             {
                 signal: new AbortController().signal,
                 headers: {
-                    Authorization: `${accessToken}`,
+                    Authorization: `${state?.jwt?.token}`,
                 },
             }
         )
@@ -246,9 +235,7 @@ function useCreateJobList() {
 
 // update job listing
 function useUpdateJobList({ id }: { id: string | undefined }) {
-    const {
-        auth: { accessToken },
-    } = useAuth()
+    const { state } = useAuthContext()
 
     const updateJobListRequest = async (values: FormikValues) => {
         const formData: FormikValues = {
@@ -261,7 +248,7 @@ function useUpdateJobList({ id }: { id: string | undefined }) {
             {
                 signal: new AbortController().signal,
                 headers: {
-                    Authorization: `${accessToken}`,
+                    Authorization: `${state?.jwt?.token}`,
                 },
             }
         )

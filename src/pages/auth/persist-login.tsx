@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react"
 import { Outlet } from "react-router-dom"
-import useAuth from "../../hooks/useAuth"
-import UseRefreshToken from "../../hooks/use-refresh-tokens"
+import useRefreshToken from "../../hooks/auth-hooks/use-refresh-tokens"
+import useAuthContext from "../../hooks/auth-hooks/useAuth"
 
 const PersistLogin = () => {
+    const { state } = useAuthContext()
     const [isLoading, setIsLoading] = useState(true)
-    const { auth } = useAuth()
-    const refresh = UseRefreshToken(auth.accessToken)
+    const refresh = useRefreshToken()
 
     useEffect(() => {
         const verifyRefreshToken = async () => {
@@ -17,9 +17,13 @@ const PersistLogin = () => {
                 setIsLoading(false)
             }
         }
-        auth.accessToken !== "" ? verifyRefreshToken() : setIsLoading(false)
+
+        state?.jwt?.token === undefined
+            ? verifyRefreshToken()
+            : setIsLoading(false)
     }, [])
-    return <>{isLoading ? <p>Loading....</p> : <Outlet />}</>
+
+    return <>{isLoading ? <>Loading</> : <Outlet />}</>
 }
 
 export default PersistLogin

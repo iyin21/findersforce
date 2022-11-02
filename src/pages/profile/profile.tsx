@@ -99,7 +99,7 @@ const Profile = () => {
     }
 
     return (
-        <div className="grid grid-cols-2 text-white h-fit bg-black">
+        <div className="grid grid-cols-2 text-white h-fit bg-[black]">
             <LandingPageText />
             <div className="my-8 mr-8 bg-white pt-12 px-16 flex flex-col rounded-lg">
                 <h1 className="text-blaq text-4xl font-extrabold">
