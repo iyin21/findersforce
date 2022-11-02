@@ -2,19 +2,20 @@ import { Tabs } from "@mantine/core"
 import ApplicationTable from "./components/application-table"
 import { useState } from "react"
 import { useGetApplications } from "./hooks/application.hook"
-//import { useAuthContext } from "../auth/context/authContext"
+// import { useAuthContext } from "../auth/context/authContext"
 import { CgSpinner } from "react-icons/cg"
 import { IoFilterSharp } from "react-icons/io5"
-import Layout from "../../components/layout/Layout"
 import ApplicationDetails from "./sub-navigations/ApplicationDetails"
 import ShiftDetails from "./sub-navigations/ShiftDetails"
+import Layout from "../../components/Layout"
+// import Layout from "../../components/layout/Layout"
 
 const Applications = () => {
     const [activeTab, setActiveTab] = useState(0)
     const { data: pendingData, isLoading: isLoadingPendingData } =
         useGetApplications({
             status: "PENDING",
-            //page: 1,
+            // page: 1,
         })
     const { data: acceptedData, isLoading: isLoadingAcceptedData } =
         useGetApplications({

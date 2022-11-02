@@ -1,14 +1,14 @@
 import { axiosInstance } from "../../../services/api.service"
 import { showNotification } from "@mantine/notifications"
 import { AxiosError, AxiosRequestConfig } from "axios"
-import { useQuery, useMutation } from "react-query"
+// import { useQuery, useMutation } from "react-query"
 import {
     ApplicationResponse,
     ShiftResponse,
     ApplicationDetailsResponse,
 } from "../interface"
 import useAuthContext from "../../../hooks/auth-hooks/useAuth"
-//import useAuth from "../../../hooks/useAuth";
+import { useMutation, useQuery } from "@tanstack/react-query"
 
 interface ApplicationRequest {
     status: string
@@ -18,8 +18,8 @@ interface UpdateApplicationRequest {
     status: string
 }
 function useGetApplications({ status, page }: ApplicationRequest) {
-    //const { auth } =  useAuth()
-    //console.log(auth)
+    // const { auth } =  useAuth()
+    // console.log(auth)
     const { state } = useAuthContext()
     const getApplications = async () => {
         const { data } = await axiosInstance.get("/applications", {
@@ -97,7 +97,7 @@ function useUpdateApplication({ id }: { id: string }) {
         AxiosError,
         UpdateApplicationRequest
     >(
-        "updateApplicationRequest",
+        ["updateApplicationRequest"],
         ({ status }: UpdateApplicationRequest) => updateApplication({ status }),
         {
             onError: (err) => {

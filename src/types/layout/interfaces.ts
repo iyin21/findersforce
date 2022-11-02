@@ -1,6 +1,6 @@
-import { ReactNode } from "react";
+import { ReactNode } from "react"
 
 export interface LayoutProps {
-                pageTitle: string;
-                children: ReactNode;
+    pageTitle?: string
+    children: ReactNode
 }

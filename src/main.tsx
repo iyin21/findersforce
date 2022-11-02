@@ -6,9 +6,12 @@ import App from "./App"
 import "./global.scss"
 import { BrowserRouter } from "react-router-dom"
 import { MantineProvider } from "@mantine/core"
-import { Hydrate, QueryClient, QueryClientProvider } from "react-query"
+import { AuthProvider } from "./pages/auth/context/authContext"
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
+import { NotificationsProvider } from "@mantine/notifications"
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient()
+
 Sentry.init({
     dsn: "https://af392b294aa4443d93f43b5e19d0b128@o1317059.ingest.sentry.io/6652714",
     integrations: [new BrowserTracing()],
@@ -22,11 +25,16 @@ Sentry.init({
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
     <React.StrictMode>
         <BrowserRouter>
-            <QueryClientProvider client={queryClient}>
-                <MantineProvider>
-                    <App />
-                </MantineProvider>
-            </QueryClientProvider>
+            <AuthProvider>
+                {" "}
+                <QueryClientProvider client={queryClient}>
+                    <MantineProvider>
+                        <NotificationsProvider position="top-center">
+                            <App />
+                        </NotificationsProvider>
+                    </MantineProvider>
+                </QueryClientProvider>
+            </AuthProvider>
         </BrowserRouter>
     </React.StrictMode>
 )

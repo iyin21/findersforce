@@ -3,13 +3,19 @@ import EmptyApplicationImage from "../../assets/empty.svg"
 import Button from "../Core/Buttons/Button"
 import CopyIcon from "../../assets/copy_to_clipboard.svg"
 
-const EmptyApplication = () => {
+export interface EmptyApplicationInterface {
+    id: string | undefined
+}
+
+const EmptyApplication = ({ id }: EmptyApplicationInterface) => {
     const textAreaRef = useRef(null)
 
     function copyToClipboard(e: any) {
         // @ts-ignore
         textAreaRef.current && textAreaRef.current.select()
-        navigator.clipboard.writeText(`https://forcefinder.com/revivetraffic..`)
+        navigator.clipboard.writeText(
+            `https://forcefinder.com/revivetraffic/${id}`
+        )
         e.target.focus()
     }
 

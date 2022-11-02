@@ -6,17 +6,13 @@ import Star from "../assets/star.svg"
 import dayjs from "dayjs"
 
 interface Prop {
-    //status?: "pending" | "accepted" | "rejected" ;
-    elements: Data[];
-    setPhase: (val: number) => void;
+    // status?: "pending" | "accepted" | "rejected" ;
+    elements: Data[]
+    setPhase: (val: number) => void
 
-    setActiveId: (val: string) => void;
-   
+    setActiveId: (val: string) => void
 }
 const ApplicationTable = ({ elements, setPhase, setActiveId }: Prop) => {
-    
-    
-
     const rows = elements.map((item, index) => (
         <tr key={index}>
             <td className="flex">{index}</td>
@@ -44,14 +40,13 @@ const ApplicationTable = ({ elements, setPhase, setActiveId }: Prop) => {
             <td>{dayjs(item.createdAt).format("h:mm A")}</td>
             <td
                 className="cursor-pointer"
-                onClick={() => 
-                    {
-                        setActiveId(item._id);
-                        setPhase(2);
-
+                onClick={
+                    () => {
+                        setActiveId(item._id)
+                        setPhase(2)
                     }
-                    //navigate(`/applications/${item._id}`)
-                    }
+                    // navigate(`/applications/${item._id}`)
+                }
             >
                 <HiChevronRight size={30} style={{ color: "#889088" }} />
             </td>

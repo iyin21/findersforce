@@ -33,10 +33,18 @@ const Paginate = ({
             <div className="col-span">
                 <Pagination
                     classNames={{
-                        active: "text-white-100 bg-black-90 rounded px-2 py-3",
                         item: "border-none text-3sm md:text-3md",
-                        dots: "text-black-50",
                     }}
+                    styles={() => ({
+                        item: {
+                            "&[data-active]": {
+                                backgroundImage: "",
+                                backgroundColor: "#0F0D00E5",
+                                color: "#fff",
+                                padding: "0.9rem .8rem",
+                            },
+                        },
+                    })}
                     boundaries={boundaries}
                     page={page}
                     onChange={onChange}
