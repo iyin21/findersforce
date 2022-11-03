@@ -19,14 +19,13 @@ import { showNotification } from "@mantine/notifications"
 
 interface Prop {
     //status?: "pending" | "accepted" | "rejected" ;
-    
-    setPhase: (val: number) => void;
 
-    activeId: string;
-    setShiftId: (val: string) => void;
-   
+    setPhase: (val: number) => void
+
+    activeId: string
+    setShiftId: (val: string) => void
 }
-const ApplicationDetails = ({setPhase, activeId, setShiftId }: Prop) => {
+const ApplicationDetails = ({ setPhase, activeId, setShiftId }: Prop) => {
     //const { applicationId } = useParams<{ applicationId: string }>()
     const navigate = useNavigate()
 
@@ -59,7 +58,7 @@ const ApplicationDetails = ({setPhase, activeId, setShiftId }: Prop) => {
                 } successfully`,
                 color: "green",
             })
-            navigate("/applications")
+            setPhase(1)
         }
     }, [rejectedData, acceptedData])
 
@@ -73,7 +72,6 @@ const ApplicationDetails = ({setPhase, activeId, setShiftId }: Prop) => {
                 <div className="pt-4 px-6">
                     <span
                         onClick={() => setPhase(1)}
-                        
                         className="p-3 rounded inline-flex items-center justify-center bg-black-10 cursor-pointer"
                         aria-hidden="true"
                     >
@@ -150,14 +148,13 @@ const ApplicationDetails = ({setPhase, activeId, setShiftId }: Prop) => {
                                 <p
                                     // href={`/applications/${applicationId}/${data?.user._id}`}
                                     className="flex ml-4 items-center font-bold cursor-pointer"
-                                    onClick={() => 
-                                        {
-                                            setShiftId(data?.user._id||"");
-                                            setPhase(3);
-                    
+                                    onClick={
+                                        () => {
+                                            setShiftId(data?.user._id || "")
+                                            setPhase(3)
                                         }
                                         //navigate(`/applications/${item._id}`)
-                                        }
+                                    }
                                 >
                                     View shift history
                                     <HiChevronRight size="25px" />{" "}
@@ -180,14 +177,13 @@ const ApplicationDetails = ({setPhase, activeId, setShiftId }: Prop) => {
                                     <p
                                         //href={`/applications/${applicationId}/${data?.user._id}`}
                                         className="flex ml-4 items-center font-bold cursor-pointer"
-                                        onClick={() => 
-                                            {
-                                                setShiftId(data?.user._id||"");
-                                                setPhase(3);
-                        
+                                        onClick={
+                                            () => {
+                                                setShiftId(data?.user._id || "")
+                                                setPhase(3)
                                             }
                                             //navigate(`/applications/${item._id}`)
-                                            }
+                                        }
                                     >
                                         View shift history
                                         <HiChevronRight size="25px" />{" "}

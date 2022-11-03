@@ -7,11 +7,11 @@ import { CgSpinner } from "react-icons/cg"
 import { IoFilterSharp } from "react-icons/io5"
 import ApplicationDetails from "./sub-navigations/ApplicationDetails"
 import ShiftDetails from "./sub-navigations/ShiftDetails"
-import Layout from "../../components/Layout"
+import Layout from "../../components/layout"
 // import Layout from "../../components/layout/Layout"
 
 const Applications = () => {
-    const [activeTab, setActiveTab] = useState(0)
+    const [activeTab, setActiveTab] = useState<string | null>("pending")
     const { data: pendingData, isLoading: isLoadingPendingData } =
         useGetApplications({
             status: "PENDING",
@@ -53,52 +53,66 @@ const Applications = () => {
                                 <p className="pl-2">Filter</p>
                             </div>
                             <Tabs
-                                variant="unstyled"
-                                active={activeTab}
+                                value={activeTab}
+                                //active={activeTab}
                                 onTabChange={setActiveTab}
+                                color="yellow"
+                                keepMounted={false}
                             >
-                                <Tabs.Tab
-                                    label="Pending"
-                                    className={`body-regular mr-6 ${
-                                        activeTab === 0
-                                            ? "text-yellow-100"
-                                            : "text-black-60"
-                                    }`}
-                                >
+                                <Tabs.List>
+                                    <Tabs.Tab
+                                        value="pending"
+                                        className={`body-regular mr-6 ${
+                                            activeTab === "pending"
+                                                ? "text-yellow-100 font-bold"
+                                                : "text-black-60"
+                                        }`}
+                                    >
+                                        Pending
+                                    </Tabs.Tab>
+
+                                    <Tabs.Tab
+                                        value="accepted"
+                                        className={`body-regular mr-6 ${
+                                            activeTab === "accepted"
+                                                ? "text-yellow-100 font-bold"
+                                                : "text-black-60"
+                                        }`}
+                                    >
+                                        Accepted
+                                    </Tabs.Tab>
+                                    <Tabs.Tab
+                                        value="rejected"
+                                        className={`body-regular ${
+                                            activeTab === "rejected"
+                                                ? "text-yellow-100 font-bold"
+                                                : "text-black-60"
+                                        }`}
+                                    >
+                                        Rejected
+                                    </Tabs.Tab>
+                                </Tabs.List>
+                                <Tabs.Panel value="pending">
                                     <ApplicationTable
                                         elements={pendingData?.data || []}
                                         setPhase={setPhase}
                                         setActiveId={setActiveId}
                                     />
-                                </Tabs.Tab>
-                                <Tabs.Tab
-                                    label="Accepted "
-                                    className={`body-regular mr-6 ${
-                                        activeTab === 1
-                                            ? "text-yellow-100"
-                                            : "text-black-60"
-                                    }`}
-                                >
+                                </Tabs.Panel>
+                                <Tabs.Panel value="accepted">
                                     <ApplicationTable
                                         elements={acceptedData?.data || []}
                                         setPhase={setPhase}
                                         setActiveId={setActiveId}
                                     />
-                                </Tabs.Tab>
-                                <Tabs.Tab
-                                    label="Rejected"
-                                    className={`body-regular ${
-                                        activeTab === 2
-                                            ? "text-yellow-100"
-                                            : "text-black-60"
-                                    }`}
-                                >
+                                </Tabs.Panel>
+                                <Tabs.Panel value="rejected">
                                     <ApplicationTable
                                         elements={rejectedData?.data || []}
                                         setPhase={setPhase}
                                         setActiveId={setActiveId}
                                     />
-                                </Tabs.Tab>
+                                </Tabs.Panel>
                             </Tabs>
                         </div>
                     )}
