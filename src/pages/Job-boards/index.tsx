@@ -14,7 +14,7 @@ import {
 } from "../../hooks/job-board/useJobBoard.hooks"
 import { showNotification } from "@mantine/notifications"
 import { JobBoardResponseInterface } from "../../hooks/job-board/interface"
-import Layout from "../../components/Layout"
+import Layout from "../../components/layout"
 
 const JobBoards = () => {
     const [activeTab, setActiveTab] = useState<string | null>("first")
