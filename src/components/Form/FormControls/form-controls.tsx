@@ -25,7 +25,7 @@ interface ISelectProps {
     name?: string
     className?: string
     children: React.ReactNode
-    defaultValue?: string
+    value?: string
 }
 
 function InputProp(props: IinputProps) {
@@ -82,31 +82,37 @@ function SelectInput(props: ISelectProps) {
     const { className, name, children, ...rest } = props
 
     return (
-        <Field name={name}>
-            {({ field, meta }: any) => (
-                <div className={`flex flex-col ${className} `}>
-                    <select
-                        {...field}
-                        {...props}
-                        {...rest}
-                        className={`border-solid border border-black-10  p-4 rounded w-full outline-none ${className}  bg-red ${
-                            styles["select"]
-                        } ${
-                            meta.touched && meta.error
-                                ? "border border-red-100"
-                                : ""
-                        }`}
-                    >
-                        {children}
-                    </select>
-                    {meta.touched && meta.error && (
-                        <div className="text-red-100 my-2 text-lg">
-                            {meta.error}
-                        </div>
-                    )}
-                </div>
-            )}
-        </Field>
+        <>
+            {/* <Field name={name} as="select">
+                {children}
+            </Field> */}
+            <Field name={name}>
+                {({ field, meta }: any) => (
+                    <div className={`flex flex-col ${className} `}>
+                        <select
+                            {...field}
+                            {...props}
+                            {...rest}
+                            className={`border-solid border border-black-10  p-4 rounded w-full outline-none ${className}  bg-red ${
+                                styles["select"]
+                            } ${
+                                meta.touched && meta.error
+                                    ? "border border-red-100"
+                                    : ""
+                            }`}
+                            defaultValue={meta.initialValue}
+                        >
+                            {children}
+                        </select>
+                        {meta.touched && meta.error && (
+                            <div className="text-red-100 my-2 text-lg">
+                                {meta.error}
+                            </div>
+                        )}
+                    </div>
+                )}
+            </Field>
+        </>
     )
 }
 

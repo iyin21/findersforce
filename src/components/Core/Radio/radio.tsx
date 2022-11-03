@@ -25,7 +25,7 @@ const RadioButton = ({
                 id={id}
                 name={name}
                 onChange={onChange}
-                // checked={checked}
+                checked={checked}
                 value={value}
             />
             <label

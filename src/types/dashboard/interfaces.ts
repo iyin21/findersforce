@@ -33,4 +33,4 @@ export type CardProps = {
      amount:string,
      icon: string,
      style: string,
-}
+   }

@@ -8,15 +8,22 @@ import CopyIcon from "../../../../assets/copy_to_clipboard.svg"
 interface ISuccessPostJobProps {
     opened: boolean
     setOpened: Dispatch<SetStateAction<boolean>>
+    newJobId: string
 }
 
-const JobSuccessful = ({ opened, setOpened }: ISuccessPostJobProps) => {
+const JobSuccessful = ({
+    opened,
+    setOpened,
+    newJobId,
+}: ISuccessPostJobProps) => {
     const textAreaRef = useRef(null)
 
     function copyToClipboard(e: any) {
         // @ts-ignore
         textAreaRef.current && textAreaRef.current.select()
-        navigator.clipboard.writeText(`https://forcefinder.com/revivetraffic..`)
+        navigator.clipboard.writeText(
+            `https://forcefinder.com/revivetraffic/${newJobId}`
+        )
         e.target.focus()
     }
     return (

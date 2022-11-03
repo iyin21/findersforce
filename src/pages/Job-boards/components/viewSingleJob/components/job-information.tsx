@@ -1,14 +1,20 @@
+import dayjs from "dayjs"
+
 interface JobInformationInterface {
-    description: string
-    shiftType: string
-    location: string
-    shiftMode: string
-    date: string
-    time: string
-    hourlyPay: string
-    noOfOperativesRequired: string
-    requiredQualification: string
-    others: string
+    description: string | undefined
+    shiftType: string | undefined
+    location: string | undefined
+    shiftMode: string | undefined
+    date: string | undefined
+    time: string | undefined
+    hourlyPay: number | undefined
+    noOfOperativesRequired: number | undefined
+    requiredQualification: string | undefined
+    others: string | undefined
+    currency: string | undefined
+    shiftStartTime: string | undefined
+    shiftEndTime: string | undefined
+    jobType: string | undefined
 }
 
 const JobInformation = ({
@@ -20,7 +26,10 @@ const JobInformation = ({
     noOfOperativesRequired,
     requiredQualification,
     others,
-    time,
+    jobType,
+    currency,
+    shiftStartTime,
+    shiftEndTime,
     shiftType,
 }: JobInformationInterface) => {
     return (
@@ -33,7 +42,7 @@ const JobInformation = ({
             </div>
             <div className="grid gap-y-6 grid-cols-2 md:py-10 md:px-4  grid-rows-2 border-t pt-6 md:border-t-0 md:border-l md:pl-6 border-black-10 mt-6 md:mt-0">
                 <h6 className="text-black-40 text-2md">Shift Type</h6>
-                <p className="text-lg font-semibold text-black-90">2-WAY</p>
+                <p className="text-lg font-semibold text-black-90">{jobType}</p>
                 <h6 className="text-black-40 text-2md">Location</h6>
                 <p className="text-lg text-black-90 font-semibold ">
                     {location}
@@ -43,11 +52,17 @@ const JobInformation = ({
                     {shiftMode}
                 </p>
                 <h6 className="text-black-40 text-2md">Date</h6>
-                <p className="text-lg text-black-90 font-semibold ">{date}</p>
+                <p className="text-lg text-black-90 font-semibold ">
+                    {dayjs(date).format(" MMMM DD YYYY")}
+                </p>
                 <h6 className="text-black-40 text-2md">Time</h6>
-                <p className="text-lg text-black-90 font-semibold ">{time}</p>
+                <p className="text-lg text-black-90 font-semibold ">
+                    {dayjs(shiftStartTime).format("hh:mm a")} -{" "}
+                    {dayjs(shiftEndTime).format("hh:mm a")}
+                </p>
                 <h6 className="text-black-40 text-2md">Hourly Pay</h6>
                 <p className="text-lg text-black-90 font-semibold ">
+                    {currency}
                     {hourlyPay}
                 </p>
                 <h6 className="text-black-40 text-2md">

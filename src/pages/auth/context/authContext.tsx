@@ -1,33 +1,42 @@
-import React, { useState, createContext } from "react";
+import React, { createContext } from "react"
+import { AuthActionType, AuthState } from "../../../types/auth/auth-interfaces"
+import { reducer } from "../reducers"
 
-export interface authType {
-    email: string,
-    password: string,
-    accessToken: string
-    user: any
+const initialState: AuthState = {
+    isAuthenticated: false,
+    user: null,
+    jwt: null,
+    persist: false,
 }
 
-const initialContextState = {
-    email: '',
-    password: '',
-    accessToken: '',
-    user: null
-}
+const AuthContext = createContext<{
+    state: AuthState
+    dispatch: React.Dispatch<AuthActionType>
+}>({
+    state: {
+        isAuthenticated: false,
+        user: null,
+        jwt: null,
+        persist: false,
+    },
+    dispatch: () => {},
+})
 
-export interface authContextType {
-    auth: authType
-    setAuth: React.Dispatch<React.SetStateAction<authType>>
-}
-const AuthContext = createContext<authContextType | null>(null);
-
-export const AuthProvider = ({ children }: {children: React.ReactNode}) => {
-    const [auth, setAuth] = useState<authType>(initialContextState);
-
+export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
+    const [state, dispatch] = React.useReducer(reducer, initialState)
     return (
-        <AuthContext.Provider value={{auth, setAuth}}>
+        <AuthContext.Provider value={{ state, dispatch }}>
             {children}
         </AuthContext.Provider>
     )
 }
 
-export default AuthContext;
+export default AuthContext
+
+export const useAuthContext = () => {
+    const context = React.useContext(AuthContext)
+    // if (context === undefined) {
+    //     throw new Error("useAuthContext must be used within a AuthContextProvider");
+    // }
+    return context
+}
