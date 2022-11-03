@@ -10,6 +10,7 @@ import ResetPassword from "./pages/auth/reset-password"
 import Profile from "./pages/profile/profile"
 import RequireAuth from "./pages/auth/RequireAuth"
 import Dashboard from "./pages/dashboard/Dashboard"
+import Planner from "./pages/planner/Planner"
 
 
 function App() {
@@ -43,7 +44,7 @@ function App() {
                             </Route>
                         </Route>
                     </Route>
-                    
+                    <Route path={"/planner"} element={<Planner/>}/>
                 </Routes>
             </AuthProvider>
     )
