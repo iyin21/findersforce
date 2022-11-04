@@ -9,7 +9,7 @@ const Layout = ({ children }: LayoutProps) => {
                 <NavBar />
             </div>
             <div className="relative md:pl-64 h-full">
-                <div className="hidden md:block fixed left-0 w-64 mt-14 h-[100%] overflow-y-auto">
+                <div className="hidden md:block fixed left-0 w-64 mt-14 h-[95%] overflow-y-auto">
                     <Sidebar />
                 </div>
                 <main className="w-full h-full overflow-y-auto lg:px-10 p-5">{children}</main>

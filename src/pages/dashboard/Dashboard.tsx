@@ -21,7 +21,7 @@ import Layout from "../../components/Layout"
 const Dashboard = () => {
     return (
         <Layout pageTitle={"Dashboard"}>
-            <main className="px-8 py-6 bg-white-100 h-screen overflow-hidden">
+            <main className="px-8 mt-6 py-6 bg-white-100 h-screen overflow-hidden">
                 <section className=" flex bg-white-100 justify-between">
                     <div>
                         <h1 className="font-extrabold text-4xl">Dashboard</h1>
