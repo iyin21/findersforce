@@ -1,12 +1,17 @@
 
-import { Table } from "@mantine/core"
+import { Modal, Table } from "@mantine/core"
+import { useState } from "react";
 import { BiDotsVerticalRounded } from "react-icons/bi"
 import { ShiftsDetailInterface } from "../../../types/planner/interfaces";
+import YellowStar from "../../../assets/YellowStar.svg"
+import { FaTimes } from "react-icons/fa";
 
 
 
 
 const ShiftsDetailTable = ({ elements}: ShiftsDetailInterface) => {
+  
+  const [opened, setOpened] = useState(false)
 
   const rows = elements.map((element, index) => (
     <tr key={index}>
@@ -64,6 +69,7 @@ const ShiftsDetailTable = ({ elements}: ShiftsDetailInterface) => {
         style={{
           backgroundColor: "#FFFFFF",
           fontFamily: "CreatoDisplay",
+          cursor: "pointer"
           }}
         className={"table"}
         verticalSpacing="md"
@@ -79,11 +85,86 @@ const ShiftsDetailTable = ({ elements}: ShiftsDetailInterface) => {
               ))}
             </tr>
           </thead> 
-          <tbody>
+          <tbody onClick={()=> setOpened(!opened)}>
               {rows}
           </tbody>         
         </Table>
       </div>
+
+      <Modal 
+        centered
+        opened={opened}
+        onClose={() => setOpened(false)}
+        withCloseButton={false}
+        overlayOpacity={0.55}
+        overlayBlur={3}
+        padding={0}
+        transition="fade"
+        transitionDuration={600}
+        transitionTimingFunction="ease"
+      >
+          <div>
+            <header className="bg-black-100 text-white-100 flex justify-between p-4">
+              <div className="flex gap-4 place-items-center">
+                <div>
+                  <p className="font-bold text-2xl">VIEW SHIFT</p>
+                </div>
+                <div>
+                  <p className="text-2md">RATINGS</p>
+                  <img src={YellowStar} alt="star_icon" className="inline px-1"/>
+                  <span>4.9</span>
+                </div>
+              </div>
+              <div className="bg-gray-80 rounded-[100%] p-3 ">
+                <FaTimes size={20}/>
+              </div>
+            </header>
+            <p className=" px-4 pt-6 text-2md text-black-60">LOCATION</p>
+            <p className="text-2md px-4 font-medium">21 Liverpool road Manchester United Kingdom</p>
+            <section className="grid grid-cols-2 pb-4">
+              <div>
+                <p className=" px-4 pt-6 text-2md text-black-60">SHIFT TYPE</p>
+                <p className="text-2md px-4 font-medium">2 - Way</p>
+              </div>
+              <div>
+                <p className=" px-4 pt-6 text-2md text-black-60">SHIFT METHOD</p>
+                <p className="text-2md px-4 font-medium">Depot first</p>
+              </div>
+              <div>
+                <p className=" px-4 pt-6 text-2md text-black-60">CERTIFICATION</p>
+                <p className="text-2md px-4 font-medium">SLG UNIT 2</p>
+              </div>
+              <div>
+                <p className=" px-4 pt-6 text-2md text-black-60">START DATE</p>
+                <p className="text-2md px-4 font-medium">3rd January 2022</p>
+              </div>
+            </section>
+            <hr />
+            <p className="text-2md px-4 font-medium px-4 pt-4">SHIFT DURATION : 2 Hours</p>
+            <section className="grid grid-cols-2 pb-8">
+            <div>
+                <p className=" px-4 pt-6 text-2md text-black-60">START TIME</p>
+                <p className="text-2md px-4 font-medium">11:30 AM</p>
+              </div>
+              <div>
+                <p className=" px-4 pt-6 text-2md text-black-60">END TIME</p>
+                <p className="text-2md px-4 font-medium">1:30 AM</p>
+              </div>
+              <div>
+                <p className=" px-4 pt-6 text-2md text-black-60">APPLIED</p>
+                <p className="text-2md px-4 font-medium">41</p>
+              </div>
+              <div>
+                <p className=" px-4 pt-6 text-2md text-black-60">ACTIVE</p>
+                <p className="text-2md px-4 font-medium text-green-100">31</p>
+              </div>
+              <div >
+                <p className=" px-4 pt-6 text-2md text-black-60">CANCELLED</p>
+                <p className="text-2md px-4 font-medium text-red-100">7</p>
+              </div>
+            </section>
+          </div>
+        </Modal>
     </>
   )
 }

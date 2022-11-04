@@ -1,22 +1,25 @@
 import { Tabs } from "@mantine/core"
 import { useState } from "react"
 import { BiFilter } from "react-icons/bi"
-import Layout from "../../components/layout/index"
 import { Button } from "../../components/index"
 import ShiftsTable from "./components/ShiftsTable"
 import styles from "./shifts.module.scss"
 import ShiftsDetailTable from "./components/ShiftsDetailsTable"
+import Layout from "../../components/layout/index"
+import { useGetShiftHistory } from "../../hooks/planner/usePlanner.hooks"
 
 
 
 const Planner = () => {
-                const [activeTab, setActiveTab] = useState(0)
+    const [activeTab, setActiveTab] = useState(0)
+    const { data } = useGetShiftHistory();
+    console.log(data)
                 return (
-                  <Layout pageTitle={"Planner"} >
+                <Layout>  
                     <main className="md:p-6 p-6">
               
               
-                      <ShiftsDetailTable
+                      {/* <ShiftsDetailTable
                         elements={new Array(15).fill({
                           name: "Shaquan Roberts",
                           time_in: "11:01 AM",
@@ -28,9 +31,9 @@ const Planner = () => {
                           more: "",
                           id: "1",
                         })}
-                      />
+                      /> */}
               
-                      {/* <div className="flex justify-between items-center">
+                      <div className="flex justify-between items-center">
                           <div className="flex flex-col">
                               <h1 className="text-2xl md:text-3xl font-creatoBold text-black-100 font-bold">
                                   Shifts
@@ -147,9 +150,9 @@ const Planner = () => {
                                   </Tabs.Tab>
                               </Tabs>
                           </div>{" "}
-                      </div> */}
+                      </div> 
                     </main>
-                  </Layout>
+                </Layout>
                 )
               }
               

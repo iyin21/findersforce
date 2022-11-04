@@ -22,7 +22,7 @@ function App() {
             <Route path="/recover-password" element={<RecoverPassword />} />
             <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/verify-email" element={<VerifyEmailAddress />} />
-            <Route path="/planner" element={<Planner/>} />
+            
 
             {/* private routes */}
             <Route element={<PersistLogin />}>
@@ -35,6 +35,7 @@ function App() {
                         path="job-boards/:jobBoardId"
                         element={<SingleJobBoard />}
                     />
+                    <Route path="/planner" element={<Planner/>} />
                 </Route>
             </Route>
         </Routes>

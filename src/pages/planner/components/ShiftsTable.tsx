@@ -3,8 +3,8 @@ import { Checkbox, Table } from "@mantine/core"
 import { AiFillStar, AiOutlineArrowUp } from "react-icons/ai"
 import { IoIosArrowForward } from "react-icons/io"
 import { ShiftsTableInterface } from "../../../types/planner/interfaces"
-import ProfileImage from "../../../assets/ProfileImage.png"
-import ShiftStar from "../../../assets/ShiftStar.svg"
+import ProfileImage from "../../../assets/ProfileImage.svg"
+// import ShiftStar from "../../../assets/ShiftStar.svg"
 
 
 
