@@ -6,7 +6,7 @@ import backIcon from "../../assets/backIcon.svg"
 import { emailInputStyle } from "./utils"
 import { useForm } from "@mantine/form"
 import axios from "./utils"
-import { Button } from "../../components"
+import Button from "../../components/Core/Buttons/Button"
 
 const RecoverPassword = () => {
     const userRef = React.useRef<HTMLInputElement>(
@@ -59,7 +59,7 @@ const RecoverPassword = () => {
     return (
         <div className="bg-black-1 grid grid-cols-2 text-white">
             <LandingPageText />
-            <div className="my-8 mr-8 bg-white-100 pt-82 px-16 flex flex-col rounded-lg">
+            <div className="my-8 mr-8 bg-white-100 pt-[82px] px-16 flex flex-col rounded-lg">
                 <div className="bg-black-10 w-fit h-fit rounded">
                     <NavLink to="/login">
                         <img
@@ -69,10 +69,10 @@ const RecoverPassword = () => {
                         />
                     </NavLink>
                 </div>
-                <h1 className="pt-34 text-black-100 font-extrabold text-3.5xl">
+                <h1 className="pt-[34px] text-black-100 font-extrabold text-3.5xl">
                     Forgot Password
                 </h1>
-                <span className="text-2md text-blaq-0 pt-2 pb-35 max-w-[439px]">
+                <span className="text-2md text-blaq-0 pt-2 pb-[35px] max-w-[439px]">
                     Enter your email address linked to your accout below and
                     we`ll send you an OTP to reset your password.
                 </span>
@@ -92,7 +92,12 @@ const RecoverPassword = () => {
                         styles={() => emailInputStyle}
                     />
                     <br className="mt-[-2px]" />
-                    <Button>
+                    <Button
+                        variant="primary"
+                        type="submit"
+                        style={!isSubmitting ? {backgroundColor: "rgba(254, 215, 10, 1)"} : {backgroundColor: "rgba(254, 215, 10, 1)", opacity: "0.7"}}
+                        className="text-black-100 bg-yellow-100 font-bold text-base w-full text-center py-6 rounded-l rounded-tr-2xl rounded-br"
+                    >
                         {!isSubmitting ? "Reset password" : "Loading..."}
                     </Button>
                 </form>

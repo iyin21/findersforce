@@ -7,7 +7,7 @@ import { CgSpinner } from "react-icons/cg"
 import { IoFilterSharp } from "react-icons/io5"
 import ApplicationDetails from "./sub-navigations/ApplicationDetails"
 import ShiftDetails from "./sub-navigations/ShiftDetails"
-import Layout from "../../components/layout"
+import Layout from "../../components/Layout/index"
 // import Layout from "../../components/layout/Layout"
 
 const Applications = () => {
