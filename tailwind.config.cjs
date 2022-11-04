@@ -19,6 +19,7 @@ module.exports = {
                 80: "rgba(254, 215, 10, 0.8)",
                 90: "rgba(254, 215, 10, 0.9)",
                 100: "rgba(254, 215, 10, 1)",
+                110: "rgba(253, 203, 55, 1)",
             },
             white: {
                 10: "rgba(255, 255, 255, 0.1)",
@@ -74,6 +75,7 @@ module.exports = {
                 80: "rgba(15, 13, 0, 0.8)",
                 90: "rgba(15, 13, 0, 0.9)",
                 100: "rgba(15, 13, 0, 1)",
+                "neutral": "rgba(19, 32, 19, 0.8)",
             },
             blaq: {
                 0: "rgba(5, 0, 1, 1)",
@@ -118,23 +120,7 @@ module.exports = {
         extend: {
             backgroundImage: {
                 "dashboard-pattern" : "url('./src/assets/Thumbnail.svg')",
-            },
-            margin: {
-                '30': '30px',
-                '63': '63px',
-
-            },
-            padding: {
-                '34': '34px',
-                '35': '35px',
-                '60': '60px',
-                '78': '78px',
-                '80': '80px',
-                '82': '82px',
-                '90': '90px',
-                '93': '93px',
-                '91': '91px',
-            },
+            }
         },
     },
     plugins: [],

@@ -11,10 +11,13 @@ const useAxiosPrivate = () => {
 
         const requestIntercept = axiosPrivate.interceptors.request.use(
             config => {
-                if (!config.headers['Authorization']) {
-                    config.headers['Authorization'] = `Bearer ${state?.jwt.token}`;
+                if (config && config.headers !== undefined && state.jwt !== null) {
+                    if (!config.headers['Authorization']) {
+                        config.headers['Authorization'] = `Bearer ${state?.jwt.token}`;
+                    }
+                    return config;
                 }
-                return config;
+                return config
             }, (error) => Promise.reject(error)
         );
 
@@ -36,7 +39,7 @@ const useAxiosPrivate = () => {
             axiosPrivate.interceptors.request.eject(requestIntercept);
             axiosPrivate.interceptors.response.eject(responseIntercept);
         }
-    }, [auth, refresh])
+    }, [state.jwt?.token, refresh])
 
     return axiosPrivate;
 }

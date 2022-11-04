@@ -8,7 +8,7 @@ import RecoverPassword from "./pages/auth/forgot-password"
 import VerifyEmailAddress from "./pages/auth/verify-email"
 import ResetPassword from "./pages/auth/reset-password"
 import Profile from "./pages/profile/profile"
-import RequireAuth from "./pages/auth/RequireAuth"
+import RequireAuth from "./pages/auth/require-auth"
 import Dashboard from "./pages/dashboard/Dashboard"
 
 

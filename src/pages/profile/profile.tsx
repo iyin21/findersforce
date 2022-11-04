@@ -1,103 +1,121 @@
-import React from "react";
-import { Modal, PasswordInput, Text } from "@mantine/core";
-import { useForm } from '@mantine/form';
-import LandingPageText from "../../components/landing-page-txt";
-import Button from "../../components/button";
-import successIcon from "../../assets/check.svg";
-import styles from "./profile.module.scss";
-import { NavLink } from "react-router-dom";
-import { emailInputStyle, passwordInputStyle } from "../auth/utils";
-import useAuthContext from "../../hooks/auth-hooks/useAuth";
+import React from "react"
+import { Modal, PasswordInput, Text } from "@mantine/core"
+import { useForm } from "@mantine/form"
+import LandingPageText from "../../components/landing-page-txt"
+import Button from "../../components/button"
+import successIcon from "../../assets/check.svg"
+import styles from "./profile.module.scss"
+import { NavLink } from "react-router-dom"
+import { emailInputStyle, passwordInputStyle } from "../auth/utils"
 
-
-const CheckBox = ({check}: {check: boolean}) => {
+const CheckBox = ({ check }: { check: boolean }) => {
     return (
         <div>
             <label className={styles["container"]}>
-                <input type="checkbox" checked={check} readOnly/>
+                <input type="checkbox" checked={check} readOnly />
                 <span className={styles["checkmark"]}></span>
             </label>
         </div>
-    );
+    )
 }
 
-const PasswordRequirement = ({ meets, label }: { meets: boolean; label: string }) => {
+const PasswordRequirement = ({
+    meets,
+    label,
+}: {
+    meets: boolean
+    label: string
+}) => {
     return (
-      <Text
-        color={meets ? 'teal' : 'red'}
-        sx={{ display: 'flex', alignItems: 'center' }}
-        mt={7}
-        size="sm"
-      >
-        {meets ? <CheckBox check={true} /> : <CheckBox check={false} />} <span className="ml-2.5 pt-4">{label}</span>
-      </Text>
-    );
+        <Text
+            color={meets ? "teal" : "red"}
+            sx={{ display: "flex", alignItems: "center" }}
+            mt={7}
+            size="sm"
+        >
+            {meets ? <CheckBox check={true} /> : <CheckBox check={false} />}{" "}
+            <span className="ml-2.5 pt-4">{label}</span>
+        </Text>
+    )
 }
 
 const requirements = [
-    { re: /[a-z]/, label: 'A Lowercase letter (a)' },
-    { re: /[A-Z]/, label: 'An Uppercase letter (A)' },
-    { re: /[$&+,:;=?@#|'<>.^*()%!-]/, label: 'A special character letter (!@#)' },
-    { re: /[0-9]/, label: 'A number (1)' },
-];
+    { re: /[a-z]/, label: "A Lowercase letter (a)" },
+    { re: /[A-Z]/, label: "An Uppercase letter (A)" },
+    {
+        re: /[$&+,:;=?@#|'<>.^*()%!-]/,
+        label: "A special character letter (!@#)",
+    },
+    { re: /[0-9]/, label: "A number (1)" },
+]
 
 const getStrength = (password: string) => {
-    let multiplier = password.length > 5 ? 0 : 1;
-  
+    let multiplier = password.length > 5 ? 0 : 1
+
     requirements.forEach((requirement) => {
-      if (!requirement.re.test(password)) {
-        multiplier += 1;
-      }
-    });
-  
-    return Math.max(100 - (100 / (requirements.length + 1)) * multiplier, 10);
+        if (!requirement.re.test(password)) {
+            multiplier += 1
+        }
+    })
+
+    return Math.max(100 - (100 / (requirements.length + 1)) * multiplier, 10)
 }
 
-
 const Profile = () => {
-    const [opened, setOpened] = React.useState(false);
-    const [password, setPassword] = React.useState('');
-    const [errorText, showErrorText] = React.useState(false);
-    const { state } = useAuthContext();
-    
+    const [opened, setOpened] = React.useState(false)
+    const [password, setPassword] = React.useState("")
+    const [errorText, showErrorText] = React.useState(false)
 
     const profileForm = useForm({
         initialValues: {
-          password: '',
-          confirmPassword: '',
+            password: "",
+            confirmPassword: "",
         },
-    
+
         validate: {
             confirmPassword: (value) =>
-                value !== password ? <span className="text-[14px]">Passwords did not match</span> : null,
-            },
-    });
+                value !== password ? (
+                    <span className="text-[14px]">Passwords did not match</span>
+                ) : null,
+        },
+    })
 
     const checks = requirements.map((requirement, index) => (
-        <PasswordRequirement key={index} label={requirement.label} meets={requirement.re.test(password)} />
-    ));
+        <PasswordRequirement
+            key={index}
+            label={requirement.label}
+            meets={requirement.re.test(password)}
+        />
+    ))
 
-    const strength = getStrength(password);
+    const strength = getStrength(password)
 
     const handleProfileSetUp = (values: any) => {
         if (strength === 100) {
-            showErrorText(false);
+            showErrorText(false)
             setOpened(!opened)
-        }
-        else showErrorText(true);
+        } else showErrorText(true)
     }
 
-    
     return (
         <div className="grid grid-cols-2 text-white h-fit bg-[black]">
             <LandingPageText />
             <div className="my-8 mr-8 bg-white-100 pt-12 px-16 flex flex-col rounded-lg">
-                <h1 className="text-[#050001] text-[32px] font-extrabold">Set up your Profile</h1>
-                <span className="text-[#0F0D00] opacity-70 pt-2">Please provide the following information</span>
-                <form onSubmit={profileForm.onSubmit((values) => handleProfileSetUp(values))} className="pt-7"> 
+                <h1 className="text-[#050001] text-[32px] font-extrabold">
+                    Set up your Profile
+                </h1>
+                <span className="text-[#0F0D00] opacity-70 pt-2">
+                    Please provide the following information
+                </span>
+                <form
+                    onSubmit={profileForm.onSubmit((values) =>
+                        handleProfileSetUp(values)
+                    )}
+                    className="pt-7"
+                >
                     <div
-                        onFocusCapture={() => {  
-                            showErrorText(false);
+                        onFocusCapture={() => {
+                            showErrorText(false)
                         }}
                     >
                         <PasswordInput
@@ -108,19 +126,24 @@ const Profile = () => {
                             size="xl"
                             required
                             value={password}
-                            onChange={e => {setPassword(e.currentTarget.value)}}
-                            styles={() => (emailInputStyle)}
+                            onChange={(e) => {
+                                setPassword(e.currentTarget.value)
+                            }}
+                            styles={() => emailInputStyle}
                         />
                     </div>
                     <div className="rounded bg-black-2 p-5">
-                        <span className="text-[#132013] font-medium text-[14px]">Your password should contain:</span>
-                        <PasswordRequirement label="Includes at least 8 characters" meets={password.length >= 8} />
+                        <span className="text-[#132013] font-medium text-[14px]">
+                            Your password should contain:
+                        </span>
+                        <PasswordRequirement
+                            label="Includes at least 8 characters"
+                            meets={password.length >= 8}
+                        />
                         {checks}
                     </div>
                     <div className="mb-7" />
-                    <div
-                        onFocusCapture={() => showErrorText(false)} 
-                        >
+                    <div onFocusCapture={() => showErrorText(false)}>
                         <PasswordInput
                             placeholder="password"
                             label="Confirm password"
@@ -128,17 +151,26 @@ const Profile = () => {
                             radius="md"
                             size="xl"
                             required
-                            {...profileForm.getInputProps('confirmPassword')}
-                            styles={() => (passwordInputStyle)}
+                            {...profileForm.getInputProps("confirmPassword")}
+                            styles={() => passwordInputStyle}
                         />
                     </div>
-                    {errorText && (<span className="text-[14px] text-[#f01e2c]">Password must meet requirements</span>)}
-                    <div className="mb-[25px]" onClick={() => {profileForm.setFieldValue('password', password)}}>
-                        <Button buttonText="Proceed"/>
+                    {errorText && (
+                        <span className="text-[14px] text-[#f01e2c]">
+                            Password must meet requirements
+                        </span>
+                    )}
+                    <div
+                        className="mb-[25px]"
+                        onClick={() => {
+                            profileForm.setFieldValue("password", password)
+                        }}
+                    >
+                        <Button buttonText="Proceed" />
                     </div>
                 </form>
             </div>
-            <Modal 
+            <Modal
                 opened={opened}
                 centered
                 withCloseButton={false}
@@ -148,21 +180,26 @@ const Profile = () => {
                 overlayOpacity={0.55}
                 overlayBlur={3}
                 sx={{
-                    borderRadius: '10px', 
-                    width: '350px', 
-                    margin: '0 auto',
-                }} >
+                    borderRadius: "10px",
+                    width: "350px",
+                    margin: "0 auto",
+                }}
+            >
                 <div className="flex flex-col items-center">
                     <img src={successIcon} alt="success" className="pt-7"></img>
-                    <h1 className="font-extrabold text-[28px] text-[#050001] pt-2">You are all set!</h1>
-                    <span className="text-[#0F0D00B2] opacity-70 text-[14px]">Please provide the following information</span>
+                    <h1 className="font-extrabold text-[28px] text-[#050001] pt-2">
+                        You are all set!
+                    </h1>
+                    <span className="text-[#0F0D00B2] opacity-70 text-[14px]">
+                        Please provide the following information
+                    </span>
                     <NavLink to="/login" className="w-[183px] pt-7">
-                        <Button buttonText="Get In"/>
+                        <Button buttonText="Get In" />
                     </NavLink>
                 </div>
             </Modal>
         </div>
-    );
+    )
 }
 
-export default Profile;
+export default Profile
