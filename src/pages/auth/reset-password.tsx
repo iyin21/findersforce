@@ -1,9 +1,9 @@
 import React from "react"
 import { NavLink, useLocation } from "react-router-dom"
 import { PasswordInput, Alert } from "@mantine/core"
-import LandingPageText from "../../components/landing-page-txt"
+import LandingPageText from "../../components/Layout/landing-page-txt"
 import backIcon from "../../assets/backIcon.svg"
-import Button from "../../components/button"
+import Button from "../../components/Core/Buttons/Button"
 import successIcon from "../../assets/success.svg"
 import { useForm } from "@mantine/form"
 import axios from "./utils"
@@ -171,13 +171,26 @@ const ResetPassword = () => {
                             />
 
                             <Button
-                                buttonText={
+                                variant="primary"
+                                type="submit"
+                                style={
                                     !isSubmitting
-                                        ? "Reset password"
-                                        : "Loading..."
+                                        ? {
+                                              backgroundColor:
+                                                  "rgba(254, 215, 10, 1)",
+                                          }
+                                        : {
+                                              backgroundColor:
+                                                  "rgba(254, 215, 10, 1)",
+                                              opacity: "0.7",
+                                          }
                                 }
-                                submit={isSubmitting}
-                            />
+                                className="text-black-100 bg-yellow-100 font-bold text-base w-full text-center py-6 rounded-l rounded-tr-2xl rounded-br"
+                            >
+                                {!isSubmitting
+                                    ? "Reset password"
+                                    : "Loading..."}
+                            </Button>
                         </form>
                         {error && (
                             <Alert
@@ -204,7 +217,15 @@ const ResetPassword = () => {
                             />
                         </figure>
                         <NavLink to="/login">
-                            <Button buttonText="Back to login" />
+                            <Button
+                                style={{
+                                    backgroundColor: "rgba(254, 215, 10, 1)",
+                                    opacity: "0.7",
+                                }}
+                                className="text-black-100 bg-yellow-100 font-bold text-base w-full text-center py-6 rounded-l rounded-tr-2xl rounded-br"
+                            >
+                                Back to login
+                            </Button>
                         </NavLink>
                     </>
                 )}

@@ -1,8 +1,8 @@
 import React from "react"
 import { Modal, PasswordInput, Text } from "@mantine/core"
 import { useForm } from "@mantine/form"
-import LandingPageText from "../../components/landing-page-txt"
-import Button from "../../components/button"
+import LandingPageText from "../../components/Layout/landing-page-txt"
+import Button from "../../components/Core/Buttons/Button"
 import successIcon from "../../assets/check.svg"
 import styles from "./profile.module.scss"
 import { NavLink } from "react-router-dom"
@@ -75,7 +75,7 @@ const Profile = () => {
         validate: {
             confirmPassword: (value) =>
                 value !== password ? (
-                    <span className="text-[14px]">Passwords did not match</span>
+                    <span className="text-sm">Passwords did not match</span>
                 ) : null,
         },
     })
@@ -166,7 +166,16 @@ const Profile = () => {
                             profileForm.setFieldValue("password", password)
                         }}
                     >
-                        <Button buttonText="Proceed" />
+                        <Button
+                            variant="primary"
+                            type="submit"
+                            style={{
+                                backgroundColor: "rgba(254, 215, 10, 1)",
+                            }}
+                            className="text-black-100 bg-yellow-100 font-bold text-base w-full text-center py-6 rounded-l rounded-tr-2xl rounded-br"
+                        >
+                            Proceed
+                        </Button>
                     </div>
                 </form>
             </div>
@@ -194,7 +203,15 @@ const Profile = () => {
                         Please provide the following information
                     </span>
                     <NavLink to="/login" className="w-[183px] pt-7">
-                        <Button buttonText="Get In" />
+                        <Button
+                            variant="primary"
+                            style={{
+                                backgroundColor: "rgba(254, 215, 10, 1)",
+                            }}
+                            className="text-black-100 bg-yellow-100 font-bold text-base w-full text-center py-6 rounded-l rounded-tr-2xl rounded-br"
+                        >
+                            Get In
+                        </Button>
                     </NavLink>
                 </div>
             </Modal>

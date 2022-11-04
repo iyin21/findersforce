@@ -33,8 +33,8 @@ const TimePicker = ({
                 format={"12" || "24"}
                 classNames={{
                     input: "w-full h-14 pt-2 px-4 border border-neutral-40 rounded",
-                    defaultVariant: "text-neutral-80",
-                    filledVariant: "text-neutral-80",
+                    // defaultVariant: "text-neutral-80",
+                    // filledVariant: "text-neutral-80",
                     wrapper: "text-neutral-80",
                 }}
                 className={className}

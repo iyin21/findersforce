@@ -2,37 +2,26 @@ import { useFormikContext } from "formik"
 import FormikControls from "../../../../components/Form/FormControls/form-controls"
 import uploadIcon from "../../../../assets/image.svg"
 import { ChangeEvent, useRef } from "react"
+import { JobBoardByIdResponse } from "../../../../hooks/job-board/interface"
+// import { useGetJobQualification } from "../../../../hooks/job-board/useJobBoard.hooks"
 
-const PostJobTwo = () => {
-    const { setFieldValue } = useFormikContext<{
-        description: string
+interface PostJobTwoProps {
+    jobQualification: JobBoardByIdResponse[] | undefined
+}
+
+const PostJobTwo = ({ jobQualification }: PostJobTwoProps) => {
+    const { setFieldValue, values } = useFormikContext<{
+        jobDescription: string
+        jobQualificationId: string
     }>()
-    const requiredQualifications = [
-        "Trainee",
-        "TTMBC",
-        "T1",
-        "T2",
-        "SLG UNIT 1",
-        "SLG UNIT 2",
-        "M1",
-        "M2",
-        "M3",
-        "12A",
-        "12B",
-        "12D",
-        "M4",
-        "M5",
-        "M6",
-        "M7",
-    ]
+
     const fileInputRef = useRef<HTMLInputElement>(null)
 
     const handleCompanyLogoUpload = (e: ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0]
 
         if (file) {
-            setFieldValue("image", file)
-            // uploadProfileMutate({ file });
+            setFieldValue("additionalInfoImageUrls", file)
         }
     }
     return (
@@ -43,76 +32,37 @@ const PostJobTwo = () => {
                 </label>
                 <FormikControls
                     control="select"
-                    name="required_qualification"
+                    name="jobQualificationId"
                     aria-label="Required Qualification"
                     type="select"
                     className="rounded text-black-50"
-                    data-testid="required_qualification"
+                    data-testid="jobQualificationId"
+                    defaultValue={values?.jobQualificationId}
                 >
                     <option>Select an option---</option>
-                    {requiredQualifications?.map((item) => (
-                        <option key={item} value={item}>
+                    {jobQualification?.map((item) => (
+                        <option key={item._id} value={item.name}>
                             {" "}
-                            {item}{" "}
+                            {item.name}{" "}
                         </option>
                     ))}
                 </FormikControls>
             </div>
-            <div className="mt-5">
-                <label className="text-3md font-semibold text-neutral-80 block">
-                    Other Qualifications
-                </label>
-                <span className="text-md text-black-50">
-                    You can add other qualifications you are willling to
-                    compromise on. <br /> You can add as many as possible.
-                    Seperate with a comma.
-                </span>
-                <FormikControls
-                    type="text"
-                    name="other_qualification"
-                    control="input"
-                    placeholder="Start typing-"
-                    aria-label="other_qualification"
-                    required
-                    className="rounded"
-                    data-testid="other_qualification"
-                />
-            </div>
 
-            <div className="grid grid-cols-2 mt-4 gap-6 border-b border-black-10 mb-4 pb-6">
+            <div className=" mt-4 gap-6 border-b border-black-10 mb-4 pb-6">
                 <div>
                     <label className="text-3md font-semibold text-neutral-80 block mb-2">
                         Number of Operatives needed
                     </label>
                     <FormikControls
                         type="text"
-                        name="num_of_operatives"
+                        name="numberOfOpsRequired"
                         control="input"
                         placeholder="0"
                         aria-label="Number of Operatives needed"
                         required
                         className="rounded"
-                        data-testid="num_of_operatives"
-                    />
-                </div>
-                <div>
-                    <label className="text-3md font-semibold text-neutral-80 block mb-2">
-                        Hourly Pay
-                    </label>
-                    <FormikControls
-                        type="text"
-                        name="hourly_pay"
-                        control="input"
-                        placeholder="0"
-                        aria-label="Hourly Pay"
-                        required
-                        className="rounded"
-                        data-testid="hourly_pay"
-                        prefixIcon={
-                            <span className="text-2lg mr-2 text-neutral-80 font-bold">
-                                $
-                            </span>
-                        }
+                        data-testid="numberOfOpsRequired"
                     />
                 </div>
             </div>
@@ -123,13 +73,14 @@ const PostJobTwo = () => {
                 </label>
                 <textarea
                     className="border border-black-10 rounded w-full p-3 outline-none mt-3"
-                    name="description"
-                    id="description"
+                    name="jobDescription"
+                    id="jobDescription"
                     cols={50}
                     rows={3}
                     onChange={(e) =>
-                        setFieldValue("description", e.target.value)
+                        setFieldValue("jobDescription", e.target.value)
                     }
+                    value={values.jobDescription}
                 ></textarea>
             </div>
 

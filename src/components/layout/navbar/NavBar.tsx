@@ -25,19 +25,19 @@ const NavBar = () => {
     ]
     const notifications = data.map((time, index) => {
         return (
-          <>
-            <div key={index} className="flex items-center">
-                <img src={addressLogo} alt="address logo" />
-                <span className="text-lg py-[19px]">
-                    <strong>2-way shift </strong>at 12 Liverpool road is
-                    starting soon.
-                </span>
-                <span className="text-black-neutral ml-auto text-2sm">
-                    {time}
-                </span>
-            </div>
-            <hr className="border-black-20"/>
-          </>
+            <>
+                <div key={index} className="flex items-center">
+                    <img src={addressLogo} alt="address logo" />
+                    <span className="text-lg py-[19px]">
+                        <strong>2-way shift </strong>at 12 Liverpool road is
+                        starting soon.
+                    </span>
+                    <span className="text-black-neutral ml-auto text-2sm">
+                        {time}
+                    </span>
+                </div>
+                <hr className="border-black-20" />
+            </>
         )
     })
     return (

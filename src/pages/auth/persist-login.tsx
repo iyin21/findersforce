@@ -13,7 +13,6 @@ const PersistLogin = () => {
             try {
                 await refresh()
             } catch (error) {
-                
             } finally {
                 setIsLoading(false)
             }

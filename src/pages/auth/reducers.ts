@@ -1,5 +1,8 @@
-import { AuthActionType, AuthState, User } from "../../types/auth-interfaces";
-
+import {
+    AuthActionType,
+    AuthState,
+    User,
+} from "../../types/auth/auth-interfaces"
 
 const reducer = (state: AuthState, action: AuthActionType): AuthState => {
     switch (action.type) {
@@ -9,28 +12,28 @@ const reducer = (state: AuthState, action: AuthActionType): AuthState => {
                 isAuthenticated: true,
                 user: action?.payload?.user as User,
                 jwt: action.payload!.jwt,
-                persist: true
-            };
+                persist: true,
+            }
         case "UPDATE_USER_DATA":
             return {
                 ...state,
                 isAuthenticated: true,
                 user: action.payload?.user as User,
                 jwt: action.payload!.jwt,
-                persist: true
-            };
+                persist: true,
+            }
         case "CLEAR_USER_DATA":
             return {
                 ...state,
                 isAuthenticated: false,
                 user: null,
                 jwt: null,
-                persist: false
-            };
+                persist: false,
+            }
 
         default:
-            return state;
+            return state
     }
-};
+}
 
-export { reducer };
+export { reducer }

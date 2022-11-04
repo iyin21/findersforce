@@ -7,17 +7,21 @@ import RolesPermission from "../assets/RolesPermission"
 import Support from "../assets/Support"
 
 export interface SidebarRoutes {
-                icon: React.FunctionComponent;
-                title: string;
-                route: string
-                }
+    icon: React.FunctionComponent
+    title: string
+    route: string
+}
 
-export const RegionalManagerRoute:SidebarRoutes[]  = [
-                { icon: Dashboard, title: "Dashboard", route:"/dashboard" },
-                { icon: Shifts, title: "Shifts", route:"/shifts" },
-                { icon: Pending, title: "Pending", route:"/pending" },
-                { icon: Planner, title: "Planner", route:"/planner" },
-                { icon: Messaging, title: "Messaging", route:"/messaging" },
-                { icon: RolesPermission, title: "Roles & Permissions", route:"/roles&permission" },
-                { icon: Support, title: "Support",route:"/support" },
+export const RegionalManagerRoute: SidebarRoutes[] = [
+    { icon: Dashboard, title: "Dashboard", route: "/dashboard" },
+    { icon: Shifts, title: "Shifts", route: "/job-boards" },
+    { icon: Pending, title: "Pending", route: "/pending" },
+    { icon: Planner, title: "Planner", route: "/planner" },
+    { icon: Messaging, title: "Messaging", route: "/messaging" },
+    {
+        icon: RolesPermission,
+        title: "Roles & Permissions",
+        route: "/roles&permission",
+    },
+    { icon: Support, title: "Support", route: "/support" },
 ]

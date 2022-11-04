@@ -4,7 +4,7 @@ module.exports = {
     content: ["./index.html", "./src/**/*.{ts,jsx,tsx}"],
     theme: {
         colors: {
-            ash:{
+            ash: {
                 10: "rgba(38, 38, 38, 1)",
             },
             yellow: {
@@ -75,12 +75,13 @@ module.exports = {
                 80: "rgba(15, 13, 0, 0.8)",
                 90: "rgba(15, 13, 0, 0.9)",
                 100: "rgba(15, 13, 0, 1)",
-                "neutral": "rgba(19, 32, 19, 0.8)",
+                neutral: "rgba(19, 32, 19, 0.8)",
             },
             blaq: {
                 0: "rgba(5, 0, 1, 1)",
                 7: "rgba(5, 0, 1, 0.7)",
             },
+            pink: "rgba(255, 252, 235, 1)",
             transparent: "transparent",
         },
 
@@ -111,16 +112,16 @@ module.exports = {
             creatoDisplayItalic: ["CreatoDisplayItalic", "sans-serif"],
         },
         borderRadius: {
-            "lg": "10px",
+            lg: "10px",
             "3lg": "30px",
             "2xl": "16px",
-            "md": "4px",
-            DEFAULT: '4px',
+            md: "4px",
+            DEFAULT: "4px",
         },
         extend: {
             backgroundImage: {
-                "dashboard-pattern" : "url('./src/assets/Thumbnail.svg')",
-            }
+                "dashboard-pattern": "url('./src/assets/Thumbnail.svg')",
+            },
         },
     },
     plugins: [],

@@ -1,33 +1,46 @@
+import dayjs from "dayjs"
 import { IoIosArrowForward } from "react-icons/io"
 import { Checkbox } from "../../../../components/index"
 import { JobBoardInterface } from "./job-table"
 
-const MobileJobTable = ({ elements, status }: JobBoardInterface) => {
+const MobileJobTable = ({
+    elements,
+    status,
+    handleCheckedJob,
+    checkedJob,
+    setDeleteId,
+}: JobBoardInterface) => {
     return (
         <div className="mt-4">
-            {elements.map((element, index) => (
+            {elements?.map((element, index) => (
                 <div className="rounded bg-black-5 mb-4" key={index}>
                     <div className="flex justify-between border-b border-black-20 p-4">
-                        <div className="flex items-center">
+                        <div
+                            className="flex items-center"
+                            onClick={(e) => {
+                                e.stopPropagation()
+                                setDeleteId(element?._id)
+                            }}
+                        >
                             <Checkbox
-                                id={element?.id}
+                                id={element?._id}
                                 className="rounded-lg"
-                                // name={element?.type}
-                                // onChange={handleCheckedProduct}
-                                // checked={checkedProduct.includes(element?._id)}
-                                value={element?.id}
+                                name={element?.jobType?.name}
+                                onChange={handleCheckedJob}
+                                checked={checkedJob.includes(element?._id)}
+                                value={element?._id}
                                 data-testid="checkbox"
                             />
                             <label
-                                htmlFor={element?.type}
+                                htmlFor={element?.jobType?.name}
                                 className="capitalize text-black-80"
                             >
-                                {element?.type}
+                                {element?.jobType?.name}
                             </label>
                         </div>
 
                         <div className="flex items-center gap-2">
-                            {element?.mode === "MEET ONSITE" ? (
+                            {element?.jobMeetingPoint === "SITE" ? (
                                 <p className="text-black-100 bg-yellow-100 rounded-3xl text-center font-bold p-1 w-fit px-3 py-1 text-3sm font-creatoBlack">
                                     MEET ONSITE
                                 </p>
@@ -47,7 +60,9 @@ const MobileJobTable = ({ elements, status }: JobBoardInterface) => {
                     <div className="p-4">
                         <div>
                             <h6 className="text-black-50 text-3sm">LOCATION</h6>
-                            <p className="text-2md mt-1">{element.location}</p>
+                            <p className="text-2md mt-1">
+                                {element?.jobLocation?.formattedAddress}
+                            </p>
                         </div>
                         <div className="flex justify-between mt-3">
                             {status === "active" && (
@@ -56,7 +71,7 @@ const MobileJobTable = ({ elements, status }: JobBoardInterface) => {
                                         APPLICANTS
                                     </h6>
                                     <p className="text-2md mt-1">
-                                        {element.applicants}
+                                        {element.jobMatchPercentage}
                                     </p>
                                 </div>
                             )}
@@ -66,14 +81,18 @@ const MobileJobTable = ({ elements, status }: JobBoardInterface) => {
                                     DURATION
                                 </h6>
                                 <p className="text-2md mt-1">
-                                    {element.duration}
+                                    {element?.shiftDurationInHours} hours
                                 </p>
                             </div>
                         </div>
                         <div className="flex justify-between mt-3">
                             <div>
                                 <h6 className="text-black-50 text-3sm">DATE</h6>
-                                <p className="text-2md mt-1">{element.date}</p>
+                                <p className="text-2md mt-1">
+                                    {dayjs(element?.jobDate).format(
+                                        "DD/MM/YYYY"
+                                    )}
+                                </p>
                             </div>
 
                             <div>
@@ -81,7 +100,10 @@ const MobileJobTable = ({ elements, status }: JobBoardInterface) => {
                                     HOURLY RATE
                                 </h6>
                                 <p className="text-2md mt-1">
-                                    {element.hourly_rate}
+                                    {
+                                        element?.jobRate
+                                            ?.jobRatePerHourDisplayedToDepot
+                                    }
                                 </p>
                             </div>
                         </div>
