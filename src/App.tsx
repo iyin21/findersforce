@@ -11,6 +11,7 @@ import RequireAuth from "./pages/auth/RequireAuth"
 import Dashboard from "./pages/dashboard/Dashboard"
 import JobBoards from "./pages/Job-boards"
 import SingleJobBoard from "./pages/Job-boards/components/viewSingleJob"
+import Planner from "./pages/planner/Planner"
 
 function App() {
     return (
@@ -21,6 +22,7 @@ function App() {
             <Route path="/recover-password" element={<RecoverPassword />} />
             <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/verify-email" element={<VerifyEmailAddress />} />
+            <Route path="/planner" element={<Planner/>} />
 
             {/* private routes */}
             <Route element={<PersistLogin />}>

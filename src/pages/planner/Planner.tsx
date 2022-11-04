@@ -1,7 +1,7 @@
 import { Tabs } from "@mantine/core"
 import { useState } from "react"
 import { BiFilter } from "react-icons/bi"
-import Layout from "../../components/layout/Layout"
+import Layout from "../../components/layout/index"
 import { Button } from "../../components/index"
 import ShiftsTable from "./components/ShiftsTable"
 import styles from "./shifts.module.scss"
