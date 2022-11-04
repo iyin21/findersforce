@@ -7,6 +7,7 @@ import { useState } from "react"
 import { Modal } from "@mantine/core"
 import avi from "../../../assets/userAvi.svg"
 import addressLogo from "../../../assets/addressLogo.svg"
+import FindersForceLogo from "../../../assets/FindersForceLogo.svg"
 
 const NavBar = () => {
     const [opened, setOpened] = useState(false)
@@ -42,29 +43,38 @@ const NavBar = () => {
     })
     return (
         <>
-            <nav className="w-full sticky top-0 h-10 flex items-center justify-end gap-12 bg-white-100 px-14 ">
-                <img
-                    src={Search}
-                    alt="search icon "
-                    className="cursor-pointer"
-                />
-                <img
-                    src={Messaging}
-                    alt="Messaging icon "
-                    className="cursor-pointer"
-                    onClick={() => setOpened((state) => !state)}
-                />
-                <img
-                    src={SettingsCog}
-                    alt="SettingsCog icon"
-                    className="cursor-pointer"
-                />
-                <img src={User} alt="User icon" className="cursor-pointer" />
-                <img
-                    src={Logout}
-                    alt="Logout icon"
-                    className="cursor-pointer"
-                />
+            <nav className="w-full sticky top-0 h-12 pt-6 pb-6 flex items-center justify-between bg-white-100">
+                <div className="w-64 bg-black-100">
+                    <img 
+                        src={FindersForceLogo} 
+                        alt="" 
+                        className="p-3 my-5 ml-5"
+                    />
+                </div>
+                <div className=" flex items-center justify-between px-12 gap-12 ">
+                    <img
+                        src={Search}
+                        alt="search icon "
+                        className="cursor-pointer"
+                    />
+                    <img
+                        src={Messaging}
+                        alt="Messaging icon "
+                        className="cursor-pointer"
+                        onClick={() => setOpened((state) => !state)}
+                    />
+                    <img
+                        src={SettingsCog}
+                        alt="SettingsCog icon"
+                        className="cursor-pointer"
+                    />
+                    <img src={User} alt="User icon" className="cursor-pointer" />
+                    <img
+                        src={Logout}
+                        alt="Logout icon"
+                        className="cursor-pointer"
+                    />
+                </div>
             </nav>
             <Modal
                 opened={opened}
