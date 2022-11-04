@@ -112,6 +112,7 @@ module.exports = {
             creatoDisplayItalic: ["CreatoDisplayItalic", "sans-serif"],
         },
         borderRadius: {
+            "3xl": "1.5rem",
             lg: "10px",
             "3lg": "30px",
             "2xl": "16px",

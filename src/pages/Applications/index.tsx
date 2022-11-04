@@ -35,7 +35,7 @@ const Applications = () => {
         <Layout pageTitle={"Pending"}>
             {phase === 1 ? (
                 <div className="p-4">
-                    <h5 className="font-bold">Applications</h5>
+                    <h5 className="font-bold text-3xl mb-2">Applications</h5>
                     <p className="text-black-60 mb-2">
                         Operatives who apply for shifts appear here
                     </p>
@@ -54,7 +54,7 @@ const Applications = () => {
                             </div>
                             <Tabs
                                 value={activeTab}
-                                //active={activeTab}
+                                // active={activeTab}
                                 onTabChange={setActiveTab}
                                 color="yellow"
                                 keepMounted={false}

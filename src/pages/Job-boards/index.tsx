@@ -166,7 +166,7 @@ const JobBoards = () => {
                                 <Tabs
                                     value={activeTab}
                                     onTabChange={setActiveTab}
-                                    color="#FED70A"
+                                    color="yellow"
                                     keepMounted={false}
                                 >
                                     <Tabs.List>
