@@ -11,6 +11,7 @@ import RequireAuth from "./pages/auth/require-auth"
 import Dashboard from "./pages/dashboard/Dashboard"
 import JobBoards from "./pages/Job-boards"
 import SingleJobBoard from "./pages/Job-boards/components/viewSingleJob"
+import Roles from "./pages/roles"
 
 function App() {
     return (
@@ -33,6 +34,7 @@ function App() {
                         path="job-boards/:jobBoardId"
                         element={<SingleJobBoard />}
                     />
+                    <Route path="/roles&permission" element={<Roles />} />
                 </Route>
             </Route>
         </Routes>

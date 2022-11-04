@@ -118,6 +118,7 @@ module.exports = {
             "2xl": "16px",
             md: "4px",
             DEFAULT: "4px",
+            full: "9999px",
         },
         extend: {
             backgroundImage: {
