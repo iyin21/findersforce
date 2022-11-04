@@ -59,7 +59,7 @@ const RecoverPassword = () => {
     return (
         <div className="bg-black-1 grid grid-cols-2 text-white">
             <LandingPageText />
-            <div className="my-8 mr-8 bg-white-100 pt-[82px] px-16 flex flex-col rounded-lg">
+            <div className="my-8 mr-8 bg-white-100 pt-[82px] px-16 flex flex-col rounded-[10px]">
                 <div className="bg-black-10 w-fit h-fit rounded">
                     <NavLink to="/login">
                         <img

@@ -97,7 +97,7 @@ const Login = () => {
     return (
         <div className="grid grid-cols-2 text-white h-screen bg-black-1">
             <LandingPageText />
-            <section className="my-8 mr-8 bg-white-100 pt-12 px-16 flex flex-col rounded-lg">
+            <section className="my-8 mr-8 bg-white-100 pt-12 px-16 flex flex-col rounded-[10px]">
                 <h1 className="text-blaq-0 font-extrabold text-4xl pb-2.5">
                     Log In
                 </h1>
