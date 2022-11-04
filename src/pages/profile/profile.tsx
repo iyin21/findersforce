@@ -63,7 +63,6 @@ const getStrength = (password: string) => {
 
 const Profile = () => {
     const [opened, setOpened] = React.useState(false)
-    const [password, setPassword] = React.useState("")
     const [errorText, showErrorText] = React.useState(false)
 
     const profileForm = useForm({
@@ -73,12 +72,14 @@ const Profile = () => {
         },
 
         validate: {
-            confirmPassword: (value) =>
-                value !== password ? (
+            confirmPassword: (value, values) =>
+                value !== values.password ? (
                     <span className="text-sm">Passwords did not match</span>
                 ) : null,
         },
     })
+
+    const password = profileForm.values.password;
 
     const checks = requirements.map((requirement, index) => (
         <PasswordRequirement
@@ -125,10 +126,7 @@ const Profile = () => {
                             radius="md"
                             size="xl"
                             required
-                            value={password}
-                            onChange={(e) => {
-                                setPassword(e.currentTarget.value)
-                            }}
+                            {...profileForm.getInputProps('password')}
                             styles={() => emailInputStyle}
                         />
                     </div>
