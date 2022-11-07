@@ -1,11 +1,11 @@
 import React from "react"
-import { Modal, PasswordInput, Text } from "@mantine/core"
+import { Alert, Modal, PasswordInput, Text } from "@mantine/core"
 import { useForm } from "@mantine/form"
 import LandingPageText from "../../components/Layout/landing-page-txt"
 import Button from "../../components/Core/Buttons/Button"
 import successIcon from "../../assets/check.svg"
 import styles from "./profile.module.scss"
-import { NavLink } from "react-router-dom"
+import { NavLink, useLocation } from "react-router-dom"
 import {
     emailInputStyle,
     mobileEmailInputStyle,
@@ -14,6 +14,7 @@ import {
 } from "../auth/utils"
 import { useMediaQuery } from "@mantine/hooks"
 import logo from "../../assets/FF-logo.svg"
+import axios from "../auth/utils"
 
 const CheckBox = ({ check }: { check: boolean }) => {
     return (
@@ -71,7 +72,10 @@ const getStrength = (password: string) => {
 const Profile = () => {
     const matches = useMediaQuery("(min-width: 900px)")
     const [opened, setOpened] = React.useState(false)
+    const [isSubmitting, setIsSubmitting] = React.useState(false)
     const [errorText, showErrorText] = React.useState(false)
+    const [errorMsg, setErrorMsg] = React.useState("")
+    const [error, showError] = React.useState(false)
 
     const profileForm = useForm({
         initialValues: {
@@ -99,10 +103,47 @@ const Profile = () => {
 
     const strength = getStrength(password)
 
-    const handleProfileSetUp = (values: any) => {
+    const location = useLocation()
+    const inviteCode = location.search?.split("?")[1]?.split("=")[1]
+
+    const handleProfileSetUp = ({
+        password,
+        confirmPassword,
+    }: {
+        password: string
+        confirmPassword: string
+    }) => {
         if (strength === 100) {
             showErrorText(false)
-            setOpened(!opened)
+            setIsSubmitting(true)
+            axios
+                .patch(
+                    "/change-password",
+                    JSON.stringify({
+                        password: password,
+                        passwordConfirm: confirmPassword,
+                        resetCode: inviteCode,
+                    }),
+                    {
+                        headers: { "Content-Type": "application/json" },
+                        withCredentials: true,
+                    }
+                )
+                .then((response) => {
+                    setOpened(!opened)
+                })
+                .catch((err) => {
+                    try {
+                        setErrorMsg(err.response.data.error)
+                    } catch (error) {
+                        setErrorMsg(
+                            "Hmmm, something went wrong, try again later."
+                        )
+                    } finally {
+                        showError(true)
+                        setIsSubmitting(false)
+                    }
+                })
         } else showErrorText(true)
     }
 
@@ -182,16 +223,35 @@ const Profile = () => {
                                 <Button
                                     variant="primary"
                                     type="submit"
-                                    style={{
-                                        backgroundColor:
-                                            "rgba(254, 215, 10, 1)",
-                                    }}
+                                    style={
+                                        !isSubmitting
+                                            ? {
+                                                  backgroundColor:
+                                                      "rgba(254, 215, 10, 1)",
+                                              }
+                                            : {
+                                                  backgroundColor:
+                                                      "rgba(254, 215, 10, 1)",
+                                                  opacity: "0.7",
+                                              }
+                                    }
                                     className="text-black-100 bg-yellow-100 font-bold text-base w-full text-center py-6 rounded-l rounded-tr-2xl rounded-br"
                                 >
-                                    Proceed
+                                    {!isSubmitting ? "Proceed" : "Loading..."}
                                 </Button>
                             </div>
                         </form>
+                        {error && (
+                            <Alert
+                                title="Error!"
+                                color="red"
+                                styles={() => ({
+                                    root: { marginTop: "20px" },
+                                })}
+                            >
+                                {errorMsg}
+                            </Alert>
+                        )}
                     </div>
                     <Modal
                         opened={opened}
@@ -310,16 +370,35 @@ const Profile = () => {
                                     )
                                 }}
                             >
+                                {error && (
+                                    <Alert
+                                        title="Error!"
+                                        color="red"
+                                        styles={() => ({
+                                            root: { marginTop: "20px" },
+                                        })}
+                                    >
+                                        {errorMsg}
+                                    </Alert>
+                                )}
                                 <Button
                                     variant="primary"
                                     type="submit"
-                                    style={{
-                                        backgroundColor:
-                                            "rgba(254, 215, 10, 1)",
-                                    }}
-                                    className="text-black-100 bg-yellow-100 font-bold text-base w-full text-center py-6 rounded-l rounded-tr-2xl rounded-br"
+                                    style={
+                                        !isSubmitting
+                                            ? {
+                                                  backgroundColor:
+                                                      "rgba(254, 215, 10, 1)",
+                                              }
+                                            : {
+                                                  backgroundColor:
+                                                      "rgba(254, 215, 10, 1)",
+                                                  opacity: "0.7",
+                                              }
+                                    }
+                                    className="text-black-100 mt-2 bg-yellow-100 font-bold text-base w-full text-center py-6 rounded-l rounded-tr-2xl rounded-br"
                                 >
-                                    Proceed
+                                    {!isSubmitting ? "Proceed" : "Loading..."}
                                 </Button>
                             </div>
                         </form>
