@@ -5,40 +5,78 @@ import { IoIosArrowForward } from "react-icons/io"
 import { AiOutlineArrowUp } from "react-icons/ai"
 import { useNavigate } from "react-router-dom"
 import MobileJobTable from "./mobile-table"
-import { JobBoardInterface } from "../../../../types/job-board.type"
+import { JobBoardResponseInterface } from "../../../../hooks/job-board/interface"
+import dayjs from "dayjs"
+import { Dispatch, SetStateAction } from "react"
 
-const JobBoardTable = ({ elements, status }: JobBoardInterface) => {
+export interface JobBoardInterface {
+    status: "active" | "draft"
+    handleCheckedJob: (e: React.ChangeEvent<HTMLInputElement>) => void
+    checkedJob: string[]
+    elements?: JobBoardResponseInterface[]
+    setDeleteId: (id: string) => void
+    setOpenJobPost: Dispatch<SetStateAction<boolean>>
+    setDraftStatus: Dispatch<SetStateAction<string>>
+    setdraftElement: Dispatch<SetStateAction<JobBoardResponseInterface | null>>
+    // handleNavigate: (id: string) => void
+}
+
+const JobBoardTable = ({
+    elements,
+    status,
+    handleCheckedJob,
+    checkedJob,
+    setDeleteId,
+    setOpenJobPost,
+    setDraftStatus,
+    setdraftElement,
+}: JobBoardInterface) => {
     // this navigate function is used to navigate to the single job board page
     const navigate = useNavigate()
-    const handleNavigate = (id: string) => {
-        navigate(`/job-boards/${id}`)
+    const handleNavigate = (id: string, element: JobBoardResponseInterface) => {
+        if (status === "active") {
+            navigate(`/job-boards/${id}`)
+        } else {
+            setOpenJobPost(true)
+            setDraftStatus("draft")
+            setdraftElement(element)
+        }
     }
 
-    const rows = elements.map((element, index) => (
-        <tr key={index} onClick={() => handleNavigate(element?.id)}>
+    const rows = elements?.map((element, index) => (
+        <tr key={index} onClick={() => handleNavigate(element?._id, element)}>
             <td>
-                <div className="flex items-center">
+                <div
+                    className="flex items-center"
+                    onClick={(e) => {
+                        e.stopPropagation()
+                        setDeleteId(element?._id)
+                    }}
+                >
                     <Checkbox
-                        id={element?.id}
+                        id={element?._id}
                         className="rounded-lg"
-                        name={element?.type}
-                        // onChange={handleCheckedProduct}
-                        // checked={checkedProduct.includes(element?._id)}
-                        value={element?.id}
+                        name={element?.jobType?.name}
+                        onChange={handleCheckedJob}
+                        checked={checkedJob.includes(element?._id)}
+                        value={element?._id}
                         data-testid="checkbox"
                     />
-                    <label htmlFor={element?.type} className="capitalize">
-                        {element?.type}
+                    <label
+                        htmlFor={element?.jobType?.name}
+                        className="capitalize"
+                    >
+                        {element?.jobType?.name}
                     </label>
                 </div>
             </td>
-            <td>{element?.location}</td>
-            <td>{element?.date}</td>
-            <td>{element?.hourly_rate}</td>
-            <td>{element?.duration}</td>
-            {status === "active" && <td>{element?.applicants}</td>}
+            <td>{element?.jobLocation?.formattedAddress}</td>
+            <td>{dayjs(element?.jobDate).format("DD/MM/YYYY")}</td>
+            <td>{element?.jobRate?.jobRatePerHourDisplayedToDepot}</td>
+            <td>{element?.shiftDurationInHours} hours</td>
+            {status === "active" && <td>{element?.applicationsCount}</td>}
             <td>
-                {element?.mode === "MEET ONSITE" ? (
+                {element?.jobMeetingPoint === "SITE" ? (
                     <p className="text-black-100 bg-yellow-100 rounded-3xl text-center font-bold p-1 w-fit px-3 py-1 text-3sm font-creatoBlack">
                         MEET ONSITE
                     </p>
@@ -129,7 +167,16 @@ const JobBoardTable = ({ elements, status }: JobBoardInterface) => {
                 </Table>
             </div>
             <div className="block lg:hidden">
-                <MobileJobTable elements={elements} status={status} />
+                <MobileJobTable
+                    handleCheckedJob={handleCheckedJob}
+                    elements={elements}
+                    status={status}
+                    checkedJob={checkedJob}
+                    setDeleteId={setDeleteId}
+                    setOpenJobPost={setOpenJobPost}
+                    setDraftStatus={setDraftStatus}
+                    setdraftElement={setdraftElement}
+                />
             </div>
         </>
     )

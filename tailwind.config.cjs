@@ -4,7 +4,11 @@ module.exports = {
     content: ["./index.html", "./src/**/*.{ts,jsx,tsx}"],
     theme: {
         colors: {
+            ash: {
+                10: "rgba(38, 38, 38, 1)",
+            },
             yellow: {
+                5: "rgba(254, 215, 10, 0.05)",
                 10: "rgba(254, 215, 10, 0.1)",
                 20: "rgba(254, 215, 10, 0.2)",
                 30: "rgba(254, 215, 10, 0.3)",
@@ -15,9 +19,11 @@ module.exports = {
                 80: "rgba(254, 215, 10, 0.8)",
                 90: "rgba(254, 215, 10, 0.9)",
                 100: "rgba(254, 215, 10, 1)",
+                110: "rgba(253, 203, 55, 1)",
             },
             white: {
                 10: "rgba(255, 255, 255, 0.1)",
+                15: "rgba(255, 255, 255, 0.15)",
                 20: "rgba(255, 255, 255, 0.2)",
                 30: "rgba(255, 255, 255, 0.3)",
                 40: "rgba(255, 255, 255, 0.4)",
@@ -56,6 +62,8 @@ module.exports = {
                 100: "rgba(233, 68, 68, 1)",
             },
             black: {
+                1: "rgba(0, 0, 0, 1)",
+                2: "rgba(0, 0, 0, 0.02)",
                 5: "rgba(0, 0, 0, 0.05)",
                 10: "rgba(15, 13, 0, 0.1)",
                 20: "rgba(15, 13, 0, 0.2)",
@@ -67,7 +75,13 @@ module.exports = {
                 80: "rgba(15, 13, 0, 0.8)",
                 90: "rgba(15, 13, 0, 0.9)",
                 100: "rgba(15, 13, 0, 1)",
+                neutral: "rgba(19, 32, 19, 0.8)",
             },
+            blaq: {
+                0: "rgba(5, 0, 1, 1)",
+                7: "rgba(5, 0, 1, 0.7)",
+            },
+            pink: "rgba(255, 252, 235, 1)",
             transparent: "transparent",
         },
 
@@ -76,6 +90,7 @@ module.exports = {
             "5xl": ["60px", "110%"],
             "4xl": ["48px", "110%"],
             "3xl": ["32px", "42px"],
+            "3.5xl": ["36px", "120%"],
             "2mxl": ["28px", "33px"],
             "2xl": ["24px", "28px"],
             xl: ["20px", "23px"],
@@ -96,7 +111,21 @@ module.exports = {
             creatoLight: ["CreatoDisplayLight", "sans-serif"],
             creatoDisplayItalic: ["CreatoDisplayItalic", "sans-serif"],
         },
-        extend: {},
+        // borderRadius: {
+        //     "3xl": "1.5rem",
+        //     lg: "10px",
+        //     "3lg": "30px",
+        //     "2xl": "16px",
+        //     xl: "12px",
+        //     md: "4px",
+        //     DEFAULT: "4px",
+        //     full: "9999px",
+        // },
+        extend: {
+            backgroundImage: {
+                "dashboard-pattern": "url('./src/assets/Thumbnail.svg')",
+            },
+        },
     },
     plugins: [],
 }

@@ -4,12 +4,7 @@ import { BiFilter, BiX } from "react-icons/bi"
 import Button from "../Core/Buttons/Button"
 import Checkbox from "../Core/Checkbox/checkbox"
 import { useMediaQuery } from "@mantine/hooks"
-
-export interface FilterRequest {
-    jobType: string[]
-    jobMode: string[]
-    amount: string[]
-}
+import { FilterRequest } from "../../types/filter/filter"
 
 const FilterContent = ({
     applyFilter,
@@ -141,7 +136,7 @@ const FilterContent = ({
             </ul>
 
             <Button
-                type="button"
+                // type="button"
                 variant="primary"
                 size="normal"
                 className="w-64 btn--primary btn mt-6"

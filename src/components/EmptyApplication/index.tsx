@@ -3,13 +3,19 @@ import EmptyApplicationImage from "../../assets/empty.svg"
 import Button from "../Core/Buttons/Button"
 import CopyIcon from "../../assets/copy_to_clipboard.svg"
 
-const EmptyApplication = () => {
+export interface EmptyApplicationInterface {
+    id: string | undefined
+}
+
+const EmptyApplication = ({ id }: EmptyApplicationInterface) => {
     const textAreaRef = useRef(null)
 
     function copyToClipboard(e: any) {
         // @ts-ignore
         textAreaRef.current && textAreaRef.current.select()
-        navigator.clipboard.writeText(`https://forcefinder.com/revivetraffic..`)
+        navigator.clipboard.writeText(
+            `${import.meta.env.VITE_FRONTEND_URL}/job-boards/${id}`
+        )
         e.target.focus()
     }
 
@@ -23,19 +29,21 @@ const EmptyApplication = () => {
                 Copy the link and share to increase visibility to prospective
                 applicants.
             </p>
-            <div className="flex flex-col md:flex-row items-center gap-2 md:gap-5 rounded p-2 border-accent-70 mt-5">
+            <div className="grid grid-cols-1 w-full md:w-auto md:flex md:flex-cols  justify-center md:flex-row items-center gap-2 md:gap-5 rounded p-2 border-accent-70 mt-5">
                 <input
                     ref={textAreaRef}
-                    className="md:w-[319px] bg-transparent border-black-10 border p-4 bg-white-20 rounded-lg focus:outline-none text-black-50 "
+                    className="w-full md:w-[319px] bg-transparent border-black-10 border p-4 bg-white-20 rounded-lg focus:outline-none text-black-50 "
                     disabled
-                    defaultValue={`https://forcefinder.com/revivetraffic..`}
+                    defaultValue={`${
+                        import.meta.env.VITE_FRONTEND_URL
+                    }/job-boards/${id}`}
                 />
 
                 <Button
                     onClick={copyToClipboard}
                     iconLeft={<img src={CopyIcon} alt="copy" />}
                     variant="primary"
-                    className="font-creatoMedium px-6 py-4"
+                    className="font-creatoMedium px-6 py-4 w-full md:w-auto"
                 >
                     Copy{" "}
                 </Button>

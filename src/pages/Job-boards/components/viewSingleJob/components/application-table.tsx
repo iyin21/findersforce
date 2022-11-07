@@ -1,8 +1,13 @@
 import { Table } from "@mantine/core"
+import dayjs from "dayjs"
 import { AiOutlineArrowUp } from "react-icons/ai"
 import { BsFillStarFill } from "react-icons/bs"
 import { IoIosArrowForward } from "react-icons/io"
-import { ApplicationJobInterface } from "../../../../../types/job-board.type"
+import { JobBoardResponseInterface } from "../../../../../hooks/job-board/interface"
+
+interface ApplicationJobInterface {
+    elements?: JobBoardResponseInterface[]
+}
 
 const ApplicationJobTable = ({ elements }: ApplicationJobInterface) => {
     const renderStatus = (status: string) => {
@@ -30,20 +35,23 @@ const ApplicationJobTable = ({ elements }: ApplicationJobInterface) => {
         }
     }
 
-    const rows = elements.map((element, index) => (
+    const rows = elements?.map((element, index) => (
         <tr key={index}>
-            <td>{element.id}</td>
-            <td>{element?.name}</td>
-            <td>{element?.qualification}</td>
-            <td className="text-green-100">{element?.match}</td>
+            <td>{index}</td>
+            <td>
+                {element?.user?.firstName} {element?.user?.lastName}
+            </td>
+            <td>{element?.jobQualification?.name}</td>
+            <td className="text-green-100">{element?.jobMatchPercentage}</td>
             <td>
                 <p className="flex items-center gap-2">
                     {" "}
-                    <BsFillStarFill color="#FED70A" /> {element?.rating}
+                    <BsFillStarFill color="#FED70A" />{" "}
+                    {element?.user?.averageRating}
                 </p>
             </td>
-            <td>{element?.date_applied}</td>
-            <td>{element?.time_applied}</td>
+            <td>{dayjs(element?.jobDate).format("mmmm dddd yyyy")}</td>
+            <td>{dayjs(element?.jobDate).format("hh:mm a")}</td>
             <td> {renderStatus(element?.status)}</td>
             <td
                 role="gridcell"

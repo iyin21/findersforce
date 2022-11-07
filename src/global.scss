@@ -6,9 +6,9 @@
     @apply min-w-[134px] text-lg rounded-tr-2xl rounded-b-md rounded-tl-md;
 }
 
-.btn--small {
-    @apply py-3 px-1 md:px-4;
-}
+// .btn--small {
+//     @apply py-3 px-1 md:px-4;
+// }
 
 .btn--primary {
     @apply bg-yellow-100 text-black-100;
@@ -67,19 +67,43 @@ input[type="radio"] + label > .checkmark {
     font-weight: light;
 }
 
-.mantine-1e1m5s4 {
-    border-bottom: 2px solid rgba(254, 215, 10, 1);
-    @media screen and (max-width: 768px) {
-        border: none;
-        padding: 0;
-        margin: 0;
-    }
+h1 {
+    @apply text-6xl;
+}
+h2 {
+    @apply text-5xl;
 }
 
-.mantine-6jy0zj {
+h3 {
+    @apply text-4xl;
+}
+h4 {
+    @apply text-3xl;
+}
+h5 {
+    @apply text-2xl;
+}
+h6 {
+    @apply text-xl;
+}
+
+.body-medium {
+    @apply text-2md;
+}
+.body-regular {
+    @apply text-lg;
+}
+.body-small {
+    @apply text-3sm;
+}
+.body-extra-small {
+    @apply text-2sm;
+}
+
+.mantine-waltv[data-active] {
     @media screen and (max-width: 768px) {
         padding: 0;
-        margin-right: 1rem;
+        border-bottom: none;
     }
 }
 
@@ -99,10 +123,7 @@ input[type="radio"] + label > .checkmark {
 }
 
 .active {
-    // padding: 20px;
-    // padding-bottom: 25px;
     font-weight: 600;
-    // color: #2a431d;
     mix-blend-mode: normal;
     border-radius: 16px 16px 0px 0px;
     margin-left: 0;
@@ -113,17 +134,13 @@ input[type="radio"] + label > .checkmark {
         background-color: #000000;
     }
 }
-.inactive {
-    padding: 20px;
-    // padding-bottom: 25px;
+.mantine-o8x4z2 [role="tab"] {
     mix-blend-mode: normal;
     border-radius: 16px 16px 0px 0px;
     @media screen and (max-width: 526px) {
-        padding: 10px;
+        margin: 10px;
         border-radius: 25px;
         background-color: #0f0d000d;
-        // padding: 0;
-        margin: 0;
     }
 }
 
