@@ -145,7 +145,7 @@ const SingleJobBoard = () => {
                                 }
                                 shiftEndTime={data?.shiftEndTime}
                                 shiftStartTime={data?.shiftStartTime}
-                                others="T1, T2, APR 3"
+                                // others="T1, T2, APR 3"
                                 shiftMode={data?.jobMeetingPoint}
                             />
                         </Tabs.Panel>
