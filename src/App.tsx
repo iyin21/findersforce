@@ -20,6 +20,7 @@ function App() {
             {/* public routes */}
             <Route path="/" element={<Navigate replace to="/login" />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/auth/sign-up/depot" element={<Profile />} />
             <Route path="/recover-password" element={<RecoverPassword />} />
             <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/verify-email" element={<VerifyEmailAddress />} />
@@ -28,7 +29,6 @@ function App() {
             {/* private routes */}
             <Route element={<PersistLogin />}>
                 <Route element={<RequireAuth />}>
-                    <Route path="/profile" element={<Profile />} />
                     <Route path={"/dashboard"} element={<Dashboard />} />
                     <Route path="/pending" element={<Applications />} />
                     <Route path="/job-boards" element={<JobBoards />} />

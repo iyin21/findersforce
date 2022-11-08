@@ -1,7 +1,7 @@
-import { axiosPrivate } from "../../pages/auth/utils"
+import { axiosPrivate } from "../pages/auth/utils"
 import { useEffect } from "react"
-import useRefreshToken from "./use-refresh-tokens"
-import useAuthContext from "../../hooks/auth-hooks/useAuth"
+import useRefreshToken from "../hooks/auth-hooks/use-refresh-tokens"
+import useAuthContext from "../hooks/auth-hooks/useAuth"
 
 const useAxiosPrivate = () => {
     const { state } = useAuthContext()
