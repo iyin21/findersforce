@@ -116,7 +116,6 @@ module.exports = {
         //     lg: "10px",
         //     "3lg": "30px",
         //     "2xl": "16px",
-        //     xl: "12px",
         //     md: "4px",
         //     DEFAULT: "4px",
         //     full: "9999px",

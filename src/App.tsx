@@ -1,6 +1,5 @@
 import { Route, Routes, Navigate } from "react-router-dom"
 import PersistLogin from "./pages/auth/persist-login"
-import "./global.scss"
 import Applications from "./pages/Applications"
 import Login from "./pages/auth/login"
 import RecoverPassword from "./pages/auth/forgot-password"
