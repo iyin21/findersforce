@@ -1,11 +1,13 @@
 import { Modal } from "@mantine/core"
 import { Form, Formik } from "formik"
-import { Dispatch, SetStateAction } from "react"
+import { Dispatch, SetStateAction, useState } from "react"
 import { IoClose } from "react-icons/io5"
 import FormikControls from "../../../components/Form/FormControls/form-controls"
 import { object, string } from "yup"
-import GoogleAutoComplete from "../../../components/GoogleAutoComplete"
 import Button from "../../../components/Core/Buttons/Button"
+import TagsInput from "react-tagsinput"
+
+import "react-tagsinput/react-tagsinput.css"
 
 export interface AddUserInterface {
     opened: boolean
@@ -13,6 +15,11 @@ export interface AddUserInterface {
 }
 
 const AddUser = ({ opened, setOpened }: AddUserInterface) => {
+    const [email, setEmail] = useState<any[]>([])
+    const handleEmailChange = (tags: any[]) => {
+        setEmail(tags)
+    }
+
     return (
         <div>
             {" "}
@@ -36,13 +43,10 @@ const AddUser = ({ opened, setOpened }: AddUserInterface) => {
                     <Formik
                         initialValues={{
                             invitedRole: "SHIFT-MANAGER",
-                            address: "",
                             email: "",
                         }}
                         validationSchema={object().shape({
                             invitedRole: string().required("Required"),
-                            address: string().required("Required"),
-                            email: string().required("Required"),
                         })}
                         onSubmit={(values) => {
                             // mutate({
@@ -50,7 +54,7 @@ const AddUser = ({ opened, setOpened }: AddUserInterface) => {
                             // })
                         }}
                     >
-                        {({ isSubmitting, values }) => (
+                        {({ isSubmitting, values, setFieldValue }) => (
                             <Form className="space-y-6">
                                 <div>
                                     <label className="text-3md font-semibold mb-3 text-neutral-80 block">
@@ -67,22 +71,21 @@ const AddUser = ({ opened, setOpened }: AddUserInterface) => {
                                         className="rounded-xl"
                                     />
                                 </div>
-                                <div>
-                                    <GoogleAutoComplete fieldName="address" />
-                                </div>
+
                                 <div>
                                     <label className="text-3md font-semibold mb-3 text-neutral-80 block">
                                         Email
                                     </label>
-                                    <FormikControls
-                                        data-testid="email"
-                                        id="email"
-                                        control="input"
-                                        name="email"
-                                        type="email"
-                                        placeholder="Email address"
-                                        value={values.email}
-                                        className="rounded-xl"
+
+                                    <TagsInput
+                                        value={email}
+                                        onChange={(tags) => {
+                                            handleEmailChange(tags)
+                                            setFieldValue("email", tags)
+                                        }}
+                                        inputProps={{
+                                            placeholder: "Email address",
+                                        }}
                                     />
                                 </div>
                                 <div className="flex justify-end mt-10">
@@ -96,7 +99,7 @@ const AddUser = ({ opened, setOpened }: AddUserInterface) => {
                                     </Button>
                                     <Button
                                         variant="primary"
-                                        // type=""
+                                        type="submit"
                                         disabled={isSubmitting}
                                     >
                                         {isSubmitting
