@@ -1,6 +1,5 @@
 import { Route, Routes, Navigate } from "react-router-dom"
 import PersistLogin from "./pages/auth/persist-login"
-import "./global.scss"
 import Applications from "./pages/Applications"
 import Login from "./pages/auth/login"
 import RecoverPassword from "./pages/auth/forgot-password"
@@ -13,6 +12,7 @@ import JobBoards from "./pages/Job-boards"
 import SingleJobBoard from "./pages/Job-boards/components/viewSingleJob"
 import Planner from "./pages/planner/Planner"
 import ShiftsDetailTable from "./pages/planner/components/ShiftsDetailsTable"
+import Roles from "./pages/roles"
 
 function App() {
     return (
@@ -38,6 +38,7 @@ function App() {
                     />
                     <Route path="/planner" element={<Planner/>} />
                     <Route path="/planner/:jobListingId" element={<ShiftsDetailTable/>}/>
+                    <Route path="/roles&permission" element={<Roles />} />
                 </Route>
             </Route>
         </Routes>
