@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import { Outlet } from "react-router-dom"
+import { Loader } from "@mantine/core"
 import useRefreshToken from "../../hooks/auth-hooks/use-refresh-tokens"
 import useAuthContext from "../../hooks/auth-hooks/useAuth"
 
@@ -23,7 +24,17 @@ const PersistLogin = () => {
             : setIsLoading(false)
     }, [])
 
-    return <>{isLoading ? <>Loading</> : <Outlet />}</>
+    return (
+        <>
+            {isLoading ? (
+                <div className="absolute inset-1/2">
+                    <Loader color="rgba(254, 215, 10, 1)" />
+                </div>
+            ) : (
+                <Outlet />
+            )}
+        </>
+    )
 }
 
 export default PersistLogin

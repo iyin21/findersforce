@@ -7,7 +7,7 @@ const LandingPageText = () => {
         <section className="pt-[80px] pl-[93px] pr-[91px] pb-[78px] bg-black-1 text-white-100">
             <div className="flex items-center">
                 <img src={logo} alt="finders force logo" />
-                <div className="flex flex-row items-center ml-3 rounded-3lg bg-white-20 w-fit p-2.5 h-fit">
+                <div className="flex flex-row items-center ml-3 rounded-[30px] bg-white-20 w-fit p-2.5 h-fit">
                     <span className="text-sm">We`re hiring!</span>
                     <span
                         role="img"
@@ -26,7 +26,7 @@ const LandingPageText = () => {
                 join the #1 startup community specialized in onsite and Depot
                 first traffic management talents.
             </h2>
-            <div className="relative mr-[30px] px-6 py-7 rounded-lg bg-white-15 mt-[63px] border-1 border-white-20">
+            <div className="relative mr-[30px] px-6 py-7 rounded-[10px] bg-white-15 mt-[63px] border-1 border-white-20">
                 <h2 className="leading-loose text-justify opacity-80">
                     Finders Force understood my expectations in a company and
                     got me the perfect match, Bamboo.
@@ -39,7 +39,7 @@ const LandingPageText = () => {
                     <img
                         src={profileImg}
                         alt="profile img"
-                        className="rounded-haf"
+                        className="rounded-full"
                     ></img>
                     <div className="pl-2">
                         <h1 className="font-bold text-base m-0">
