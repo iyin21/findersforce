@@ -2,7 +2,6 @@
 import { Modal, Table } from "@mantine/core"
 import { useState } from "react";
 import { BiDotsVerticalRounded } from "react-icons/bi"
-// import { ShiftResponse, ShiftsDetailInterface } from "../../../types/planner/interfaces";
 import YellowStar from "../../../assets/YellowStar.svg"
 import { FaTimes } from "react-icons/fa";
 import Layout from "../../../components/layout/index";
@@ -12,7 +11,6 @@ import { AiFillStar, AiOutlineArrowLeft } from "react-icons/ai";
 import ProfileImage from "../../../assets/ProfileImage.svg"
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { CgSpinner } from "react-icons/cg";
-// import useAuthContext from "../../../hooks/auth-hooks/useAuth";
 
 
 
@@ -21,8 +19,9 @@ const ShiftsDetailTable = () => {
   const { jobListingId } = useParams<string>()
   
   const location = useLocation()
+
   const queryStatus = location.state.status
-  // console.log(queryStatus,jobListingId)
+
   const {
     data:shiftsData,
     isLoading: isLoadingShiftsData
@@ -30,17 +29,15 @@ const ShiftsDetailTable = () => {
     jobListingId ,
     queryStatus
   })
+
   const {
     data: singleShift
   } = useGetSingleSchedule({
     jobListingId: jobListingId
   })
-  // console.log(singleShift?.results)
-// console.log(data?.data?.results)
-// const { state } = useAuthContext()
-// console.log(state?.jwt?.token)
 
-const navigate = useNavigate()
+
+  const navigate = useNavigate()
 
 
 
@@ -151,80 +148,82 @@ const singleElement = singleShift?.results?.find((item) => item?.jobListing?._id
       }
       
 
-      <Modal 
-        centered
-        opened={opened}
-        onClose={() => setOpened(false)}
-        withCloseButton={false}
-        overlayOpacity={0.55}
-        overlayBlur={3}
-        padding={0}
-        transition="fade"
-        transitionDuration={600}
-        transitionTimingFunction="ease"
-      >
-          <div>
-            <header className="bg-black-100 text-white-100 flex justify-between p-4">
-              <div className="flex gap-4 place-items-center">
-                <div>
-                  <p className="font-bold text-2xl">VIEW SHIFT</p>
-                </div>
-                <div>
-                  <p className="text-2md">RATINGS</p>
-                  <img src={YellowStar} alt="star_icon" className="inline px-1"/>
-                  <span>{singleElement?.operativeRating}</span>
-                </div>
-              </div>
-              <div className="bg-gray-80 rounded-[100%] p-3 ">
-                <FaTimes size={20} onClick={()=> setOpened(!opened)}/>
-              </div>
-            </header>
-            <p className=" px-4 pt-6 text-2md text-black-60">LOCATION</p>
-            <p className="text-2md px-4 font-medium">{singleElement?.jobListing?.jobLocation?.formattedAddress}</p>
-            <section className="grid grid-cols-2 pb-4">
-              <div>
-                <p className=" px-4 pt-6 text-2md text-black-60">SHIFT TYPE</p>
-                <p className="text-2md px-4 font-medium">{singleElement?.jobListing?.jobType?.name}</p>
-              </div>
-              <div>
-                <p className=" px-4 pt-6 text-2md text-black-60">SHIFT METHOD</p>
-                <p className="text-2md px-4 font-medium">{singleElement?.jobListing?.jobMeetingPoint}</p>
-              </div>
-              <div>
-                <p className=" px-4 pt-6 text-2md text-black-60">CERTIFICATION</p>
-                <p className="text-2md px-4 font-medium">{singleElement?.jobListing?.jobQualification?.name}</p>
-              </div>
-              <div>
-                <p className=" px-4 pt-6 text-2md text-black-60">START DATE</p>
-                <p className="text-2md px-4 font-medium">{dayjs(singleElement?.jobListing?.jobDate).format("D MMMM YYYY")}</p>
-              </div>
-            </section>
-            <hr />
-            <p className="text-2md px-4 font-medium px-4 pt-4">SHIFT DURATION : {singleElement?.jobListing?.shiftDurationInHours}Hours</p>
-            <section className="grid grid-cols-2 pb-8">
+      {opened && 
+          <Modal 
+          centered
+          opened={opened}
+          onClose={() => setOpened(false)}
+          withCloseButton={false}
+          overlayOpacity={0.55}
+          overlayBlur={3}
+          padding={0}
+          transition="fade"
+          transitionDuration={600}
+          transitionTimingFunction="ease"
+        >
             <div>
-                <p className=" px-4 pt-6 text-2md text-black-60">START TIME</p>
-                <p className="text-2md px-4 font-medium">{dayjs(singleElement?.jobListing?.shiftStartTime).format("H:mm A")}</p>
-              </div>
+              <header className="bg-black-100 text-white-100 flex justify-between p-4">
+                <div className="flex gap-4 place-items-center">
+                  <div>
+                    <p className="font-bold text-2xl">VIEW SHIFT</p>
+                  </div>
+                  <div>
+                    <p className="text-2md">RATINGS</p>
+                    <img src={YellowStar} alt="star_icon" className="inline px-1"/>
+                    <span>{singleElement?.operativeRating}</span>
+                  </div>
+                </div>
+                <div className="bg-gray-80 rounded-[100%] p-3 ">
+                  <FaTimes size={20} onClick={()=> setOpened(!opened)}/>
+                </div>
+              </header>
+              <p className=" px-4 pt-6 text-2md text-black-60">LOCATION</p>
+              <p className="text-2md px-4 font-medium">{singleElement?.jobListing?.jobLocation?.formattedAddress}</p>
+              <section className="grid grid-cols-2 pb-4">
+                <div>
+                  <p className=" px-4 pt-6 text-2md text-black-60">SHIFT TYPE</p>
+                  <p className="text-2md px-4 font-medium">{singleElement?.jobListing?.jobType?.name}</p>
+                </div>
+                <div>
+                  <p className=" px-4 pt-6 text-2md text-black-60">SHIFT METHOD</p>
+                  <p className="text-2md px-4 font-medium">{singleElement?.jobListing?.jobMeetingPoint}</p>
+                </div>
+                <div>
+                  <p className=" px-4 pt-6 text-2md text-black-60">CERTIFICATION</p>
+                  <p className="text-2md px-4 font-medium">{singleElement?.jobListing?.jobQualification?.name}</p>
+                </div>
+                <div>
+                  <p className=" px-4 pt-6 text-2md text-black-60">START DATE</p>
+                  <p className="text-2md px-4 font-medium">{dayjs(singleElement?.jobListing?.jobDate).format("D MMMM YYYY")}</p>
+                </div>
+              </section>
+              <hr />
+              <p className="text-2md px-4 font-medium px-4 pt-4">SHIFT DURATION : {singleElement?.jobListing?.shiftDurationInHours}Hours</p>
+              <section className="grid grid-cols-2 pb-8">
               <div>
-                <p className=" px-4 pt-6 text-2md text-black-60">END TIME</p>
-                <p className="text-2md px-4 font-medium">{dayjs(singleElement?.jobListing?.shiftEndTime).format("H:mm A")}</p>
-              </div>
-              <div>
-                <p className=" px-4 pt-6 text-2md text-black-60">APPLIED</p>
-                <p className="text-2md px-4 font-medium">41</p>
-              </div>
-              <div>
-                <p className=" px-4 pt-6 text-2md text-black-60">ACTIVE</p>
-                <p className="text-2md px-4 font-medium text-green-100">31</p>
-              </div>
-              <div >
-                <p className=" px-4 pt-6 text-2md text-black-60">CANCELLED</p>
-                <p className="text-2md px-4 font-medium text-red-100">7</p>
-              </div>
-            </section>
-          </div>
-        </Modal>
+                  <p className=" px-4 pt-6 text-2md text-black-60">START TIME</p>
+                  <p className="text-2md px-4 font-medium">{dayjs(singleElement?.jobListing?.shiftStartTime).format("H:mm A")}</p>
+                </div>
+                <div>
+                  <p className=" px-4 pt-6 text-2md text-black-60">END TIME</p>
+                  <p className="text-2md px-4 font-medium">{dayjs(singleElement?.jobListing?.shiftEndTime).format("H:mm A")}</p>
+                </div>
+                <div>
+                  <p className=" px-4 pt-6 text-2md text-black-60">APPLIED</p>
+                  <p className="text-2md px-4 font-medium">41</p>
+                </div>
+                <div>
+                  <p className=" px-4 pt-6 text-2md text-black-60">ACTIVE</p>
+                  <p className="text-2md px-4 font-medium text-green-100">31</p>
+                </div>
+                <div >
+                  <p className=" px-4 pt-6 text-2md text-black-60">CANCELLED</p>
+                  <p className="text-2md px-4 font-medium text-red-100">7</p>
+                </div>
+              </section>
+            </div>
+          </Modal>
+      }
       </Layout>
     </>
   )

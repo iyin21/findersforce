@@ -50,7 +50,7 @@ const NavBar = () => {
     }, [error])
     return (
         <>
-            <nav className="w-full sticky top-0 h-10 flex items-center justify-end gap-12 bg-white-100 px-14 ">
+            <nav className="w-full sticky top-0 h-12 pt-6 pb-6 flex items-center justify-between bg-white-100">
                 <div className="w-64 bg-black-100">
                     <img 
                         src={FindersForceLogo} 
@@ -58,30 +58,32 @@ const NavBar = () => {
                         className="p-3 my-5 ml-5"
                     />
                 </div>
-                <img
-                    src={Search}
-                    alt="search icon "
-                    className="cursor-pointer"
-                />
-                <Indicator label={data?.length} size={16}>
+                <div className=" flex items-center justify-between px-12 gap-12 ">
                     <img
-                        src={Messaging}
-                        alt="Messaging icon "
+                        src={Search}
+                        alt="search icon "
                         className="cursor-pointer"
-                        onClick={() => setOpened((state) => !state)}
                     />
-                </Indicator>
-                <img
-                    src={SettingsCog}
-                    alt="SettingsCog icon"
-                    className="cursor-pointer"
-                />
-                <img src={User} alt="User icon" className="cursor-pointer" />
-                <img
-                    src={Logout}
-                    alt="Logout icon"
-                    className="cursor-pointer"
-                />
+                    <Indicator label={data?.length} size={16}>
+                        <img
+                            src={Messaging}
+                            alt="Messaging icon "
+                            className="cursor-pointer"
+                            onClick={() => setOpened((state) => !state)}
+                        />
+                    </Indicator>
+                    <img
+                        src={SettingsCog}
+                        alt="SettingsCog icon"
+                        className="cursor-pointer"
+                    />
+                    <img src={User} alt="User icon" className="cursor-pointer" />
+                    <img
+                        src={Logout}
+                        alt="Logout icon"
+                        className="cursor-pointer"
+                    />
+                </div>
             </nav>
             <Modal
                 opened={opened}
