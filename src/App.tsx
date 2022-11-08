@@ -10,6 +10,8 @@ import RequireAuth from "./pages/auth/require-auth"
 import Dashboard from "./pages/dashboard/Dashboard"
 import JobBoards from "./pages/Job-boards"
 import SingleJobBoard from "./pages/Job-boards/components/viewSingleJob"
+import Planner from "./pages/planner/Planner"
+import ShiftsDetailTable from "./pages/planner/components/ShiftsDetailsTable"
 import Roles from "./pages/roles"
 
 function App() {
@@ -22,6 +24,7 @@ function App() {
             <Route path="/recover-password" element={<RecoverPassword />} />
             <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/verify-email" element={<VerifyEmailAddress />} />
+            
 
             {/* private routes */}
             <Route element={<PersistLogin />}>
@@ -33,6 +36,8 @@ function App() {
                         path="job-boards/:jobBoardId"
                         element={<SingleJobBoard />}
                     />
+                    <Route path="/planner" element={<Planner/>} />
+                    <Route path="/planner/:jobListingId" element={<ShiftsDetailTable/>}/>
                     <Route path="/roles&permission" element={<Roles />} />
                 </Route>
             </Route>
