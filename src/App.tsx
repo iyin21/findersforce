@@ -12,6 +12,7 @@ import Dashboard from "./pages/dashboard/Dashboard"
 import JobBoards from "./pages/Job-boards"
 import SingleJobBoard from "./pages/Job-boards/components/viewSingleJob"
 import Planner from "./pages/planner/Planner"
+import ShiftsDetailTable from "./pages/planner/components/ShiftsDetailsTable"
 
 function App() {
     return (
@@ -36,6 +37,7 @@ function App() {
                         element={<SingleJobBoard />}
                     />
                     <Route path="/planner" element={<Planner/>} />
+                    <Route path="/planner/:jobListingId" element={<ShiftsDetailTable/>}/>
                 </Route>
             </Route>
         </Routes>
