@@ -111,7 +111,6 @@ module.exports = {
             creatoLight: ["CreatoDisplayLight", "sans-serif"],
             creatoDisplayItalic: ["CreatoDisplayItalic", "sans-serif"],
         },
-
         extend: {
             backgroundImage: {
                 "dashboard-pattern": "url('./src/assets/Thumbnail.svg')",
