@@ -3,68 +3,87 @@ import Messaging from "../../../assets/Messaging.svg"
 import SettingsCog from "../../../assets/SettingsCog.svg"
 import User from "../../../assets/User.svg"
 import Search from "../../../assets/Search.svg"
-import { useState } from "react"
-import { Modal } from "@mantine/core"
+import { useEffect, useState } from "react"
+import { Indicator, Modal } from "@mantine/core"
 import avi from "../../../assets/userAvi.svg"
 import addressLogo from "../../../assets/addressLogo.svg"
+import FindersForceLogo from "../../../assets/FindersForceLogo.svg"
+import useUserNotification from "../../../hooks/notification-hook"
+import { showNotification } from "@mantine/notifications"
+import { CgSpinner } from "react-icons/cg"
 
 const NavBar = () => {
     const [opened, setOpened] = useState(false)
-    const data = [
-        "2 hours ago",
-        "4:00am",
-        "4:00am",
-        "4:00am",
-        "4:00am",
-        "4:00am",
-        "4:00am",
-        "4:00am",
-        "4:00am",
-        "4:00am",
-        "4:00am",
-    ]
-    const notifications = data.map((time, index) => {
+
+    const { data: userNotifications, error, isLoading } = useUserNotification()
+
+    const data = userNotifications?.data.map((item) => {
+        return {
+            ...item,
+            createdAt: item.createdAt.toString().split("T")[1].split(".")[0],
+        }
+    })
+
+    const notifications = data?.map((item, index) => {
         return (
             <>
                 <div key={index} className="flex items-center">
                     <img src={addressLogo} alt="address logo" />
-                    <span className="text-lg py-[19px]">
-                        <strong>2-way shift </strong>at 12 Liverpool road is
-                        starting soon.
-                    </span>
+                    <span className="text-lg py-[19px]">{item.title}</span>
                     <span className="text-black-neutral ml-auto text-2sm">
-                        {time}
+                        <>{item.createdAt}</>
                     </span>
                 </div>
                 <hr className="border-black-20" />
             </>
         )
     })
+
+    useEffect(() => {
+        if (error) {
+            showNotification({
+                title: "Error",
+                message: error.message,
+                color: "red",
+            })
+        }
+    }, [error])
     return (
         <>
-            <nav className="w-full sticky top-0 h-10 flex items-center justify-end gap-12 bg-white-100 px-14 ">
-                <img
-                    src={Search}
-                    alt="search icon "
-                    className="cursor-pointer"
-                />
-                <img
-                    src={Messaging}
-                    alt="Messaging icon "
-                    className="cursor-pointer"
-                    onClick={() => setOpened((state) => !state)}
-                />
-                <img
-                    src={SettingsCog}
-                    alt="SettingsCog icon"
-                    className="cursor-pointer"
-                />
-                <img src={User} alt="User icon" className="cursor-pointer" />
-                <img
-                    src={Logout}
-                    alt="Logout icon"
-                    className="cursor-pointer"
-                />
+            <nav className="w-full sticky top-0 h-12 pt-6 pb-6 flex items-center justify-between bg-white-100">
+                <div className="w-64 bg-black-100 pt-12">
+                    <img 
+                        src={FindersForceLogo} 
+                        alt="" 
+                        className="p-3 my-5 ml-5"
+                    />
+                </div>
+                <div className=" flex items-center justify-between px-12 gap-12 ">
+                    <img
+                        src={Search}
+                        alt="search icon "
+                        className="cursor-pointer"
+                    />
+                    <Indicator label={data?.length} size={16}>
+                        <img
+                            src={Messaging}
+                            alt="Messaging icon "
+                            className="cursor-pointer"
+                            onClick={() => setOpened((state) => !state)}
+                        />
+                    </Indicator>
+                    <img
+                        src={SettingsCog}
+                        alt="SettingsCog icon"
+                        className="cursor-pointer"
+                    />
+                    <img src={User} alt="User icon" className="cursor-pointer" />
+                    <img
+                        src={Logout}
+                        alt="Logout icon"
+                        className="cursor-pointer"
+                    />
+                </div>
             </nav>
             <Modal
                 opened={opened}
@@ -133,7 +152,15 @@ const NavBar = () => {
                         </div>
                     </div>
                 </section>
-                <section className="px-[30px]">{notifications}</section>
+                <section className="px-[30px]">
+                    {isLoading ? (
+                        <div className="h-screen w-full flex mt-24 justify-center">
+                            <CgSpinner className="animate-spin text-primary-90 text-4xl" />
+                        </div>
+                    ) : (
+                        <>{notifications}</>
+                    )}
+                </section>
             </Modal>
         </>
     )

@@ -1,18 +1,18 @@
-import Sidebar from "../layout/sidebar/Sidebar"
-import NavBar from "../layout/navbar/NavBar"
+import Sidebar from "./sidebar/Sidebar"
+import NavBar from "./navbar/NavBar"
 import { LayoutProps } from "../../types/layout/interfaces"
 
 const Layout = ({ children }: LayoutProps) => {
     return (
-        <div className="h-screen relative overflow-hidden">
-            <div className="w-5/6 fixed right-0">
+        <div className="h-screen relative">
+            <div className="w-full fixed right-0 z-20">
                 <NavBar />
             </div>
-            <div className="flex justify-between">
-                <div className="w-1/6 h-screen">
+            <div className="relative md:pl-64 h-full">
+                <div className="hidden md:block fixed bg-black-100 left-0 w-64 mt-14 h-[95%] overflow-y-auto">
                     <Sidebar />
                 </div>
-                <main className="w-5/6 mt-10">{children}</main>
+                <main className="w-full h-full overflow-y-auto lg:px-2 py-5 ">{children}</main>
             </div>
         </div>
     )

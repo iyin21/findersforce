@@ -35,6 +35,7 @@ module.exports = {
                 100: "rgba(255, 255, 255, 1)",
             },
             gray: {
+                80: "rgba(231, 231, 229, 0.8)",
                 100: "rgba(231, 231, 229, 1)",
             },
             green: {
@@ -111,15 +112,6 @@ module.exports = {
             creatoLight: ["CreatoDisplayLight", "sans-serif"],
             creatoDisplayItalic: ["CreatoDisplayItalic", "sans-serif"],
         },
-        // borderRadius: {
-        //     "3xl": "1.5rem",
-        //     lg: "10px",
-        //     "3lg": "30px",
-        //     "2xl": "16px",
-        //     md: "4px",
-        //     DEFAULT: "4px",
-        //     full: "9999px",
-        // },
         extend: {
             backgroundImage: {
                 "dashboard-pattern": "url('./src/assets/Thumbnail.svg')",

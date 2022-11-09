@@ -1,5 +1,6 @@
 import { Menu, Table } from "@mantine/core"
 import { IoEllipsisVerticalSharp } from "react-icons/io5"
+import MobileRoleTable from "./mobile-role-table"
 
 export interface RoleTableInterface {
     status: "active" | "pending"
@@ -34,12 +35,13 @@ const RoleTable = ({ elements, status }: RoleTableInterface) => {
                     <Menu
                         width={200}
                         shadow="md"
-                        position="left-start"
                         offset={8}
                         closeOnClickOutside={true}
                     >
                         <Menu.Target>
-                            <IoEllipsisVerticalSharp />
+                            <div>
+                                <IoEllipsisVerticalSharp />
+                            </div>
                         </Menu.Target>
 
                         <Menu.Dropdown>
@@ -64,9 +66,6 @@ const RoleTable = ({ elements, status }: RoleTableInterface) => {
         { list: "LOCATION" },
         { list: "EMAIL" },
         { list: "DATE ADDED" },
-        // { list: "ROLE" },
-        // { list: "STATUS" },
-        // { list: "ACTION" },
     ]
     return (
         <>
@@ -123,6 +122,9 @@ const RoleTable = ({ elements, status }: RoleTableInterface) => {
 
                     <tbody>{rows}</tbody>
                 </Table>
+            </div>
+            <div className="block lg:hidden">
+                <MobileRoleTable status={status} elements={elements} />
             </div>
         </>
     )

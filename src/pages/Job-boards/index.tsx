@@ -220,7 +220,7 @@ const JobBoards = () => {
                                             }
                                         />
                                     </Tabs.Panel>
-                                    <Tabs.Panel value="second">
+                                    <Tabs.Panel value="second" className="p-3">
                                         <JobBoardTable
                                             elements={draftData?.data}
                                             handleCheckedJob={handleCheckedJob}
