@@ -23,6 +23,8 @@ const SingleJobBoard = () => {
     const [activeTab, setActiveTab] = useState<string | null>("first")
     const [openJobPost, setOpenJobPost] = useState(false)
     const [openSuccess, setOpenSuccess] = useState(false)
+    const [newJobId, setNewJobId] = useState("")
+
     const navigate = useNavigate()
     const { data, isLoading: isLoadingSingleData } = useGetJobListingById({
         id: jobBoardId,
@@ -51,6 +53,12 @@ const SingleJobBoard = () => {
                 message: "Job List deleted successfully",
             })
             navigate("/job-boards")
+        }
+        if (openSuccess && newJobId) {
+            showNotification({
+                title: "Success",
+                message: "Job Listed successfully",
+            })
         }
     }, [deletedJob])
 
@@ -147,8 +155,6 @@ const SingleJobBoard = () => {
                                 <JobInformation
                                     description={data?.jobDescription}
                                     jobType={data?.jobType?.name}
-                                    shiftType={data?.jobMeetingPoint}
-                                    time="8:00 AM - 5:00 PM"
                                     hourlyPay={
                                         data?.jobRate
                                             ?.jobRatePerHourDisplayedToDepot
@@ -166,7 +172,6 @@ const SingleJobBoard = () => {
                                     }
                                     shiftEndTime={data?.shiftEndTime}
                                     shiftStartTime={data?.shiftStartTime}
-                                    // others="T1, T2, APR 3"
                                     shiftMode={data?.jobMeetingPoint}
                                 />
                             </Tabs.Panel>
@@ -188,7 +193,7 @@ const SingleJobBoard = () => {
                     opened={openJobPost}
                     setOpened={setOpenJobPost}
                     setOpenSuccess={setOpenSuccess}
-                    // setNewJobId={setNewJobId}
+                    setNewJobId={setNewJobId}
                     draftStatus={"draft"}
                     singleDraftData={data}
                 />

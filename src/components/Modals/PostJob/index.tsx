@@ -26,9 +26,9 @@ export interface IPostJobProps {
     opened: boolean
     setOpened: Dispatch<SetStateAction<boolean>>
     setOpenSuccess: Dispatch<SetStateAction<boolean>>
-    setNewJobId?: Dispatch<SetStateAction<string>>
+    setNewJobId: Dispatch<SetStateAction<string>>
     draftStatus: string
-    singleDraftData: JobBoardResponseInterface | null
+    singleDraftData: JobBoardResponseInterface | null | undefined
 }
 
 const PostJob = ({

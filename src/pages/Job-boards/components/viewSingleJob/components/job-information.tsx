@@ -2,11 +2,9 @@ import dayjs from "dayjs"
 
 interface JobInformationInterface {
     description: string | undefined
-    shiftType: string | undefined
     location: string | undefined
     shiftMode: string | undefined
     date: string | undefined
-    time: string | undefined
     hourlyPay: number | undefined
     noOfOperativesRequired: number | undefined
     requiredQualification: string | undefined
@@ -28,7 +26,6 @@ const JobInformation = ({
     currency,
     shiftStartTime,
     shiftEndTime,
-    shiftType,
 }: JobInformationInterface) => {
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 justify-between mt-4">
