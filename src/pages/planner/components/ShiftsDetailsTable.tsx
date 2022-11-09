@@ -4,14 +4,14 @@ import { useState } from "react";
 import { BiDotsVerticalRounded } from "react-icons/bi"
 import YellowStar from "../../../assets/YellowStar.svg"
 import { FaTimes } from "react-icons/fa";
-import Layout from "../../../components/layout/index";
+import Layout from "../../../components/Layout/index";
 import {  useGetShiftHistoryByJobListingId, useGetSingleSchedule } from "../../../hooks/planner/usePlanner.hooks";
 import dayjs from "dayjs";
 import { AiFillStar, AiOutlineArrowLeft } from "react-icons/ai";
 import ProfileImage from "../../../assets/ProfileImage.svg"
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { CgSpinner } from "react-icons/cg";
-
+import Pagination from "../../../components/Pagination/pagination"
 
 
 
@@ -38,6 +38,12 @@ const ShiftsDetailTable = () => {
 
 
   const navigate = useNavigate()
+  const [activePage, setActivePage] = useState(1)
+
+
+    const handleActivePage = (pageNumber: number) => {
+        setActivePage(pageNumber)
+    }
 
 
 
@@ -140,7 +146,18 @@ const singleElement = singleShift?.results?.find((item) => item?.jobListing?._id
             </thead> 
             <tbody onClick={()=> setOpened(!opened)}>
                 {rows}
-            </tbody>         
+            </tbody> 
+            <Pagination
+                page={activePage}
+                total={activePage}
+                onChange={handleActivePage}
+                boundaries={1}
+                recordPerpage={
+                    shiftsData?.results
+                        ? shiftsData?.results.length
+                        : 1
+                }
+              />        
           </Table>
         </div>
       </>

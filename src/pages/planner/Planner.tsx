@@ -4,9 +4,9 @@ import { BiFilter } from "react-icons/bi"
 import { Button } from "../../components/index"
 import ShiftsTable from "./components/ShiftsTable"
 import { useGetShiftHistory } from "../../hooks/planner/usePlanner.hooks"
-import Layout from "../../components/layout/index"
 import Pagination from "../../components/Pagination/pagination"
 import { CgSpinner } from "react-icons/cg"
+import Layout from "../../components/Layout/index"
 
 
 

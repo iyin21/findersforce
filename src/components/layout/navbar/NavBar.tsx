@@ -51,7 +51,7 @@ const NavBar = () => {
     return (
         <>
             <nav className="w-full sticky top-0 h-12 pt-6 pb-6 flex items-center justify-between bg-white-100">
-                <div className="w-64 bg-black-100">
+                <div className="w-64 bg-black-100 pt-12">
                     <img 
                         src={FindersForceLogo} 
                         alt="" 
