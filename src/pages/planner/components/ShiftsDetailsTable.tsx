@@ -12,6 +12,8 @@ import ProfileImage from "../../../assets/ProfileImage.svg"
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { CgSpinner } from "react-icons/cg";
 import Pagination from "../../../components/Pagination/pagination"
+import Filter from "../../../components/Filter/index"
+import { FilterRequest } from "../../../types/filter/filter";
 
 
 
@@ -39,6 +41,8 @@ const ShiftsDetailTable = () => {
 
   const navigate = useNavigate()
   const [activePage, setActivePage] = useState(1)
+
+  const applyFilter = (filter: FilterRequest) => {}
 
 
     const handleActivePage = (pageNumber: number) => {
@@ -114,16 +118,24 @@ const singleElement = singleShift?.results?.find((item) => item?.jobListing?._id
             <div className="bg-gray-80 w-fit p-3 rounded-lg cursor-pointer">
               <AiOutlineArrowLeft size={20} onClick={() => navigate("/planner")}/>
             </div>
-            <div className="flex flex-col">
-                <h1 className="text-xl md:text-3xl font-creatoBold text-black-100 font-bold">
-                  {element?.jobListing?.jobType?.name}
-                </h1>
-                <p className="text-black-60 text-2md md:text-lg font-normal font-creato">
-                {element?.jobListing?.jobLocation?.formattedAddress} | {element?.jobListing?.jobMeetingPoint} | {dayjs(element?.jobListing?.jobDate).format("DD/MM/YYYY")}
-                </p>
+            <div className="flex justify-between">
+                <div>
+                  <h1 className="text-xl md:text-3xl font-creatoBold text-black-100 font-bold">
+                    {element?.jobListing?.jobType?.name}
+                  </h1>
+                  <p className="text-black-60 text-2md md:text-lg font-normal font-creato">
+                  {element?.jobListing?.jobLocation?.formattedAddress} | {element?.jobListing?.jobMeetingPoint} | {dayjs(element?.jobListing?.jobDate).format("DD/MM/YYYY")}
+                  </p>
+                </div>
+                <div className="relative lg:pb-4 bottom-0 lg:bottom-0">
+                  <div className="absolute right-0 ">
+                  {" "}
+                    <Filter applyFilter={applyFilter} />
+                  </div>
+                </div>
             </div>
         </div>
-        <div className="hidden lg:block " data-testid="job_board">
+        <div className="hidden lg:block " data-testid="planner">
           <Table
           style={{
             backgroundColor: "#FFFFFF",
@@ -146,8 +158,10 @@ const singleElement = singleShift?.results?.find((item) => item?.jobListing?._id
             </thead> 
             <tbody onClick={()=> setOpened(!opened)}>
                 {rows}
-            </tbody> 
-            <Pagination
+            </tbody>         
+          </Table>
+        </div>
+        <Pagination
                 page={activePage}
                 total={activePage}
                 onChange={handleActivePage}
@@ -157,9 +171,7 @@ const singleElement = singleShift?.results?.find((item) => item?.jobListing?._id
                         ? shiftsData?.results.length
                         : 1
                 }
-              />        
-          </Table>
-        </div>
+              />
       </>
       )
       }
