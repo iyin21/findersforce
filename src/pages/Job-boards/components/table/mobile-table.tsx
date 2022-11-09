@@ -1,7 +1,9 @@
 import dayjs from "dayjs"
 import { IoIosArrowForward } from "react-icons/io"
+import { JobBoardResponseInterface } from "../../../../hooks/job-board/interface"
 import { Checkbox } from "../../../../components/index"
 import { JobBoardInterface } from "./job-table"
+import { useNavigate } from "react-router-dom"
 
 const MobileJobTable = ({
     elements,
@@ -9,11 +11,28 @@ const MobileJobTable = ({
     handleCheckedJob,
     checkedJob,
     setDeleteId,
+    setOpenJobPost,
+    setDraftStatus,
+    setdraftElement,
 }: JobBoardInterface) => {
+    const navigate = useNavigate()
+    const handleNavigate = (id: string, element: JobBoardResponseInterface) => {
+        if (status === "active") {
+            navigate(`/job-boards/${id}`)
+        } else {
+            setOpenJobPost(true)
+            setDraftStatus("draft")
+            setdraftElement(element)
+        }
+    }
     return (
         <div className="mt-4">
             {elements?.map((element, index) => (
-                <div className="rounded bg-black-5 mb-4" key={index}>
+                <div
+                    className="rounded bg-black-5 mb-4"
+                    key={index}
+                    onClick={() => handleNavigate(element?._id, element)}
+                >
                     <div className="flex justify-between border-b border-black-20 p-4">
                         <div
                             className="flex items-center"

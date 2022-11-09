@@ -18,6 +18,7 @@ export interface JobBoardInterface {
     setOpenJobPost: Dispatch<SetStateAction<boolean>>
     setDraftStatus: Dispatch<SetStateAction<string>>
     setdraftElement: Dispatch<SetStateAction<JobBoardResponseInterface | null>>
+    // handleNavigate: (id: string) => void
 }
 
 const JobBoardTable = ({

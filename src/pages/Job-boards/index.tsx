@@ -91,7 +91,7 @@ const JobBoards = () => {
                 color: "green",
             })
         }
-        if (openSuccess === true) {
+        if (openSuccess) {
             refetchActiveJobList()
             refetchDraftJobList()
         }
@@ -102,6 +102,8 @@ const JobBoards = () => {
                 color: "red",
             })
         }
+        refetchActiveJobList()
+        refetchDraftJobList()
     }, [deletedJob, activeData, draftData])
 
     return (
@@ -113,7 +115,7 @@ const JobBoards = () => {
                             Job Board
                         </h1>
                         <p className="text-black-60 text-2md md:text-lg font-normal font-creato">
-                            This is a subtext describing what users can see here
+                            All talents applying for your shifts in one glance
                         </p>
                     </div>
                     <Button
