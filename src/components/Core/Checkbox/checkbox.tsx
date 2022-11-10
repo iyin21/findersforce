@@ -35,14 +35,14 @@ export default function Checkbox({
     return (
         <>
             <div
-                className={`flex items-center h-6 w-fit cursor-pointer rounded-lg ${
+                className={`flex items-center h-6 w-fit cursor-pointer rounded-lg mb-2 ${
                     classNames?.wrapper ?? ""
                 }
             `}
             >
                 <input
                     type="checkbox"
-                    className={` accent-green-100 focus:ring-0 outline-none cursor-pointer focus:outline-none border border-black-20 h-6 w-6 ${
+                    className={` accent-black-10 focus:ring-0 outline-none cursor-pointer focus:outline-none border border-black-20 h-6 w-6 ${
                         classNames?.input || ""
                     }`}
                     {...rest}

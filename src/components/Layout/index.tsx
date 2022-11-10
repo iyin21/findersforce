@@ -1,5 +1,5 @@
-import Sidebar from "./sidebar/Sidebar"
-import NavBar from "./navbar/NavBar"
+import Sidebar from "../layout/sidebar/Sidebar"
+import NavBar from "../layout/navbar/NavBar"
 import { LayoutProps } from "../../types/layout/interfaces"
 
 const Layout = ({ children }: LayoutProps) => {

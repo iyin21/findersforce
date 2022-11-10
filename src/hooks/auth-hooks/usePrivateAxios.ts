@@ -1,21 +1,31 @@
-import { axiosPrivate } from "../../pages/auth/utils";
-import { useEffect } from "react";
-import useRefreshToken from "./use-refresh-tokens";
-import useAuthContext from "../../hooks/auth-hooks/useAuth";
+import { axiosPrivate } from "../../pages/auth/utils"
+import { useEffect } from "react"
+import useRefreshToken from "./use-refresh-tokens"
+import useAuthContext from "../../hooks/auth-hooks/useAuth"
 
 const useAxiosPrivate = () => {
-    const { state } = useAuthContext();
-    const refresh = useRefreshToken();
+    const { state } = useAuthContext()
+    const refresh = useRefreshToken()
 
     useEffect(() => {
         const requestIntercept = axiosPrivate.interceptors.request.use(
-            config => {
-                if (!config.headers['Authorization']) {
-                    config.headers['Authorization'] = `Bearer ${state?.jwt?.token}`;
+            (config) => {
+                if (
+                    config &&
+                    config.headers !== undefined &&
+                    state.jwt !== null
+                ) {
+                    if (!config.headers["Authorization"]) {
+                        config.headers[
+                            "Authorization"
+                        ] = `Bearer ${state?.jwt.token}`
+                    }
+                    return config
                 }
-                return config;
-            }, (error) => Promise.reject(error)
-        );
+                return config
+            },
+            (error) => Promise.reject(error)
+        )
 
         const responseIntercept = axiosPrivate.interceptors.response.use(
             (response) => response,
@@ -37,7 +47,7 @@ const useAxiosPrivate = () => {
             axiosPrivate.interceptors.request.eject(requestIntercept)
             axiosPrivate.interceptors.response.eject(responseIntercept)
         }
-    }, [auth, refresh])
+    }, [state.jwt?.token, refresh])
 
     return axiosPrivate
 }

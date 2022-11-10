@@ -1,13 +1,13 @@
 import { TextInput } from "@mantine/core"
 import { useForm } from "@mantine/form"
-import Button from "../Core/Buttons/Button"
+import Button from "../../components/Core/Buttons/Button"
 
 const OtpContainer = ({
     handleSubmit,
 }: {
     handleSubmit: (values: any) => void
 }) => {
-    const value = ["one", "two", "three", "four", "five"]
+    const value: string[] = ["one", "two", "three", "four", "five"]
     const otpForm = useForm({
         initialValues: {
             one: "",
@@ -31,7 +31,6 @@ const OtpContainer = ({
                 placeholder="0"
                 label=""
                 key={num}
-                // withAsterisk
                 required
                 autoComplete="false"
                 {...otpForm.getInputProps(`${num}`)}
@@ -47,7 +46,6 @@ const OtpContainer = ({
                         },
                     },
                     input: {
-                        marginTop: "10px",
                         border: "1px solid rgba(15, 13, 0, 0.1)",
                         height: "64px",
                         borderRadius: "10px",
@@ -63,8 +61,16 @@ const OtpContainer = ({
             <div className="grid grid-cols-5 w-full mb-[50px] gap-x-4">
                 {inputContainer}
             </div>
-            {/* <Button buttonText="Reset password"/> */}
-            <Button>Reset password</Button>
+            <Button
+                variant="primary"
+                type="submit"
+                style={{
+                    backgroundColor: "rgba(254, 215, 10, 1)",
+                }}
+                className="text-black-100 bg-yellow-100 font-bold text-base w-full text-center py-6 rounded-l rounded-tr-2xl rounded-br"
+            >
+                Reset Password
+            </Button>
         </form>
     )
 }

@@ -51,7 +51,7 @@ const ShiftDetails = ({shiftId, setPhase}:{shiftId:string, setPhase: (val: numbe
                                         |
                                     </span>
                                     <span className="text-green-100 pl-1 font-bold">
-                                         {item?.jobListing.jobMatchPercentage}% Match
+                                         {item?.jobMatchPercentage}% Match
                                     </span>
                                 </p>
                             </div>

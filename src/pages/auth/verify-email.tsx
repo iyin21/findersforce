@@ -1,7 +1,7 @@
 import { NavLink, useLocation, useNavigate } from "react-router-dom"
 import backIcon from "../../assets/backIcon.svg"
-import LandingPageText from "../../components/landing-page-txt"
-import OtpContainer from "../../components/otp-container"
+import LandingPageText from "../../components/Layout/landing-page-txt"
+import OtpContainer from "../../components/OtpContainer/otp-container"
 
 const VerifyEmailAddress = () => {
     const navigate = useNavigate()
@@ -13,7 +13,7 @@ const VerifyEmailAddress = () => {
     return (
         <div className="bg-black-100 grid grid-cols-2 text-white">
             <LandingPageText />
-            <div className="my-8 mr-8 bg-white-100  pt-82 px-16 flex flex-col rounded-lg">
+            <div className="my-8 mr-8 bg-white-100 pt-[82px] px-16 flex flex-col rounded-lg">
                 <div className="bg-black-10 w-fit h-fit rounded">
                     <NavLink to="/recover-password">
                         <img
@@ -23,7 +23,7 @@ const VerifyEmailAddress = () => {
                         />
                     </NavLink>
                 </div>
-                <h1 className="pt-34 text-blaq-0 font-extrabold text-3.5xl">
+                <h1 className="pt-[34px] text-blaq-0 font-extrabold text-3.5xl">
                     Verify Email Address
                 </h1>
                 <span className="text-base text-blaq-0 max-w-[560px] w-fit pt-2">
@@ -33,7 +33,7 @@ const VerifyEmailAddress = () => {
                 </span>
                 <div className="text-blaq-0 pt-[18px] pb-[37px]">
                     <span className="text-base">Didn`t get an email? </span>
-                    <a href="#/" className="text-yellow-100 underline">
+                    <a href="/#" className="text-yellow-100 underline">
                         Resend OTP
                     </a>
                 </div>

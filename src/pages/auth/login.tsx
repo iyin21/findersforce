@@ -2,13 +2,11 @@ import React, { MutableRefObject } from "react"
 import { NavLink, useNavigate, useLocation } from "react-router-dom"
 import { TextInput, PasswordInput, Alert } from "@mantine/core"
 import { useForm } from "@mantine/form"
-import Button from "../../components/button"
-import LandingPageText from "../../components/landing-page-txt"
+import Button from "../../components/Core/Buttons/Button"
+import LandingPageText from "../../components/Layout/landing-page-txt"
 import { emailInputStyle, passwordInputStyle } from "./utils"
 import axios from "./utils"
 import useAuthContext from "../../hooks/auth-hooks/useAuth"
-
-const LOGINURL = "/login"
 
 const Login = () => {
     const [error, showError] = React.useState(false)
@@ -46,7 +44,7 @@ const Login = () => {
         setIsSubmitting(true)
         axios
             .post(
-                LOGINURL,
+                "/login",
                 JSON.stringify({ email: email, password: password }),
                 {
                     headers: { "Content-Type": "application/json" },
@@ -97,7 +95,7 @@ const Login = () => {
     }, [])
 
     return (
-        <div className="grid grid-cols-2 text-white h-fit bg-black-1">
+        <div className="grid grid-cols-2 text-white h-screen bg-black-1">
             <LandingPageText />
             <section className="my-8 mr-8 bg-white-100 pt-12 px-16 flex flex-col rounded-lg">
                 <h1 className="text-blaq-0 font-extrabold text-4xl pb-2.5">
@@ -108,7 +106,7 @@ const Login = () => {
                         Don`t have an account?{" "}
                     </span>
                     <a
-                        href="#/"
+                        href="/#"
                         className="text-2lg text-green-100 font-normal"
                     >
                         Request access
@@ -145,11 +143,22 @@ const Login = () => {
                         onFocusCapture={() => showError(false)}
                     />
                     <Button
-                        buttonText={
-                            !isSubmitting ? "Enter finders force" : "Loading..."
+                        variant="primary"
+                        type="submit"
+                        style={
+                            !isSubmitting
+                                ? {
+                                      backgroundColor: "rgba(254, 215, 10, 1)",
+                                  }
+                                : {
+                                      backgroundColor: "rgba(254, 215, 10, 1)",
+                                      opacity: "0.7",
+                                  }
                         }
-                        submit={isSubmitting}
-                    />
+                        className="text-black-100 bg-yellow-100 font-bold text-base w-full text-center py-6 rounded-l rounded-tr-2xl rounded-br"
+                    >
+                        {!isSubmitting ? "Enters finders force" : "Loading..."}
+                    </Button>
                 </form>
                 {error && (
                     <Alert

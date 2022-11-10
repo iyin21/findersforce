@@ -66,7 +66,7 @@ input[type="radio"] + label > .checkmark {
         url("./fonts/CreatoDisplay/CreatoDisplay-Light.otf") format("truetype");
     font-weight: light;
 }
-
+@layer base {
 h1 {
     @apply text-6xl;
 }
@@ -98,6 +98,7 @@ h6 {
 }
 .body-extra-small {
     @apply text-2sm;
+}
 }
 .mantine-1e1m5s4 {
     border-bottom: 2px solid rgba(254, 215, 10, 1);

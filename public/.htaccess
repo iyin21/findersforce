@@ -1,0 +1,14 @@
+<IfModule mod_rewrite.c>
+Options -MultiViews
+RewriteEngine On
+RewriteBase /subdirectory
+RewriteRule ^index\.html$ - [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-l
+RewriteRule . /index.html [L]
+<FilesMatch ".(css|jpg|jpeg|png|gif|js|ico)$">
+#Header Set Cache-Control "max-age=31536000, public"
+Header set Cache-Control "max-age=31536000, public"
+</FilesMatch>
+</IfModule>

@@ -1,5 +1,3 @@
-import { StringSchema } from "yup"
-import { StringLocale } from "yup/lib/locale"
 
 export interface ApplicationResponse {
     status: true
@@ -28,6 +26,7 @@ export interface Data {
     _v: number
     completedShfts: number;
     certificates: Certificates[];
+    jobMatchPercentage:number;
 }
 export interface Certificates {
     _id:string;
@@ -41,6 +40,8 @@ export interface Certificates {
     updatedAt: Date;
     __v: number;
     deleted: boolean
+    
+
 }
 export interface JobListing {
     _id: string
@@ -78,6 +79,7 @@ export interface User {
     resumeUrl: string
     bio: string
     profileImageUrl: string
+    createdAt: Date
 }
 
 export interface JobLocation {
@@ -133,6 +135,7 @@ export interface ShiftResponse {
 }
 
 export interface Result {
+    jobMatchPercentage: string;
     cancelReason: string
     cancelReasonMoreDetails: string
     cancelStatus: boolean
@@ -194,6 +197,7 @@ export interface Result {
         twoFa_type: string
         updatedAt: Date
         __v: number
+        
     }
     operativeRating: null
     shiftEnded: boolean
