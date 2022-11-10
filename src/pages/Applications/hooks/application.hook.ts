@@ -6,7 +6,7 @@ import {
     ApplicationResponse,
     ShiftResponse,
     ApplicationDetailsResponse,
-} from "../interface"
+} from "../interface";
 import useAuthContext from "../../../hooks/auth-hooks/useAuth"
 import { useMutation, useQuery } from "@tanstack/react-query"
 

@@ -66,7 +66,7 @@ input[type="radio"] + label > .checkmark {
         url("./fonts/CreatoDisplay/CreatoDisplay-Light.otf") format("truetype");
     font-weight: light;
 }
-
+@layer base {
 h1 {
     @apply text-6xl;
 }
