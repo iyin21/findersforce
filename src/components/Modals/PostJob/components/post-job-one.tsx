@@ -5,6 +5,7 @@ import { MdLocationPin } from "react-icons/md"
 import Radio from "../../../../components/Core/Radio/radio"
 import { useFormikContext } from "formik"
 import { JobBoardByIdResponse } from "../../../../hooks/job-board/interface"
+import { FiClock } from "react-icons/fi"
 
 interface PostJobOneProps {
     jobType: JobBoardByIdResponse[] | undefined
@@ -158,6 +159,12 @@ const PostJobOne = ({ jobType }: PostJobOneProps) => {
                         }
                     />
                 </div>
+            </div>
+            <div className="flex items-center gap-2 mt-4 px-2 md:p-4 rounded-md bg-green-10 border-l-4 border-green-100">
+                <FiClock color="#4DB25D" size={20} />
+                <p className=" text-sm md:text-lg">
+                    This shift will last for <strong>{toTime} hours</strong>{" "}
+                </p>
             </div>
         </div>
     )

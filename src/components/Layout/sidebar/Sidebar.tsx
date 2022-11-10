@@ -3,15 +3,13 @@ import RlatterLogo from "../../../assets/RlatterLogo.svg"
 import Profile from "../../../assets/Profile.svg"
 import Setting from "../../../assets/Setting.svg"
 import Logout from "../../../assets/Logout.svg"
-import FindersForceLogo from "../../../assets/FindersForceLogo.svg"
 import { NavLink } from "react-router-dom"
 import styles from "./sidebar.module.scss";
 
 
 const Sidebar = () => {
   return (
-    <aside className="w-full text-base h-full pt-2 pb-2 bg-black-100 z-30">
-            <img src={FindersForceLogo} alt="" className="p-3 my-5 ml-5"/>
+    <aside className="w-full text-base  pt-2 pb-8 pt-14">
            <section className="flex p-3 rounded-lg ml-1 mb-4 mr-1 bg-ash-10">
                     <img className="inline rounded-full p-2" src={RlatterLogo} alt=""/>
                     <div className="p-1 text-white-100">

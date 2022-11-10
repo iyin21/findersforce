@@ -91,7 +91,7 @@ const JobBoards = () => {
                 color: "green",
             })
         }
-        if (openSuccess === true) {
+        if (openSuccess) {
             refetchActiveJobList()
             refetchDraftJobList()
         }
@@ -102,18 +102,20 @@ const JobBoards = () => {
                 color: "red",
             })
         }
+        refetchActiveJobList()
+        refetchDraftJobList()
     }, [deletedJob, activeData, draftData])
 
     return (
         <Layout pageTitle={"Shifts"}>
-            <div className="md:p-6 p-6">
+            <div className="md:p-6 p-6 mt-4 md:mt-14">
                 <div className="flex justify-between items-center">
                     <div className="flex flex-col">
                         <h1 className="text-2xl md:text-3xl font-creatoBold text-black-100 font-bold">
                             Job Board
                         </h1>
                         <p className="text-black-60 text-2md md:text-lg font-normal font-creato">
-                            This is a subtext describing what users can see here
+                            All talents applying for your shifts in one glance
                         </p>
                     </div>
                     <Button
@@ -218,7 +220,7 @@ const JobBoards = () => {
                                             }
                                         />
                                     </Tabs.Panel>
-                                    <Tabs.Panel value="second">
+                                    <Tabs.Panel value="second" className="p-3">
                                         <JobBoardTable
                                             elements={draftData?.data}
                                             handleCheckedJob={handleCheckedJob}

@@ -4,8 +4,10 @@ import Button from "../../components/Core/Buttons/Button"
 
 const OtpContainer = ({
     handleSubmit,
+    defaultStyle = false,
 }: {
     handleSubmit: (values: any) => void
+    defaultStyle?: boolean
 }) => {
     const value: string[] = ["one", "two", "three", "four", "five"]
     const otpForm = useForm({
@@ -67,7 +69,11 @@ const OtpContainer = ({
                 style={{
                     backgroundColor: "rgba(254, 215, 10, 1)",
                 }}
-                className="text-black-100 bg-yellow-100 font-bold text-base w-full text-center py-6 rounded-l rounded-tr-2xl rounded-br"
+                className={
+                    !defaultStyle
+                        ? "text-black-100 bg-yellow-100 font-bold text-base w-full text-center py-6 rounded-l rounded-tr-2xl rounded-br"
+                        : "text-black-100 absolute bottom-12 bg-yellow-100 font-bold text-base w-[90%] text-center py-6 rounded-l rounded-tr-2xl rounded-br"
+                }
             >
                 Reset Password
             </Button>

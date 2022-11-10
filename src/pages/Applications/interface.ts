@@ -67,6 +67,7 @@ export interface JobListing {
     jobMatchPercentage: number
     hasApplied: boolean
     hasFavorited: boolean
+    endedShift: boolean
 }
 
 export interface User {

@@ -48,3 +48,40 @@ export const passwordInputStyle = {
     },
 }
 
+export const mobileEmailInputStyle = {
+    innerInput: {
+        color: "rgba(15, 13, 0, 0.8)",
+        fontSize: "14px",
+        paddingTop: "7px",
+        '&::placeholder': {
+            color: "#E7E7E5",
+            fontSize: '14px',
+            lineHeight: '17px'
+        }
+    },
+    input: {
+        border: '1px solid rgba(15, 13, 0, 0.1)',
+        height: '60px',
+        marginBottom: '30px',
+        borderRadius: '10px',
+        display: 'flex',
+        alignItems: 'center'
+    },
+    label: {
+        color: '#0F0D00',
+        fontSize: '14px',
+        fontWeight: '700'
+    }
+}
+
+export const mobilePasswordInputStyle = {
+    ...mobileEmailInputStyle,
+    input: {
+        border: '1px solid rgba(15, 13, 0, 0.1)',
+        height: '60px',
+        marginBottom: '20px',
+        borderRadius: '10px',
+        display: 'flex',
+        alignItems: 'center'
+    },
+}

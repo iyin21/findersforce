@@ -35,6 +35,7 @@ module.exports = {
                 100: "rgba(255, 255, 255, 1)",
             },
             gray: {
+                80: "rgba(231, 231, 229, 0.8)",
                 100: "rgba(231, 231, 229, 1)",
             },
             green: {
@@ -117,7 +118,6 @@ module.exports = {
             creatoLight: ["CreatoDisplayLight", "sans-serif"],
             creatoDisplayItalic: ["CreatoDisplayItalic", "sans-serif"],
         },
-        
         extend: {
             backgroundImage: {
                 "dashboard-pattern": "url('./src/assets/Thumbnail.svg')",

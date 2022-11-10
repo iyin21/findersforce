@@ -99,9 +99,9 @@ h6 {
 .body-extra-small {
     @apply text-2sm;
 }
-}
-.mantine-1e1m5s4 {
-    border-bottom: 2px solid rgba(254, 215, 10, 1);
+.mantine-1e1m5s4,
+.mantine-Tabs-tab {
+    // border-bottom: 2px solid rgba(254, 215, 10, 1);
     @media screen and (max-width: 768px) {
         border: none;
         padding: 0;
@@ -109,10 +109,10 @@ h6 {
     }
 }
 
-.mantine-6jy0zj {
+.mantine-waltv[data-active] {
     @media screen and (max-width: 768px) {
         padding: 0;
-        margin-right: 1rem;
+        border-bottom: none;
     }
 }
 
@@ -143,11 +143,14 @@ h6 {
         background-color: #000000;
     }
 }
+.inactive {
+    padding: 10px;
+}
 .mantine-o8x4z2 [role="tab"] {
     mix-blend-mode: normal;
     border-radius: 16px 16px 0px 0px;
     @media screen and (max-width: 526px) {
-        margin: 10px;
+        margin: 0 10px 10px 0;
         border-radius: 25px;
         background-color: #0f0d000d;
     }
@@ -164,4 +167,25 @@ input[type="radio"]:checked + label .radio_span {
 
 input[type="radio"]:checked + label {
     background-color: transparent;
+}
+
+.react-tagsinput {
+    border-radius: 5px;
+}
+
+.react-tagsinput .react-tagsinput-tag {
+    color: rgba(15, 13, 0, 0.6);
+    background-color: rgba(15, 13, 0, 0.05);
+    border: 1px solid rgba(15, 13, 0, 0.05);
+    border-radius: 10px;
+    padding: 1rem;
+}
+.react-tagsinput .react-tagsinput-input {
+    width: 60%;
+    padding: 0.6rem;
+}
+
+.react-tagsinput,
+.react-tagsinput--focused {
+    border-color: rgba(15, 13, 0, 0.05);
 }
