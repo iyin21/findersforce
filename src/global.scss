@@ -66,7 +66,7 @@ input[type="radio"] + label > .checkmark {
         url("./fonts/CreatoDisplay/CreatoDisplay-Light.otf") format("truetype");
     font-weight: light;
 }
-@layer base {
+ @layer base {
 h1 {
     @apply text-6xl;
 }
@@ -86,7 +86,7 @@ h5 {
 h6 {
     @apply text-xl;
 }
-
+}
 .body-medium {
     @apply text-2md;
 }
@@ -156,9 +156,9 @@ h6 {
     }
 }
 
-input[type="radio"] + label span {
-    transition: background 0.2s, transform 0.2s;
-}
+// input[type="radio"] + label span {
+//     transition: background 0.2s, transform 0.2s;
+// }
 
 input[type="radio"]:checked + label .radio_span {
     background-color: #ffb733;
