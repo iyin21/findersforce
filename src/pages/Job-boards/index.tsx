@@ -129,7 +129,7 @@ const JobBoards = () => {
                 </div>
                 <div className="px-3 pt-10 md:pt-4">
                     {" "}
-                    <div className="relative lg:pb-4 bottom-0 lg:bottom-0">
+                    <div className="relative bottom-0 lg:bottom-0">
                         <div className="absolute right-0 ">
                             {" "}
                             <div className="flex justify-between gap-3">

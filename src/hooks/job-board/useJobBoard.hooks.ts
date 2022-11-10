@@ -200,6 +200,7 @@ function useCreateJobList() {
                 signal: new AbortController().signal,
                 headers: {
                     Authorization: `${state?.jwt?.token}`,
+                    "Content-Type": "multipart/form-data",
                 },
             }
         )

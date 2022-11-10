@@ -1,29 +1,26 @@
 import { useFormikContext } from "formik"
 import FormikControls from "../../../../components/Form/FormControls/form-controls"
 import uploadIcon from "../../../../assets/image.svg"
-import { ChangeEvent, useRef } from "react"
+import { useRef, useState } from "react"
 import { JobBoardByIdResponse } from "../../../../hooks/job-board/interface"
-// import { useGetJobQualification } from "../../../../hooks/job-board/useJobBoard.hooks"
+import { FileInput } from "@mantine/core"
 
 interface PostJobTwoProps {
     jobQualification: JobBoardByIdResponse[] | undefined
 }
 
 const PostJobTwo = ({ jobQualification }: PostJobTwoProps) => {
+    // this updates the formik values in PostJob.tsx
     const { setFieldValue, values } = useFormikContext<{
         jobDescription: string
         jobQualificationId: string
+        additionalInfoImageUrls: File[]
     }>()
+    //
+    const [value, setValue] = useState<File[]>([])
+    // this handles the ref that gets triggered when the user clicks on the upload button
+    const ref = useRef<HTMLButtonElement>(null)
 
-    const fileInputRef = useRef<HTMLInputElement>(null)
-
-    const handleCompanyLogoUpload = (e: ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0]
-
-        if (file) {
-            setFieldValue("additionalInfoImageUrls", file)
-        }
-    }
     return (
         <div className="p-3">
             <div className="mt-1">
@@ -89,19 +86,31 @@ const PostJobTwo = ({ jobQualification }: PostJobTwoProps) => {
                     Upload Image (optional)
                 </label>
                 <div className="border-dashed border-2 border-black-60 rounded-lg p-2 mt-4">
-                    <input
-                        data-testid="file-upload"
-                        ref={fileInputRef}
-                        type="file"
-                        hidden
-                        onChange={handleCompanyLogoUpload}
-                    />
                     <div
                         className="bg-black-100 text-white-100 p-6 rounded flex gap-5 items-center"
-                        onClick={() => fileInputRef.current?.click()}
+                        onClick={() => {
+                            ref.current?.click()
+                        }}
                     >
                         <img src={uploadIcon} alt="upload" />
                         <div>
+                            <FileInput
+                                multiple
+                                value={value}
+                                onChange={(value) => {
+                                    setValue
+                                    setFieldValue(
+                                        "additionalInfoImageUrls",
+                                        values.additionalInfoImageUrls.concat(
+                                            value
+                                        )
+                                    )
+                                }}
+                                accept="image/png,image/jpeg"
+                                ref={ref}
+                                name="additionalInfoImageUrls"
+                                className="hidden"
+                            />
                             <p className="">Tap to Upload</p>
                             <span className="text-white-60 text-md">
                                 JPEG, PNG accepted; 10MB max file size

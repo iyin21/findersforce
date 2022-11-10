@@ -1,43 +1,53 @@
 import FormikControls from "../../../../components/Form/FormControls/form-controls"
-import DatePicker from "../../../../components/DatePicker"
-import TimePicker from "../../../../components/TimePicker"
-import { MdLocationPin } from "react-icons/md"
+import DatePickers from "../../../../components/DatePicker"
 import Radio from "../../../../components/Core/Radio/radio"
 import { useFormikContext } from "formik"
 import { JobBoardByIdResponse } from "../../../../hooks/job-board/interface"
 import { FiClock } from "react-icons/fi"
+import GoogleAutoComplete from "../../../../components/GoogleAutoComplete"
+import DatePicker from "react-datepicker"
+
+import "react-datepicker/dist/react-datepicker.css"
 
 interface PostJobOneProps {
     jobType: JobBoardByIdResponse[] | undefined
 }
 
 const PostJobOne = ({ jobType }: PostJobOneProps) => {
+    // this updates the formik values in PostJob.tsx
     const { setFieldValue, values } = useFormikContext<{
         jobMeetingPoint: string
-        shiftStartTime: string
+        shiftStartTime: Date
         jobDate: string
         jobTypeId: string
         shiftDurationInHours: string
     }>()
 
+    // this handles the job date and updates it's formik value
     const handleUpdateDate = (date: any) => {
         setFieldValue("jobDate", date)
     }
-    const handleUpdateFromTime = (time: any) => {
+    // this handles the job start time and updates it's formik value
+    const handleUpdateFromTime = (time: Date | null) => {
         setFieldValue("shiftStartTime", time)
     }
-    const handleUpdateToTime = (time: any) => {
+
+    // this handles the job duration and updates it's formik value
+    const handleUpdateToTime = (time: Date | null) => {
         const duration = Math.abs(
+            // @ts-ignore
             new Date(values.shiftStartTime).getTime() - new Date(time).getTime()
         )
         const hours = Math.floor(duration / 1000 / 60 / 60)
-
         setFieldValue("shiftDurationInHours", hours.toString())
     }
+
+    // this sets the meeting point for the depot
     const handleChecked = (value: string) => {
         setFieldValue("jobMeetingPoint", value)
     }
 
+    // this gets the time difference between the start and end time
     const shiftTime = new Date(values?.shiftStartTime)
     const jobTime = new Date(shiftTime)
     const toTime = Number(values.shiftDurationInHours)
@@ -69,20 +79,7 @@ const PostJobOne = ({ jobType }: PostJobOneProps) => {
             </div>
 
             <div className="mt-3">
-                <label className="text-3md font-semibold text-neutral-80 block mb-2">
-                    Location
-                </label>
-                <FormikControls
-                    type="text"
-                    name="jobAddress"
-                    control="input"
-                    placeholder="Start typing-"
-                    aria-label="jobAddress"
-                    required
-                    className="rounded"
-                    data-testid="jobAddress"
-                    prefixIcon={<MdLocationPin color="#0F0D0080" size={25} />}
-                />
+                <GoogleAutoComplete fieldName="jobAddress" />
             </div>
             <div className="mt-4 border-b border-black-10 pb-4 mb-5">
                 <label className="text-3md font-semibold text-neutral-80 block mb-2">
@@ -115,7 +112,7 @@ const PostJobOne = ({ jobType }: PostJobOneProps) => {
                 <label className="text-3md font-semibold text-neutral-80 block mb-2">
                     Select Date
                 </label>
-                <DatePicker
+                <DatePickers
                     onChange={handleUpdateDate}
                     className="bg-[BiCalendarEvent]"
                     placeholder="DD-MM-YY"
@@ -131,32 +128,41 @@ const PostJobOne = ({ jobType }: PostJobOneProps) => {
                     <label className="text-3md font-semibold text-neutral-80 block mb-2">
                         From
                     </label>
-                    <TimePicker
-                        onChange={handleUpdateFromTime}
-                        className="bg-[BiCalendarEvent]"
-                        name="shiftStartTime"
-                        format="12"
-                        value={
+
+                    <DatePicker
+                        onChange={(date) => handleUpdateFromTime(date)}
+                        showTimeSelect
+                        showTimeSelectOnly
+                        // @ts-ignore
+                        selected={
                             values?.shiftStartTime
                                 ? new Date(values?.shiftStartTime)
                                 : new Date()
                         }
+                        timeCaption="Time"
+                        dateFormat="h:mm aa"
+                        className="p-3 rounded border border-black-10 w-full"
+                        placeholderText="Select time"
                     />
                 </div>
                 <div className="">
                     <label className="text-3md font-semibold text-neutral-80 block mb-2">
                         To
                     </label>
-                    <TimePicker
-                        onChange={handleUpdateToTime}
-                        className="bg-[BiCalendarEvent]"
-                        name="shiftDurationInHours"
-                        format="12"
-                        value={
-                            values?.shiftDurationInHours
+                    <DatePicker
+                        onChange={(date) => handleUpdateToTime(date)}
+                        showTimeSelect
+                        showTimeSelectOnly
+                        // @ts-ignore
+                        selected={
+                            values?.shiftStartTime
                                 ? new Date(jobTime)
                                 : new Date()
                         }
+                        timeCaption="Time"
+                        dateFormat="h:mm aa"
+                        className="p-3 rounded border border-black-10 w-full"
+                        placeholderText="Select time"
                     />
                 </div>
             </div>
