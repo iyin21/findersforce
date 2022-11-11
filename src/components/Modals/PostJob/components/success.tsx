@@ -22,7 +22,7 @@ const JobSuccessful = ({
         // @ts-ignore
         textAreaRef.current && textAreaRef.current.select()
         navigator.clipboard.writeText(
-            `https://forcefinder.com/revivetraffic/${newJobId}`
+            `${import.meta.env.VITE_FRONTEND_URL}/${newJobId}`
         )
         e.target.focus()
     }
@@ -55,7 +55,9 @@ const JobSuccessful = ({
                             ref={textAreaRef}
                             className="w-full md:w-[319px] bg-transparent border-black-10 border p-4 bg-white-20 rounded-lg focus:outline-none text-black-50 "
                             disabled
-                            defaultValue={`https://forcefinder.com/revivetraffic..`}
+                            defaultValue={`${
+                                import.meta.env.VITE_FRONTEND_URL
+                            }/${newJobId}`}
                         />
 
                         <Button
