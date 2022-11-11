@@ -5,29 +5,40 @@ import User from "../../../assets/User.svg"
 import Search from "../../../assets/Search.svg"
 import { useEffect, useState } from "react"
 import { Indicator, Modal } from "@mantine/core"
-import avi from "../../../assets/userAvi.svg"
 import addressLogo from "../../../assets/addressLogo.svg"
 import FindersForceLogo from "../../../assets/FindersForceLogo.svg"
 import useUserNotification from "../../../hooks/notification-hook"
 import { showNotification } from "@mantine/notifications"
 import { CgSpinner } from "react-icons/cg"
+import useAuthContext from "../../../hooks/auth-hooks/useAuth"
+import { useNavigate } from "react-router-dom"
+import handleLogOut from "../../../hooks/auth-hooks/use-logout"
 
 const NavBar = () => {
     const [opened, setOpened] = useState(false)
-
+    const { dispatch, state } = useAuthContext()
     const { data: userNotifications, error, isLoading } = useUserNotification()
 
     const data = userNotifications?.data.map((item) => {
+        const time = item.createdAt.toLocaleString().split("T")[1].split(".")[0].split(":");
+        const amOrPm = Number(time[0]) < 12 ? "am" : "pm";
+        const hour = Number(time[0]) % 12;
+        const minutes = Number(time[1]) < 10 ? "0" + time[1] : time[1]
+        const notificationTime = hour.toString() + ":" + minutes + amOrPm
         return {
             ...item,
-            createdAt: item.createdAt.toString().split("T")[1].split(".")[0],
+            createdAt: notificationTime,
         }
     })
 
+    const unreadNotification = data?.map(notification => {
+        if (!notification.readStatus) return notification
+    })
+   
     const notifications = data?.map((item, index) => {
         return (
-            <>
-                <div key={index} className="flex items-center">
+            <div key={index} className={item.readStatus ? "bg-white-100" : "w-full bg-yellow-10"}>
+                <div className={item.readStatus ? "flex items-center px-[30px]" : "flex items-center bg-yellow-10 px-[30px]"}>
                     <img src={addressLogo} alt="address logo" />
                     <span className="text-lg py-[19px]">{item.title}</span>
                     <span className="text-black-neutral ml-auto text-2sm">
@@ -35,9 +46,12 @@ const NavBar = () => {
                     </span>
                 </div>
                 <hr className="border-black-20" />
-            </>
+            </div>
         )
     })
+
+    const navigate = useNavigate()
+    
 
     useEffect(() => {
         if (error) {
@@ -64,7 +78,7 @@ const NavBar = () => {
                         alt="search icon "
                         className="cursor-pointer"
                     />
-                    <Indicator label={data?.length} size={16}>
+                    <Indicator label={unreadNotification?.length} size={16}>
                         <img
                             src={Messaging}
                             alt="Messaging icon "
@@ -82,6 +96,12 @@ const NavBar = () => {
                         src={Logout}
                         alt="Logout icon"
                         className="cursor-pointer"
+                        onClick={() => handleLogOut(
+                            state.jwt?.token,
+                            showNotification,
+                            dispatch,
+                            navigate
+                        )}
                     />
                 </div>
             </nav>
@@ -104,7 +124,7 @@ const NavBar = () => {
                     modal: {
                         marginLeft: "auto",
                         height: "100%",
-                        width: "600px",
+                        width: "580px",
                     },
                     inner: {
                         overflow: "hidden",
@@ -131,28 +151,7 @@ const NavBar = () => {
                     },
                 })}
             >
-                <section className="w-full bg-yellow-10 h-fit">
-                    <div className="flex pt-3.5 pl-10 pr-8 items-center">
-                        <div className="rounded-[100%] w-[46px] h-[46px] bg-yellow-110">
-                            <img src={avi} alt="user avi" className="m-auto" />
-                        </div>
-                        <span className="text-lg pl-2.5">
-                            <strong>Pierre Yam-Fam</strong> applied for a shift
-                        </span>
-                        <span className="text-black-neutral ml-auto text-2sm">
-                            Now
-                        </span>
-                    </div>
-                    <div className="flex items-center pl-24 pb-2.5">
-                        <div className="bg-black-100 rounded-tr-2xl rounded py-[13.5px] px-[35px] w-fit text-2sm text-white-100 font-bold mr-4">
-                            Review
-                        </div>
-                        <div className="bg-yellow-100 rounded-tr-2xl rounded py-[13.5px] px-[35px] w-fit text-2sm text-black-100 font-bold">
-                            Approve
-                        </div>
-                    </div>
-                </section>
-                <section className="px-[30px]">
+                <section>
                     {isLoading ? (
                         <div className="h-screen w-full flex mt-24 justify-center">
                             <CgSpinner className="animate-spin text-primary-90 text-4xl" />

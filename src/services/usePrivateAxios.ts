@@ -1,4 +1,4 @@
-import { axiosPrivate } from "../pages/auth/utils"
+import { axiosPrivate } from "../services/api.service"
 import { useEffect } from "react"
 import useRefreshToken from "../hooks/auth-hooks/use-refresh-tokens"
 import useAuthContext from "../hooks/auth-hooks/useAuth"

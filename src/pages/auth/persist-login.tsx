@@ -3,6 +3,7 @@ import { Outlet } from "react-router-dom"
 import { Loader } from "@mantine/core"
 import useRefreshToken from "../../hooks/auth-hooks/use-refresh-tokens"
 import useAuthContext from "../../hooks/auth-hooks/useAuth"
+import { showNotification } from "@mantine/notifications"
 
 const PersistLogin = () => {
     const { state } = useAuthContext()
@@ -14,6 +15,10 @@ const PersistLogin = () => {
             try {
                 await refresh()
             } catch (error) {
+                showNotification({
+                    title: "Require login",
+                    message: "Session expired, login to continue"
+                })
             } finally {
                 setIsLoading(false)
             }

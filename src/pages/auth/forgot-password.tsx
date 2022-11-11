@@ -5,10 +5,10 @@ import LandingPageText from "../../components/Layout/landing-page-txt"
 import backIcon from "../../assets/backIcon.svg"
 import { emailInputStyle } from "./utils"
 import { useForm } from "@mantine/form"
-import axios from "./utils"
 import Button from "../../components/Core/Buttons/Button"
 import { useMediaQuery } from "@mantine/hooks"
 import logo from "../../assets/FF-logo.svg"
+import forgotPassword from "../../hooks/auth-hooks/use-forgot-password"
 
 const RecoverPassword = () => {
     const matches = useMediaQuery("(min-width: 900px)")
@@ -39,24 +39,7 @@ const RecoverPassword = () => {
 
     const handleSubmit = ({ email }: { email: string }) => {
         setIsSubmitting(true)
-        axios
-            .post("/request-password-reset", JSON.stringify({ email: email }), {
-                headers: { "Content-Type": "application/json" },
-                withCredentials: true,
-            })
-            .then((response) => {
-                navigate("/verify-email", { state: { email: email } })
-            })
-            .catch((err) => {
-                try {
-                    setErrorMsg(err.response.data.error)
-                } catch (error) {
-                    setErrorMsg("Hmmm, something went wrong, try again later.")
-                } finally {
-                    showError(true)
-                    setIsSubmitting(false)
-                }
-            })
+        forgotPassword(email, navigate, setIsSubmitting, setErrorMsg, showError)
     }
 
     return (
