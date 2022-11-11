@@ -11,12 +11,12 @@ const setProfile = (
     setOpened: (val: boolean) => void
 ) => {
     axios
-        .patch(
-            "/change-password",
+        .post(
+            "/invitation/accept",
             JSON.stringify({
                 password: password,
                 passwordConfirm: confirmPassword,
-                resetCode: inviteCode,
+                inviteCode: inviteCode,
             }),
             {
                 headers: { "Content-Type": "application/json" },
