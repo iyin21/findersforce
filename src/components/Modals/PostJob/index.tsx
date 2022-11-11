@@ -39,8 +39,15 @@ const PostJob = ({
     draftStatus,
     singleDraftData,
 }: IPostJobProps) => {
-    const { mutate: createJob, isSuccess, data } = useCreateJobList()
-    const { mutate: updateJob } = useUpdateJobList({ id: singleDraftData?._id })
+    const {
+        mutate: createJob,
+        isSuccess,
+        data,
+        isLoading: isCreating,
+    } = useCreateJobList()
+    const { mutate: updateJob, isLoading: isUpdating } = useUpdateJobList({
+        id: singleDraftData?._id,
+    })
     useEffect(() => {
         if (isSuccess) {
             setOpenSuccess(true)
@@ -62,6 +69,7 @@ const PostJob = ({
                 centered
             >
                 <FormikStepper
+                    // this is the initial values for the formik form
                     initialValues={{
                         jobTypeId: singleDraftData?.jobType?.name || "",
                         jobAddress:
@@ -95,6 +103,7 @@ const PostJob = ({
                                     item.name === values?.jobQualificationId
                             )[0]?._id,
                             isPublished: true,
+                            jobDate: values.jobDate.toISOString(),
                         }
 
                         // this checks if the draft is being edited or created
@@ -106,6 +115,8 @@ const PostJob = ({
                     }}
                     setOpened={setOpened}
                     createJob={createJob}
+                    isCreating={isCreating}
+                    isUpdating={isUpdating}
                     draftStatus={draftStatus}
                     jobQualification={jobQualification}
                     jobType={jobType}
@@ -148,6 +159,8 @@ export function FormikStep({ children }: FormikStepProps): any {
 interface TWizardProps extends FormikConfig<FormikValues> {
     setOpened: Dispatch<SetStateAction<boolean>>
     createJob: (values: FormikValues) => void
+    isCreating: boolean
+    isUpdating: boolean
     draftStatus: string
     jobQualification: JobBoardByIdResponse[] | undefined
     jobType: JobBoardByIdResponse[] | undefined
@@ -187,6 +200,7 @@ export function FormikStepper({ ...props }: TWizardProps) {
             jobQualificationId: props.jobQualification?.filter(
                 (item) => item.name === values?.jobQualificationId
             )[0]?._id,
+            jobDate: values.jobDate.toISOString(),
             isPublished: false,
         }
         props.createJob(jobObject)
@@ -239,7 +253,12 @@ export function FormikStepper({ ...props }: TWizardProps) {
                                                     handleDraft(values)
                                                 }}
                                             >
-                                                {isSubmitting
+                                                {(props.draftStatus ===
+                                                    "drafts" &&
+                                                    props.isUpdating) ||
+                                                (props.draftStatus ===
+                                                    "draft" &&
+                                                    props.isCreating)
                                                     ? "Saving"
                                                     : "Save as draft"}
                                             </Button>
@@ -271,7 +290,7 @@ export function FormikStepper({ ...props }: TWizardProps) {
                                             )
                                         }}
                                     >
-                                        {isSubmitting
+                                        {props.isCreating
                                             ? "Publishing..."
                                             : isLastStep()
                                             ? "Publish"

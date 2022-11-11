@@ -64,7 +64,7 @@ const SingleJobBoard = () => {
 
     return (
         <Layout pageTitle="single shift">
-            <div className="bg-black-10 p-2 w-fit mx-4 rounded-lg">
+            <div className="bg-black-10 p-2 w-fit mx-4 rounded-lg relative z-20">
                 <Link to={"/job-boards"}>
                     {" "}
                     <BiArrowBack size={30} />

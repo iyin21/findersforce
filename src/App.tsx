@@ -10,6 +10,7 @@ import RequireAuth from "./pages/auth/require-auth"
 import Dashboard from "./pages/dashboard/Dashboard"
 import JobBoards from "./pages/Job-boards"
 import SingleJobBoard from "./pages/Job-boards/components/viewSingleJob"
+import Support from "./pages/Support"
 import Planner from "./pages/planner/Planner"
 import ShiftsDetailTable from "./pages/planner/components/ShiftsDetailsTable"
 import Roles from "./pages/roles"
@@ -40,6 +41,7 @@ function App() {
                     <Route path="/planner/:jobListingId" element={<ShiftsDetailTable/>}/>
                     <Route path="/roles&permission" element={<Roles />} />
                 </Route>
+                <Route path="/support" element={<Support />} />
             </Route>
         </Routes>
     )
