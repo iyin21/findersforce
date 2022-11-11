@@ -8,6 +8,7 @@ export interface User {
     firstName: string;
     lastName: string;
     email: string;
+    companyName: string;
     accountType: string;
     verified: boolean;
     createdAt: Date | string;

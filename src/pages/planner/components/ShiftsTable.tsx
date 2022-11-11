@@ -109,7 +109,7 @@ const tableHeadCompleted = [
 ]
   return (
     <>
-      <div className="hidden lg:block overflow-x-hidden " data-testid="job_board">
+      <div className="hidden lg:block overflow-x-hidden " data-testid="planner">
           <Table
               style={{
               backgroundColor: "#FFFFFF",
@@ -213,7 +213,7 @@ const tableHeadCompleted = [
               <tbody>{rows}</tbody>
           </Table>
       </div>
-      <div>
+      <div className="block lg:hidden">
         <MobileShiftsTable 
           elements={elements}
           status={status}

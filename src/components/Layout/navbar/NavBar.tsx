@@ -11,8 +11,8 @@ import useUserNotification from "../../../hooks/notification-hook"
 import { showNotification } from "@mantine/notifications"
 import { CgSpinner } from "react-icons/cg"
 import useAuthContext from "../../../hooks/auth-hooks/useAuth"
-import useAxiosPrivate from "../../../services/usePrivateAxios"
 import { useNavigate } from "react-router-dom"
+import handleLogOut from "../../../hooks/auth-hooks/use-logout"
 
 const NavBar = () => {
     const [opened, setOpened] = useState(false)
@@ -50,31 +50,8 @@ const NavBar = () => {
         )
     })
 
-    const axiosPrivate = useAxiosPrivate()
     const navigate = useNavigate()
-    const handleLogOut = async () => {
-        const data  = await axiosPrivate.post(
-            "https://findersforce-api.workcube.com.ng/api/v1/auth/logout",
-            {
-                withCredentials: true,
-                headers: {
-                    Authorization: `${state?.jwt?.token}`,
-                    "Content-Type": "application/json",
-                },
-            }
-        )
-        
-        if (data.data.status === "success") {
-            showNotification({
-                title: "Success",
-                message: data.data.message
-            })
-        }
-        dispatch({
-            type: "CLEAR_USER_DATA"
-        })
-        navigate("/login")
-    }
+    
 
     useEffect(() => {
         if (error) {
@@ -119,7 +96,12 @@ const NavBar = () => {
                         src={Logout}
                         alt="Logout icon"
                         className="cursor-pointer"
-                        onClick={() => handleLogOut()}
+                        onClick={() => handleLogOut(
+                            state.jwt?.token,
+                            showNotification,
+                            dispatch,
+                            navigate
+                        )}
                     />
                 </div>
             </nav>

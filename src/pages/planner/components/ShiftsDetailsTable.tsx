@@ -14,6 +14,7 @@ import { CgSpinner } from "react-icons/cg";
 import Pagination from "../../../components/Pagination/pagination"
 import Filter from "../../../components/Filter/index"
 import { FilterRequest } from "../../../types/filter/filter";
+import MobileShiftsDetailsTable from "./MobileShiftsDetailsTable";
 
 
 
@@ -62,8 +63,8 @@ const [opened, setOpened] = useState(false)
           <p>{element?.operative?.firstName} {element?.operative?.lastName}</p>
         </div>
       </td>
-      <td>{dayjs(element?.clockInTime).format("h:mm A")}</td>
-      <td>{dayjs(element?.clockOutTime).format("h:mm A")}</td>
+      {element?.clockInTime === null ? (<td>N/A</td>):(<td>{dayjs(element?.clockInTime).format("h:mm A")}</td>) }
+      {element?.clockOutTime === null ? (<td>N/A</td>):(<td>{dayjs(element?.clockOutTime).format("h:mm A")}</td>)}
       <td>{element?.jobListing?.shiftDurationInHours}hrs</td>
       <td>{element?.jobListing?.jobRate?.currency}{element?.jobListing?.jobRate?.jobRatePerHourDisplayedToDepot}/hr</td>
       <td>
@@ -103,7 +104,6 @@ const [opened, setOpened] = useState(false)
 ]
 const element = shiftsData?.results?.find((item) => item?.jobListing?._id === jobListingId)
 const singleElement = singleShift?.results?.find((item) => item?.jobListing?._id === jobListingId)
-
   return (
     <>
     <Layout>
@@ -161,6 +161,10 @@ const singleElement = singleShift?.results?.find((item) => item?.jobListing?._id
             </tbody>         
           </Table>
         </div>
+        <div className="block lg:hidden">
+          <MobileShiftsDetailsTable 
+          />
+        </div>
         <Pagination
                 page={activePage}
                 total={activePage}
@@ -171,7 +175,7 @@ const singleElement = singleShift?.results?.find((item) => item?.jobListing?._id
                         ? shiftsData?.results.length
                         : 1
                 }
-              />
+        />
       </>
       )
       }
