@@ -11,7 +11,7 @@ interface ComplaintProps{
 }
 const SupportCard=({complaintCategory, description, ticketID, createdAt, comments, handleClick}:ComplaintProps)=>{
     return(
-        <div className="mb-4 bg-[#F4F4F4] py-2 mt-4 mr-14 rounded-lg" onClick={
+        <div className="mb-4 bg-[#F4F4F4] py-2 mt-4 mr-14 rounded-lg cursor-pointer" onClick={
             () => {
                 handleClick()
             }

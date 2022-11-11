@@ -63,7 +63,7 @@ const SingleComplaint = ({ setPhase, activeId }: SingleComplaintProp) => {
                         {data?.complaintCategory}
                     </h5>
                     <p className="text-2md mt-2 font-medium">
-                        {issues?.join(" ")}
+                        {issues?.join(", ")}
                     </p>
                     <p className="text-black-60 body-regular mt-2 mb-1">
                         Ticket ID: {data?.complaintId}
@@ -119,7 +119,7 @@ const SingleComplaint = ({ setPhase, activeId }: SingleComplaintProp) => {
                                 
                             </div>
 
-                            <div className="fixed bottom-0  w-[39.8%] border border-[#F5F5F5] shadow-lg shadow-inherit pl-2  h-14 items-center flex justify-between   bg-white-100">
+                            <div className="fixed bottom-0  w-[37.8%] border border-[#F5F5F5] shadow-lg shadow-inherit pl-2  h-14 items-center flex justify-between   bg-white-100">
                                 <input
                                     type="text"
                                     placeholder="Write a message"

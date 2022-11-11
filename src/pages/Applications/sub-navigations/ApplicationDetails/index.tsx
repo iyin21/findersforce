@@ -100,7 +100,7 @@ const ApplicationDetails = ({ setPhase, activeId, setShiftId }: Prop) => {
                                         |
                                     </span>
                                     <span className="text-green-100 pl-1 font-bold">
-                                        {data?.jobListing.jobMatchPercentage}%
+                                        {data?.jobMatchPercentage}%
                                         Match
                                     </span>
                                 </p>
