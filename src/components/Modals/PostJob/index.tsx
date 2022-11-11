@@ -28,7 +28,7 @@ export interface IPostJobProps {
     setOpenSuccess: Dispatch<SetStateAction<boolean>>
     setNewJobId: Dispatch<SetStateAction<string>>
     draftStatus: string
-    singleDraftData: JobBoardResponseInterface | null
+    singleDraftData: JobBoardResponseInterface | null | undefined
 }
 
 const PostJob = ({
@@ -187,8 +187,8 @@ export function FormikStepper({ ...props }: TWizardProps) {
             jobQualificationId: props.jobQualification?.filter(
                 (item) => item.name === values?.jobQualificationId
             )[0]?._id,
+            isPublished: false,
         }
-
         props.createJob(jobObject)
     }
 
@@ -236,10 +236,6 @@ export function FormikStepper({ ...props }: TWizardProps) {
                                                 type="button"
                                                 disabled={isSubmitting}
                                                 onClick={() => {
-                                                    setFieldValue(
-                                                        "isPublished",
-                                                        false
-                                                    )
                                                     handleDraft(values)
                                                 }}
                                             >
@@ -276,7 +272,7 @@ export function FormikStepper({ ...props }: TWizardProps) {
                                         }}
                                     >
                                         {isSubmitting
-                                            ? "Saving..."
+                                            ? "Publishing..."
                                             : isLastStep()
                                             ? "Publish"
                                             : "Next"}

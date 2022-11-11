@@ -1,12 +1,14 @@
 import dayjs from "dayjs"
 import { useFormikContext } from "formik"
 import { useEffect } from "react"
-import {
-    useGetJobQualification,
-    useGetJobType,
-} from "../../../../hooks/job-board/useJobBoard.hooks"
+import { JobBoardByIdResponse } from "../../../../hooks/job-board/interface"
+import { useGetJobType } from "../../../../hooks/job-board/useJobBoard.hooks"
 
-const Summary = () => {
+interface SummaryProps {
+    jobQualification: JobBoardByIdResponse[] | undefined
+}
+
+const Summary = ({ jobQualification }: SummaryProps) => {
     const { values } = useFormikContext<{
         jobDescription: string
         jobAddress: string
@@ -20,7 +22,11 @@ const Summary = () => {
     }>()
 
     const { data: jobType } = useGetJobType()
-    const { data: jobQualification } = useGetJobQualification()
+
+    const shiftTime = new Date(values?.shiftStartTime)
+    const jobTime = new Date(shiftTime)
+    const toTime = Number(values.shiftDurationInHours)
+    jobTime.setHours(jobTime.getHours() + toTime)
 
     useEffect(() => {}, [jobQualification])
 
@@ -29,11 +35,9 @@ const Summary = () => {
             <div className="grid gap-y-6 grid-cols-2 md:py-4 md:px-2  grid-rows-2  mt-6 md:mt-0">
                 <h6 className="text-black-90 text-2md">Shift Type</h6>
                 <p className="text-lg font-semibold text-black-90">
-                    {
-                        jobType?.filter(
-                            (item) => item?._id === values.jobTypeId
-                        )[0]?.name
-                    }
+                    {jobType?.filter(
+                        (item) => item?._id === values.jobTypeId
+                    )[0]?.name || values?.jobTypeId}
                 </p>
                 <h6 className="text-black-90 text-2md">Location</h6>
                 <p className="text-lg text-black-90 font-semibold ">
@@ -41,7 +45,9 @@ const Summary = () => {
                 </p>
                 <h6 className="text-black-90 text-2md">Shift Mode</h6>
                 <p className="text-lg text-black-90 font-semibold ">
-                    {values.jobMeetingPoint}
+                    {values.jobMeetingPoint === "SITE"
+                        ? "MEET ONSITE"
+                        : "DEPOT FIRST"}
                 </p>
                 <h6 className="text-black-90 text-2md">Date</h6>
                 <p className="text-lg text-black-90 font-semibold ">
@@ -50,10 +56,7 @@ const Summary = () => {
                 <h6 className="text-black-90 text-2md">Time</h6>
                 <p className="text-lg text-black-90 font-semibold ">
                     {dayjs(values.shiftStartTime).format("h:mm a")} -{" "}
-                    {dayjs(
-                        values.shiftStartTime +
-                            Number(values.shiftDurationInHours)
-                    ).format("h:mm a")}
+                    {dayjs(jobTime).format("h:mm a")}
                 </p>
 
                 <h6 className="text-black-90 text-2md">
@@ -66,11 +69,9 @@ const Summary = () => {
                     Required Qualification
                 </h6>
                 <p className="text-lg text-black-90 font-semibold ">
-                    {
-                        jobQualification?.filter(
-                            (item) => item?._id === values.jobQualificationId
-                        )[0]?.name
-                    }
+                    {jobQualification?.filter(
+                        (item) => item?._id === values.jobQualificationId
+                    )[0]?.name || values?.jobQualificationId}
                 </p>
             </div>
             <div className="bg-yellow-20 p-2 md:px-6 md:py-4 rounded-2xl h-full">

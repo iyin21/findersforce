@@ -1,12 +1,12 @@
 import {  Tabs } from "@mantine/core"
 import { useState } from "react"
-import { BiFilter } from "react-icons/bi"
-import { Button } from "../../components/index"
 import ShiftsTable from "./components/ShiftsTable"
 import { useGetShiftHistory } from "../../hooks/planner/usePlanner.hooks"
-import Layout from "../../components/Layout/index"
 import Pagination from "../../components/Pagination/pagination"
 import { CgSpinner } from "react-icons/cg"
+import Layout from "../../components/Layout/index"
+import Filter from "../../components/Filter/index"
+import { FilterRequest } from "../../types/filter/filter"
 
 
 
@@ -26,6 +26,8 @@ const Planner = () => {
     const handleCompletedPage = (pageNumber: number) => {
         setCompletedPage(pageNumber)
     }
+
+    const applyFilter = (filter: FilterRequest) => {}
 
     const {
         data: upcomingShiftsData,
@@ -67,12 +69,7 @@ const Planner = () => {
                           <div className="relative lg:pb-4 bottom-0 lg:bottom-0">
                               <div className="absolute right-0 ">
                                   {" "}
-                                  <Button
-                                      variant="clear"
-                                      iconLeft={<BiFilter size={30} />}
-                                  >
-                                      Filter
-                                  </Button>
+                                  <Filter applyFilter={applyFilter} />
                               </div>
                           </div>
                           <div>

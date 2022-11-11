@@ -95,7 +95,7 @@ const ApplicationDetails = ({ setPhase, activeId, setShiftId }: Prop) => {
                                         data?.user.lastName}
                                 </h5>
                                 <p className="text-black-70">
-                                    Joined {dayjs(data?.createdAt).fromNow()}
+                                    Joined {dayjs(data?.user.createdAt).fromNow()}
                                     <span className="text-black-10 pl-1">
                                         |
                                     </span>
@@ -280,7 +280,7 @@ const ApplicationDetails = ({ setPhase, activeId, setShiftId }: Prop) => {
                                             data?.user.lastName
                                         }.pdf`}
                                     >
-                                        Download
+                                        View
                                     </a>
                                 </button>
                             </div>
@@ -293,7 +293,7 @@ const ApplicationDetails = ({ setPhase, activeId, setShiftId }: Prop) => {
                                         key={index}
                                         className="flex items-start mb-4"
                                     >
-                                        <img src={Google} alt="" />
+                                        {/* <img src={Google} alt="" /> */}
                                         <div className="pl-2">
                                             <p className="font-bold body-normal">
                                                 {item.name}

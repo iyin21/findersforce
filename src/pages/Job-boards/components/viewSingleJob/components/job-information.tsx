@@ -2,15 +2,12 @@ import dayjs from "dayjs"
 
 interface JobInformationInterface {
     description: string | undefined
-    shiftType: string | undefined
     location: string | undefined
     shiftMode: string | undefined
     date: string | undefined
-    time: string | undefined
     hourlyPay: number | undefined
     noOfOperativesRequired: number | undefined
     requiredQualification: string | undefined
-    others: string | undefined
     currency: string | undefined
     shiftStartTime: string | undefined
     shiftEndTime: string | undefined
@@ -25,12 +22,10 @@ const JobInformation = ({
     location,
     noOfOperativesRequired,
     requiredQualification,
-    others,
     jobType,
     currency,
     shiftStartTime,
     shiftEndTime,
-    shiftType,
 }: JobInformationInterface) => {
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 justify-between mt-4">
@@ -77,8 +72,6 @@ const JobInformation = ({
                 <p className="text-lg text-black-90 font-semibold ">
                     {requiredQualification}
                 </p>
-                <h6 className="text-black-40 text-2md">Others</h6>
-                <p className="text-lg text-black-90 font-semibold ">{others}</p>
             </div>
         </div>
     )

@@ -38,7 +38,7 @@ const Sidebar = () => {
     navigate("/login")
 }
   return (
-    <aside className="w-full text-base  pt-2 pb-8 bg-black-100 pt-14">
+    <aside className="w-full text-base  pt-2 pb-8 pt-14">
            <section className="flex p-3 rounded-lg ml-1 mb-4 mr-1 bg-ash-10">
                     <img className="inline rounded-full p-2" src={RlatterLogo} alt=""/>
                     <div className="p-1 text-white-100">

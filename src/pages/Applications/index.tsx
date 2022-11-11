@@ -2,13 +2,11 @@ import { Tabs } from "@mantine/core"
 import ApplicationTable from "./components/application-table"
 import { useState } from "react"
 import { useGetApplications } from "./hooks/application.hook"
-// import { useAuthContext } from "../auth/context/authContext"
 import { CgSpinner } from "react-icons/cg"
 import { IoFilterSharp } from "react-icons/io5"
 import ApplicationDetails from "./sub-navigations/ApplicationDetails"
 import ShiftDetails from "./sub-navigations/ShiftDetails"
 import Layout from "../../components/Layout/index"
-// import Layout from "../../components/layout/Layout"
 
 const Applications = () => {
     const [activeTab, setActiveTab] = useState<string | null>("pending")
@@ -64,8 +62,8 @@ const Applications = () => {
                                         value="pending"
                                         className={`body-regular mr-6 ${
                                             activeTab === "pending"
-                                                ? "text-yellow-100 font-bold"
-                                                : "text-black-60"
+                                                ? "text-yellow-100 font-bold active"
+                                                : "text-black-60 inactive"
                                         }`}
                                     >
                                         Pending
@@ -75,8 +73,8 @@ const Applications = () => {
                                         value="accepted"
                                         className={`body-regular mr-6 ${
                                             activeTab === "accepted"
-                                                ? "text-yellow-100 font-bold"
-                                                : "text-black-60"
+                                                ? "text-yellow-100 font-bold active"
+                                                : "text-black-60 inactive"
                                         }`}
                                     >
                                         Accepted
@@ -85,8 +83,8 @@ const Applications = () => {
                                         value="rejected"
                                         className={`body-regular ${
                                             activeTab === "rejected"
-                                                ? "text-yellow-100 font-bold"
-                                                : "text-black-60"
+                                                ? "text-yellow-100 font-bold active"
+                                                : "text-black-60 inactive"
                                         }`}
                                     >
                                         Rejected

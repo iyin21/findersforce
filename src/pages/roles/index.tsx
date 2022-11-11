@@ -13,8 +13,8 @@ const Roles = () => {
 
     return (
         <Layout pageTitle="Roles and permission">
-            <div className="p-6 mt-14">
-                <div className="flex justify-between items-center">
+            <div className="p-6 mt-4 md:mt-14">
+                <div className="flex flex-col-reverse md:flex-row md:justify-between md:items-center">
                     <div className="flex flex-col">
                         <h1 className="text-2xl md:text-3xl font-creatoBold text-black-100 ">
                             Roles and permission
@@ -23,14 +23,16 @@ const Roles = () => {
                             Operatives who apply for shifts appear here
                         </p>
                     </div>
-                    <Button
-                        variant="primary"
-                        className="py-3 font-semibold font-creatoMedium"
-                        iconLeft={<FiPlus size={20} />}
-                        onClick={() => setOpenAddUser(!openAddUser)}
-                    >
-                        Add new role
-                    </Button>
+                    <div className="flex justify-end mb-3">
+                        <Button
+                            variant="primary"
+                            className="py-3 font-semibold font-creatoMedium text-3sm "
+                            iconLeft={<FiPlus size={20} />}
+                            onClick={() => setOpenAddUser(!openAddUser)}
+                        >
+                            Add new role
+                        </Button>
+                    </div>
                 </div>
 
                 <div className="mt-6">

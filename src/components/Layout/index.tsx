@@ -1,5 +1,5 @@
-import Sidebar from "../layout/sidebar/Sidebar"
-import NavBar from "../layout/navbar/NavBar"
+import Sidebar from "./sidebar/Sidebar"
+import NavBar from "./navbar/NavBar"
 import { LayoutProps } from "../../types/layout/interfaces"
 
 const Layout = ({ children }: LayoutProps) => {
@@ -9,10 +9,12 @@ const Layout = ({ children }: LayoutProps) => {
                 <NavBar />
             </div>
             <div className="relative md:pl-64 h-full">
-                <div className="hidden md:block fixed left-0 w-64 mt-14 h-[95%] overflow-y-auto">
+                <div className="hidden md:block fixed bg-black-100 left-0 w-64 mt-14 h-[95%] overflow-y-auto">
                     <Sidebar />
                 </div>
-                <main className="w-full h-full overflow-y-auto lg:px-10 p-5">{children}</main>
+                <main className="w-full h-full overflow-y-auto lg:px-2 py-5 ">
+                    {children}
+                </main>
             </div>
         </div>
     )
