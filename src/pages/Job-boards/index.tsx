@@ -127,128 +127,122 @@ const JobBoards = () => {
                         Post a job
                     </Button>
                 </div>
-
                 <div className="px-3 pt-10 md:pt-4">
                     {" "}
-                    <div className="relative lg:pb-4 bottom-0 lg:bottom-0">
+                    <div className="relative bottom-0 lg:bottom-0">
                         <div className="absolute right-0 ">
                             {" "}
                             <div className="flex justify-between gap-3">
                                 {deleteBtn && (
-                                    <div>
-                                        <Button
-                                            variant="danger"
-                                            size="normal"
-                                            iconLeft={
-                                                <BsFillTrashFill color="#fff" />
-                                            }
-                                            data-testid="delete_btn"
-                                            onClick={() => handleDelete()}
-                                            className="text-white-100 min-w-[50px] lg:w-auto mr-3 py-3 lg:py-4"
-                                        >
-                                            <span className="lg:block hidden text-white-100">
-                                                {isDeleting
-                                                    ? "is deleting"
-                                                    : "Delete"}
-                                            </span>
-                                        </Button>
-                                    </div>
+                                    <Button
+                                        variant="danger"
+                                        size="normal"
+                                        iconLeft={
+                                            <BsFillTrashFill color="#fff" />
+                                        }
+                                        data-testid="delete_btn"
+                                        onClick={() => handleDelete()}
+                                        className="text-white-100 min-w-[50px] lg:w-auto mr-3 py-3 lg:py-4"
+                                    >
+                                        <span className="lg:block hidden text-white-100">
+                                            {isDeleting
+                                                ? "is deleting"
+                                                : "Delete"}
+                                        </span>
+                                    </Button>
                                 )}
                                 <Filter applyFilter={applyFilter} />
                             </div>
                         </div>
                     </div>
-                    <div>
-                        {isLoadingActiveData || isLoadingDraftData ? (
-                            <div className="h-screen w-full flex mt-24 justify-center">
-                                <CgSpinner className="animate-spin text-primary-90 text-4xl" />
-                            </div>
-                        ) : (
-                            <div>
-                                <Tabs
-                                    value={activeTab}
-                                    onTabChange={setActiveTab}
-                                    color="yellow"
-                                    keepMounted={false}
-                                >
-                                    <Tabs.List>
-                                        <Tabs.Tab value="first">
-                                            {" "}
-                                            <p
-                                                className={
-                                                    activeTab === "first"
-                                                        ? "text-black-100 text-lg font-creatoMedium active"
-                                                        : "font-creatoMedium text-black-40 text-lg inactive"
-                                                }
-                                            >
-                                                Active
-                                            </p>
-                                        </Tabs.Tab>
-                                        <Tabs.Tab value="second">
-                                            <p
-                                                className={
-                                                    activeTab === "second"
-                                                        ? "text-black-100 text-lg font-creatoMedium active"
-                                                        : `font-creatoMedium text-black-40 text-lg inactive`
-                                                }
-                                            >
-                                                Drafts
-                                            </p>
-                                        </Tabs.Tab>
-                                    </Tabs.List>
-
-                                    <Tabs.Panel value="first">
-                                        <JobBoardTable
-                                            elements={activeData?.data}
-                                            status="active"
-                                            handleCheckedJob={handleCheckedJob}
-                                            checkedJob={checkedJob}
-                                            setDeleteId={setDeleteId}
-                                            setOpenJobPost={setOpenJobPost}
-                                            setDraftStatus={setDraftStatus}
-                                            setdraftElement={setdraftElement}
-                                        />
-                                        <Pagination
-                                            page={activeActivePage}
-                                            total={activeActivePage}
-                                            onChange={handleActivePage}
-                                            boundaries={1}
-                                            recordPerpage={
-                                                activeData?.data
-                                                    ? activeData?.data.length
-                                                    : 1
+                    {isLoadingActiveData || isLoadingDraftData ? (
+                        <div className="h-screen w-full flex mt-24 justify-center">
+                            <CgSpinner className="animate-spin text-primary-90 text-4xl" />
+                        </div>
+                    ) : (
+                        <div>
+                            <Tabs
+                                value={activeTab}
+                                onTabChange={setActiveTab}
+                                color="yellow"
+                                keepMounted={false}
+                            >
+                                <Tabs.List>
+                                    <Tabs.Tab value="first">
+                                        {" "}
+                                        <p
+                                            className={
+                                                activeTab === "first"
+                                                    ? "text-black-100 text-lg font-creatoMedium active"
+                                                    : "font-creatoMedium text-black-40 text-lg inactive"
                                             }
-                                        />
-                                    </Tabs.Panel>
-                                    <Tabs.Panel value="second" className="p-3">
-                                        <JobBoardTable
-                                            elements={draftData?.data}
-                                            handleCheckedJob={handleCheckedJob}
-                                            checkedJob={checkedJob}
-                                            setDeleteId={setDeleteId}
-                                            status="draft"
-                                            setOpenJobPost={setOpenJobPost}
-                                            setDraftStatus={setDraftStatus}
-                                            setdraftElement={setdraftElement}
-                                        />
-                                        <Pagination
-                                            page={activeDraftPage}
-                                            total={activeActivePage}
-                                            onChange={handleDraftPage}
-                                            boundaries={1}
-                                            recordPerpage={
-                                                draftData?.data
-                                                    ? draftData?.data.length
-                                                    : 1
+                                        >
+                                            Active
+                                        </p>
+                                    </Tabs.Tab>
+                                    <Tabs.Tab value="second">
+                                        <p
+                                            className={
+                                                activeTab === "second"
+                                                    ? "text-black-100 text-lg font-creatoMedium active"
+                                                    : `font-creatoMedium text-black-40 text-lg inactive`
                                             }
-                                        />
-                                    </Tabs.Panel>
-                                </Tabs>
-                            </div>
-                        )}
-                    </div>{" "}
-                </div>
+                                        >
+                                            Drafts
+                                        </p>
+                                    </Tabs.Tab>
+                                </Tabs.List>
 
+                                <Tabs.Panel value="first">
+                                    <JobBoardTable
+                                        elements={activeData?.data}
+                                        status="active"
+                                        handleCheckedJob={handleCheckedJob}
+                                        checkedJob={checkedJob}
+                                        setDeleteId={setDeleteId}
+                                        setOpenJobPost={setOpenJobPost}
+                                        setDraftStatus={setDraftStatus}
+                                        setdraftElement={setdraftElement}
+                                    />
+                                    <Pagination
+                                        page={activeActivePage}
+                                        total={activeActivePage}
+                                        onChange={handleActivePage}
+                                        boundaries={1}
+                                        recordPerpage={
+                                            activeData?.data
+                                                ? activeData?.data.length
+                                                : 1
+                                        }
+                                    />
+                                </Tabs.Panel>
+                                <Tabs.Panel value="second" className="p-3">
+                                    <JobBoardTable
+                                        elements={draftData?.data}
+                                        handleCheckedJob={handleCheckedJob}
+                                        checkedJob={checkedJob}
+                                        setDeleteId={setDeleteId}
+                                        status="draft"
+                                        setOpenJobPost={setOpenJobPost}
+                                        setDraftStatus={setDraftStatus}
+                                        setdraftElement={setdraftElement}
+                                    />
+                                    <Pagination
+                                        page={activeDraftPage}
+                                        total={activeActivePage}
+                                        onChange={handleDraftPage}
+                                        boundaries={1}
+                                        recordPerpage={
+                                            draftData?.data
+                                                ? draftData?.data.length
+                                                : 1
+                                        }
+                                    />
+                                </Tabs.Panel>
+                            </Tabs>
+                        </div>
+                    )}
+                </div>{" "}
                 {openJobPost && (
                     <PostJob
                         opened={openJobPost}

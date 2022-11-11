@@ -192,9 +192,27 @@ function useCreateJobList() {
             ...values,
         }
 
+        const deleteAdditionalImage = () => {
+            if (formData.additionalInfoImageUrls === "") {
+                delete formData.additionalInfoImageUrls
+            }
+        }
+        deleteAdditionalImage()
+        const newFormData = new FormData()
+
+        Object.keys(formData).forEach((key) => {
+            if (key === "additionalInfoImageUrls") {
+                values[key].forEach((image: any) => {
+                    newFormData.append(`additionalInfoImageUrls`, image)
+                })
+            } else {
+                newFormData.append(key, values[key])
+            }
+        })
+
         const { data } = await axiosInstance.post(
             "/job-listing/",
-            formData,
+            newFormData,
 
             {
                 signal: new AbortController().signal,
