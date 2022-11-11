@@ -6,10 +6,11 @@ import backIcon from "../../assets/backIcon.svg"
 import Button from "../../components/Core/Buttons/Button"
 import successIcon from "../../assets/success.svg"
 import { useForm } from "@mantine/form"
-import axios, { mobileEmailInputStyle } from "./utils"
+import { mobileEmailInputStyle } from "./utils"
 import logo from "../../assets/FF-logo.svg"
 import passwordLock from "../../assets/password-lock.svg"
 import { useMediaQuery } from "@mantine/hooks"
+import useResetPassword from "../../hooks/auth-hooks/use-reset-password"
 
 const ResetPassword = () => {
     const matches = useMediaQuery("(min-width: 900px)")
@@ -41,33 +42,16 @@ const ResetPassword = () => {
         confirmPassword: string
     }) => {
         setIsSubmitting(true)
-        axios
-            .patch(
-                "/change-password",
-                JSON.stringify({
-                    password: newPassword,
-                    passwordConfirm: confirmPassword,
-                    resetCode: location.state?.otp,
-                }),
-                {
-                    headers: { "Content-Type": "application/json" },
-                    withCredentials: true,
-                }
-            )
-            .then((response) => {
-                setPasswordChanged(!passwordChanged)
-            })
-            .catch((err) => {
-                try {
-                    setErrorMsg(err.response.data.error)
-                } catch (error) {
-                    setErrorMsg("Hmmm, something went wrong, try again later.")
-                } finally {
-                    showError(true)
-                    setPasswordChanged(false)
-                    setIsSubmitting(false)
-                }
-            })
+        useResetPassword(
+            newPassword,
+            confirmPassword,
+            location,
+            setPasswordChanged,
+            setErrorMsg,
+            showError,
+            setIsSubmitting,
+            passwordChanged
+        )
     }
 
     return (

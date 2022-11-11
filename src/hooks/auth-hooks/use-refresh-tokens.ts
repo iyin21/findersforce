@@ -1,15 +1,12 @@
-import axios from "../../pages/auth/utils"
+import axios from "../../services/api.service"
 import useAuthContext from "./useAuth"
 
 const useRefreshToken = () => {
-    const { state, dispatch } = useAuthContext()
+    const { dispatch } = useAuthContext()
 
     const refresh = async () => {
-        const response = await axios.get("/refresh-token", {
-            withCredentials: true,
-            headers: {
-                Cookie: `refreshToken=${state.jwt?.token}`,
-            },
+        const response = await axios("/refresh-token", {
+            method: "POST",
         })
 
         const res = await axios.get(
@@ -29,8 +26,7 @@ const useRefreshToken = () => {
             },
         })
 
-
-        return response.data.data.jwt
+        return response.data.data.jwt.token
     }
 
     return refresh
