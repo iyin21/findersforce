@@ -30,7 +30,48 @@ export type ShiftCardProps = {
 
 export type CardProps = {
      title:string,
-     amount:string,
+     amount:number | undefined,
      icon: string,
      style: string,
-   }
+     subtitle: number | undefined
+}
+
+export interface DashboardResponse {
+     status: string
+     message: string
+     data: DashboardData
+ }
+ export interface DashboardData {
+     amountPaid: amountPaid,
+     hoursCompleted: hoursCompleted,
+     operativesHired: operativesHired,
+     shiftsCompleted: shiftsCompleted,
+     shiftsCancelled: shiftsCancelled,
+     genderDistribution: genderDistribution,
+ }
+
+ export interface amountPaid {
+     total: number,
+     thisMonth: number,
+ }
+ export interface hoursCompleted {
+     total: number,
+     thisMonth: number,
+ }
+ export interface operativesHired {
+     total: number,
+     thisMonth: number,
+ }
+ export interface shiftsCompleted {
+     total: number,
+     thisMonth: number,
+ }
+ export interface shiftsCancelled {
+     total: number,
+     thisMonth: number,
+ }
+ export interface genderDistribution {
+     percentageMale: number,
+     percentageFemale: number,
+     percentageRatherNotSay: number
+ }

@@ -17,8 +17,10 @@ import Chart from "./components/Chart"
 import PieChart from "./components/PieChart"
 import Rating from "./components/rating/Rating"
 import Layout from "../../components/Layout"
+import { useGetDashboardAnalytics } from "../../hooks/dashboard/useDashboard.hook"
 
 const Dashboard = () => {
+    const {data:dashboardAnalytics} = useGetDashboardAnalytics();
     return (
         <Layout pageTitle={"Dashboard"}>
             <main className="px-8 mt-6 py-6 bg-white-100 overflow-hidden">
@@ -69,21 +71,24 @@ const Dashboard = () => {
                             <div className="flex justify-between my-8">
                                 <Card
                                     title={"AMOUNT PAID"}
-                                    amount={"£ 12,000"}
+                                    amount={dashboardAnalytics?.amountPaid?.total}
                                     icon={Money}
                                     style={"bg-green-10 rounded-full p-4"}
+                                    subtitle={dashboardAnalytics?.amountPaid?.thisMonth}
                                 />
                                 <Card
                                     title={"HOURS COMPLETED"}
-                                    amount={"12,098 hrs"}
+                                    amount={dashboardAnalytics?.hoursCompleted?.total}
                                     icon={Time}
                                     style={"bg-yellow-20 rounded-full p-4"}
+                                    subtitle={dashboardAnalytics?.hoursCompleted?.thisMonth}
                                 />
                                 <Card
                                     title={"OPERATIVES HIRED"}
-                                    amount={"209"}
+                                    amount={dashboardAnalytics?.operativesHired?.total}
                                     icon={Operative}
                                     style={"bg-green-10 rounded-full p-4"}
+                                    subtitle={dashboardAnalytics?.operativesHired?.thisMonth}
                                 />
                             </div>
                         </section>
