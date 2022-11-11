@@ -103,17 +103,7 @@ const PostJob = ({
                                     item.name === values?.jobQualificationId
                             )[0]?._id,
                             isPublished: true,
-                            additionalInfoImageUrls: JSON.stringify(
-                                values.additionalInfoImageUrls.map(
-                                    (file: any) => ({
-                                        fileName: file.name,
-                                        type: file.type,
-                                        size: `${file.size} bytes`,
-                                        lastModified: file.lastModified,
-                                        lastModifiedDate: file.lastModifiedDate,
-                                    })
-                                )
-                            ),
+                            jobDate: values.jobDate.toISOString(),
                         }
 
                         // this checks if the draft is being edited or created
@@ -210,6 +200,7 @@ export function FormikStepper({ ...props }: TWizardProps) {
             jobQualificationId: props.jobQualification?.filter(
                 (item) => item.name === values?.jobQualificationId
             )[0]?._id,
+            jobDate: values.jobDate.toISOString(),
             isPublished: false,
         }
         props.createJob(jobObject)
@@ -262,7 +253,12 @@ export function FormikStepper({ ...props }: TWizardProps) {
                                                     handleDraft(values)
                                                 }}
                                             >
-                                                {props.isUpdating
+                                                {(props.draftStatus ===
+                                                    "drafts" &&
+                                                    props.isUpdating) ||
+                                                (props.draftStatus ===
+                                                    "draft" &&
+                                                    props.isCreating)
                                                     ? "Saving"
                                                     : "Save as draft"}
                                             </Button>
