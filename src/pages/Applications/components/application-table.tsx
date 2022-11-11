@@ -28,7 +28,7 @@ const ApplicationTable = ({ elements, setPhase, setActiveId }: Prop) => {
             <td>{item.jobListing.jobType.name}</td>
             <td>{item.jobListing.jobQualification.name}</td>
             <td className="text-green-100 font-medium">
-                {item.jobListing.jobMatchPercentage}%
+                {item.jobMatchPercentage}%
             </td>
             <td>
                 <p className="flex">

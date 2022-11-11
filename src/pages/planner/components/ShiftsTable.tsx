@@ -6,6 +6,7 @@ import { ShiftsTableInterface } from "../../../types/planner/interfaces"
 import ProfileImage from "../../../assets/ProfileImage.svg"
 import dayjs from "dayjs"
 import { useNavigate } from "react-router-dom"
+import MobileShiftsTable from "./MobileShiftsTable"
 // import ShiftStar from "../../../assets/ShiftStar.svg"
 
 
@@ -212,7 +213,13 @@ const tableHeadCompleted = [
               <tbody>{rows}</tbody>
           </Table>
       </div>
-        </>
+      <div>
+        <MobileShiftsTable 
+          elements={elements}
+          status={status}
+        />
+      </div>
+    </>
   )
 }
 

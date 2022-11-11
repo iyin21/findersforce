@@ -12,7 +12,9 @@ const Layout = ({ children }: LayoutProps) => {
                 <div className="hidden md:block fixed bg-black-100 left-0 w-64 mt-14 h-[95%] overflow-y-auto">
                     <Sidebar />
                 </div>
-                <main className="w-full h-full overflow-y-auto lg:px-2 py-5 ">{children}</main>
+                <main className="w-full h-full overflow-y-auto lg:px-2 py-5 ">
+                    {children}
+                </main>
             </div>
         </div>
     )
