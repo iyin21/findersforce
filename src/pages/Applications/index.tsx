@@ -33,7 +33,7 @@ const Applications = () => {
         <Layout pageTitle={"Pending"}>
             {phase === 1 ? (
                 <div className="p-4">
-                    <h5 className="font-bold text-3xl mb-2">Applications</h5>
+                    <h5 className="font-bold lg:text-3xl text-2xl mb-2">Applications</h5>
                     <p className="text-black-60 mb-2">
                         Operatives who apply for shifts appear here
                     </p>
@@ -46,9 +46,11 @@ const Applications = () => {
                         </div>
                     ) : (
                         <div>
+                            <div className="relative">
                             <div className="flex absolute right-10 items-center cursor-pointer">
                                 <IoFilterSharp />
                                 <p className="pl-2">Filter</p>
+                                </div>
                             </div>
                             <Tabs
                                 value={activeTab}
@@ -56,14 +58,15 @@ const Applications = () => {
                                 onTabChange={setActiveTab}
                                 color="yellow"
                                 keepMounted={false}
+                                //variant="lg:default pills"
                             >
                                 <Tabs.List>
                                     <Tabs.Tab
                                         value="pending"
-                                        className={`body-regular mr-6 ${
+                                        className={`body-regular mr-6 rounded ${
                                             activeTab === "pending"
-                                                ? "text-yellow-100 font-bold active"
-                                                : "text-black-60 inactive"
+                                                ? "text-yellow-100 font-bold active bg-black-100 lg:bg-white-100"
+                                                : "text-black-60 inactive bg-black-5 lg:bg-white-100"
                                         }`}
                                     >
                                         Pending

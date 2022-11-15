@@ -27,17 +27,17 @@ const Support = () => {
                     <CgSpinner className="animate-spin text-primary-90 text-4xl" />
                 </div>
             ) : (
-                <div className="p-6">
-                    <div className="flex justify-between">
+                <div className="pt-6 pr-6">
+                    <div className="flex justify-between pl-6 pr-6">
                         <div>
-                            <h5 className="font-bold text-3xl mb-2">Support</h5>
+                            <h5 className="font-bold lg:text-3xl text-2xl mb-2">Support</h5>
                             <p className="text-black-60">
                                 Send a formal complaint
                             </p>
                         </div>
                         {allData && allData?.data.length > 0 && (
                             <button
-                                className="bg-yellow-100 rounded rounded-tr-2xl flex justify-center items-center font-bold body-medium py-4 text-2md px-8 mt-6"
+                                className="bg-yellow-100 rounded rounded-tr-2xl flex justify-center items-center font-bold body-medium py-4 lg:text-2md px-2 mt-6"
                                 onClick={() => setOpenModal(true)}
                             >
                                 <GoPlus size="30px" color="black" />
