@@ -5,7 +5,7 @@ import { IoIosArrowForward } from "react-icons/io"
 import { AiOutlineArrowUp } from "react-icons/ai"
 import { useNavigate } from "react-router-dom"
 import MobileJobTable from "./mobile-table"
-import { JobBoardResponseInterface } from "../../../../hooks/job-board/interface"
+import { JobBoardResponseInterface } from "../../../../types/job-board/interface"
 import dayjs from "dayjs"
 import { Dispatch, SetStateAction } from "react"
 

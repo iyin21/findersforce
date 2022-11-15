@@ -3,7 +3,7 @@ import dayjs from "dayjs"
 import { AiOutlineArrowUp } from "react-icons/ai"
 import { BsFillStarFill } from "react-icons/bs"
 import { IoIosArrowForward } from "react-icons/io"
-import { JobBoardResponseInterface } from "../../../../../hooks/job-board/interface"
+import { JobBoardResponseInterface } from "../../../../../types/job-board/interface"
 
 interface ApplicationJobInterface {
     elements?: JobBoardResponseInterface[]

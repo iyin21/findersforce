@@ -13,7 +13,7 @@ import {
     useJobBoards,
 } from "../../hooks/job-board/useJobBoard.hooks"
 import { showNotification } from "@mantine/notifications"
-import { JobBoardResponseInterface } from "../../hooks/job-board/interface"
+import { JobBoardResponseInterface } from "../../types/job-board/interface"
 import Layout from "../../components/Layout/index"
 
 const JobBoards = () => {
