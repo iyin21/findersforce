@@ -64,12 +64,18 @@ const Planner = () => {
                           </div>
                       </div>
               
-                      <div className="px-3 pt-10 md:pt-4">
+                      <div className="px-0 pt-10 md:pt-4">
                           {" "}
                           <div className="relative lg:pb-4 bottom-0 lg:bottom-0">
-                              <div className="absolute right-0 ">
+                              <div className="absolute right-0 w-fit ">
                                   {" "}
-                                  <Filter applyFilter={applyFilter} />
+                                  <Filter applyFilter={applyFilter} className="" />
+                              </div>
+                          </div>
+                          <div className=" lg:hidden relative lg:pb-4 bottom-0 lg:bottom-0 mb-20">
+                              <div className="absolute right-0 w-fit ">
+                                  {" "}
+                                  <Filter applyFilter={applyFilter} className="" />
                               </div>
                           </div>
                           <div>
@@ -96,6 +102,15 @@ const Planner = () => {
                                                       }
                                                   >
                                                       Upcoming
+                                                        <span
+                                                            className={`{" ml-2 py-1 px-2 rounded text-white-100 "} ${
+                                                            activeTab === "first"
+                                                            ? "bg-white lg:text-white-100 text-dark-green-500  lg:bg-red-100 text-3sm "
+                                                            : "bg-red-100 text-white-100 text-3sm"
+                                                            }`}
+                                                            >
+                                                                {upcomingShiftsData?.results?.length}
+                                                        </span>
                                                   </p>
                                               </Tabs.Tab>
                                               <Tabs.Tab value="second">
@@ -107,6 +122,15 @@ const Planner = () => {
                                                       }
                                                   >
                                                       Active
+                                                        <span
+                                                            className={`{" ml-2 py-1 px-2 rounded text-white-100 "} ${
+                                                            activeTab === "second"
+                                                            ? "bg-white lg:text-white-100 text-dark-green-500  lg:bg-red-100 text-3sm "
+                                                            : "bg-red-100 text-white-100 text-3sm"
+                                                            }`}
+                                                            >
+                                                                {ongoingShiftsData?.results?.length}
+                                                        </span>
                                                   </p>
                                               </Tabs.Tab>
                                               <Tabs.Tab value="third">
@@ -118,6 +142,15 @@ const Planner = () => {
                                                       }
                                                   >
                                                       Completed
+                                                        <span
+                                                            className={`{" ml-2 py-1 px-2 rounded text-white-100 "} ${
+                                                            activeTab === "third"
+                                                            ? "bg-white-100 lg:text-white-100 text-dark-green-500  lg:bg-red-100 text-3sm "
+                                                            : "bg-red-100 text-white-100 text-3sm"
+                                                            }`}
+                                                            >
+                                                                {completedShiftsData?.results?.length}
+                                                        </span>
                                                   </p>
                                               </Tabs.Tab>
                                           </Tabs.List>
@@ -142,7 +175,7 @@ const Planner = () => {
                                           <Tabs.Panel value="second">
                                               <ShiftsTable
                                                   elements={ongoingShiftsData?.results}
-                                                  status="active"
+                                                  status="ongoing"
                                               />
                                               <Pagination
                                                   page={activeOngoingPage}

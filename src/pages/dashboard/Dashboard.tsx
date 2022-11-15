@@ -10,7 +10,6 @@ import UpperRightArrow2 from "../../assets/UpperRightArrow2.svg"
 import Money from "../../assets/Money.svg"
 import Time from "../../assets/Time.svg"
 import Operative from "../../assets/Operative.svg"
-import ProfileImage from "../../assets/ProfileImage.svg"
 import Card from "./components/Card"
 import ShiftCard from "./components/ShiftCard"
 import Chart from "./components/Chart"
@@ -18,9 +17,26 @@ import PieChart from "./components/PieChart"
 import Rating from "./components/rating/Rating"
 import Layout from "../../components/Layout"
 import { useGetDashboardAnalytics } from "../../hooks/dashboard/useDashboard.hook"
+import { useGetShiftHistory } from "../../hooks/planner/usePlanner.hooks"
+import dayjs from "dayjs"
+import { useNavigate } from "react-router-dom"
 
 const Dashboard = () => {
+    const navigate = useNavigate()
+    const handleNavigate = () => {
+        navigate(`/planner`)
+      }
     const {data:dashboardAnalytics} = useGetDashboardAnalytics();
+    const {
+        data: upcomingShiftsData,
+    } = useGetShiftHistory({
+        upcoming: true,
+    })
+    const {
+        data: ongoingShiftsData,
+    } = useGetShiftHistory({
+        ongoing: true,
+    })
     return (
         <Layout pageTitle={"Dashboard"}>
             <main className="px-8 mt-6 py-6 bg-white-100 overflow-hidden">
@@ -98,75 +114,92 @@ const Dashboard = () => {
                         </section>
                     </div>
                     <div className="basis-1/4">
-                        <Rating />
+                        <Rating/>
                         <section>
                             <div className="relative my-5 rounded-lg">
                                 <p className="text-md font-medium  sticky top-0 bg-gray-100 rounded-t-lg py-3 pl-4 ">
                                     {" "}
                                     ACTIVE SHIFTS{" "}
-                                    <span className="text-md font-bold text-green-100 sticky top-0 cursor-pointer ml-12">
+                                    <span
+                                        className={`{" ml-2 py-1 px-2 rounded text-white-100 "} ${ "bg-red-100 text-white-100 text-3sm"
+                                        }`}
+                                    >
+                                        {ongoingShiftsData?.results?.length}
+                                    </span>
+                                    <span className="text-md font-bold text-green-100 sticky top-0 cursor-pointer ml-12" onClick={() => handleNavigate()}>
                                         See All
                                     </span>
                                 </p>
-                                <ShiftCard
-                                    profileImage={ProfileImage}
-                                    profileName={"Shaquan Roberts"}
-                                    locationIcon={LocationIcon}
-                                    location={"Iolaire Road, New Invention"}
-                                    taskIcon={TaskIcon}
-                                    task={"2-Way"}
-                                    messageIcon={MessageIcon}
-                                    calenderIcon={""}
-                                    date={""}
-                                    clockIcon={""}
-                                    time={""}
-                                    hour={"01:"}
-                                    minute={"59:"}
-                                    second={"04"}
-                                />
+                                {ongoingShiftsData?.results?.length === 0 ? 
+                                (<ShiftCard
+                                        profileImage={""}
+                                        firstName={""}
+                                        lastName={""}
+                                        locationIcon={""}
+                                        location={"NO ACTIVE SHIFTS"}
+                                        taskIcon={""}
+                                        task={""}
+                                        messageIcon={""}
+                                        calenderIcon={""}
+                                        date={""}
+                                        clockIcon={""}
+                                        startTime={""} endTime={""} duration={""} 
+                                        status={"ongoing"}                                        
+                                    />) 
+                                : 
+                                (<ShiftCard
+                                        profileImage={ongoingShiftsData?.results[0]?.operative?.profileImageUrl}
+                                        firstName={ongoingShiftsData?.results[0]?.operative?.firstName}
+                                        lastName={ongoingShiftsData?.results[0]?.operative?.lastName}
+                                        locationIcon={LocationIcon}
+                                        location={ongoingShiftsData?.results[0]?.jobListing?.jobLocation?.formattedAddress}
+                                        taskIcon={TaskIcon}
+                                        task={ongoingShiftsData?.results[0]?.jobListing?.jobType?.name}
+                                        messageIcon={MessageIcon}
+                                        calenderIcon={""}
+                                        date={""}
+                                        clockIcon={""}
+                                        startTime={""} endTime={""} duration={""}
+                                        initialDate={new Date(ongoingShiftsData?.results[0]?.jobListing?.shiftEndTime)}
+                                        currentDate={new Date()} 
+                                        status={"ongoing"}                                        
+                                    />)
+                                }
                             </div>
 
                             <div className="overflow-y-scroll  h-52 relative rounded-t-lg my-5">
                                 <p className="text-md font-medium sticky z-20 top-0 bg-gray-100 rounded-t-lg py-3 pl-4 ">
                                     {" "}
                                     UPCOMING SHIFTS{" "}
-                                    <span className="text-md font-bold text-green-100 sticky top-0  cursor-pointer ml-12">
+                                    <span
+                                        className={`{" ml-2 py-1 px-2 rounded text-white-100 "} ${ "bg-red-100 text-white-100 text-3sm"
+                                        }`}
+                                    >
+                                        {upcomingShiftsData?.results?.length}
+                                    </span>
+                                    <span className="text-md font-bold text-green-100 sticky top-0  cursor-pointer ml-12" onClick={() => handleNavigate()}>
                                         See All
                                     </span>
                                 </p>
-                                <ShiftCard
-                                    profileImage={ProfileImage}
-                                    profileName={"Shaquan Roberts"}
+                                {upcomingShiftsData?.results?.map((item,index) => (
+                                    <ShiftCard key={index}
+                                    profileImage={item?.operative?.profileImageUrl}
+                                    firstName={item?.operative?.firstName}
+                                    lastName={item?.operative?.lastName}
                                     calenderIcon={CalenderIcon}
-                                    date={"Wed, 14 Dec 22"}
+                                    date={dayjs(item?.jobListing?.jobDate).format("ddd, DD MMM, YY")}
                                     clockIcon={ClockIcon}
-                                    time={"07:00 - 09:00 (2H)"}
                                     locationIcon={LocationIcon}
-                                    location={"Iolaire Road, New Invention"}
+                                    location={item?.jobListing?.jobLocation?.formattedAddress}
                                     taskIcon={TaskIcon}
-                                    task={"2-Way"}
+                                    task={item?.jobListing?.jobType?.name}
                                     messageIcon={MessageIcon}
-                                    hour={""}
-                                    minute={""}
-                                    second={""}
-                                />
-
-                                <ShiftCard
-                                    profileImage={ProfileImage}
-                                    profileName={"Shaquan Roberts"}
-                                    calenderIcon={CalenderIcon}
-                                    date={"Wed, 14 Dec 22"}
-                                    clockIcon={ClockIcon}
-                                    time={"07:00 - 09:00 (2H)"}
-                                    locationIcon={LocationIcon}
-                                    location={"Iolaire Road, New Invention"}
-                                    taskIcon={TaskIcon}
-                                    task={"2-Way"}
-                                    messageIcon={MessageIcon}
-                                    hour={""}
-                                    minute={""}
-                                    second={""}
-                                />
+                                    startTime={dayjs(item?.jobListing?.shiftStartTime).format("h:mm A")}
+                                    endTime={` - ${dayjs(item?.jobListing.shiftEndTime).format("h:mm A")}`}
+                                    duration={`(${item?.jobListing?.shiftDurationInHours}H)`} 
+                                    status={"upcoming"}                                    
+                                    />
+                                ))}
                             </div>
                         </section>
                     </div>

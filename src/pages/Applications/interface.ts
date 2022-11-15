@@ -50,7 +50,7 @@ export interface JobListing {
     depot: User
     jobDate: Date
     shiftStartTime: string
-    shiftEndTime: Date
+    shiftEndTime: string
     shiftDurationInHours: number
     jobMeetingPoint: string
     jobAccessibleTo: string

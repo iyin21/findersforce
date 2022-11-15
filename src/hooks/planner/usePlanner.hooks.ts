@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query"
 import { AxiosError } from "axios"
 import { axiosInstance } from "../../services/api.service"
 import useAuthContext from "../auth-hooks/useAuth"
+import { IDepotRating } from "../../types/dashboard/interfaces"
 
 
 function useGetShiftHistory({
@@ -108,6 +109,38 @@ function useGetSingleSchedule({
     )
 }
 
+function useGetOperativeRatingSummary({
+    id
+}: {
+    id?: string
+}) {
+    const { state } = useAuthContext()
+    const getOperativeRatingSummary = async () => {
+        const { data } = await axiosInstance.get(`/rating/operative/?id=${id}/summary`, {
+            
+            headers: {
+                Authorization: `Bearer ${state?.jwt?.token}`,
+            },
+        })
+        return data.data
+    }
+
+    return useQuery<unknown, AxiosError, IDepotRating["data"]>(
+        ["shiftHistory", { id }],
+        getOperativeRatingSummary,
+
+        {
+            onError: (err) => {
+                showNotification({
+                    title: "Error",
+                    message: err.message,
+                    color: "red",
+                })
+            },
+        }
+    )
+}
+
 
 
 
@@ -115,5 +148,6 @@ function useGetSingleSchedule({
 export { 
     useGetShiftHistory, 
     useGetShiftHistoryByJobListingId,
-    useGetSingleSchedule
+    useGetSingleSchedule,
+    useGetOperativeRatingSummary
 }
