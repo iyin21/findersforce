@@ -58,7 +58,7 @@ const JobBoards = () => {
     } = useJobBoards({
         isPublished: true,
         page: activeActivePage,
-        limit: 5,
+        limit: 15,
         // jobMode: "",
         // jobType: "",
         // jobRate: "",
@@ -70,7 +70,7 @@ const JobBoards = () => {
     } = useJobBoards({
         isPublished: false,
         page: activeDraftPage,
-        limit: 5,
+        limit: 15,
         // jobMode: "",
         // jobType: "",
         // jobRate: "",
@@ -101,7 +101,7 @@ const JobBoards = () => {
                 color: "green",
             })
         }
-        if (openSuccess) {
+        if (openSuccess && newJobId) {
             refetchActiveJobList()
             refetchDraftJobList()
         }
@@ -216,14 +216,13 @@ const JobBoards = () => {
                                     />
                                     <Pagination
                                         page={activeActivePage}
-                                        total={activeActivePage}
+                                        total={
+                                            activeData?.pagination?.next
+                                                ?.page || 0
+                                        }
                                         onChange={handleActivePage}
                                         boundaries={1}
-                                        recordPerpage={
-                                            activeData?.data
-                                                ? activeData?.data.length
-                                                : 1
-                                        }
+                                        recordPerpage={activeData?.count || 0}
                                     />
                                 </Tabs.Panel>
                                 <Tabs.Panel value="second" className="p-3">
@@ -239,14 +238,13 @@ const JobBoards = () => {
                                     />
                                     <Pagination
                                         page={activeDraftPage}
-                                        total={activeActivePage}
+                                        total={
+                                            draftData?.pagination?.next?.page ||
+                                            0
+                                        }
                                         onChange={handleDraftPage}
                                         boundaries={1}
-                                        recordPerpage={
-                                            draftData?.data
-                                                ? draftData?.data.length
-                                                : 1
-                                        }
+                                        recordPerpage={draftData?.count || 0}
                                     />
                                 </Tabs.Panel>
                             </Tabs>

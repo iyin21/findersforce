@@ -13,12 +13,16 @@ export interface JobBoardResponse {
     count: number
     status: string
     pagination: {
-        next: {}
-        prev: {}
+        next: {
+            page: number
+            limit: number
+        }
+        prev: {
+            page: number
+            limit: number
+        }
     }
-    data: {
-        data: JobBoardResponseInterface[]
-    }
+    data: JobBoardResponseInterface[]
 }
 
 export interface JobBoardResponseInterface {

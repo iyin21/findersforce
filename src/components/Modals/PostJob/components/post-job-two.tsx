@@ -101,9 +101,7 @@ const PostJobTwo = ({ jobQualification }: PostJobTwoProps) => {
                                     setValue
                                     setFieldValue(
                                         "additionalInfoImageUrls",
-                                        values.additionalInfoImageUrls.concat(
-                                            value
-                                        )
+                                        value
                                     )
                                 }}
                                 accept="image/png,image/jpeg"
@@ -115,6 +113,16 @@ const PostJobTwo = ({ jobQualification }: PostJobTwoProps) => {
                             <span className="text-white-60 text-md">
                                 JPEG, PNG accepted; 10MB max file size
                             </span>
+                            <div className="mt-3">
+                                {values.additionalInfoImageUrls.map((file) => (
+                                    <p
+                                        className="text-white-60 text-md"
+                                        key={file.name}
+                                    >
+                                        {file.name},
+                                    </p>
+                                ))}{" "}
+                            </div>
                         </div>
                     </div>
                 </div>
