@@ -56,7 +56,7 @@ const ShiftDetails = ({shiftId, setPhase}:{shiftId:string, setPhase: (val: numbe
                                 </p>
                             </div>
                         </div>
-                        <button className="bg-green-10 p-6 mr-4 flex text-green-100 font-bold items-center px-10 rounded rounded-tr-2xl">
+                        <button className="bg-green-10 lg:p-6 mr-4 flex text-green-100 font-bold items-center lg:px-10 px-2 rounded rounded-tr-2xl">
                             <img src={Message} alt="" className="mr-2" />
                             Message {item?.operative.firstName}
                         </button>

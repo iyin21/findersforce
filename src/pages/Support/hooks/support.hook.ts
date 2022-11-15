@@ -113,27 +113,26 @@ function useGetSingleComplaint({ id }: { id: string }) {
 function useCreateComplaint() {
     const { state } = useAuthContext()
 
-    const createComplaint = async ({
-        complaintCategory,
-        image,
-        complaintIssues,
-        description,
-    }: CreateComplaintRequest) => {
+    const createComplaint = async ({ formData }: { formData: FormData }) => {
         const config: AxiosRequestConfig = {
             headers: {
                 Authorization: `Bearer ${state?.jwt?.token}`,
-                "content-type": "multipart/formdata",
+                //"content-type": "multipart/formdata",
             },
         }
-        const formData = new FormData()
-        formData.append("complaintCategory", complaintCategory)
-        complaintIssues?.map((item) =>
-            formData.append("complaintIssues[]", item)
-        )
-        formData.append("description", description)
-        if (image) {
-            formData.append("image", image)
-        }
+        //const formData = new FormData()
+        
+        // complaintIssues?.map((item) =>
+        //     formData.append("complaintIssues[]", item)
+        // )
+        // if(complaintCategory){
+        //     formData.append("complaintCategory", complaintCategory)
+        // }
+        
+        // formData.append("description", description)
+        // if (image) {
+        //     formData.append("image", image)
+        // }
 
         const { data } = await axiosInstance.post(
             `/complaints`,
@@ -146,20 +145,14 @@ function useCreateComplaint() {
     return useMutation<
         SingleComplaintResponse,
         AxiosError,
-        CreateComplaintRequest
+        { formData: FormData}
     >(
         ["CreateComplaint"],
         ({
-            complaintCategory,
-            image,
-            complaintIssues,
-            description,
-        }: CreateComplaintRequest) =>
+            formData
+        }) =>
             createComplaint({
-                complaintCategory,
-                image,
-                complaintIssues,
-                description,
+                formData
             }),
         {
             onError: (err) => {

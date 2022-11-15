@@ -269,7 +269,7 @@ const ApplicationDetails = ({ setPhase, activeId, setShiftId }: Prop) => {
                                     <a
                                         className="text-white-100 pl-2"
                                         href={data?.user.resumeUrl}
-                                        //target="_blank"
+                                        target="_blank"
                                         //rel="noreferrer"
                                         //target="_blank"
                                         //rel="noopener noreferrer"

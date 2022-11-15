@@ -6,7 +6,7 @@ import React, {
     useEffect,
     useState,
 } from "react"
-import { Form, Formik,} from "formik"
+import { Form, Formik, FormikValues } from "formik"
 import { Header } from "./components/header"
 import SupportForm1 from "./components/supportForm1"
 import SupportForm2 from "./components/supportForm2"
@@ -19,10 +19,14 @@ import { showNotification } from "@mantine/notifications"
 export interface SupportModalProps {
     opened: boolean
     setOpened: Dispatch<SetStateAction<boolean>>
-    setHandleRefetch:(val: boolean)=> void;
+    setHandleRefetch: (val: boolean) => void
 }
 
-const SupportModal = ({ opened, setOpened, setHandleRefetch }: SupportModalProps) => {
+const SupportModal = ({
+    opened,
+    setOpened,
+    setHandleRefetch,
+}: SupportModalProps) => {
     const { state } = useAuthContext()
     const [step, setStep] = useState(1)
     const { data, isLoading, mutate } = useCreateComplaint()
@@ -38,6 +42,23 @@ const SupportModal = ({ opened, setOpened, setHandleRefetch }: SupportModalProps
             setHandleRefetch(true)
         }
     }, [data])
+    const handleSubmit = (values: FormikValues) => {
+        const formData = new FormData()
+
+        values.complaintIssue?.map((item: string) =>
+            formData.append("complaintIssues[]", item)
+        )
+
+        formData.append("complaintCat4egory", values.complaintCategory)
+
+        formData.append("description", values.description)
+        if (values.image) {
+            formData.append("image", values.image)
+        }
+        mutate({
+            formData,
+        })
+    }
     return (
         <Modal
             opened={opened}
@@ -47,23 +68,16 @@ const SupportModal = ({ opened, setOpened, setHandleRefetch }: SupportModalProps
             centered
         >
             <Header step={step} />
-            
+
             <Formik
                 onSubmit={(values) => {
                     if (step === 1) {
                         //console.log(values)
                         setStep(step + 1)
                     } else {
-                        //console.log(values)
-                        mutate({
-                            complaintCategory: values.complaintCategory,
-                            image: values.image,
-                            complaintIssues: values.complaintIssue,
-                            description: values.description,
-                        })
+                        console.log(values)
+                        handleSubmit(values)
                     }
-
-                    
                 }}
                 validationSchema={validationSchema}
                 initialValues={{
