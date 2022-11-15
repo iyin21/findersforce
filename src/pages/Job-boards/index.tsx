@@ -57,6 +57,11 @@ const JobBoards = () => {
         refetch: refetchActiveJobList,
     } = useJobBoards({
         isPublished: true,
+        page: activeActivePage,
+        limit: 5,
+        // jobMode: "",
+        // jobType: "",
+        // jobRate: "",
     })
     const {
         data: draftData,
@@ -64,6 +69,11 @@ const JobBoards = () => {
         refetch: refetchDraftJobList,
     } = useJobBoards({
         isPublished: false,
+        page: activeDraftPage,
+        limit: 5,
+        // jobMode: "",
+        // jobType: "",
+        // jobRate: "",
     })
 
     const handleDelete = () => {
@@ -87,7 +97,7 @@ const JobBoards = () => {
             refetchDraftJobList()
             showNotification({
                 title: "Success",
-                message: "Product has been paused successfully",
+                message: "Job list has been deleted successfully",
                 color: "green",
             })
         }

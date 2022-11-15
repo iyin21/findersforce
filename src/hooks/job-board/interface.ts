@@ -1,6 +1,12 @@
 export interface JobBoardRequest {
     isPublished: boolean
     signal?: AbortSignal
+    limit?: number
+    page?: number
+    // perPage?: number
+    // jobType: string
+    // jobMode: string
+    // jobRate?: string
 }
 
 export interface JobBoardResponse {

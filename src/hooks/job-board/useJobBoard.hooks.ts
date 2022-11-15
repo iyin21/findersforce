@@ -12,14 +12,29 @@ import { FormikValues } from "formik"
 import useAuthContext from "../auth-hooks/useAuth"
 
 // get job listing
-function useJobBoards({ isPublished }: JobBoardRequest) {
+function useJobBoards({
+    isPublished,
+    signal,
+    page,
+    limit,
+}: // jobMode,
+// jobType,
+// jobRate,
+JobBoardRequest) {
     const { state } = useAuthContext()
 
     /** API methods */
-    const getJobBoards = async ({ isPublished, signal }: JobBoardRequest) => {
+    const getJobBoards = async () => {
         const { data } = await axiosInstance.get("/job-listing", {
             signal,
-            params: { isPublished },
+            params: {
+                isPublished,
+                page,
+                // jobMode,
+                // jobType,
+                // jobRate,
+                limit,
+            },
             headers: {
                 Authorization: `${state?.jwt?.token}`,
             },
@@ -28,8 +43,19 @@ function useJobBoards({ isPublished }: JobBoardRequest) {
     }
 
     return useQuery<JobBoardRequest, AxiosError, JobBoardResponse["data"]>(
-        ["JobBoards", { isPublished }],
-        ({ signal }) => getJobBoards({ isPublished, signal }),
+        [
+            "JobBoards",
+            {
+                isPublished,
+                signal,
+                page,
+                // jobMode,
+                // jobType,
+                // jobRate,
+                limit,
+            },
+        ],
+        ({ signal }) => getJobBoards(),
         {
             onError: (err: AxiosError) => {
                 showNotification({
