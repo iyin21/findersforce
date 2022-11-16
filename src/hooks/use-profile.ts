@@ -1,27 +1,27 @@
-import axios from "../services/api.service"
+import { signupAxios } from "../services/api.service"
 
 const setProfile = (
     password: string,
     confirmPassword: string,
     inviteCode: string,
     opened: boolean,
+    firstName: string,
+    lastName: string,
     setIsSubmitting: (val: boolean) => void,
     setErrorMsg: (msg: string) => void,
     showError: (val: boolean) => void,
     setOpened: (val: boolean) => void
 ) => {
-    axios
+    signupAxios
         .post(
             "/invitation/accept",
             JSON.stringify({
+                firstName: firstName,
+                lastName: lastName,
                 password: password,
                 passwordConfirm: confirmPassword,
                 inviteCode: inviteCode,
-            }),
-            {
-                headers: { "Content-Type": "application/json" },
-                withCredentials: true,
-            }
+            })
         )
         .then((response) => {
             setOpened(!opened)

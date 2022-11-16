@@ -75,17 +75,6 @@ const Login = () => {
                         <h1 className="text-blaq-0 font-extrabold text-4xl pb-2.5">
                             Log In
                         </h1>
-                        <div>
-                            <span className="text-blaq-7 text-2lg font-normal">
-                                Don`t have an account?{" "}
-                            </span>
-                            <a
-                                href="/#"
-                                className="text-2lg text-green-100 font-normal"
-                            >
-                                Request access
-                            </a>
-                        </div>
 
                         <form
                             onSubmit={loginForm.onSubmit((values) =>
@@ -97,6 +86,7 @@ const Login = () => {
                                 <TextInput
                                     placeholder="example@gmail.com"
                                     label="Email Address"
+                                    id="email"
                                     withAsterisk
                                     required
                                     ref={userRef}
@@ -107,6 +97,7 @@ const Login = () => {
                             <div></div>
                             <PasswordInput
                                 placeholder="password"
+                                id="password"
                                 label="Password"
                                 withAsterisk
                                 radius="md"
@@ -140,6 +131,7 @@ const Login = () => {
                         </form>
                         {error && (
                             <Alert
+                                id="alert"
                                 title="Error!"
                                 color="red"
                                 styles={() => ({ root: { marginTop: "20px" } })}
