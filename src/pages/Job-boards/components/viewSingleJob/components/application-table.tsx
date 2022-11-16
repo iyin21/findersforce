@@ -1,10 +1,10 @@
 import { Table } from "@mantine/core"
 import dayjs from "dayjs"
+import { JobBoardResponseInterface } from "../../../../../hooks/job-board/interface"
 import { AiOutlineArrowUp } from "react-icons/ai"
 import { BsFillStarFill } from "react-icons/bs"
 import { IoIosArrowForward } from "react-icons/io"
 import { useNavigate } from "react-router-dom"
-import { JobBoardResponseInterface } from "../../../../../hooks/job-board/interface"
 
 interface ApplicationJobInterface {
     elements?: JobBoardResponseInterface[]
