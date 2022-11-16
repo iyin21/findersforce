@@ -75,17 +75,6 @@ const Login = () => {
                         <h1 className="text-blaq-0 font-extrabold text-4xl pb-2.5">
                             Log In
                         </h1>
-                        <div>
-                            <span className="text-blaq-7 text-2lg font-normal">
-                                Don`t have an account?{" "}
-                            </span>
-                            <a
-                                href="/#"
-                                className="text-2lg text-green-100 font-normal"
-                            >
-                                Request access
-                            </a>
-                        </div>
 
                         <form
                             onSubmit={loginForm.onSubmit((values) =>
@@ -103,14 +92,13 @@ const Login = () => {
                                     ref={userRef}
                                     {...loginForm.getInputProps("email")}
                                     styles={() => emailInputStyle}
-                                    id="email"
                                 />
                             </div>
                             <div></div>
                             <PasswordInput
                                 placeholder="password"
-                                label="Password"
                                 id="password"
+                                label="Password"
                                 withAsterisk
                                 radius="md"
                                 size="xl"
@@ -118,7 +106,6 @@ const Login = () => {
                                 {...loginForm.getInputProps("password")}
                                 styles={() => passwordInputStyle}
                                 onFocusCapture={() => showError(false)}
-                                id="password"
                             />
                             <Button
                                 variant="primary"
@@ -144,6 +131,7 @@ const Login = () => {
                         </form>
                         {error && (
                             <Alert
+                                id="alert"
                                 title="Error!"
                                 color="red"
                                 styles={() => ({ root: { marginTop: "20px" } })}
