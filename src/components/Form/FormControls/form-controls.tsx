@@ -78,44 +78,36 @@ function InputProp(props: IinputProps) {
     )
 }
 function TextAreaProp(props: IinputProps) {
-    const {
-       
-        classNames,
-        name,
-        
-        enablereinitialize,
-        onClick,
-        disabled,
-    } = props
+    const { classNames, name, onClick, disabled } = props
 
     return (
         <Field name={name}>
             {({ field, meta, form }: any) => (
                 <div>
-                <div
-                    className={`flex flex-col w-full border border-black-10  rounded-[10px]  h-20 px-2 ${classNames?.wrapper} ${
-                        form.touched[name as string] &&
-                        form.errors[name as string]
-                            ? "border-red-100"
-                            : ""
-                    } `}
-                >
-                    <textarea 
-                        {...field}
-                        {...props}
-                        
-                        onClick={onClick}
-                        className={`bg-white-100 h-20 flex items-center placeholder:bg-black-60 outline-none w-full pt-2  ${
-                            disabled ? "bg-black-20 cursor-not-allowed" : ""
-                        } `}
-                        //type={type}
-                        error={
+                    <div
+                        className={`flex flex-col w-full border border-black-10  rounded-[10px]  h-20 px-2 ${
+                            classNames?.wrapper
+                        } ${
                             form.touched[name as string] &&
                             form.errors[name as string]
-                        }
-                        enablereinitialize={enablereinitialize}
-                        rows={4}
-                    />
+                                ? "border-red-100"
+                                : ""
+                        } `}
+                    >
+                        <textarea
+                            {...field}
+                            {...props}
+                            onClick={onClick}
+                            className={`bg-white-100 h-20 flex items-center placeholder:bg-black-60 outline-none w-full pt-2  ${
+                                disabled ? "bg-black-20 cursor-not-allowed" : ""
+                            } `}
+                            // type={type}
+                            error={
+                                form.touched[name as string] &&
+                                form.errors[name as string]
+                            }
+                            rows={4}
+                        />
                     </div>
                     {meta.touched && meta.error && (
                         <div className="text-red-100 items-center text-lg ">
@@ -166,13 +158,12 @@ function SelectInput(props: ISelectProps) {
     )
 }
 
-
 export default function FormikControls({ control, ...rest }: IinputProps) {
     switch (control) {
         case "input":
             return <InputProp control="select" {...rest} />
         case "textarea":
-            return < TextAreaProp control="select" {...rest} />
+            return <TextAreaProp control="select" {...rest} />
         case "select":
             // @ts-expect-error
             return <SelectInput {...rest} />

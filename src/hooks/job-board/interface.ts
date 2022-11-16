@@ -1,18 +1,30 @@
 export interface JobBoardRequest {
     isPublished: boolean
     signal?: AbortSignal
+    limit?: number
+    page?: number
+    meetingPoint: string
+    // amount: string[]
+    // perPage?: number
+    // jobType: string
+    // jobMode: string
+    // jobRate?: string
 }
 
 export interface JobBoardResponse {
     count: number
     status: string
     pagination: {
-        next: {}
-        prev: {}
+        next: {
+            page: number
+            limit: number
+        }
+        prev: {
+            page: number
+            limit: number
+        }
     }
-    data: {
-        data: JobBoardResponseInterface[]
-    }
+    data: JobBoardResponseInterface[]
 }
 
 export interface JobBoardResponseInterface {
