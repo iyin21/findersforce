@@ -152,7 +152,7 @@ const Dashboard = () => {
                                         date={""}
                                         clockIcon={""}
                                         startTime={""} endTime={""} duration={""}
-                                        initialDate={new Date(ongoingShiftsData?.results[0]?.jobListing?.shiftEndTime)}
+                                        initialDate={new Date()}
                                         currentDate={new Date()} 
                                         status={"ongoing"}                                        
                                     />)
