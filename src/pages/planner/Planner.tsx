@@ -7,6 +7,7 @@ import { CgSpinner } from "react-icons/cg"
 import Layout from "../../components/Layout/index"
 import Filter from "../../components/Filter/index"
 import { FilterRequest } from "../../types/filter/filter"
+import EmptyView from "./components/EmptyView"
 
 
 
@@ -156,10 +157,15 @@ const Planner = () => {
                                           </Tabs.List>
       
                                           <Tabs.Panel value="first">
-                                              <ShiftsTable
-                                                  elements={upcomingShiftsData?.results}
-                                                  status="upcoming"
-                                              />
+                                              {upcomingShiftsData?.results?.length === 0 ?
+                                                (<EmptyView 
+                                                    status={"upcoming"}
+                                                />)
+                                                :
+                                                (<ShiftsTable
+                                                    elements={upcomingShiftsData?.results}
+                                                    status="upcoming"
+                                                />)}
                                               <Pagination
                                                   page={activeUpcomingPage}
                                                   total={activeUpcomingPage}
@@ -173,10 +179,17 @@ const Planner = () => {
                                               />
                                           </Tabs.Panel>
                                           <Tabs.Panel value="second">
-                                              <ShiftsTable
-                                                  elements={ongoingShiftsData?.results}
-                                                  status="ongoing"
-                                              />
+                                              {ongoingShiftsData?.results?.length === 0 ?
+                                                (
+                                                <EmptyView 
+                                                    status={"ongoing"}
+                                                />
+                                                )
+                                                :
+                                                (<ShiftsTable
+                                                    elements={ongoingShiftsData?.results}
+                                                    status="ongoing"
+                                                />)}
                                               <Pagination
                                                   page={activeOngoingPage}
                                                   total={activeOngoingPage}
@@ -190,10 +203,18 @@ const Planner = () => {
                                               />
                                           </Tabs.Panel>
                                           <Tabs.Panel value="third">
-                                              <ShiftsTable
-                                                  elements={completedShiftsData?.results}
-                                                  status="completed"
-                                              />
+                                              {completedShiftsData?.results?.length === 0 ?
+                                                (
+                                                <EmptyView 
+                                                    status={"completed"}
+                                                />
+                                                )
+                                                :
+                                                (<ShiftsTable
+                                                    elements={completedShiftsData?.results}
+                                                    status="completed"
+                                                />)
+                                                }
                                               <Pagination
                                                   page={activeCompletedPage}
                                                   total={activeCompletedPage}

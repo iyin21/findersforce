@@ -20,6 +20,7 @@ import { useGetDashboardAnalytics } from "../../hooks/dashboard/useDashboard.hoo
 import { useGetShiftHistory } from "../../hooks/planner/usePlanner.hooks"
 import dayjs from "dayjs"
 import { useNavigate } from "react-router-dom"
+import Empty from "../../assets/Empty.png"
 
 const Dashboard = () => {
     const navigate = useNavigate()
@@ -42,7 +43,7 @@ const Dashboard = () => {
             <main className="px-8 mt-6 py-6 bg-white-100 overflow-hidden">
                 <section className=" flex bg-white-100 justify-between">
                     <div>
-                        <h1 className="font-extrabold text-4xl">Dashboard</h1>
+                        <h1 className="font-extrabold text-4xl font-creatoBold">Dashboard</h1>
                         <p className="text-primary-20 text-base pb-5">
                             Here&apos;s a snippet of all your activity on
                             FindersForce.
@@ -66,15 +67,15 @@ const Dashboard = () => {
                 <div className="flex flex-row gap-8 justify-between">
                     <div className="basis-3/4">
                         <section className="bg-dashboard-pattern h-42 bg-cover text-white-100 pl-5 pb-5 rounded-lg">
-                            <p className="font-extrabold text-2xl w-96 pt-5">
+                            <p className="font-extrabold text-2xl w-96 pt-5 font-creatoBold">
                                 Access to top quality traffic management
                                 talents.
                             </p>
-                            <p className="pt-2 text-white-30">
+                            <p className="pt-2 text-white-30 font-creato">
                                 {" "}
                                 Manage your hiring in 2 steps{" "}
                             </p>
-                            <span className="text-yellow-100 font-medium pt-2 pb-5">
+                            <span className="text-yellow-100 font-medium pt-2 pb-5 font-creatoBoldMedium">
                                 Start posting jobs
                             </span>
                             <img
@@ -126,26 +127,17 @@ const Dashboard = () => {
                                     >
                                         {ongoingShiftsData?.results?.length}
                                     </span>
-                                    <span className="text-md font-bold text-green-100 sticky top-0 cursor-pointer ml-12" onClick={() => handleNavigate()}>
+                                    <span className="text-md font-bold text-green-100 sticky top-0 cursor-pointer ml-12" onClick={() => handleNavigate()} data-testid="ongoingData_link">
                                         See All
                                     </span>
                                 </p>
                                 {ongoingShiftsData?.results?.length === 0 ? 
-                                (<ShiftCard
-                                        profileImage={""}
-                                        firstName={""}
-                                        lastName={""}
-                                        locationIcon={""}
-                                        location={"NO ACTIVE SHIFTS"}
-                                        taskIcon={""}
-                                        task={""}
-                                        messageIcon={""}
-                                        calenderIcon={""}
-                                        date={""}
-                                        clockIcon={""}
-                                        startTime={""} endTime={""} duration={""} 
-                                        status={"ongoing"}                                        
-                                    />) 
+                                (<div className=" bg-gray-100 rounded-b-lg pb-4 px-4 relative">
+                                    <div className="bg-white-100 px-6 py-3 rounded-lg">
+                                        <img src={Empty} alt="empty-state" />
+                                        <p className=" text-center text-3sm font-creato">Ongoing shifts will appear here</p>
+                                    </div> 
+                                </div>) 
                                 : 
                                 (<ShiftCard
                                         profileImage={ongoingShiftsData?.results[0]?.operative?.profileImageUrl}
@@ -177,11 +169,20 @@ const Dashboard = () => {
                                     >
                                         {upcomingShiftsData?.results?.length}
                                     </span>
-                                    <span className="text-md font-bold text-green-100 sticky top-0  cursor-pointer ml-12" onClick={() => handleNavigate()}>
+                                    <span className="text-md font-bold text-green-100 sticky top-0  cursor-pointer ml-12" onClick={() => handleNavigate()} data-testid="upcomingData_link">
                                         See All
                                     </span>
                                 </p>
-                                {upcomingShiftsData?.results?.map((item,index) => (
+                                {upcomingShiftsData?.results?.length === 0 ?
+                                (<div className=" bg-gray-100 rounded-b-lg pb-4 px-4 relative">
+                                    <div className="bg-white-100 px-6 py-3 rounded-lg">
+                                        <img src={Empty} alt="empty-state" />
+                                        <p className=" text-center font-creato text-3sm">Upcoming shifts will appear here</p>
+                                    </div> 
+                                </div>)
+                                :
+                                (<div>
+                                    {upcomingShiftsData?.results?.map((item,index) => (
                                     <ShiftCard key={index}
                                     profileImage={item?.operative?.profileImageUrl}
                                     firstName={item?.operative?.firstName}
@@ -200,6 +201,7 @@ const Dashboard = () => {
                                     status={"upcoming"}                                    
                                     />
                                 ))}
+                                </div>)}
                             </div>
                         </section>
                     </div>
