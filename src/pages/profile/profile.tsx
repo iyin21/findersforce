@@ -15,7 +15,7 @@ import {
 import { useMediaQuery } from "@mantine/hooks"
 import logo from "../../assets/FF-logo.svg"
 import setProfile from "../../hooks/profile/set-profile"
-import { CiLocationOn } from "react-icons/ci"
+import locationIcon from "../../assets/location.svg"
 
 const CheckBox = ({ check }: { check: boolean }) => {
     return (
@@ -160,9 +160,7 @@ const Profile = () => {
                             Please provide the following information
                         </span>
                         <div className="flex pt-2.5">
-                            <CiLocationOn
-                                style={{ color: "#E94444", fontSize: "25px" }}
-                            />
+                            <img src={locationIcon} alt="location icon" />
                             <span className="pl-2.5 text-black-60 text-lg">
                                 {formattedAddress}
                             </span>
