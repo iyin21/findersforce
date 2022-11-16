@@ -14,8 +14,8 @@ import {
 } from "../auth/utils"
 import { useMediaQuery } from "@mantine/hooks"
 import logo from "../../assets/FF-logo.svg"
-import setProfile from "../../hooks/use-profile"
 import { CiLocationOn } from "react-icons/ci"
+import setProfile from "../../hooks/profile/use-profile"
 
 const CheckBox = ({ check }: { check: boolean }) => {
     return (
