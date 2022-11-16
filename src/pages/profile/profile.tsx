@@ -1,5 +1,5 @@
-import React, { MutableRefObject } from "react"
-import { TextInput, Alert, Modal, PasswordInput, Text } from "@mantine/core"
+import React from "react"
+import { Alert, Modal, PasswordInput, Text } from "@mantine/core"
 import { useForm } from "@mantine/form"
 import LandingPageText from "../../components/Layout/landing-page-txt"
 import Button from "../../components/Core/Buttons/Button"
@@ -14,8 +14,7 @@ import {
 } from "../auth/utils"
 import { useMediaQuery } from "@mantine/hooks"
 import logo from "../../assets/FF-logo.svg"
-import setProfile from "../../hooks/profile/set-profile"
-import { CiLocationOn } from "react-icons/ci"
+import setProfile from "../../hooks/profile/use-profile"
 
 const CheckBox = ({ check }: { check: boolean }) => {
     return (
@@ -77,16 +76,11 @@ const Profile = () => {
     const [errorText, showErrorText] = React.useState(false)
     const [errorMsg, setErrorMsg] = React.useState("")
     const [error, showError] = React.useState(false)
-    const userRef = React.useRef<HTMLInputElement>(
-        null
-    ) as MutableRefObject<HTMLInputElement>
 
     const profileForm = useForm({
         initialValues: {
-            firstName: "",
             password: "",
             confirmPassword: "",
-            lastName: "",
         },
 
         validate: {
@@ -110,24 +104,14 @@ const Profile = () => {
     const strength = getStrength(password)
 
     const location = useLocation()
-    const inviteCode = location.search
-        ?.split("?")[1]
-        ?.split("=")[1]
-        .split("&")[0]
-    const address = location.search?.split("?")[1]?.split("&")[1].split("=")[1]
-    const re = /%20/g
-    const formattedAddress = address.replace(re, " ")
+    const inviteCode = location.search?.split("?")[1]?.split("=")[1]
 
     const handleProfileSetUp = ({
         password,
         confirmPassword,
-        firstName,
-        lastName,
     }: {
         password: string
         confirmPassword: string
-        firstName: string
-        lastName: string
     }) => {
         if (strength === 100) {
             showErrorText(false)
@@ -137,8 +121,6 @@ const Profile = () => {
                 confirmPassword,
                 inviteCode,
                 opened,
-                firstName,
-                lastName,
                 setIsSubmitting,
                 setErrorMsg,
                 showError,
@@ -159,48 +141,15 @@ const Profile = () => {
                         <span className="text-[#0F0D00] opacity-70 pt-2">
                             Please provide the following information
                         </span>
-                        <div className="flex pt-2.5">
-                            <CiLocationOn
-                                style={{ color: "#E94444", fontSize: "25px" }}
-                            />
-                            <span className="pl-2.5 text-black-60 text-lg">
-                                {formattedAddress}
-                            </span>
-                        </div>
-
                         <form
                             onSubmit={profileForm.onSubmit((values) =>
                                 handleProfileSetUp(values)
                             )}
-                            className="pt-6"
+                            className="pt-7"
                         >
-                            <div className="flex justify-between items-center pt-3.5">
-                                <TextInput
-                                    placeholder="First name"
-                                    label="First Name"
-                                    id="firstName"
-                                    withAsterisk
-                                    required
-                                    size="md"
-                                    ref={userRef}
-                                    {...profileForm.getInputProps("firstName")}
-                                    styles={() => emailInputStyle}
-                                />
-                                <TextInput
-                                    placeholder="Last name"
-                                    id="lastName"
-                                    label="Last Name"
-                                    required
-                                    withAsterisk
-                                    size="md"
-                                    {...profileForm.getInputProps("lastName")}
-                                    styles={() => emailInputStyle}
-                                />
-                            </div>
                             <div
                                 onFocusCapture={() => {
                                     showErrorText(false)
-                                    showError(false)
                                 }}
                             >
                                 <PasswordInput
@@ -225,12 +174,7 @@ const Profile = () => {
                                 {checks}
                             </div>
                             <div className="mb-7" />
-                            <div
-                                onFocusCapture={() => {
-                                    showErrorText(false)
-                                    showError(false)
-                                }}
-                            >
+                            <div onFocusCapture={() => showErrorText(false)}>
                                 <PasswordInput
                                     placeholder="password"
                                     label="Confirm password"
@@ -248,17 +192,6 @@ const Profile = () => {
                                 <span className="text-[14px] text-[#f01e2c]">
                                     Password must meet requirements
                                 </span>
-                            )}
-                            {error && (
-                                <Alert
-                                    title="Error!"
-                                    color="red"
-                                    styles={() => ({
-                                        root: { marginBottom: "20px" },
-                                    })}
-                                >
-                                    {errorMsg}
-                                </Alert>
                             )}
                             <div
                                 className="mb-[25px]"
@@ -290,6 +223,17 @@ const Profile = () => {
                                 </Button>
                             </div>
                         </form>
+                        {error && (
+                            <Alert
+                                title="Error!"
+                                color="red"
+                                styles={() => ({
+                                    root: { marginTop: "20px" },
+                                })}
+                            >
+                                {errorMsg}
+                            </Alert>
+                        )}
                     </div>
                     <Modal
                         opened={opened}

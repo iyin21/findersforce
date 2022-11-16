@@ -21,8 +21,3 @@ export const axiosPrivate = axios.create({
     headers: { "Content-Type": "application/json" },
     withCredentials: true,
 })
-
-export const signupAxios = axios.create({
-    baseURL: "https://findersforce-api.workcube.com.ng/api/v1/",
-    headers: { "Content-Type": "application/json" },
-})

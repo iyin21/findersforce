@@ -1,11 +1,11 @@
-import axios, { axiosPrivate } from "../../services/api.service"
+import axios from "../../services/api.service"
 import useAuthContext from "./useAuth"
 
 const useRefreshToken = () => {
     const { dispatch } = useAuthContext()
 
     const refresh = async () => {
-        const response = await axiosPrivate("/refresh-token", {
+        const response = await axios("/refresh-token", {
             method: "POST",
         })
 
