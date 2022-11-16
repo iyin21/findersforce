@@ -7,6 +7,7 @@ import ProfileImage from "../../../assets/ProfileImage.svg"
 import dayjs from "dayjs"
 import { useNavigate } from "react-router-dom"
 import MobileShiftsTable from "./MobileShiftsTable"
+import TimeEstimate from "./TimeEstimate"
 // import ShiftStar from "../../../assets/ShiftStar.svg"
 
 
@@ -16,7 +17,6 @@ const ShiftsTable = ({ elements, status }: ShiftsTableInterface) => {
   const handleNavigate = (id: string, status:string) => {
     navigate(`/planner/${id}`, { state: {status: status}})
   }
-  const currentTime = Number(dayjs().format("HH:mm:ss"));
 
   const rows = elements?.map((element, index) => (
     <tr key={index}>
@@ -47,9 +47,9 @@ const ShiftsTable = ({ elements, status }: ShiftsTableInterface) => {
         </td>)
         }
         <td>{element?.jobListing?.jobLocation?.formattedAddress}</td>
-        {status !== "active" ? (<td>{dayjs(element?.jobListing?.jobDate).format("DD/MM/YYYY")}</td>) : (<td>{new Date( '1970-01-01T' + element?.jobListing?.shiftStartTime + "z").toLocaleTimeString("en-US").slice(0,1)} - {dayjs(element?.jobListing.shiftEndTime).format("h:mm A")}</td>)}
+        {status !== "ongoing" ? (<td>{dayjs(element?.jobListing?.jobDate).format("DD/MM/YYYY")}</td>) : (<td>{dayjs(element?.jobListing?.shiftStartTime).format("h:mm A")} - {dayjs(element?.jobListing.shiftEndTime).format("h:mm A")}</td>)}
         <td>{element?.jobListing?.jobRate?.currency}{element?.jobListing?.jobRate?.jobRatePerHourDisplayedToDepot}/hr</td>
-        {status !== "active" && (<td>{element?.jobListing?.shiftDurationInHours}hrs</td>)}
+        {status !== "ongoing" && (<td>{element?.jobListing?.shiftDurationInHours}hrs</td>)}
         {status === "completed" && (<td>{element?.jobListing?.numberOfOpsRequired}</td>)}
         {status === "completed" && (
         <td>
@@ -64,11 +64,11 @@ const ShiftsTable = ({ elements, status }: ShiftsTableInterface) => {
                        {element?.jobListing?.jobMeetingPoint}
             </p>
         </td>
-        {status === "active" && (
+        {status === "ongoing" && (
           <td>
-            <p className="text-yellow-100 bg-black-100 rounded-lg text-center font-bold p-1 w-32 px-3 py-1 text-2mxl font-creatoBlack font-extrabold">
-            { currentTime - Number(dayjs(element?.jobListing?.shiftEndTime).format("HH:mm:ss"))}
-            </p>
+            <TimeEstimate 
+            initialDate={new Date(element?.jobListing?.shiftEndTime)} 
+            currentDate={new Date()}/>
           </td>
         )}
         
@@ -137,7 +137,7 @@ const tableHeadCompleted = [
                     ))}
                 </tr>
                )}
-               {status === "active" && (
+               {status === "ongoing" && (
                 <tr>
                   {tableHeadActive.map((item, index) => (
                       <th

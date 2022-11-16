@@ -97,6 +97,7 @@ const Login = () => {
                                 <TextInput
                                     placeholder="example@gmail.com"
                                     label="Email Address"
+                                    id="email"
                                     withAsterisk
                                     required
                                     ref={userRef}
@@ -109,6 +110,7 @@ const Login = () => {
                             <PasswordInput
                                 placeholder="password"
                                 label="Password"
+                                id="password"
                                 withAsterisk
                                 radius="md"
                                 size="xl"

@@ -12,20 +12,23 @@ export interface IDepotRatingData {
 }
 
 export type ShiftCardProps = {
-     profileImage:string,
-     profileName: string,
-     calenderIcon: string,
-     date: string,
-     clockIcon: string,
-     time: string,
-     locationIcon: string,
-     location: string,
-     taskIcon: string,
-     task: string,
-     hour: string,
-     minute: string,
-     second: string,
-     messageIcon:string;
+    status: "upcoming" | "ongoing" | "completed"
+     profileImage:string | undefined,
+     firstName: string | undefined,
+     lastName: string | undefined,
+     calenderIcon: string | undefined,
+     date: string | undefined,
+     clockIcon: string | undefined,
+     startTime: string | undefined ,
+     endTime: string | undefined ,
+     duration:number| string| undefined,
+     locationIcon: string | undefined,
+     location: string | undefined,
+     taskIcon: string | undefined,
+     task: string | undefined,
+     initialDate?: Date,
+     currentDate?: Date,
+     messageIcon:string | undefined;
 }
 
 export type CardProps = {
@@ -48,8 +51,16 @@ export interface DashboardResponse {
      shiftsCompleted: shiftsCompleted,
      shiftsCancelled: shiftsCancelled,
      genderDistribution: genderDistribution,
+     rating: rating,
  }
 
+ export interface rating {
+    averageScore: number | undefined,
+    helpfulnessScore: number | undefined,
+    organizationScore: number | undefined,
+    professionalismScore: number | undefined,
+    totalShiftsRated: number | undefined,
+}
  export interface amountPaid {
      total: number,
      thisMonth: number,
