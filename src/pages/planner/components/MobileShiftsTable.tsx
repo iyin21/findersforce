@@ -67,7 +67,7 @@ const MobileShiftsTable = ({
                                     {element?.operative?.firstName} {element?.operative?.lastName}
                                     </p>
                             </div>
-                            {status !== "active" && 
+                            {status !== "ongoing" && 
                                 (<div>
                                     <h6 className="text-black-50 text-3sm">
                                         DURATION
@@ -80,7 +80,7 @@ const MobileShiftsTable = ({
                         </div>
                         
                         <div className="flex justify-between mt-3">
-                            {status !== "active" ? 
+                            {status !== "ongoing" ? 
                             (<div>
                                 <h6 className="text-black-50 text-3sm">DATE</h6>
                                 <p className="text-2md mt-1">
@@ -136,7 +136,7 @@ const MobileShiftsTable = ({
                             </div>
                             )}
                         
-                        {status === "active" && 
+                        {status === "ongoing" && 
                                 (<div>
                                     <h6 className="text-black-50 text-3sm">
                                         ENDS_IN
