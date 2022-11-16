@@ -17,9 +17,8 @@ function useJobBoards({
     signal,
     page,
     limit,
-}: // jobMode,
-// jobType,
-// jobRate,
+    meetingPoint,
+}: // amount,
 JobBoardRequest) {
     const { state } = useAuthContext()
 
@@ -30,9 +29,8 @@ JobBoardRequest) {
             params: {
                 isPublished,
                 page,
-                // jobMode,
-                // jobType,
-                // jobRate,
+                meetingPoint,
+                // amount,
                 limit,
             },
             headers: {
@@ -49,9 +47,8 @@ JobBoardRequest) {
                 isPublished,
                 signal,
                 page,
-                // jobMode,
-                // jobType,
-                // jobRate,
+                meetingPoint,
+                // amount,
                 limit,
             },
         ],

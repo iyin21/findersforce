@@ -17,7 +17,7 @@ import { JobBoardResponseInterface } from "../../hooks/job-board/interface"
 import Layout from "../../components/Layout/index"
 
 const JobBoards = () => {
-    const [activeTab, setActiveTab] = useState<string | null>("first")
+    const [activeTab, setActiveTab] = useState<string | null>("active")
     const [openJobPost, setOpenJobPost] = useState(false)
     const [openSuccess, setOpenSuccess] = useState(false)
     const [activeActivePage, setActivePage] = useState(1)
@@ -49,7 +49,24 @@ const JobBoards = () => {
         }
     }
 
-    const applyFilter = (filter: FilterRequest) => {}
+    const [activeJobFilter, setActiveJobFilter] = useState<FilterRequest>({
+        meetingPoint: "",
+        // amount: [],
+    })
+    const [draftJobFilter, setDraftJobFilter] = useState<FilterRequest>({
+        meetingPoint: "",
+        // amount: [],
+    })
+
+    const applyFilter = (filter: FilterRequest) => {
+        if (activeTab === "active") {
+            setActiveJobFilter(filter)
+            setActivePage(1)
+        } else {
+            setDraftJobFilter(filter)
+            setDraftPage(1)
+        }
+    }
 
     const {
         data: activeData,
@@ -59,9 +76,8 @@ const JobBoards = () => {
         isPublished: true,
         page: activeActivePage,
         limit: 15,
-        // jobMode: "",
-        // jobType: "",
-        // jobRate: "",
+        meetingPoint: activeJobFilter.meetingPoint,
+        // amount: activeJobFilter.amount,
     })
     const {
         data: draftData,
@@ -71,9 +87,8 @@ const JobBoards = () => {
         isPublished: false,
         page: activeDraftPage,
         limit: 15,
-        // jobMode: "",
-        // jobType: "",
-        // jobRate: "",
+        meetingPoint: draftJobFilter.meetingPoint,
+        // amount: draftJobFilter.amount,
     })
 
     const handleDelete = () => {
@@ -178,11 +193,11 @@ const JobBoards = () => {
                                 keepMounted={false}
                             >
                                 <Tabs.List>
-                                    <Tabs.Tab value="first">
+                                    <Tabs.Tab value="active">
                                         {" "}
                                         <p
                                             className={
-                                                activeTab === "first"
+                                                activeTab === "active"
                                                     ? "text-black-100 text-lg font-creatoMedium active"
                                                     : "font-creatoMedium text-black-40 text-lg inactive"
                                             }
@@ -190,10 +205,10 @@ const JobBoards = () => {
                                             Active
                                         </p>
                                     </Tabs.Tab>
-                                    <Tabs.Tab value="second">
+                                    <Tabs.Tab value="draft">
                                         <p
                                             className={
-                                                activeTab === "second"
+                                                activeTab === "draft"
                                                     ? "text-black-100 text-lg font-creatoMedium active"
                                                     : `font-creatoMedium text-black-40 text-lg inactive`
                                             }
@@ -203,7 +218,7 @@ const JobBoards = () => {
                                     </Tabs.Tab>
                                 </Tabs.List>
 
-                                <Tabs.Panel value="first">
+                                <Tabs.Panel value="active">
                                     <JobBoardTable
                                         elements={activeData?.data}
                                         status="active"
@@ -225,7 +240,7 @@ const JobBoards = () => {
                                         recordPerpage={activeData?.count || 0}
                                     />
                                 </Tabs.Panel>
-                                <Tabs.Panel value="second" className="p-3">
+                                <Tabs.Panel value="draft" className="p-3">
                                     <JobBoardTable
                                         elements={draftData?.data}
                                         handleCheckedJob={handleCheckedJob}

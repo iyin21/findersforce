@@ -13,61 +13,69 @@ const FilterContent = ({
     applyFilter: (filter: FilterRequest) => void
     setFilter: Dispatch<SetStateAction<boolean>>
 }) => {
-    const jobType = ["Meet Onsite", "Depot First"]
-    const jobMode = [
-        "2-Way",
-        "2 - Way peds",
-        " 3 - Way",
-        "3 -Way peds",
-        "4 - Way",
-        "4 - Way peds",
-        "5 - Way",
-        "5 - Way peds",
+    const meetingPoint = [
+        {
+            title: "Meet Onsite",
+            value: "SITE",
+        },
+        {
+            title: "Depot First",
+            value: "DEPOT",
+        },
     ]
-    const amount = [
-        "£0 - £50",
-        "£50 - £100",
-        "£100 - £150",
-        "£150 - £200",
-        "> £200",
-    ]
+    // const jobMode = [
+    //     "2-Way",
+    //     "2 - Way peds",
+    //     " 3 - Way",
+    //     "3 -Way peds",
+    //     "4 - Way",
+    //     "4 - Way peds",
+    //     "5 - Way",
+    //     "5 - Way peds",
+    // ]
+    // const amount = [
+    //     "£0 - £50",
+    //     "£50 - £100",
+    //     "£100 - £150",
+    //     "£150 - £200",
+    //     "> £200",
+    // ]
 
-    const [checkedJobType, setCheckedJobType] = useState<string[]>([])
-    const [checkedJobMode, setCheckedJobMode] = useState<string[]>([])
-    const [checkedAmount, setCheckedAmount] = useState<string[]>([])
+    const [checkedMeetingPoint, setCheckedMeetingPoint] = useState<string>("")
+    // const [checkedJobMode, setCheckedJobMode] = useState<string[]>([])
+    // const [checkedAmount, setCheckedAmount] = useState<string[]>([])
 
-    const handleJobType = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleMeetingPoint = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { value } = e.target
         const isChecked = e.target.checked
         if (isChecked) {
-            setCheckedJobType([...checkedJobType, value])
-        } else {
-            setCheckedJobType(checkedJobType.filter((item) => item !== value))
+            setCheckedMeetingPoint(value)
         }
     }
-    const handleJobMode = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { value } = e.target
-        const isChecked = e.target.checked
-        if (isChecked) {
-            setCheckedJobMode([...checkedJobMode, value])
-        } else {
-            setCheckedJobMode(checkedJobMode.filter((item) => item !== value))
-        }
-    }
-    const handleAmount = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { value } = e.target
-        const isChecked = e.target.checked
-        if (isChecked) {
-            setCheckedAmount([...checkedAmount, value])
-        } else {
-            setCheckedAmount(checkedAmount.filter((item) => item !== value))
-        }
-    }
+
+    // const handleJobMode = (e: React.ChangeEvent<HTMLInputElement>) => {
+    //     const { value } = e.target
+    //     const isChecked = e.target.checked
+    //     if (isChecked) {
+    //         setCheckedJobMode([...checkedJobMode, value])
+    //     } else {
+    //         setCheckedJobMode(checkedJobMode.filter((item) => item !== value))
+    //     }
+    // }
+    // const handleAmount = (e: React.ChangeEvent<HTMLInputElement>) => {
+    //     const { value } = e.target
+    //     const isChecked = e.target.checked
+    //     if (isChecked) {
+    //         setCheckedAmount([...checkedAmount, value])
+    //     } else {
+    //         setCheckedAmount(checkedAmount.filter((item) => item !== value))
+    //     }
+    // }
     const handleApply = () => {
         applyFilter({
-            jobMode: checkedJobType,
-            jobType: jobType,
-            amount: amount,
+            // jobMode: checkedJobType,
+            meetingPoint: checkedMeetingPoint,
+            // amount: checkedAmount,
         })
     }
 
@@ -86,21 +94,21 @@ const FilterContent = ({
                 Type
             </p>
             <ul className="flex flex-col gap-y-4 overflow-visible lg:overflow-y-scroll lg:h-[100px]">
-                {jobType.map((item, index) => (
+                {meetingPoint.map((item, index) => (
                     <li key={index}>
                         <Checkbox
-                            id={item}
-                            onChange={handleJobType}
-                            value={item}
-                            checked={checkedJobType.includes(item)}
-                            label={item}
+                            id={item.value}
+                            onChange={handleMeetingPoint}
+                            value={item.value}
+                            checked={checkedMeetingPoint.includes(item.value)}
+                            label={item.title}
                             className="bg-black-90"
                         />
                     </li>
                 ))}
             </ul>
 
-            <p className="text-[15px] text-black-90 lg:text-white-70 font-normal pt-6 pb-4">
+            {/* <p className="text-[15px] text-black-90 lg:text-white-70 font-normal pt-6 pb-4">
                 JOB MODE
             </p>
             <ul className="flex flex-col gap-y-4 overflow-visible lg:overflow-y-scroll lg:h-[100px]">
@@ -116,8 +124,8 @@ const FilterContent = ({
                         />
                     </li>
                 ))}
-            </ul>
-            <p className="text-[15px] text-black-90 lg:text-white-70 font-normal pt-6 pb-4">
+            </ul> */}
+            {/* <p className="text-[15px] text-black-90 lg:text-white-70 font-normal pt-6 pb-4">
                 AMOUNT/HOUR
             </p>
             <ul className="flex flex-col gap-y-4 overflow-visible lg:overflow-y-scroll lg:h-[100px]">
@@ -133,7 +141,7 @@ const FilterContent = ({
                         />
                     </li>
                 ))}
-            </ul>
+            </ul> */}
 
             <Button
                 // type="button"

@@ -3,6 +3,8 @@ export interface JobBoardRequest {
     signal?: AbortSignal
     limit?: number
     page?: number
+    meetingPoint: string
+    // amount: string[]
     // perPage?: number
     // jobType: string
     // jobMode: string

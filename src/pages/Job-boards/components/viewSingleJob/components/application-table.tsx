@@ -3,6 +3,7 @@ import dayjs from "dayjs"
 import { AiOutlineArrowUp } from "react-icons/ai"
 import { BsFillStarFill } from "react-icons/bs"
 import { IoIosArrowForward } from "react-icons/io"
+import { useNavigate } from "react-router-dom"
 import { JobBoardResponseInterface } from "../../../../../hooks/job-board/interface"
 
 interface ApplicationJobInterface {
@@ -34,9 +35,13 @@ const ApplicationJobTable = ({ elements }: ApplicationJobInterface) => {
                 break
         }
     }
+    const navigate = useNavigate()
+    const handleNavigate = (id: string) => {
+        navigate(`/planner/${id}`)
+    }
 
     const rows = elements?.map((element, index) => (
-        <tr key={index}>
+        <tr key={index} onClick={() => handleNavigate(element?._id)}>
             <td>{index}</td>
             <td>
                 {element?.user?.firstName} {element?.user?.lastName}
