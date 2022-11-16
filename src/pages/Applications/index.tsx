@@ -7,6 +7,7 @@ import { IoFilterSharp } from "react-icons/io5"
 import ApplicationDetails from "./sub-navigations/ApplicationDetails"
 import ShiftDetails from "./sub-navigations/ShiftDetails"
 import Layout from "../../components/Layout/index"
+import EmptyState from "../Support/components/emptyState"
 
 const Applications = () => {
     const [activeTab, setActiveTab] = useState<string | null>("pending")
@@ -72,6 +73,9 @@ const Applications = () => {
                                         }`}
                                     >
                                         Pending
+                                        <span className="bg-red-100 rounded ml-2 py-0.5 px-1 text-white-100 text-sm">
+                                            {pendingData?.data.length}
+                                        </span>
                                     </Tabs.Tab>
 
                                     <Tabs.Tab
@@ -83,6 +87,9 @@ const Applications = () => {
                                         }`}
                                     >
                                         Accepted
+                                        <span className="bg-red-100 rounded ml-2 py-0.5 px-1 text-white-100 text-sm">
+                                            {acceptedData?.data.length}
+                                        </span>
                                     </Tabs.Tab>
                                     <Tabs.Tab
                                         value="rejected"
@@ -93,28 +100,46 @@ const Applications = () => {
                                         }`}
                                     >
                                         Rejected
+                                        <span className="bg-red-100 rounded ml-2 py-0.5 px-1 text-white-100 text-sm">
+                                            {rejectedData?.data.length}
+                                        </span>
                                     </Tabs.Tab>
                                 </Tabs.List>
                                 <Tabs.Panel value="pending">
-                                    <ApplicationTable
-                                        elements={pendingData?.data || []}
-                                        setPhase={setPhase}
-                                        setActiveId={setActiveId}
-                                    />
+                                    {pendingData?.data &&
+                                    pendingData?.data.length > 0 ? (
+                                        <ApplicationTable
+                                            elements={pendingData?.data || []}
+                                            setPhase={setPhase}
+                                            setActiveId={setActiveId}
+                                        />
+                                    ) : (
+                                        <EmptyState />
+                                    )}
                                 </Tabs.Panel>
                                 <Tabs.Panel value="accepted">
-                                    <ApplicationTable
-                                        elements={acceptedData?.data || []}
-                                        setPhase={setPhase}
-                                        setActiveId={setActiveId}
-                                    />
+                                    {acceptedData?.data &&
+                                    acceptedData?.data.length > 0 ? (
+                                        <ApplicationTable
+                                            elements={acceptedData?.data || []}
+                                            setPhase={setPhase}
+                                            setActiveId={setActiveId}
+                                        />
+                                    ) : (
+                                        <EmptyState />
+                                    )}
                                 </Tabs.Panel>
                                 <Tabs.Panel value="rejected">
-                                    <ApplicationTable
-                                        elements={rejectedData?.data || []}
-                                        setPhase={setPhase}
-                                        setActiveId={setActiveId}
-                                    />
+                                    {rejectedData?.data &&
+                                    rejectedData?.data.length > 0 ? (
+                                        <ApplicationTable
+                                            elements={rejectedData?.data || []}
+                                            setPhase={setPhase}
+                                            setActiveId={setActiveId}
+                                        />
+                                    ) : (
+                                        <EmptyState />
+                                    )}
                                 </Tabs.Panel>
                             </Tabs>
                         </div>
