@@ -17,7 +17,8 @@ const EmptyState = ({ handleClick, showSendComplaintButton }: Props) => {
             {showSendComplaintButton && (
                 <button
                     className="bg-yellow-100 rounded rounded-tr-2xl flex justify-center items-center font-bold body-medium py-4 w-full mt-6"
-                    onClick={() => handleClick}
+                    //@ts-expect-error
+                    onClick={() => handleClick()}
                 >
                     <GoPlus size="30px" color="black" />
                     <span className="pl-2">Send a complaint</span>

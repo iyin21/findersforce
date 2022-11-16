@@ -146,7 +146,7 @@ const ReturningSupport = ({ setPhase, setActiveId, handleRefetch }: Props) => {
                             ))
                         ) : (
                             <EmptyState
-                                handleClick={() => setOpenModal(true)}
+                                //handleClick={() => setOpenModal(true)}
                                 showSendComplaintButton={false}
                             />
                         )}

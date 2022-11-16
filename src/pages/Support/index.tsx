@@ -14,12 +14,16 @@ const Support = () => {
     const [activeId, setActiveId] = useState("")
 
     const { data: allData, isLoading: isLoadingAllData } = useGetAllComplaints()
-    const [handleRefetch,setHandleRefetch]=useState(false);
+    const [handleRefetch, setHandleRefetch] = useState(false)
 
     return (
         <Layout pageTitle="Suppport">
             {openModal && (
-                <SupportModal setOpened={setOpenModal} opened={openModal} setHandleRefetch={setHandleRefetch} />
+                <SupportModal
+                    setOpened={setOpenModal}
+                    opened={openModal}
+                    setHandleRefetch={setHandleRefetch}
+                />
             )}
 
             {isLoadingAllData ? (
@@ -30,7 +34,9 @@ const Support = () => {
                 <div className="pt-6 pr-6">
                     <div className="flex justify-between pl-6 pr-6">
                         <div>
-                            <h5 className="font-bold lg:text-3xl text-2xl mb-2">Support</h5>
+                            <h5 className="font-bold lg:text-3xl text-2xl mb-2">
+                                Support
+                            </h5>
                             <p className="text-black-60">
                                 Send a formal complaint
                             </p>
@@ -49,10 +55,10 @@ const Support = () => {
                     {allData && allData?.data.length > 0 ? (
                         phase === 1 ? (
                             <ReturningSupport
-                                setPhase={setPhase}
-                                setActiveId={setActiveId}
-                                handleRefetch={handleRefetch}
-                            />
+                            setPhase={setPhase}
+                            setActiveId={setActiveId}
+                            handleRefetch={handleRefetch}
+                        />
                         ) : (
                             <SingleComplaint
                                 setPhase={setPhase}
@@ -60,10 +66,11 @@ const Support = () => {
                             />
                         )
                     ) : (
+                        
                         <EmptyState
-                            handleClick={() => setOpenModal(true)}
-                            showSendComplaintButton
-                        />
+                                handleClick={() => setOpenModal(true)}
+                                showSendComplaintButton
+                            />
                     )}
                 </div>
             )}

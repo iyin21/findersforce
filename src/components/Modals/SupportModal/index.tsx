@@ -49,7 +49,7 @@ const SupportModal = ({
             formData.append("complaintIssues[]", item)
         )
 
-        formData.append("complaintCat4egory", values.complaintCategory)
+        formData.append("complaintCategory", values.complaintCategory)
 
         formData.append("description", values.description)
         if (values.image) {
