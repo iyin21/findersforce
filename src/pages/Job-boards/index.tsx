@@ -136,7 +136,10 @@ const JobBoards = () => {
             <div className="md:p-6 p-6 mt-4 md:mt-14">
                 <div className="flex justify-between items-center">
                     <div className="flex flex-col">
-                        <h1 className="text-2xl md:text-3xl font-creatoBold text-black-100 font-bold">
+                        <h1
+                            className="text-2xl md:text-3xl font-creatoBold text-black-100 font-bold"
+                            data-testid="job_title"
+                        >
                             Job Board
                         </h1>
                         <p className="text-black-60 text-2md md:text-lg font-normal font-creato">
@@ -148,6 +151,7 @@ const JobBoards = () => {
                         className="py-3 font-semibold font-creatoMedium"
                         iconLeft={<FiPlus size={20} />}
                         onClick={() => setOpenJobPost(true)}
+                        data-testid="job_post_btn"
                     >
                         Post a job
                     </Button>
@@ -191,6 +195,7 @@ const JobBoards = () => {
                                 onTabChange={setActiveTab}
                                 color="yellow"
                                 keepMounted={false}
+                                data-testid="job_tabs"
                             >
                                 <Tabs.List>
                                     <Tabs.Tab value="active">

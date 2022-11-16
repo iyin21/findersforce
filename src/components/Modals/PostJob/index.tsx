@@ -90,6 +90,7 @@ const PostJob = ({
                 onClose={() => setOpened(false)}
                 size="xl"
                 centered
+                data-testid="post_job_modal"
             >
                 <FormikStepper
                     // this is the initial values for the formik form
