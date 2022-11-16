@@ -5,7 +5,7 @@ import { IoIosArrowForward } from "react-icons/io"
 import { AiOutlineArrowUp } from "react-icons/ai"
 import { useNavigate } from "react-router-dom"
 import MobileJobTable from "./mobile-table"
-import { JobBoardResponseInterface } from "../../../../hooks/job-board/interface"
+import { JobBoardResponseInterface } from "../../../../types/job-board/interface"
 import dayjs from "dayjs"
 import { Dispatch, SetStateAction } from "react"
 
@@ -13,12 +13,11 @@ export interface JobBoardInterface {
     status: "active" | "draft"
     handleCheckedJob: (e: React.ChangeEvent<HTMLInputElement>) => void
     checkedJob: string[]
-    elements?: JobBoardResponseInterface[]
+    elements: JobBoardResponseInterface[] | undefined
     setDeleteId: (id: string) => void
     setOpenJobPost: Dispatch<SetStateAction<boolean>>
     setDraftStatus: Dispatch<SetStateAction<string>>
     setdraftElement: Dispatch<SetStateAction<JobBoardResponseInterface | null>>
-    // handleNavigate: (id: string) => void
 }
 
 const JobBoardTable = ({

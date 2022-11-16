@@ -103,6 +103,7 @@ const Login = () => {
                                     ref={userRef}
                                     {...loginForm.getInputProps("email")}
                                     styles={() => emailInputStyle}
+                                    id="email"
                                 />
                             </div>
                             <div></div>
@@ -117,6 +118,7 @@ const Login = () => {
                                 {...loginForm.getInputProps("password")}
                                 styles={() => passwordInputStyle}
                                 onFocusCapture={() => showError(false)}
+                                id="password"
                             />
                             <Button
                                 variant="primary"

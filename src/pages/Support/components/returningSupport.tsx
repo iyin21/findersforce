@@ -26,11 +26,11 @@ const ReturningSupport = ({ setPhase, setActiveId, handleRefetch }: Props) => {
     const {
         data: inProgressData,
         isLoading: isLoadingInProgressData,
-        refetch: refetchInProgress,
+        //refetch: refetchInProgress,
     } = useGetComplaints({ status: "IN PROGRESS" })
     const {
         data: resolvedData,
-        refetch: refetchResolved,
+        //refetch: refetchResolved,
         isLoading: isLoadingResolvedData,
     } = useGetComplaints({ status: "RESOLVED" })
 

@@ -6,20 +6,33 @@ import {
     JobBoardRequest,
     JobBoardResponse,
     JobBoardResponseInterface,
-} from "./interface"
+} from "../../types/job-board/interface"
 import { showNotification } from "@mantine/notifications"
 import { FormikValues } from "formik"
 import useAuthContext from "../auth-hooks/useAuth"
 
 // get job listing
-function useJobBoards({ isPublished }: JobBoardRequest) {
+function useJobBoards({
+    isPublished,
+    signal,
+    page,
+    limit,
+    meetingPoint,
+}: // amount,
+JobBoardRequest) {
     const { state } = useAuthContext()
 
     /** API methods */
-    const getJobBoards = async ({ isPublished, signal }: JobBoardRequest) => {
+    const getJobBoards = async () => {
         const { data } = await axiosInstance.get("/job-listing", {
             signal,
-            params: { isPublished },
+            params: {
+                isPublished,
+                page,
+                meetingPoint,
+                // amount,
+                limit,
+            },
             headers: {
                 Authorization: `${state?.jwt?.token}`,
             },
@@ -27,9 +40,19 @@ function useJobBoards({ isPublished }: JobBoardRequest) {
         return data.data
     }
 
-    return useQuery<JobBoardRequest, AxiosError, JobBoardResponse["data"]>(
-        ["JobBoards", { isPublished }],
-        ({ signal }) => getJobBoards({ isPublished, signal }),
+    return useQuery<JobBoardRequest, AxiosError, JobBoardResponse>(
+        [
+            "JobBoards",
+            {
+                isPublished,
+                signal,
+                page,
+                meetingPoint,
+                // amount,
+                limit,
+            },
+        ],
+        ({ signal }) => getJobBoards(),
         {
             onError: (err: AxiosError) => {
                 showNotification({
@@ -61,7 +84,7 @@ function useGetSingleJobApplication({
         return data
     }
 
-    return useQuery<string, AxiosError, JobBoardResponse["data"]>(
+    return useQuery<string, AxiosError, JobBoardResponse>(
         ["singleJobApplication", jobListing],
         () => getSingleJobApplication(jobListing),
         {
@@ -229,13 +252,6 @@ function useCreateJobList() {
         ["createJobList"],
         (FormikValues) => createJobListRequest(FormikValues),
         {
-            onSuccess: (data) => {
-                showNotification({
-                    message: data?.message || data?.message,
-                    title: "Success",
-                    color: "green",
-                })
-            },
             onError: (err: AxiosError) => {
                 showNotification({
                     message:
@@ -260,6 +276,13 @@ function useUpdateJobList({ id }: { id: string | undefined }) {
             ...values,
         }
 
+        const deleteAdditionalImage = () => {
+            if (formData.additionalInfoImageUrls === "" || []) {
+                delete formData.additionalInfoImageUrls
+            }
+        }
+        deleteAdditionalImage()
+
         const { data } = await axiosInstance.patch(
             `/job-listing/${id}`,
             formData,
@@ -276,27 +299,7 @@ function useUpdateJobList({ id }: { id: string | undefined }) {
 
     return useMutation<any, AxiosError, FormikValues>(
         ["updateJobList", id],
-        (FormikValues) => updateJobListRequest(FormikValues),
-        {
-            onSuccess: (data) => {
-                showNotification({
-                    message: data?.message || data?.message,
-                    title: "Success",
-                    color: "green",
-                })
-            },
-            onError: (err: AxiosError) => {
-                showNotification({
-                    message:
-                        // @ts-ignore
-                        err.response?.data?.error ||
-                        err.message ||
-                        "An error occurred",
-                    title: "Error",
-                    color: "red",
-                })
-            },
-        }
+        (FormikValues) => updateJobListRequest(FormikValues)
     )
 }
 

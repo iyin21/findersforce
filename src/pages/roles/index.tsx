@@ -85,7 +85,7 @@ const Roles = () => {
                                     role: "Admin",
                                     status: "active",
                                 })}
-                                status="active"
+                                status="accepted"
                             />
                             <Pagination
                                 page={1}
@@ -119,7 +119,9 @@ const Roles = () => {
                     </Tabs>
                 </div>
             </div>
-            <AddUser opened={openAddUser} setOpened={setOpenAddUser} />
+            {openAddUser && (
+                <AddUser opened={openAddUser} setOpened={setOpenAddUser} />
+            )}
         </Layout>
     )
 }
