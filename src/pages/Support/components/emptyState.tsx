@@ -2,12 +2,12 @@ import EmptyImg from "../assets/images/emptyState.png"
 import { GoPlus } from "react-icons/go"
 
 interface Props {
-    showSendComplaintButton: boolean
+    showSendComplaintButton?: boolean
     handleClick?: () => void
 }
 const EmptyState = ({ handleClick, showSendComplaintButton }: Props) => {
     return (
-        <div className="flex flex-col px-[35%] justify-center mt-[80px] items-center px-6">
+        <div className="flex flex-col lg:px-[35%] justify-center mt-[80px] items-center px-6">
             <img src={EmptyImg} alt="" />
             <h5 className="pt-2 font-bold">Nothing to see here</h5>
             <p className="text-center body-regular">
