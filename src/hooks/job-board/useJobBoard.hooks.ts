@@ -6,7 +6,7 @@ import {
     JobBoardRequest,
     JobBoardResponse,
     JobBoardResponseInterface,
-} from "./interface"
+} from "../../types/job-board/interface"
 import { showNotification } from "@mantine/notifications"
 import { FormikValues } from "formik"
 import useAuthContext from "../auth-hooks/useAuth"

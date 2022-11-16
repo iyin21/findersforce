@@ -33,7 +33,9 @@ const Applications = () => {
         <Layout pageTitle={"Pending"}>
             {phase === 1 ? (
                 <div className="p-4">
-                    <h5 className="font-bold lg:text-3xl text-2xl mb-2">Applications</h5>
+                    <h5 className="font-bold lg:text-3xl text-2xl mb-2">
+                        Applications
+                    </h5>
                     <p className="text-black-60 mb-2">
                         Operatives who apply for shifts appear here
                     </p>
@@ -47,9 +49,9 @@ const Applications = () => {
                     ) : (
                         <div>
                             <div className="relative">
-                            <div className="flex absolute right-10 items-center cursor-pointer">
-                                <IoFilterSharp />
-                                <p className="pl-2">Filter</p>
+                                <div className="flex absolute right-10 items-center cursor-pointer">
+                                    <IoFilterSharp />
+                                    <p className="pl-2">Filter</p>
                                 </div>
                             </div>
                             <Tabs
@@ -58,7 +60,7 @@ const Applications = () => {
                                 onTabChange={setActiveTab}
                                 color="yellow"
                                 keepMounted={false}
-                                //variant="lg:default pills"
+                                // variant="lg:default pills"
                             >
                                 <Tabs.List>
                                     <Tabs.Tab
