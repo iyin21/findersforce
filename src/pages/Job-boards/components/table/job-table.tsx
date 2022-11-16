@@ -13,12 +13,11 @@ export interface JobBoardInterface {
     status: "active" | "draft"
     handleCheckedJob: (e: React.ChangeEvent<HTMLInputElement>) => void
     checkedJob: string[]
-    elements?: JobBoardResponseInterface[]
+    elements: JobBoardResponseInterface[] | undefined
     setDeleteId: (id: string) => void
     setOpenJobPost: Dispatch<SetStateAction<boolean>>
     setDraftStatus: Dispatch<SetStateAction<string>>
     setdraftElement: Dispatch<SetStateAction<JobBoardResponseInterface | null>>
-    // handleNavigate: (id: string) => void
 }
 
 const JobBoardTable = ({

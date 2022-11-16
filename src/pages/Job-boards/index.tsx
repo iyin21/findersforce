@@ -17,7 +17,7 @@ import { JobBoardResponseInterface } from "../../types/job-board/interface"
 import Layout from "../../components/Layout/index"
 
 const JobBoards = () => {
-    const [activeTab, setActiveTab] = useState<string | null>("first")
+    const [activeTab, setActiveTab] = useState<string | null>("active")
     const [openJobPost, setOpenJobPost] = useState(false)
     const [openSuccess, setOpenSuccess] = useState(false)
     const [activeActivePage, setActivePage] = useState(1)
@@ -49,7 +49,24 @@ const JobBoards = () => {
         }
     }
 
-    const applyFilter = (filter: FilterRequest) => {}
+    const [activeJobFilter, setActiveJobFilter] = useState<FilterRequest>({
+        meetingPoint: "",
+        // amount: [],
+    })
+    const [draftJobFilter, setDraftJobFilter] = useState<FilterRequest>({
+        meetingPoint: "",
+        // amount: [],
+    })
+
+    const applyFilter = (filter: FilterRequest) => {
+        if (activeTab === "active") {
+            setActiveJobFilter(filter)
+            setActivePage(1)
+        } else {
+            setDraftJobFilter(filter)
+            setDraftPage(1)
+        }
+    }
 
     const {
         data: activeData,
@@ -57,6 +74,10 @@ const JobBoards = () => {
         refetch: refetchActiveJobList,
     } = useJobBoards({
         isPublished: true,
+        page: activeActivePage,
+        limit: 15,
+        meetingPoint: activeJobFilter.meetingPoint,
+        // amount: activeJobFilter.amount,
     })
     const {
         data: draftData,
@@ -64,6 +85,10 @@ const JobBoards = () => {
         refetch: refetchDraftJobList,
     } = useJobBoards({
         isPublished: false,
+        page: activeDraftPage,
+        limit: 15,
+        meetingPoint: draftJobFilter.meetingPoint,
+        // amount: draftJobFilter.amount,
     })
 
     const handleDelete = () => {
@@ -87,11 +112,11 @@ const JobBoards = () => {
             refetchDraftJobList()
             showNotification({
                 title: "Success",
-                message: "Product has been paused successfully",
+                message: "Job list has been deleted successfully",
                 color: "green",
             })
         }
-        if (openSuccess) {
+        if (openSuccess && newJobId) {
             refetchActiveJobList()
             refetchDraftJobList()
         }
@@ -111,7 +136,10 @@ const JobBoards = () => {
             <div className="md:p-6 p-6 mt-4 md:mt-14">
                 <div className="flex justify-between items-center">
                     <div className="flex flex-col">
-                        <h1 className="text-2xl md:text-3xl font-creatoBold text-black-100 font-bold">
+                        <h1
+                            className="text-2xl md:text-3xl font-creatoBold text-black-100 font-bold"
+                            data-testid="job_title"
+                        >
                             Job Board
                         </h1>
                         <p className="text-black-60 text-2md md:text-lg font-normal font-creato">
@@ -123,6 +151,7 @@ const JobBoards = () => {
                         className="py-3 font-semibold font-creatoMedium"
                         iconLeft={<FiPlus size={20} />}
                         onClick={() => setOpenJobPost(true)}
+                        data-testid="job_post_btn"
                     >
                         Post a job
                     </Button>
@@ -166,13 +195,14 @@ const JobBoards = () => {
                                 onTabChange={setActiveTab}
                                 color="yellow"
                                 keepMounted={false}
+                                data-testid="job_tabs"
                             >
                                 <Tabs.List>
-                                    <Tabs.Tab value="first">
+                                    <Tabs.Tab value="active">
                                         {" "}
                                         <p
                                             className={
-                                                activeTab === "first"
+                                                activeTab === "active"
                                                     ? "text-black-100 text-lg font-creatoMedium active"
                                                     : "font-creatoMedium text-black-40 text-lg inactive"
                                             }
@@ -180,10 +210,10 @@ const JobBoards = () => {
                                             Active
                                         </p>
                                     </Tabs.Tab>
-                                    <Tabs.Tab value="second">
+                                    <Tabs.Tab value="draft">
                                         <p
                                             className={
-                                                activeTab === "second"
+                                                activeTab === "draft"
                                                     ? "text-black-100 text-lg font-creatoMedium active"
                                                     : `font-creatoMedium text-black-40 text-lg inactive`
                                             }
@@ -193,7 +223,7 @@ const JobBoards = () => {
                                     </Tabs.Tab>
                                 </Tabs.List>
 
-                                <Tabs.Panel value="first">
+                                <Tabs.Panel value="active">
                                     <JobBoardTable
                                         elements={activeData?.data}
                                         status="active"
@@ -206,17 +236,16 @@ const JobBoards = () => {
                                     />
                                     <Pagination
                                         page={activeActivePage}
-                                        total={activeActivePage}
+                                        total={
+                                            activeData?.pagination?.next
+                                                ?.page || 0
+                                        }
                                         onChange={handleActivePage}
                                         boundaries={1}
-                                        recordPerpage={
-                                            activeData?.data
-                                                ? activeData?.data.length
-                                                : 1
-                                        }
+                                        recordPerpage={activeData?.count || 0}
                                     />
                                 </Tabs.Panel>
-                                <Tabs.Panel value="second" className="p-3">
+                                <Tabs.Panel value="draft" className="p-3">
                                     <JobBoardTable
                                         elements={draftData?.data}
                                         handleCheckedJob={handleCheckedJob}
@@ -229,14 +258,13 @@ const JobBoards = () => {
                                     />
                                     <Pagination
                                         page={activeDraftPage}
-                                        total={activeActivePage}
+                                        total={
+                                            draftData?.pagination?.next?.page ||
+                                            0
+                                        }
                                         onChange={handleDraftPage}
                                         boundaries={1}
-                                        recordPerpage={
-                                            draftData?.data
-                                                ? draftData?.data.length
-                                                : 1
-                                        }
+                                        recordPerpage={draftData?.count || 0}
                                     />
                                 </Tabs.Panel>
                             </Tabs>

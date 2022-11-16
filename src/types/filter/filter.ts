@@ -1,5 +1,5 @@
 export interface FilterRequest {
-    jobType: string[]
-    jobMode: string[]
-    amount: string[]
+    meetingPoint: string
+    // jobMode: string[]
+    // amount: string[]
 }

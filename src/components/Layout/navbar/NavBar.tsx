@@ -20,9 +20,13 @@ const NavBar = () => {
     const { data: userNotifications, error, isLoading } = useUserNotification()
 
     const data = userNotifications?.data.map((item) => {
-        const time = item.createdAt.toLocaleString().split("T")[1].split(".")[0].split(":");
-        const amOrPm = Number(time[0]) < 12 ? "am" : "pm";
-        const hour = Number(time[0]) % 12;
+        const time = item.createdAt
+            .toLocaleString()
+            .split("T")[1]
+            .split(".")[0]
+            .split(":")
+        const amOrPm = Number(time[0]) < 12 ? "am" : "pm"
+        const hour = Number(time[0]) % 12
         const minutes = Number(time[1]) < 10 ? "0" + time[1] : time[1]
         const notificationTime = hour.toString() + ":" + minutes + amOrPm
         return {
@@ -31,14 +35,25 @@ const NavBar = () => {
         }
     })
 
-    const unreadNotification = data?.map(notification => {
+    const unreadNotification = data?.map((notification) => {
         if (!notification.readStatus) return notification
     })
-   
+
     const notifications = data?.map((item, index) => {
         return (
-            <div key={index} className={item.readStatus ? "bg-white-100" : "w-full bg-yellow-10"}>
-                <div className={item.readStatus ? "flex items-center px-[30px]" : "flex items-center bg-yellow-10 px-[30px]"}>
+            <div
+                key={index}
+                className={
+                    item.readStatus ? "bg-white-100" : "w-full bg-yellow-10"
+                }
+            >
+                <div
+                    className={
+                        item.readStatus
+                            ? "flex items-center px-[30px]"
+                            : "flex items-center bg-yellow-10 px-[30px]"
+                    }
+                >
                     <img src={addressLogo} alt="address logo" />
                     <span className="text-lg py-[19px]">{item.title}</span>
                     <span className="text-black-neutral ml-auto text-2sm">
@@ -51,7 +66,6 @@ const NavBar = () => {
     })
 
     const navigate = useNavigate()
-    
 
     useEffect(() => {
         if (error) {
@@ -64,11 +78,11 @@ const NavBar = () => {
     }, [error])
     return (
         <>
-            <nav className="w-full sticky top-0 h-12 pt-6 pb-6 flex items-center justify-between">
+            <nav className="w-full sticky top-0 h-12 pt-6 pb-6  bg-white-100 flex items-center justify-between">
                 <div className="w-64 bg-black-100 pt-12">
-                    <img 
-                        src={FindersForceLogo} 
-                        alt="" 
+                    <img
+                        src={FindersForceLogo}
+                        alt=""
                         className="p-3 my-5 ml-5"
                     />
                 </div>
@@ -91,17 +105,23 @@ const NavBar = () => {
                         alt="SettingsCog icon"
                         className="cursor-pointer"
                     />
-                    <img src={User} alt="User icon" className="cursor-pointer" />
+                    <img
+                        src={User}
+                        alt="User icon"
+                        className="cursor-pointer"
+                    />
                     <img
                         src={Logout}
                         alt="Logout icon"
                         className="cursor-pointer"
-                        onClick={() => handleLogOut(
-                            state.jwt?.token,
-                            showNotification,
-                            dispatch,
-                            navigate
-                        )}
+                        onClick={() =>
+                            handleLogOut(
+                                state.jwt?.token,
+                                showNotification,
+                                dispatch,
+                                navigate
+                            )
+                        }
                     />
                 </div>
             </nav>
