@@ -2,7 +2,7 @@ import FormikControls from "../../../../components/Form/FormControls/form-contro
 import DatePickers from "../../../../components/DatePicker"
 import Radio from "../../../../components/Core/Radio/radio"
 import { useFormikContext } from "formik"
-import { JobBoardByIdResponse } from "../../../../hooks/job-board/interface"
+import { JobBoardByIdResponse } from "../../../../types/job-board/interface"
 import { FiClock } from "react-icons/fi"
 import GoogleAutoComplete from "../../../../components/GoogleAutoComplete"
 import DatePicker from "react-datepicker"
@@ -15,7 +15,7 @@ interface PostJobOneProps {
 
 const PostJobOne = ({ jobType }: PostJobOneProps) => {
     // this updates the formik values in PostJob.tsx
-    const { setFieldValue, values } = useFormikContext<{
+    const { setFieldValue, values, errors } = useFormikContext<{
         jobMeetingPoint: string
         shiftStartTime: Date
         jobDate: string
@@ -114,13 +114,20 @@ const PostJobOne = ({ jobType }: PostJobOneProps) => {
                 </label>
                 <DatePickers
                     onChange={handleUpdateDate}
-                    className="bg-[BiCalendarEvent]"
                     placeholder="DD-MM-YY"
                     name="jobDate"
                     defaultValue={
                         values?.jobDate ? new Date(values?.jobDate) : new Date()
                     }
                 />
+                {errors.jobDate && (
+                    <div className="flex items-center gap-2 mt-4 px-2 md:p-4 rounded-md bg-red-10 border-l-4 border-red-100">
+                        <FiClock color="#E94444" size={20} />
+                        <p className=" text-sm md:text-lg">
+                            Please choose a Job Date
+                        </p>
+                    </div>
+                )}
             </div>
 
             <div className="grid grid-cols-2 gap-6 justify-between mt-4">

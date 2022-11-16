@@ -1,4 +1,4 @@
-import { signupAxios } from "../services/api.service"
+import { signupAxios } from "../../services/api.service"
 
 const setProfile = (
     password: string,

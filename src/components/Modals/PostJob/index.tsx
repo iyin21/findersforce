@@ -20,7 +20,8 @@ import JobFormFields from "./utils/formfields"
 import {
     JobBoardByIdResponse,
     JobBoardResponseInterface,
-} from "../../../hooks/job-board/interface"
+} from "../../../types/job-board/interface"
+import { showNotification } from "@mantine/notifications"
 
 export interface IPostJobProps {
     opened: boolean
@@ -45,16 +46,38 @@ const PostJob = ({
         data,
         isLoading: isCreating,
     } = useCreateJobList()
-    const { mutate: updateJob, isLoading: isUpdating } = useUpdateJobList({
+    const {
+        mutate: updateJob,
+        isLoading: isUpdating,
+        isSuccess: isUpdated,
+        isError: isUpdateError,
+        data: updatedData,
+    } = useUpdateJobList({
         id: singleDraftData?._id,
     })
+
     useEffect(() => {
         if (isSuccess) {
             setOpenSuccess(true)
             setOpened(false)
             setNewJobId(data?._id)
         }
-    }, [data])
+
+        if (isUpdated) {
+            showNotification({
+                message: data?.message,
+                title: "Success",
+                color: "green",
+            })
+        }
+        if (isUpdateError) {
+            showNotification({
+                message: data?.message,
+                title: "Error",
+                color: "red",
+            })
+        }
+    }, [data, updatedData, isUpdated, isUpdateError, isSuccess])
 
     const { data: jobType } = useGetJobType()
     const { data: jobQualification } = useGetJobQualification()
@@ -67,6 +90,7 @@ const PostJob = ({
                 onClose={() => setOpened(false)}
                 size="xl"
                 centered
+                data-testid="post_job_modal"
             >
                 <FormikStepper
                     // this is the initial values for the formik form
@@ -103,7 +127,6 @@ const PostJob = ({
                                     item.name === values?.jobQualificationId
                             )[0]?._id,
                             isPublished: true,
-                            jobDate: values.jobDate.toISOString(),
                         }
 
                         // this checks if the draft is being edited or created
@@ -200,7 +223,7 @@ export function FormikStepper({ ...props }: TWizardProps) {
             jobQualificationId: props.jobQualification?.filter(
                 (item) => item.name === values?.jobQualificationId
             )[0]?._id,
-            jobDate: values.jobDate.toISOString(),
+
             isPublished: false,
         }
         props.createJob(jobObject)
@@ -220,8 +243,6 @@ export function FormikStepper({ ...props }: TWizardProps) {
                             setStep(step + 1)
                         } else {
                             props.onSubmit(values, helpers) as Promise<any>
-
-                            props.onSubmit(values, helpers)
                         }
                         helpers.setSubmitting(false)
                     }}

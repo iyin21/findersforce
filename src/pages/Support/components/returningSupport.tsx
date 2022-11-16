@@ -26,11 +26,11 @@ const ReturningSupport = ({ setPhase, setActiveId, handleRefetch }: Props) => {
     const {
         data: inProgressData,
         isLoading: isLoadingInProgressData,
-        refetch: refetchInProgress,
+        //refetch: refetchInProgress,
     } = useGetComplaints({ status: "IN PROGRESS" })
     const {
         data: resolvedData,
-        refetch: refetchResolved,
+        //refetch: refetchResolved,
         isLoading: isLoadingResolvedData,
     } = useGetComplaints({ status: "RESOLVED" })
 
@@ -41,7 +41,7 @@ const ReturningSupport = ({ setPhase, setActiveId, handleRefetch }: Props) => {
     }, [handleRefetch])
 
     return (
-        <div className="mt-8">
+        <div className="mt-8 px-6">
             {/* {openModal && (
                 <SupportModal setOpened={setOpenModal} opened={openModal} onDone={()=>{}}/>
             )} */}

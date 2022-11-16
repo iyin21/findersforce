@@ -50,39 +50,51 @@ const SingleComplaint = ({ setPhase, activeId }: SingleComplaintProp) => {
                     <CgSpinner className="animate-spin text-primary-90 text-4xl" />
                 </div>
             ) : (
-                <div className="mt-2">
+                <div className="mt-2 pr-6">
                     <span
                         onClick={() => setPhase(1)}
-                        className="p-3 rounded inline-flex items-center justify-center bg-black-10 cursor-pointer"
+                        className="p-3 rounded inline-flex items-center justify-center bg-black-10 cursor-pointer ml-6"
                         aria-hidden="true"
                     >
                         <HiArrowLeft className="text-2lg" />
                     </span>
-                    <p className="text-lg font-medium mt-2">COMPLAINT</p>
-                    <h5 className="font-medium text-2xl pt-2">
+                    <p className="text-lg font-medium mt-2 pl-6">COMPLAINT</p>
+                    <h5 className="font-medium text-2xl pt-2 pl-6">
                         {data?.complaintCategory}
                     </h5>
-                    <p className="text-2md mt-2 font-medium">
+                    <p className="text-2md mt-2 font-medium pl-6">
                         {issues?.join(", ")}
                     </p>
-                    <p className="text-black-60 body-regular mt-2 mb-1">
+                    <p className="text-black-60 body-regular mt-2 mb-1 pl-6">
                         Ticket ID: {data?.complaintId}
                     </p>
-                    <div className="grid grid-cols-2 ">
+                    <div className="lg:grid grid-cols-2 ">
                         <div className="border border-black-5 border-l-0 ">
-                            <div className="overflow-y-auto h-[400px] relative pr-2">
-                                <div className="mt-4 bg-pink p-4 rounded">
+                            <div className="lg:overflow-y-auto lg:h-[400px] relative pr-2">
+                                <div className="mt-4 bg-pink p-4 rounded ml-6">
                                     <p className="text-black-60 body-regular">
                                         Description
                                     </p>
                                     <p className="text-black-90 text-md mt-2 mb-10">
                                         {data?.description}
                                     </p>
+                                    
                                 </div>
-                                <div className="mb-36">
+                                <div className="block lg:hidden mt-3 ml-6">
+                                {data?.image && (
+                                    <img
+                                        src={data.image}
+                                        alt=""
+                                        className="rounded "
+                                    />
+                                )}
+
+                                {/* <img src={FruitImg} alt="" /> */}
+                            </div>
+                                <div className="lg:mb-36 mb-16">
                                 {data?.messages.map((item, index) => (
                                     <div
-                                        className="bg-black-5 mt-8 ml-6 rounded-[20px] p-4"
+                                        className="bg-black-5 mt-8 ml-10 rounded-[20px] p-4"
                                         key={index}
                                     >
                                         <div className="flex justify-between">
@@ -119,7 +131,7 @@ const SingleComplaint = ({ setPhase, activeId }: SingleComplaintProp) => {
                                 
                             </div>
 
-                            <div className="fixed bottom-0  w-[37.8%] border border-[#F5F5F5] shadow-lg shadow-inherit pl-2  h-14 items-center flex justify-between   bg-white-100">
+                            <div className="fixed bottom-0 lg:w-[38.3%] w-full border border-[#F5F5F5] shadow-lg shadow-inherit pl-2  h-14 items-center flex justify-between   bg-white-100">
                                 <input
                                     type="text"
                                     placeholder="Write a message"
@@ -143,7 +155,7 @@ const SingleComplaint = ({ setPhase, activeId }: SingleComplaintProp) => {
                             </div>
                         </div>
 
-                        <div className="pl-20">
+                        <div className="pl-20 hidden lg:block">
                             <div className="flex">
                                 {data?.image && (
                                     <img

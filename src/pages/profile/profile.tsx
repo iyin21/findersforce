@@ -14,8 +14,8 @@ import {
 } from "../auth/utils"
 import { useMediaQuery } from "@mantine/hooks"
 import logo from "../../assets/FF-logo.svg"
+import setProfile from "../../hooks/profile/set-profile"
 import { CiLocationOn } from "react-icons/ci"
-import setProfile from "../../hooks/profile/use-profile"
 
 const CheckBox = ({ check }: { check: boolean }) => {
     return (
@@ -110,7 +110,10 @@ const Profile = () => {
     const strength = getStrength(password)
 
     const location = useLocation()
-    const inviteCode = location.search?.split("?")[1]?.split("=")[1].split("&")[0]
+    const inviteCode = location.search
+        ?.split("?")[1]
+        ?.split("=")[1]
+        .split("&")[0]
     const address = location.search?.split("?")[1]?.split("&")[1].split("=")[1]
     const re = /%20/g
     const formattedAddress = address.replace(re, " ")
@@ -119,7 +122,7 @@ const Profile = () => {
         password,
         confirmPassword,
         firstName,
-        lastName
+        lastName,
     }: {
         password: string
         confirmPassword: string
@@ -160,7 +163,9 @@ const Profile = () => {
                             <CiLocationOn
                                 style={{ color: "#E94444", fontSize: "25px" }}
                             />
-                            <span className="pl-2.5 text-black-60 text-lg">{formattedAddress}</span>
+                            <span className="pl-2.5 text-black-60 text-lg">
+                                {formattedAddress}
+                            </span>
                         </div>
 
                         <form

@@ -4,6 +4,7 @@ import { HiChevronRight } from "react-icons/hi"
 import Avatar from "../assets/avatar.svg"
 import Star from "../assets/star.svg"
 import dayjs from "dayjs"
+import { IoIosArrowForward } from "react-icons/io"
 
 interface Prop {
     // status?: "pending" | "accepted" | "rejected" ;
@@ -40,6 +41,7 @@ const ApplicationTable = ({ elements, setPhase, setActiveId }: Prop) => {
             <td>{dayjs(item.createdAt).format("h:mm A")}</td>
             <td
                 className="cursor-pointer"
+                aria-label="view application"
                 onClick={
                     () => {
                         setActiveId(item._id)
@@ -65,26 +67,106 @@ const ApplicationTable = ({ elements, setPhase, setActiveId }: Prop) => {
         "",
     ]
     return (
-        <Table verticalSpacing="md">
-            <thead>
-                <tr>
-                    {tableHead.map((item, index) => (
-                        <th
-                            key={index}
-                            style={{
-                                color: "rgba(15, 13, 0, 0.3)",
-                                fontSize: "13px",
-                                borderBottom: "none",
-                            }}
-                            className="text-black-30"
-                        >
-                            {item.toUpperCase()}
-                        </th>
-                    ))}
-                </tr>
-            </thead>
-            <tbody>{rows}</tbody>
-        </Table>
+        <>
+            <div className="hidden lg:block ">
+                <Table verticalSpacing="md">
+                    <thead>
+                        <tr>
+                            {tableHead.map((item, index) => (
+                                <th
+                                    key={index}
+                                    style={{
+                                        color: "rgba(15, 13, 0, 0.3)",
+                                        fontSize: "13px",
+                                        borderBottom: "none",
+                                    }}
+                                    className="text-black-30"
+                                >
+                                    {item.toUpperCase()}
+                                </th>
+                            ))}
+                        </tr>
+                    </thead>
+                    <tbody>{rows}</tbody>
+                </Table>
+            </div>
+            <div className="block lg:hidden mt-4">
+                {elements.map((item, index) => (
+                    <div
+                        className="rounded bg-black-5 mb-4 pb-4 cursor-pointer"
+                        key={index}
+                        onClick={() => {
+                            setActiveId(item._id)
+                            setPhase(2)
+                        }}
+                    >
+                        <div className="flex justify-between border-b border-black-20 p-4">
+                            <p className="font-medium text-2lg">
+                                {item.user.firstName + " " + item.user.lastName}
+                            </p>
+                            <IoIosArrowForward
+                                size={20}
+                                style={{ color: "#889088" }}
+                            />
+                        </div>
+                        <div className="flex justify-between w-full px-4">
+                            <div>
+                                <div className="mt-2">
+                                    <h6 className="text-black-50 text-3sm">
+                                        JOB TYPE
+                                    </h6>
+                                    <p className="text-2md mt-1">
+                                        {item.jobListing.jobType.name}
+                                    </p>
+                                </div>
+
+                                <div className="mt-2">
+                                    <h6 className="text-black-50 text-3sm">
+                                        QUALIFICATION
+                                    </h6>
+                                    <p className="text-2md mt-1">
+                                        {item.jobListing.jobQualification.name}
+                                    </p>
+                                </div>
+                                <div className="mt-4">
+                                    <h6 className="text-black-50 text-3sm">
+                                        DATE APPLIED
+                                    </h6>
+                                    <p className="text-2md mt-1">
+                                        {dayjs(item.createdAt).format(
+                                            "MMM D, YYYY"
+                                        ) +
+                                            ", " +
+                                            dayjs(item.createdAt).format(
+                                                "h:mm A"
+                                            )}
+                                    </p>
+                                </div>
+                            </div>
+                            <div>
+                                <div className="mt-4">
+                                    <h6 className="text-black-50 text-3sm">
+                                        MATCH
+                                    </h6>
+                                    <p className="text-2md mt-1">
+                                        {item.jobMatchPercentage}%
+                                    </p>
+                                </div>
+
+                                <div className="mt-4">
+                                    <h6 className="text-black-50 text-3sm">
+                                        RATING
+                                    </h6>
+                                    <p className="text-2md mt-1">
+                                        {item.user.averageRating}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                ))}
+            </div>
+        </>
     )
 }
 export default ApplicationTable

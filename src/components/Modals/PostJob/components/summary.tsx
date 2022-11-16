@@ -1,7 +1,7 @@
 import dayjs from "dayjs"
 import { useFormikContext } from "formik"
 import { useEffect } from "react"
-import { JobBoardByIdResponse } from "../../../../hooks/job-board/interface"
+import { JobBoardByIdResponse } from "../../../../types/job-board/interface"
 import { useGetJobType } from "../../../../hooks/job-board/useJobBoard.hooks"
 
 interface SummaryProps {
