@@ -21,6 +21,7 @@ import {
     JobBoardByIdResponse,
     JobBoardResponseInterface,
 } from "../../../types/job-board/interface"
+import { showNotification } from "@mantine/notifications"
 
 export interface IPostJobProps {
     opened: boolean
