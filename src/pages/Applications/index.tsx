@@ -61,7 +61,7 @@ const Applications = () => {
                                 onTabChange={setActiveTab}
                                 color="yellow"
                                 keepMounted={false}
-                                //variant="lg:default pills"
+                                // variant="lg:default pills"
                             >
                                 <Tabs.List>
                                     <Tabs.Tab

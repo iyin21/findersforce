@@ -25,8 +25,6 @@ const MobileRoleTable = ({ elements, status }: RoleTableInterface) => {
                             </Menu.Target>
 
                             <Menu.Dropdown>
-                                <Menu.Item>Make Regional Manager</Menu.Item>
-
                                 <Menu.Item className="text-red-100">
                                     Delete {element.name}
                                 </Menu.Item>
@@ -47,20 +45,17 @@ const MobileRoleTable = ({ elements, status }: RoleTableInterface) => {
                                 </h6>
                                 <p className="text-2md mt-1">{element.email}</p>
                             </div>
-                            <div>
-                                <h6 className="text-black-50 text-3sm">
-                                    STATUS
-                                </h6>
-                                {status === "active" ? (
-                                    <p className="text-green-100 text-center p-1 w-fit px-3 py-1 text-3sm font-creatoBlack">
-                                        Active
-                                    </p>
-                                ) : (
+                            {status === "pending" && (
+                                <div>
+                                    <h6 className="text-black-50 text-3sm">
+                                        STATUS
+                                    </h6>
+
                                     <p className="text-red-100  text-center p-1  text-3sm w-fit px-3 py-1">
                                         Inactive
                                     </p>
-                                )}
-                            </div>
+                                </div>
+                            )}
                         </div>
                         <div className="flex justify-between items-center gap-2 mt-3">
                             <div>
@@ -69,16 +64,11 @@ const MobileRoleTable = ({ elements, status }: RoleTableInterface) => {
                                 </h6>
                                 <p className="text-2md mt-1">{element.date}</p>
                             </div>
-                            {status === "active" && (
-                                <div>
-                                    <h6 className="text-black-50 text-3sm">
-                                        ROLE
-                                    </h6>
-                                    <p className="text-2md mt-1">
-                                        {element.role}
-                                    </p>
-                                </div>
-                            )}
+
+                            <div>
+                                <h6 className="text-black-50 text-3sm">ROLE</h6>
+                                <p className="text-2md mt-1">{element.role}</p>
+                            </div>
                         </div>
                     </div>
                 </div>
