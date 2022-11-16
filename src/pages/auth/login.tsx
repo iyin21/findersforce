@@ -99,7 +99,6 @@ const Login = () => {
                                 placeholder="password"
                                 id="password"
                                 label="Password"
-                                id="password"
                                 withAsterisk
                                 radius="md"
                                 size="xl"
