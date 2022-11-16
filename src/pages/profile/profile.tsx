@@ -113,8 +113,8 @@ const Profile = () => {
     const inviteCode = location.search
         ?.split("?")[1]
         ?.split("=")[1]
-        .split("&")[0]
-    const address = location.search?.split("?")[1]?.split("&")[1].split("=")[1]
+        .split("&")[0] ?? " "
+    const address = location.search?.split("?")[1]?.split("&")[1]?.split("=")[1] ?? " "
     const re = /%20/g
     const formattedAddress = address.replace(re, " ")
 

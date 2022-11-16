@@ -166,17 +166,6 @@ const Login = () => {
                     <h1 className="self-start text-2xl pt-5 font-extrabold text-blaq-0 pb-0">
                         Log In
                     </h1>
-                    <div className="self-start">
-                        <span className="text-blaq-7 text-2md">
-                            Don’t have an account?{" "}
-                        </span>
-                        <a
-                            href="/#"
-                            className="text-2md text-green-100 font-normal"
-                        >
-                            Request an access
-                        </a>
-                    </div>
                     <form
                         className="w-full"
                         onSubmit={loginForm.onSubmit((values) =>

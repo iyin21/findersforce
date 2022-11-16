@@ -82,9 +82,14 @@ const VerifyEmailAddress = () => {
                         handleSubmit={handleVerifyEmail}
                         defaultStyle={true}
                     />
-                    <span className="underline text-center text-base text-green-90 pt-8 font-medium cursor-pointer">
-                        Not my email
-                    </span>
+                    <NavLink
+                        to="/recover-password"
+                        className="pt-8 self-center"
+                    >
+                        <span className="underline text-center text-base text-green-90 pt-8 font-medium cursor-pointer">
+                            Not my email
+                        </span>
+                    </NavLink>
                 </div>
             )}
         </>
