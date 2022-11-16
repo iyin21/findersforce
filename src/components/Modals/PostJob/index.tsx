@@ -20,8 +20,7 @@ import JobFormFields from "./utils/formfields"
 import {
     JobBoardByIdResponse,
     JobBoardResponseInterface,
-} from "../../../hooks/job-board/interface"
-import { showNotification } from "@mantine/notifications"
+} from "../../../types/job-board/interface"
 
 export interface IPostJobProps {
     opened: boolean

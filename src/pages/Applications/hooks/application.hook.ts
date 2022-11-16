@@ -8,7 +8,7 @@ import {
     ApplicationDetailsResponse,
 } from "../interface";
 import useAuthContext from "../../../hooks/auth-hooks/useAuth"
-import { useMutation, useQuery } from "@tanstack/react-query"
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 
 interface ApplicationRequest {
     status: string
@@ -77,6 +77,8 @@ function useGetApplicationDetails({ id }: { id: string }) {
 }
 function useUpdateApplication({ id }: { id: string }) {
     const { state } = useAuthContext()
+    // Get QueryClient from the context
+    const queryClient = useQueryClient();
 
     const updateApplication = async ({ status }: UpdateApplicationRequest) => {
         const config: AxiosRequestConfig = {
@@ -107,6 +109,9 @@ function useUpdateApplication({ id }: { id: string }) {
                     color: "red",
                 })
             },
+            onSuccess: () => {
+                queryClient.invalidateQueries({ queryKey: ["applications"] });
+            }
         }
     )
 }

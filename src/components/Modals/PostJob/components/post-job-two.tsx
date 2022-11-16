@@ -2,7 +2,7 @@ import { useFormikContext } from "formik"
 import FormikControls from "../../../../components/Form/FormControls/form-controls"
 import uploadIcon from "../../../../assets/image.svg"
 import { useRef, useState } from "react"
-import { JobBoardByIdResponse } from "../../../../hooks/job-board/interface"
+import { JobBoardByIdResponse } from "../../../../types/job-board/interface"
 import { FileInput } from "@mantine/core"
 
 interface PostJobTwoProps {

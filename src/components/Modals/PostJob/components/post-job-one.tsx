@@ -2,7 +2,7 @@ import FormikControls from "../../../../components/Form/FormControls/form-contro
 import DatePickers from "../../../../components/DatePicker"
 import Radio from "../../../../components/Core/Radio/radio"
 import { useFormikContext } from "formik"
-import { JobBoardByIdResponse } from "../../../../hooks/job-board/interface"
+import { JobBoardByIdResponse } from "../../../../types/job-board/interface"
 import { FiClock } from "react-icons/fi"
 import GoogleAutoComplete from "../../../../components/GoogleAutoComplete"
 import DatePicker from "react-datepicker"

@@ -1,6 +1,6 @@
 import dayjs from "dayjs"
 import { IoIosArrowForward } from "react-icons/io"
-import { JobBoardResponseInterface } from "../../../../hooks/job-board/interface"
+import { JobBoardResponseInterface } from "../../../../types/job-board/interface"
 import { Checkbox } from "../../../../components/index"
 import { JobBoardInterface } from "./job-table"
 import { useNavigate } from "react-router-dom"

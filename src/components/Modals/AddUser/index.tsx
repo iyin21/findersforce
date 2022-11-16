@@ -2,12 +2,13 @@ import { Modal } from "@mantine/core"
 import { Form, Formik } from "formik"
 import { Dispatch, SetStateAction, useState } from "react"
 import { IoClose } from "react-icons/io5"
-import FormikControls from "../../../components/Form/FormControls/form-controls"
 import { object, string } from "yup"
 import Button from "../../../components/Core/Buttons/Button"
 import TagsInput from "react-tagsinput"
 
 import "react-tagsinput/react-tagsinput.css"
+import { useProfile } from "../../../hooks/profile/use-profile"
+import { useInviteShiftManger } from "../../../hooks/roles/use-roles"
 
 export interface AddUserInterface {
     opened: boolean
@@ -19,6 +20,10 @@ const AddUser = ({ opened, setOpened }: AddUserInterface) => {
     const handleEmailChange = (tags: any[]) => {
         setEmail(tags)
     }
+
+    const { data } = useProfile()
+
+    const { mutate, isLoading } = useInviteShiftManger()
 
     return (
         <div>
@@ -32,14 +37,16 @@ const AddUser = ({ opened, setOpened }: AddUserInterface) => {
             >
                 <div className="flex justify-between items-center p-3">
                     <div>
-                        <h1 className="text-3xl font-bold">Add a user</h1>
+                        <h1 className="text-3xl font-bold">
+                            Add Shift Manager(s)
+                        </h1>
                         <p className="text-black-60 text-2md font-normal">
-                            This is a subtext describing what users can see here
+                            Add shift managers to {data?.location}
                         </p>
                     </div>
                     <IoClose size={30} onClick={() => setOpened(false)} />
                 </div>
-                <div className="mt-6 p-3">
+                <div className=" p-3">
                     <Formik
                         initialValues={{
                             invitedRole: "SHIFT-MANAGER",
@@ -49,29 +56,14 @@ const AddUser = ({ opened, setOpened }: AddUserInterface) => {
                             invitedRole: string().required("Required"),
                         })}
                         onSubmit={(values) => {
-                            // mutate({
-                            //     email: values.email,
-                            // })
+                            mutate({
+                                invitedRole: values.invitedRole,
+                                email: email,
+                            })
                         }}
                     >
                         {({ isSubmitting, values, setFieldValue }) => (
                             <Form className="space-y-6">
-                                <div>
-                                    <label className="text-3md font-semibold mb-3 text-neutral-80 block">
-                                        Role
-                                    </label>
-                                    <FormikControls
-                                        data-testid="invitedRole"
-                                        id="invitedRole"
-                                        control="input"
-                                        name="invitedRole"
-                                        type="text"
-                                        placeholder="Role"
-                                        value={values.invitedRole}
-                                        className="rounded-xl"
-                                    />
-                                </div>
-
                                 <div>
                                     <label className="text-3md font-semibold mb-3 text-neutral-80 block">
                                         Email
@@ -102,7 +94,7 @@ const AddUser = ({ opened, setOpened }: AddUserInterface) => {
                                         type="submit"
                                         disabled={isSubmitting}
                                     >
-                                        {isSubmitting
+                                        {isLoading
                                             ? "Adding user..."
                                             : "Add user"}
                                         {/* Add user */}
