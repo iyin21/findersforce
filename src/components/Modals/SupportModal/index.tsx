@@ -75,7 +75,7 @@ const SupportModal = ({
                         //console.log(values)
                         setStep(step + 1)
                     } else {
-                        console.log(values)
+                        
                         handleSubmit(values)
                     }
                 }}
