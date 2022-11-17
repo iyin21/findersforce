@@ -45,6 +45,7 @@ const Support = () => {
                             <button
                                 className="bg-yellow-100 rounded rounded-tr-2xl flex justify-center items-center font-bold body-medium py-4 lg:text-2md px-2 mt-6"
                                 onClick={() => setOpenModal(true)}
+                                data-testid="support_btn"
                             >
                                 <GoPlus size="30px" color="black" />
                                 <span className="pl-2">Send a complaint</span>

@@ -24,6 +24,7 @@ const SupportCard = ({
             onClick={() => {
                 handleClick()
             }}
+            data-testid="view_spport"
         >
             <div className="flex justify-between p-4">
                 <p className="font-medium text-2lg">{complaintCategory}</p>

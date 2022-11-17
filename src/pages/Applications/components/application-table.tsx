@@ -41,7 +41,7 @@ const ApplicationTable = ({ elements, setPhase, setActiveId }: Prop) => {
             <td>{dayjs(item.createdAt).format("h:mm A")}</td>
             <td
                 className="cursor-pointer"
-                aria-label="view application"
+                data-testid="view_application"
                 onClick={
                     () => {
                         setActiveId(item._id)
