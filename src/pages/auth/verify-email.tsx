@@ -40,17 +40,24 @@ const VerifyEmailAddress = () => {
                             <span className="text-base">
                                 Didn`t get an email?{" "}
                             </span>
-                            <a href="/#" className="text-yellow-100 underline">
-                                Resend OTP
-                            </a>
+                            <NavLink to="/recover-password">
+                                <span className="text-yellow-100 underline">
+                                    Resend OTP
+                                </span>
+                            </NavLink>
                         </div>
                         <h2 className="text-base text-black-100 font-bold pb-4">
                             Enter OTP
                         </h2>
                         <OtpContainer handleSubmit={handleVerifyEmail} />
-                        <span className="underline text-center text-base text-green-90 pt-8 font-medium cursor-pointer">
-                            Not my email
-                        </span>
+                        <NavLink
+                            to="/recover-password"
+                            className="pt-8 self-center"
+                        >
+                            <span className="underline text-center text-base text-green-90 font-medium cursor-pointer">
+                                Not my email
+                            </span>
+                        </NavLink>
                     </div>
                 </div>
             ) : (
@@ -75,9 +82,14 @@ const VerifyEmailAddress = () => {
                         handleSubmit={handleVerifyEmail}
                         defaultStyle={true}
                     />
-                    <span className="underline text-center text-base text-green-90 pt-8 font-medium cursor-pointer">
-                        Not my email
-                    </span>
+                    <NavLink
+                        to="/recover-password"
+                        className="pt-8 self-center"
+                    >
+                        <span className="underline text-center text-base text-green-90 pt-8 font-medium cursor-pointer">
+                            Not my email
+                        </span>
+                    </NavLink>
                 </div>
             )}
         </>
