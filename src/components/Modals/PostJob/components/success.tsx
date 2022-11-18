@@ -1,9 +1,10 @@
 import { Modal } from "@mantine/core"
-import { Dispatch, SetStateAction, useRef } from "react"
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react"
 import SuccessImage from "../../../../assets/success.svg"
 import { GrClose } from "react-icons/gr"
 import Button from "../../../../components/Core/Buttons/Button"
 import CopyIcon from "../../../../assets/copy_to_clipboard.svg"
+import { showNotification } from "@mantine/notifications"
 
 interface ISuccessPostJobProps {
     opened: boolean
@@ -17,6 +18,7 @@ const JobSuccessful = ({
     newJobId,
 }: ISuccessPostJobProps) => {
     const textAreaRef = useRef(null)
+    const [copySuccess, setCopySuccess] = useState("")
 
     function copyToClipboard(e: any) {
         // @ts-ignore
@@ -25,7 +27,17 @@ const JobSuccessful = ({
             `${import.meta.env.VITE_FRONTEND_URL}/${newJobId}`
         )
         e.target.focus()
+        setCopySuccess("Copied!")
     }
+    useEffect(() => {
+        if (copySuccess) {
+            showNotification({
+                title: "Success",
+                message: "Job list has been copied successfully",
+                color: "green",
+            })
+        }
+    }, [copySuccess])
     return (
         <div>
             <Modal

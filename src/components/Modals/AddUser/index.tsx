@@ -37,7 +37,7 @@ const AddUser = ({ opened, setOpened }: AddUserInterface) => {
             >
                 <div className="flex justify-between items-center p-3">
                     <div>
-                        <h1 className="text-3xl font-bold">
+                        <h1 className="text-2xl mb-2 md:mb-0 md:text-3xl font-bold">
                             Add Shift Manager(s)
                         </h1>
                         <p className="text-black-60 text-2md font-normal">
@@ -50,7 +50,7 @@ const AddUser = ({ opened, setOpened }: AddUserInterface) => {
                     <Formik
                         initialValues={{
                             invitedRole: "SHIFT-MANAGER",
-                            email: "",
+                            email: email,
                         }}
                         validationSchema={object().shape({
                             invitedRole: string().required("Required"),
@@ -62,7 +62,7 @@ const AddUser = ({ opened, setOpened }: AddUserInterface) => {
                             })
                         }}
                     >
-                        {({ isSubmitting, values, setFieldValue }) => (
+                        {({ isSubmitting, errors, setFieldValue }) => (
                             <Form className="space-y-6">
                                 <div>
                                     <label className="text-3md font-semibold mb-3 text-neutral-80 block">
@@ -79,6 +79,14 @@ const AddUser = ({ opened, setOpened }: AddUserInterface) => {
                                             placeholder: "Email address",
                                         }}
                                     />
+
+                                    {errors?.email && (
+                                        <div className="flex items-center gap-2 mt-4 px-2 md:p-4 rounded-md bg-red-10 border-l-4 border-red-100">
+                                            <p className=" text-sm md:text-lg">
+                                                Please insert an email
+                                            </p>
+                                        </div>
+                                    )}
                                 </div>
                                 <div className="flex justify-end mt-10">
                                     <Button
@@ -92,7 +100,7 @@ const AddUser = ({ opened, setOpened }: AddUserInterface) => {
                                     <Button
                                         variant="primary"
                                         type="submit"
-                                        disabled={isSubmitting}
+                                        disabled={isLoading}
                                     >
                                         {isLoading
                                             ? "Adding user..."

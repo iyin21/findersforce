@@ -1,7 +1,8 @@
-import { useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 import EmptyApplicationImage from "../../assets/empty.svg"
 import Button from "../Core/Buttons/Button"
 import CopyIcon from "../../assets/copy_to_clipboard.svg"
+import { showNotification } from "@mantine/notifications"
 
 export interface EmptyApplicationInterface {
     id: string | undefined
@@ -9,6 +10,7 @@ export interface EmptyApplicationInterface {
 
 const EmptyApplication = ({ id }: EmptyApplicationInterface) => {
     const textAreaRef = useRef(null)
+    const [copySuccess, setCopySuccess] = useState("")
 
     function copyToClipboard(e: any) {
         // @ts-ignore
@@ -17,7 +19,18 @@ const EmptyApplication = ({ id }: EmptyApplicationInterface) => {
             `${import.meta.env.VITE_FRONTEND_URL}/job-boards/${id}`
         )
         e.target.focus()
+        setCopySuccess("Copied!")
     }
+
+    useEffect(() => {
+        if (copySuccess) {
+            showNotification({
+                title: "Success",
+                message: "Job list has been copied successfully",
+                color: "green",
+            })
+        }
+    }, [copySuccess])
 
     return (
         <div className="flex flex-col justify-center items-center mt-32">
