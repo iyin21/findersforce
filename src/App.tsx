@@ -14,6 +14,7 @@ import Support from "./pages/Support"
 import Planner from "./pages/planner/Planner"
 import ShiftsDetailTable from "./pages/planner/components/ShiftsDetailsTable"
 import Roles from "./pages/roles"
+import Settings from "./pages/Settings/index"
 
 function App() {
     return (
@@ -33,6 +34,7 @@ function App() {
                     <Route path={"/dashboard"} element={<Dashboard />} />
                     <Route path="/pending" element={<Applications />} />
                     <Route path="/job-boards" element={<JobBoards />} />
+                    <Route path="/settings" element={<Settings />} />
                     <Route
                         path="job-boards/:jobBoardId"
                         element={<SingleJobBoard />}
