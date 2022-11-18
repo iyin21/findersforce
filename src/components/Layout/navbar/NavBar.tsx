@@ -92,7 +92,7 @@ const NavBar = () => {
                         alt="search icon "
                         className="cursor-pointer"
                     />
-                    <Indicator label={unreadNotification?.length} size={16}>
+                    <Indicator label={unreadNotification?.length} size={16} color="#E94444">
                         <img
                             src={Messaging}
                             alt="Messaging icon "
@@ -104,6 +104,7 @@ const NavBar = () => {
                         src={SettingsCog}
                         alt="SettingsCog icon"
                         className="cursor-pointer"
+                        onClick={() => navigate("/settings")}
                     />
                     <img
                         src={User}
