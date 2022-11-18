@@ -5,4 +5,7 @@ export interface ProfileResponse {
     lastName: string
     phone: string
     location: string
+    companyName: string
+    profileImageUrl: any;
+    twoFa_enabled?: boolean;
 }
