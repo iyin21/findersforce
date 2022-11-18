@@ -74,7 +74,7 @@ const SupportForm1 = () => {
                     //placeholder="Select an option--"
                     className="rounded"
                     aria-label="Who/what is the complaint about?"
-                   
+                   id="complaintCategory"
                 />
             </div>
             <div className="w-full mt-4">
@@ -86,7 +86,7 @@ const SupportForm1 = () => {
                 </label>
                 <div className="grid grid-cols-2">
                 {complaintIssues.map((item) => (
-                        <Checkbox key={item} value={item} label={item} onChange={handleChecked}
+                        <Checkbox key={item} value={item} label={item} id={item} onChange={handleChecked}
                         
                         checked={checkedComplaint.includes(item)} />
                         
@@ -106,6 +106,7 @@ const SupportForm1 = () => {
                     control="textarea"
                     name="description"
                     type="text"
+                    id="description"
                     className="rounded bg-white-100"
                     style={{
                         resize: "none",
