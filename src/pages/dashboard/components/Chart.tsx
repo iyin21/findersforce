@@ -4,8 +4,11 @@ import Arrow from "../../../assets/Arrow.svg"
 import UpperRightArrow from "../../../assets/UpperRightArrow.svg"
 import { useGetDashboardAnalytics } from "../../../hooks/dashboard/useDashboard.hook"
 
-const Chart = () => {
-  const {data:dashboardAnalytics} = useGetDashboardAnalytics();
+const Chart = ({value}:{value: [Date | null, Date | null]}) => {
+  const {data:dashboardAnalytics} = useGetDashboardAnalytics({
+    dateFrom: value[0] ,
+    dateTo: value[1]
+  });
   return (
       <>
         <div   className="px-4">

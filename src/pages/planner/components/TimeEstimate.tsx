@@ -6,7 +6,7 @@ const timerStyles = {
                 divider: "text-yellow-100 text-3xl",
             };
 
-const TimeEstimate = ({initialDate, currentDate} : { initialDate: Date | undefined; currentDate: Date | undefined } ) => {
+const TimeEstimate = ({initialDate, currentDate} : { initialDate: Date; currentDate: Date } ) => {
                 const [timeEstimate, setTimeLeft] = useState({
                                 hours: 0,
                                 minutes: 0,
@@ -14,7 +14,7 @@ const TimeEstimate = ({initialDate, currentDate} : { initialDate: Date | undefin
                 });
 
                 const calculateTimeLeft = () => {
-                                const timeLeft =  initialDate!.getTime() - currentDate!.getTime()
+                                const timeLeft =  initialDate.getTime() - currentDate.getTime()
                         
                                 const timeLeftInMinutes = Math.floor(timeLeft / 60000);
                                 const timeLeftInHours = Math.floor(timeLeftInMinutes / 60);
@@ -35,16 +35,16 @@ const TimeEstimate = ({initialDate, currentDate} : { initialDate: Date | undefin
                 };
 
                 useEffect(() => {
-                                const timer = setInterval(() => {
+                                const timer = setTimeout(() => {
                                     setTimeLeft({
                                         hours: calculateTimeLeft().hours,
                                         minutes: calculateTimeLeft().minutes,
                                         seconds: calculateTimeLeft().seconds,
                                     });
                                 }, 1000);
-                        
+
                                 return () => clearInterval(timer);
-                }, [initialDate]);
+                }, [currentDate]);
   return (
     <div className='bg-black-100 text-yellow-100 rounded-xl'>
        <div className=" flex items-center gap-4 justify-center  ">

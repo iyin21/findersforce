@@ -11,15 +11,17 @@ function useGetShiftHistory({
     upcoming,
     ongoing,
     completed,
+    cancelled
 }: {
     upcoming?: boolean
     ongoing?: boolean
     completed?: boolean
+    cancelled?: boolean
 }) {
     const { state } = useAuthContext()
     const getShiftHistory = async () => {
         const { data } = await axiosInstance.get(`/schedule`, {
-            params: {upcoming, ongoing, completed },
+            params: {upcoming, ongoing, completed, cancelled },
             headers: {
                 Authorization: `Bearer ${state?.jwt?.token}`,
             },
@@ -28,7 +30,7 @@ function useGetShiftHistory({
     }
 
     return useQuery<unknown, AxiosError, ShiftResponse["data"]>(
-        ["shiftHistory", {upcoming, ongoing, completed }],
+        ["shiftHistory", {upcoming, ongoing, completed, cancelled }],
         getShiftHistory,
 
         {
@@ -116,8 +118,7 @@ function useGetOperativeRatingSummary({
 }) {
     const { state } = useAuthContext()
     const getOperativeRatingSummary = async () => {
-        const { data } = await axiosInstance.get(`/rating/operative/?id=${id}/summary`, {
-            
+        const { data } = await axiosInstance.get(`/rating/operative/${id}/summary`, {
             headers: {
                 Authorization: `Bearer ${state?.jwt?.token}`,
             },
@@ -130,10 +131,10 @@ function useGetOperativeRatingSummary({
         getOperativeRatingSummary,
 
         {
-            onError: (err) => {
+            onError: (err:any) => {
                 showNotification({
                     title: "Error",
-                    message: err.message,
+                    message: err?.response?.data.error,
                     color: "red",
                 })
             },

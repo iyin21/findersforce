@@ -1,5 +1,3 @@
-import Arrow from "../../assets/Arrow.svg"
-import Calender from "../../assets/Calender.svg"
 import CalenderIcon from "../../assets/CalenderIcon.svg"
 import ClockIcon from "../../assets/ClockIcon.svg"
 import LocationIcon from "../../assets/LocationIcon.svg"
@@ -21,13 +19,29 @@ import { useGetShiftHistory } from "../../hooks/planner/usePlanner.hooks"
 import dayjs from "dayjs"
 import { useNavigate } from "react-router-dom"
 import Empty from "../../assets/Empty.png"
+import { DateRangePicker, DateRangePickerValue } from "@mantine/dates"
+import { useState } from "react"
 
 const Dashboard = () => {
     const navigate = useNavigate()
     const handleNavigate = () => {
         navigate(`/planner`)
-      }
-    const {data:dashboardAnalytics} = useGetDashboardAnalytics();
+    }
+
+    const currentDate = new Date();
+    currentDate.setDate(currentDate.getDate() - 7)
+
+
+    const [value, setValue] = useState<DateRangePickerValue>([
+        currentDate,
+        new Date(),
+      ]);
+
+    const {data:dashboardAnalytics} = useGetDashboardAnalytics({
+        dateFrom: value?.[0],
+        dateTo: value?.[1]
+    });
+
     const {
         data: upcomingShiftsData,
     } = useGetShiftHistory({
@@ -38,9 +52,11 @@ const Dashboard = () => {
     } = useGetShiftHistory({
         ongoing: true,
     })
+    
+    
     return (
         <Layout pageTitle={"Dashboard"}>
-            <main className="px-8 mt-6 py-6 bg-white-100 overflow-hidden">
+            <main className="md:p-6 p-6 mt-4 md:mt-14 bg-white-100 overflow-hidden">
                 <section className=" flex bg-white-100 justify-between">
                     <div>
                         <h1 className="font-extrabold text-4xl font-creatoBold">Dashboard</h1>
@@ -49,18 +65,13 @@ const Dashboard = () => {
                             FindersForce.
                         </p>
                     </div>
-                    <div className="text-black-70 border border-black-10 rounded-lg h-12 px-5 pt-3 ">
-                        <span> 2022 -11-22 </span>
-                        <img
-                            src={Arrow}
-                            alt="arrow icon"
-                            className="inline px-4"
-                        />
-                        <span> 2022 -12- 31</span>
-                        <img
-                            src={Calender}
-                            alt="Calender icon"
-                            className="inline px-2 cursor-pointer "
+                    <div>
+                        <DateRangePicker
+                            placeholder="Start date - End date"
+                            value={value}
+                            onChange={setValue}
+                            radius="md"
+                            amountOfMonths={2}
                         />
                     </div>
                 </section>
@@ -91,31 +102,31 @@ const Dashboard = () => {
                                     amount={dashboardAnalytics?.amountPaid?.total}
                                     icon={Money}
                                     style={"bg-green-10 rounded-full p-4"}
-                                    subtitle={dashboardAnalytics?.amountPaid?.thisMonth}
+                                    subtitle={`£ ${dashboardAnalytics?.amountPaid?.thisMonth}`}
                                 />
                                 <Card
                                     title={"HOURS COMPLETED"}
                                     amount={dashboardAnalytics?.hoursCompleted?.total}
                                     icon={Time}
                                     style={"bg-yellow-20 rounded-full p-4"}
-                                    subtitle={dashboardAnalytics?.hoursCompleted?.thisMonth}
+                                    subtitle={`${dashboardAnalytics?.hoursCompleted?.thisMonth} hrs`}
                                 />
                                 <Card
                                     title={"OPERATIVES HIRED"}
                                     amount={dashboardAnalytics?.operativesHired?.total}
                                     icon={Operative}
                                     style={"bg-green-10 rounded-full p-4"}
-                                    subtitle={dashboardAnalytics?.operativesHired?.thisMonth}
+                                    subtitle={`${dashboardAnalytics?.operativesHired?.thisMonth} operatives`}
                                 />
                             </div>
                         </section>
                         <section className="flex justify-between">
-                            <Chart />
-                            <PieChart />
+                            <Chart value={value} />
+                            <PieChart value={value} />
                         </section>
                     </div>
                     <div className="basis-1/4">
-                        <Rating/>
+                        <Rating value={value}/>
                         <section>
                             <div className="relative my-5 rounded-lg">
                                 <p className="text-md font-medium  sticky top-0 bg-gray-100 rounded-t-lg py-3 pl-4 ">

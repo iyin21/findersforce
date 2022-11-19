@@ -1,7 +1,7 @@
 import { JobListing } from "../../pages/Applications/interface"
 
 export interface ShiftsTableInterface {
-  status: "upcoming" | "ongoing" | "completed"
+  status: "upcoming" | "ongoing" | "completed" | "cancelled"
   elements?:Result[]
 }
 

@@ -47,9 +47,10 @@ const ShiftsTable = ({ elements, status }: ShiftsTableInterface) => {
         </td>)
         }
         <td>{element?.jobListing?.jobLocation?.formattedAddress}</td>
-        {status !== "ongoing" ? (<td>{dayjs(element?.jobListing?.jobDate).format("DD/MM/YYYY")}</td>) : (<td>{dayjs(element?.jobListing?.shiftStartTime).format("h:mm A")} - {dayjs(element?.jobListing.shiftEndTime).format("h:mm A")}</td>)}
+        {status !== "ongoing" ? (<td>{dayjs(element?.jobListing?.jobDate).format("MMM D, YYYY")} | {dayjs(element?.jobListing?.shiftStartTime).format("h:mm A")} - {dayjs(element?.jobListing.shiftEndTime).format("h:mm A")}</td>)
+         : (<td>{dayjs(element?.jobListing?.shiftStartTime).format("h:mm A")} - {dayjs(element?.jobListing.shiftEndTime).format("h:mm A")}</td>)}
         <td>{element?.jobListing?.jobRate?.currency}{element?.jobListing?.jobRate?.jobRatePerHourDisplayedToDepot}/hr</td>
-        {status !== "ongoing" && (<td>{element?.jobListing?.shiftDurationInHours}hrs</td>)}
+        {status !== "ongoing" && (<td>{element?.jobListing?.shiftDurationInHours}hour(s)</td>)}
         {status === "completed" && (<td>{element?.jobListing?.numberOfOpsRequired}</td>)}
         {status === "completed" && (
         <td>

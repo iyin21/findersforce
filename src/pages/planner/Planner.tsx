@@ -15,6 +15,7 @@ const Planner = () => {
     const [activeTab, setActiveTab] = useState<string | null>("first")
     const [activeUpcomingPage, setUpcomingPage] = useState(1)
     const [activeOngoingPage, setOngoingPage] = useState(1)
+    const [activeCancelledPage, setCancelledPage] = useState(1)
     const [activeCompletedPage, setCompletedPage] = useState(1)
 
 
@@ -23,6 +24,9 @@ const Planner = () => {
     }
     const handleOngoingPage = (pageNumber: number) => {
         setOngoingPage(pageNumber)
+    }
+    const handleCancelledPage = (pageNumber: number) => {
+        setCancelledPage(pageNumber)
     }
     const handleCompletedPage = (pageNumber: number) => {
         setCompletedPage(pageNumber)
@@ -43,6 +47,12 @@ const Planner = () => {
         ongoing: true,
     })
     const {
+        data: cancelledShiftsData,
+        isLoading: isLoadingCancelledData
+    } = useGetShiftHistory({
+        cancelled: true,
+    })
+    const {
         data: completedShiftsData,
         isLoading: isLoadingCompletedData
     } = useGetShiftHistory({
@@ -50,17 +60,16 @@ const Planner = () => {
     })
     
     
-    
                 return (
                 <Layout>
-                    <main className="md:p-6 p-6">              
+                    <main className="md:p-6 p-6 mt-4 md:mt-14">              
                       <div className="flex justify-between items-center">
                           <div className="flex flex-col">
                               <h1 className="text-2xl md:text-3xl font-creatoBold text-black-100 font-bold">
-                                  Shifts
+                                  Planner
                               </h1>
                               <p className="text-black-60 text-2md md:text-lg font-normal font-creato">
-                              Operatives who apply for shifts appear here
+                              Operatives turn up for their shifts in one glance
                               </p>
                           </div>
                       </div>
@@ -80,7 +89,7 @@ const Planner = () => {
                               </div>
                           </div>
                           <div>
-                                {isLoadingUpcomingData || isLoadingOngoingData || isLoadingCompletedData ?
+                                {isLoadingUpcomingData || isLoadingOngoingData || isLoadingCompletedData || isLoadingCancelledData ?
                                 (<div className="h-screen w-full flex mt-24 justify-center">
                                 <CgSpinner className="animate-spin text-primary-90 text-4xl" />
                                 </div>)
@@ -107,7 +116,7 @@ const Planner = () => {
                                                             className={`{" ml-2 py-1 px-2 rounded text-white-100 "} ${
                                                             activeTab === "first"
                                                             ? "bg-white lg:text-white-100 text-dark-green-500  lg:bg-red-100 text-3sm "
-                                                            : "bg-red-100 text-white-100 text-3sm"
+                                                            : "bg-gray-100 text-white-100 text-3sm"
                                                             }`}
                                                             >
                                                                 {upcomingShiftsData?.results?.length}
@@ -127,7 +136,7 @@ const Planner = () => {
                                                             className={`{" ml-2 py-1 px-2 rounded text-white-100 "} ${
                                                             activeTab === "second"
                                                             ? "bg-white lg:text-white-100 text-dark-green-500  lg:bg-red-100 text-3sm "
-                                                            : "bg-red-100 text-white-100 text-3sm"
+                                                            : "bg-gray-100 text-white-100 text-3sm"
                                                             }`}
                                                             >
                                                                 {ongoingShiftsData?.results?.length}
@@ -142,12 +151,32 @@ const Planner = () => {
                                                               : `font-creatoMedium text-black-40 text-lg inactive`
                                                       }
                                                   >
-                                                      Completed
+                                                      Cancelled
                                                         <span
                                                             className={`{" ml-2 py-1 px-2 rounded text-white-100 "} ${
                                                             activeTab === "third"
+                                                            ? "bg-white lg:text-white-100 text-dark-green-500  lg:bg-red-100 text-3sm "
+                                                            : "bg-gray-100 text-white-100 text-3sm"
+                                                            }`}
+                                                            >
+                                                                {cancelledShiftsData?.results?.length}
+                                                        </span>
+                                                  </p>
+                                              </Tabs.Tab>
+                                              <Tabs.Tab value="fourth">
+                                                  <p
+                                                      className={
+                                                          activeTab === "fourth"
+                                                              ? "text-black-100 text-lg font-creatoMedium active"
+                                                              : `font-creatoMedium text-black-40 text-lg inactive`
+                                                      }
+                                                  >
+                                                      Completed
+                                                        <span
+                                                            className={`{" ml-2 py-1 px-2 rounded text-white-100 "} ${
+                                                            activeTab === "fourth"
                                                             ? "bg-white-100 lg:text-white-100 text-dark-green-500  lg:bg-red-100 text-3sm "
-                                                            : "bg-red-100 text-white-100 text-3sm"
+                                                            : "bg-gray-100 text-white-100 text-3sm"
                                                             }`}
                                                             >
                                                                 {completedShiftsData?.results?.length}
@@ -203,6 +232,30 @@ const Planner = () => {
                                               />
                                           </Tabs.Panel>
                                           <Tabs.Panel value="third">
+                                              {cancelledShiftsData?.results?.length === 0 ?
+                                                (
+                                                <EmptyView 
+                                                    status={"cancelled"}
+                                                />
+                                                )
+                                                :
+                                                (<ShiftsTable
+                                                    elements={cancelledShiftsData?.results}
+                                                    status="cancelled"
+                                                />)}
+                                              <Pagination
+                                                  page={activeCancelledPage}
+                                                  total={activeCancelledPage}
+                                                  onChange={handleCancelledPage}
+                                                  boundaries={1}
+                                                  recordPerpage={
+                                                      cancelledShiftsData?.results
+                                                          ? cancelledShiftsData?.results.length
+                                                          : 1
+                                                  }
+                                              />
+                                            </Tabs.Panel>
+                                          <Tabs.Panel value="fourth">
                                               {completedShiftsData?.results?.length === 0 ?
                                                 (
                                                 <EmptyView 

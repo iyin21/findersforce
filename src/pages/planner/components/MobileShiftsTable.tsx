@@ -4,6 +4,7 @@ import { AiFillStar } from "react-icons/ai"
 import { IoIosArrowForward } from "react-icons/io"
 import { useNavigate } from "react-router-dom"
 import { ShiftsTableInterface } from "../../../types/planner/interfaces"
+import TimeEstimate from "./TimeEstimate"
 
 const MobileShiftsTable = ({
     elements,
@@ -14,8 +15,6 @@ const MobileShiftsTable = ({
     const handleNavigate = (id: string, status:string) => {
     navigate(`/planner/${id}`, { state: {status: status}})
   }
-
-    const currentTime = Number(dayjs().format("HH:mm:ss"))
     return (
         <div className="mt-4">
             {elements?.map((element, index) => (
@@ -141,9 +140,9 @@ const MobileShiftsTable = ({
                                     <h6 className="text-black-50 text-3sm">
                                         ENDS_IN
                                     </h6>
-                                    <p className="text-yellow-100 bg-black-100 rounded-lg text-center font-bold p-1 w-fit px-3 py-1 text-2lg font-creatoBlack font-extrabold">
-                                        { currentTime - Number(dayjs(element?.jobListing?.shiftEndTime).format("HH:mm:ss"))}
-                                    </p>
+                                    <TimeEstimate 
+                                        initialDate={new Date(element?.jobListing?.shiftEndTime)} 
+                                        currentDate={new Date()}/>
                                 </div>)
                         }
                     </div>
