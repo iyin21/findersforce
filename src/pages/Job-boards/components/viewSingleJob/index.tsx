@@ -167,6 +167,7 @@ const SingleJobBoard = () => {
                                     noOfOperativesRequired={
                                         data?.numberOfOpsRequired
                                     }
+                                    createdAt={data?.createdAt}
                                     requiredQualification={
                                         data?.jobQualification?.name
                                     }

@@ -1,18 +1,5 @@
 import dayjs from "dayjs"
-
-interface JobInformationInterface {
-    description: string | undefined
-    location: string | undefined
-    shiftMode: string | undefined
-    date: string | undefined
-    hourlyPay: number | undefined
-    noOfOperativesRequired: number | undefined
-    requiredQualification: string | undefined
-    currency: string | undefined
-    shiftStartTime: string | undefined
-    shiftEndTime: string | undefined
-    jobType: string | undefined
-}
+import { JobInformationInterface } from "../../../../../types/job-board/interface"
 
 const JobInformation = ({
     date,
@@ -26,6 +13,7 @@ const JobInformation = ({
     currency,
     shiftStartTime,
     shiftEndTime,
+    createdAt,
 }: JobInformationInterface) => {
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 justify-between mt-4">
@@ -71,6 +59,10 @@ const JobInformation = ({
                 </h6>
                 <p className="text-lg text-black-90 font-semibold ">
                     {requiredQualification}
+                </p>
+                <h6 className="text-black-40 text-2md">Date posted</h6>
+                <p className="text-lg text-black-90 font-semibold ">
+                    {dayjs(createdAt).format(" MMMM DD YYYY")}
                 </p>
             </div>
         </div>

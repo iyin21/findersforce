@@ -35,6 +35,7 @@ export interface JobBoardResponseInterface {
     status: string
     isPublished: boolean
     jobAccessibleTo: string
+    createdAt: string
     jobLocation: {
         formattedAddress: string
         street: string
@@ -90,4 +91,19 @@ export interface CreateJobListRequestInterface {
     hourly_pay: number
     jobDescription: string
     additionalInfoImageUrls: string
+}
+
+export interface JobInformationInterface {
+    description: string | undefined
+    location: string | undefined
+    shiftMode: string | undefined
+    date: string | undefined
+    hourlyPay: number | undefined
+    noOfOperativesRequired: number | undefined
+    requiredQualification: string | undefined
+    currency: string | undefined
+    shiftStartTime: string | undefined
+    shiftEndTime: string | undefined
+    jobType: string | undefined
+    createdAt: string | undefined
 }

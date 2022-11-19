@@ -52,7 +52,7 @@ JobBoardRequest) {
                 limit,
             },
         ],
-        ({ signal }) => getJobBoards(),
+        () => getJobBoards(),
         {
             onError: (err: AxiosError) => {
                 showNotification({
