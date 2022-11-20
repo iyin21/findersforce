@@ -1,5 +1,4 @@
 import { RegionalManagerRoute } from "./utils/routes"
-import Profile from "../../../assets/Profile.svg"
 import ProfileImage from "../../../assets/ProfileImage.svg"
 import Setting from "../../../assets/Setting.svg"
 import Logout from "../../../assets/Logout.svg"
@@ -9,17 +8,18 @@ import useAuthContext from "../../../hooks/auth-hooks/useAuth"
 import handleLogOut from "../../../hooks/auth-hooks/use-logout"
 import { showNotification } from "@mantine/notifications"
 import FindersForceLogo from "../../../assets/FindersForceLogo.svg"
+import { useProfile } from "../../../hooks/profile/use-profile"
 
 const Sidebar = () => {
     const { state, dispatch } = useAuthContext()
-    const user = state?.user
+    const { data } = useProfile()
     const navigate = useNavigate()
 
     return (
         <aside className="w-full text-base  pt-2 pb-8 pt-14">
             
             <section className="flex p-3 rounded-lg ml-1 mb-4 mr-1 bg-ash-10">
-                {user?.profileImageUrl === null ? (
+                {data?.profileImageUrl === null ? (
                     <img
                         className="inline rounded-full p-2"
                         src={ProfileImage}
@@ -28,13 +28,13 @@ const Sidebar = () => {
                 ) : (
                     <img
                         className="inline rounded-full p-2"
-                        src={user?.profileImageUrl}
+                        src={data?.profileImageUrl}
                         alt="profileImage"
                     />
                 )}
                 <div className="p-1 text-white-100">
-                    <p className="text-base">{user?.companyName}</p>
-                    <p className="text-sm">{user?.email}</p>
+                    <p className="text-base">{data?.companyName}</p>
+                    <p className="text-sm">{data?.email}</p>
                 </div>
             </section>
             <p className="text-white-30 my-2 font-bold text-base px-4 py-2">
@@ -62,8 +62,7 @@ const Sidebar = () => {
             </ul>
             <hr className="bg-white-10 border-2 w-10/12 m-auto" />
             <section className="flex gap-10 p-3">
-                <img src={Profile} alt="" className="cursor-pointer" />
-                <img src={Setting} alt="" className="cursor-pointer" />
+                <img src={Setting} alt="" className="cursor-pointer" onClick={() => navigate("/settings")}/>
                 <img
                     src={Logout}
                     alt=""

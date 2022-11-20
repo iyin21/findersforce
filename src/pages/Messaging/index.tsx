@@ -89,7 +89,7 @@ const Messaging = () => {
                 </>
                 <div className="flex justify-between  ">
                     <div className="border-r-2 h-screen border-[#E7E7E7] w-[500px] pt-8">
-                        <div className="flex pl-4">
+                        <div className="flex pl-4 items-center">
                             <div onClick={() => setOpenMenu(true)} data-testid="menu_btn" className="cursor-pointer">
                             <FcMenu
                                 size={30}
@@ -102,7 +102,7 @@ const Messaging = () => {
                                 control=""
                                 type="text"
                                 placeholder="Search"
-                                className="md:h-9 bg-black-5 ml-2"
+                                className="md:h-8.5 bg-black-5 ml-2"
                             />
                         </div>
                         <div className="mt-8">

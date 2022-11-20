@@ -87,45 +87,47 @@ const NavBar = ({ noTopNav }: { noTopNav?: boolean }) => {
                     />
                 </div>
                 {!noTopNav && (
-                    <div className=" flex items-center justify-right px-12 gap-12 ">
+                <div className=" flex items-center justify-between px-12 gap-12 ">
+                    <img
+                        src={Search}
+                        alt="search icon "
+                        className="cursor-pointer"
+                    />
+                    <Indicator label={unreadNotification?.length} size={16} color="#E94444">
                         <img
                             src={Search}
                             alt="search icon "
                             className="cursor-pointer"
                         />
-                        <Indicator label={unreadNotification?.length} size={16}>
-                            <img
-                                src={Messaging}
-                                alt="Messaging icon "
-                                className="cursor-pointer"
-                                onClick={() => setOpened((state) => !state)}
-                            />
-                        </Indicator>
-                        <img
-                            src={SettingsCog}
-                            alt="SettingsCog icon"
-                            className="cursor-pointer"
-                        />
-                        <img
-                            src={User}
-                            alt="User icon"
-                            className="cursor-pointer"
-                        />
-                        <img
-                            src={Logout}
-                            alt="Logout icon"
-                            className="cursor-pointer"
-                            onClick={() =>
-                                handleLogOut(
-                                    state.jwt?.token,
-                                    showNotification,
-                                    dispatch,
-                                    navigate
-                                )
-                            }
-                        />
-                    </div>
+                    </Indicator>
+                    <img
+                        src={SettingsCog}
+                        alt="SettingsCog icon"
+                        className="cursor-pointer"
+                        onClick={() => navigate("/settings")}
+                    />
+                    <img
+                        src={User}
+                        alt="User icon"
+                        className="cursor-pointer"
+                    />
+                    <img
+                        src={Logout}
+                        alt="Logout icon"
+                        className="cursor-pointer"
+                        onClick={() =>
+                            handleLogOut(
+                                state.jwt?.token,
+                                showNotification,
+                                dispatch,
+                                navigate
+                            )
+                        }
+                    />
+                    
+                </div>
                 )}
+
             </nav>
             <Modal
                 opened={opened}
