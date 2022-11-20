@@ -14,6 +14,7 @@ import Support from "./pages/Support"
 import Planner from "./pages/planner/Planner"
 import ShiftsDetailTable from "./pages/planner/components/ShiftsDetailsTable"
 import Roles from "./pages/roles"
+import Messaging from "./pages/Messaging"
 
 function App() {
     return (
@@ -25,7 +26,6 @@ function App() {
             <Route path="/recover-password" element={<RecoverPassword />} />
             <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/verify-email" element={<VerifyEmailAddress />} />
-            
 
             {/* private routes */}
             <Route element={<PersistLogin />}>
@@ -37,11 +37,15 @@ function App() {
                         path="job-boards/:jobBoardId"
                         element={<SingleJobBoard />}
                     />
-                    <Route path="/planner" element={<Planner/>} />
-                    <Route path="/planner/:jobListingId" element={<ShiftsDetailTable/>}/>
+                    <Route path="/planner" element={<Planner />} />
+                    <Route
+                        path="/planner/:jobListingId"
+                        element={<ShiftsDetailTable />}
+                    />
                     <Route path="/roles&permission" element={<Roles />} />
+                    <Route path="/support" element={<Support />} />
+                    <Route path="/messaging" element={<Messaging />} />
                 </Route>
-                <Route path="/support" element={<Support />} />
             </Route>
         </Routes>
     )
