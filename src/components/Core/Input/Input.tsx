@@ -5,7 +5,7 @@ interface IInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
     control: string
     suffixIcon?: JSX.Element
     prefixIcon?: JSX.Element
-    error?: boolean
+    error?: boolean;
     classNames?: {
         root?: string
         input?: string
