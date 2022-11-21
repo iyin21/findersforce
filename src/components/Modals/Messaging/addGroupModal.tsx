@@ -1,5 +1,5 @@
-import { Alert, Modal } from "@mantine/core"
-import  {
+import { Modal } from "@mantine/core"
+import {
     Dispatch,
     SetStateAction,
     useEffect,
@@ -22,14 +22,14 @@ const AddGroup = ({ opened, setOpened }: AddGroupModalProps) => {
 
         if (file) {
             setImageFile(file)
-            //setPictureName(file.name)
+            // setPictureName(file.name)
         }
     }
     useEffect(() => {
         let isCancel = false
         const fileReader = new FileReader()
         if (imageFile) {
-            //fileReader = new FileReader();
+            // fileReader = new FileReader();
             fileReader.onload = (e: any) => {
                 const { result } = e.target
                 if (result && !isCancel) {
@@ -85,7 +85,8 @@ const AddGroup = ({ opened, setOpened }: AddGroupModalProps) => {
                 <div className="pl-10">
                     <p className="font-bold">Group Name</p>
                     <div className="border-b-2 pt-2 border-t-none border-blue-100">
-                        <input type="text" 
+                        <input
+                            type="text"
                             className="w-full outline-none input bg-transparent"
                         />
                     </div>
