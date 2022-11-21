@@ -127,7 +127,9 @@ const Roles = () => {
             showNotification({
                 title: "Error",
                 color: "red",
-                message: DeleteError.message,
+                message:
+                    // @ts-ignore
+                    DeleteError.error || DeleteError?.response?.data?.error,
             })
         }
     }, [deletedUserData, DeleteError, isDeleted, revokedData, resendData])
