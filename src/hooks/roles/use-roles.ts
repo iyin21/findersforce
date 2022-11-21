@@ -88,6 +88,7 @@ function useDeleteUser({ userId }: { userId: string | undefined }) {
     const deleteUser = async () => {
         const { data } = await axiosInstance.patch(
             `/admin/delete/user/${userId}`,
+            null,
             {
                 headers: {
                     Authorization: `${state?.jwt?.token}`,
