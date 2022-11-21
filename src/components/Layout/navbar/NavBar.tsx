@@ -14,7 +14,7 @@ import useAuthContext from "../../../hooks/auth-hooks/useAuth"
 import { useNavigate } from "react-router-dom"
 import handleLogOut from "../../../hooks/auth-hooks/use-logout"
 
-const NavBar = () => {
+const NavBar = ({ noTopNav }: { noTopNav?: boolean }) => {
     const [opened, setOpened] = useState(false)
     const { dispatch, state } = useAuthContext()
     const { data: userNotifications, error, isLoading } = useUserNotification()
@@ -78,7 +78,7 @@ const NavBar = () => {
     }, [error])
     return (
         <>
-            <nav className="w-full sticky top-0 h-12 pt-6 pb-6  bg-white-100 flex items-center justify-between">
+            <nav className={`w-full sticky top-0 h-12 pt-6 pb-6   flex items-center justify-between ${!noTopNav && "bg-white-100"} `}>
                 <div className="w-64 bg-black-100 pt-12">
                     <img
                         src={FindersForceLogo}
@@ -86,6 +86,7 @@ const NavBar = () => {
                         className="p-3 my-5 ml-5"
                     />
                 </div>
+                {!noTopNav && (
                 <div className=" flex items-center justify-between px-12 gap-12 ">
                     <img
                         src={Search}
@@ -94,10 +95,9 @@ const NavBar = () => {
                     />
                     <Indicator label={unreadNotification?.length} size={16} color="#E94444">
                         <img
-                            src={Messaging}
-                            alt="Messaging icon "
+                            src={Search}
+                            alt="search icon "
                             className="cursor-pointer"
-                            onClick={() => setOpened((state) => !state)}
                         />
                     </Indicator>
                     <img
@@ -124,7 +124,10 @@ const NavBar = () => {
                             )
                         }
                     />
+                    
                 </div>
+                )}
+
             </nav>
             <Modal
                 opened={opened}
