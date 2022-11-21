@@ -90,7 +90,7 @@ function useDeleteUser({ userId }: { userId: string | undefined }) {
             `/admin/delete/user/${userId}`,
             {
                 headers: {
-                    Authorization: `Bearer ${state?.jwt?.token}`,
+                    Authorization: `${state?.jwt?.token}`,
                 },
             }
         )

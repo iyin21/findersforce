@@ -28,13 +28,26 @@ const Roles = () => {
     const [userName, setUserName] = useState("")
     const [openSuccessModal, setOpenSuccessModal] = useState(false)
     const applyFilter = (filter: FilterRequest) => {}
+    const [acceptedPage, setAcceptedPage] = useState(1)
+    const [pendingPage, setPendingPage] = useState(1)
 
     const { data: acceptedData } = useGetRoles({
         status: "accepted",
+        page: acceptedPage,
+        limit: 10,
     })
     const { data: pendingData } = useGetRoles({
         status: "pending",
+        page: pendingPage,
+        limit: 10,
     })
+
+    const handleAcceptedPage = (pageNumber: number) => {
+        setAcceptedPage(pageNumber)
+    }
+    const handlePendingPage = (pageNumber: number) => {
+        setPendingPage(pageNumber)
+    }
 
     const {
         data: deletedUserData,
@@ -224,11 +237,16 @@ const Roles = () => {
                                         handleResendInvite={handleResendInvite}
                                     />
                                     <Pagination
-                                        page={1}
-                                        total={1}
-                                        onChange={() => {}}
+                                        page={acceptedPage}
+                                        total={
+                                            acceptedData?.pagination?.next
+                                                ?.page || 0
+                                        }
+                                        onChange={() => {
+                                            handleAcceptedPage(acceptedPage)
+                                        }}
                                         boundaries={1}
-                                        recordPerpage={1}
+                                        recordPerpage={acceptedData.count || 0}
                                     />
                                 </div>
                             )}
@@ -254,11 +272,16 @@ const Roles = () => {
                                         handleResendInvite={handleResendInvite}
                                     />
                                     <Pagination
-                                        page={1}
-                                        total={1}
-                                        onChange={() => {}}
+                                        page={pendingPage}
+                                        total={
+                                            pendingData?.pagination?.next
+                                                ?.page || 0
+                                        }
+                                        onChange={() => {
+                                            handlePendingPage(pendingPage)
+                                        }}
                                         boundaries={1}
-                                        recordPerpage={1}
+                                        recordPerpage={pendingData?.count || 0}
                                     />
                                 </div>
                             )}

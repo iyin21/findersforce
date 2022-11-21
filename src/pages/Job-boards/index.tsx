@@ -116,7 +116,7 @@ const JobBoards = () => {
                 color: "green",
             })
         }
-        if (openSuccess && newJobId) {
+        if (openSuccess && newJobId !== "") {
             refetchActiveJobList()
             refetchDraftJobList()
         }
@@ -208,6 +208,15 @@ const JobBoards = () => {
                                             }
                                         >
                                             Active
+                                            <span
+                                                className={`{" ml-2 py-1 px-2 rounded md:text-white-100 "} ${
+                                                    activeTab === "active"
+                                                        ? "bg-white-100  lg:text-white-100 text-black-100  md:bg-red-100 text-3sm "
+                                                        : "bg-red-40 text-white-100 text-3sm"
+                                                }`}
+                                            >
+                                                {activeData?.data?.length || 0}
+                                            </span>
                                         </p>
                                     </Tabs.Tab>
                                     <Tabs.Tab value="draft">
@@ -219,6 +228,15 @@ const JobBoards = () => {
                                             }
                                         >
                                             Drafts
+                                            <span
+                                                className={`{" ml-2 py-1 px-2 rounded md:text-white-100 "} ${
+                                                    activeTab === "draft"
+                                                        ? "bg-white-100  lg:text-white-100 text-black-100  md:bg-red-100 text-3sm "
+                                                        : "bg-red-40 text-white-100 text-3sm"
+                                                }`}
+                                            >
+                                                {draftData?.data?.length || 0}
+                                            </span>
                                         </p>
                                     </Tabs.Tab>
                                 </Tabs.List>
