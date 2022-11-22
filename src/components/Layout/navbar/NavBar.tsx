@@ -13,33 +13,18 @@ import { CgSpinner } from "react-icons/cg"
 import useAuthContext from "../../../hooks/auth-hooks/useAuth"
 import { useNavigate } from "react-router-dom"
 import handleLogOut from "../../../hooks/auth-hooks/use-logout"
+import dayjs from "dayjs"
 
 const NavBar = () => {
     const [opened, setOpened] = useState(false)
     const { dispatch, state } = useAuthContext()
     const { data: userNotifications, error, isLoading } = useUserNotification()
 
-    const data = userNotifications?.data.map((item) => {
-        const time = item.createdAt
-            .toLocaleString()
-            .split("T")[1]
-            .split(".")[0]
-            .split(":")
-        const amOrPm = Number(time[0]) < 12 ? "am" : "pm"
-        const hour = Number(time[0]) % 12
-        const minutes = Number(time[1]) < 10 ? "0" + time[1] : time[1]
-        const notificationTime = hour.toString() + ":" + minutes + amOrPm
-        return {
-            ...item,
-            createdAt: notificationTime,
-        }
-    })
-
-    const unreadNotification = data?.map((notification) => {
+    const unreadNotification = userNotifications?.data?.map((notification) => {
         if (!notification.readStatus) return notification
     })
 
-    const notifications = data?.map((item, index) => {
+    const notifications = userNotifications?.data?.map((item, index) => {
         return (
             <div
                 key={index}
@@ -50,14 +35,31 @@ const NavBar = () => {
                 <div
                     className={
                         item.readStatus
-                            ? "flex items-center px-[30px]"
-                            : "flex items-center bg-yellow-10 px-[30px]"
+                            ? "flex items-center px-[30px] cursor-pointer"
+                            : "flex items-center bg-yellow-10 px-[30px] cursor-pointer"
                     }
+                    onClick={() => {
+                        setOpened(false)
+                        item.event === "Application"
+                            ? navigate("/pending")
+                            : item.event === "Schedule" &&
+                              item.title === "Cancelled Shift"
+                            ? navigate("/job-boards")
+                            : item.event === "Schedule"
+                            ? navigate("/planner")
+                            : ""
+                    }}
                 >
                     <img src={addressLogo} alt="address logo" />
-                    <span className="text-lg py-[19px]">{item.title}</span>
+                    <div className="ml-2 md:ml-4 my-2">
+                        <span className="text-lg py-[19px]">{item.title}</span>
+                        <p className="text-sm md:text-3sm opacity-60">
+                            {item.description.substring(0, 95).concat("...")}
+                        </p>
+                    </div>
+
                     <span className="text-black-neutral ml-auto text-2sm">
-                        <>{item.createdAt}</>
+                        <>{dayjs(item.createdAt).fromNow()}</>
                     </span>
                 </div>
                 <hr className="border-black-20" />
@@ -92,11 +94,16 @@ const NavBar = () => {
                         alt="search icon "
                         className="cursor-pointer"
                     />
-                    <Indicator label={unreadNotification?.length} size={16} color="#E94444">
+                    <Indicator
+                        label={unreadNotification?.length}
+                        size={16}
+                        color="#E94444"
+                    >
                         <img
                             src={Messaging}
                             alt="Messaging icon "
                             className="cursor-pointer"
+                            data-testid="notification"
                             onClick={() => setOpened((state) => !state)}
                         />
                     </Indicator>
