@@ -29,7 +29,8 @@ export interface ShiftResponse {
   cancelStatus: boolean
   clockInLocationCoordinates: string
   clockInStatus: boolean
-  clockInTime: null | Date
+  clockInTime: Date
+  cancelTime: Date
   clockOutLocationCoordinates: null
   clockOutStatus: boolean
   clockOutTime: null | Date

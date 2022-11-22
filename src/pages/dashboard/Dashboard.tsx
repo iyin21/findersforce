@@ -10,7 +10,7 @@ import Time from "../../assets/Time.svg"
 import Operative from "../../assets/Operative.svg"
 import Card from "./components/Card"
 import ShiftCard from "./components/ShiftCard"
-import Chart from "./components/Chart"
+import BarChart from "./components/BarChart"
 import PieChart from "./components/PieChart"
 import Rating from "./components/rating/Rating"
 import Layout from "../../components/Layout"
@@ -21,6 +21,7 @@ import { useNavigate } from "react-router-dom"
 import Empty from "../../assets/Empty.png"
 import { DateRangePicker, DateRangePickerValue } from "@mantine/dates"
 import { useState } from "react"
+import  useAuthContext from "../../hooks/auth-hooks/useAuth"
 
 const Dashboard = () => {
     const navigate = useNavigate()
@@ -42,6 +43,11 @@ const Dashboard = () => {
         dateTo: value?.[1]
     });
 
+    console.log(dashboardAnalytics)
+    const { state } = useAuthContext()
+
+    console.log(state?.jwt?.token)
+
     const {
         data: upcomingShiftsData,
     } = useGetShiftHistory({
@@ -56,7 +62,7 @@ const Dashboard = () => {
     
     return (
         <Layout pageTitle={"Dashboard"}>
-            <main className="md:p-6 p-6 mt-4 md:mt-14 bg-white-100 overflow-hidden">
+            <main className="md:p-6 p-6 mt-4 md:mt-14 bg-white-100 ">
                 <section className=" flex bg-white-100 justify-between">
                     <div>
                         <h1 className="font-extrabold text-4xl font-creatoBold">Dashboard</h1>
@@ -121,7 +127,7 @@ const Dashboard = () => {
                             </div>
                         </section>
                         <section className="flex justify-between">
-                            <Chart value={value} />
+                            <BarChart value={value} />
                             <PieChart value={value} />
                         </section>
                     </div>
@@ -163,8 +169,7 @@ const Dashboard = () => {
                                         date={""}
                                         clockIcon={""}
                                         startTime={""} endTime={""} duration={""}
-                                        initialDate={new Date(ongoingShiftsData?.results[0]?.jobListing?.shiftStartTime)}
-                                        currentDate={new Date()} 
+                                        initialDate={new Date(ongoingShiftsData?.results[0]?.jobListing?.shiftEndTime)}
                                         status={"ongoing"}                                        
                                     />)
                                 }

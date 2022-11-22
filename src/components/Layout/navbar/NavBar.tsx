@@ -3,18 +3,21 @@ import Messaging from "../../../assets/Messaging.svg"
 import SettingsCog from "../../../assets/SettingsCog.svg"
 import User from "../../../assets/User.svg"
 import Search from "../../../assets/Search.svg"
-import { useEffect, useState } from "react"
+import { Dispatch, SetStateAction, useEffect, useState } from "react"
 import { Indicator, Modal } from "@mantine/core"
 import addressLogo from "../../../assets/addressLogo.svg"
-import FindersForceLogo from "../../../assets/FindersForceLogo.svg"
 import useUserNotification from "../../../hooks/notification-hook"
 import { showNotification } from "@mantine/notifications"
 import { CgSpinner } from "react-icons/cg"
 import useAuthContext from "../../../hooks/auth-hooks/useAuth"
 import { useNavigate } from "react-router-dom"
 import handleLogOut from "../../../hooks/auth-hooks/use-logout"
+import { HiMenuAlt2 } from "react-icons/hi"
 
-const NavBar = () => {
+interface navInterface {
+    setOpenSideBar: Dispatch<SetStateAction<boolean>>;
+}
+const NavBar = ({ setOpenSideBar }: navInterface) => {
     const [opened, setOpened] = useState(false)
     const { dispatch, state } = useAuthContext()
     const { data: userNotifications, error, isLoading } = useUserNotification()
@@ -78,15 +81,12 @@ const NavBar = () => {
     }, [error])
     return (
         <>
-            <nav className="w-full sticky top-0 h-12 pt-6 pb-6  bg-white-100 flex items-center justify-between">
-                <div className="w-64 bg-black-100 pt-12">
-                    <img
-                        src={FindersForceLogo}
-                        alt=""
-                        className="p-3 my-5 ml-5"
-                    />
-                </div>
-                <div className=" flex items-center justify-between px-12 gap-12 ">
+            <nav className="w-full  pt-6 ">
+                
+                <div className=" flex justify-end gap-8 lg:mr-12 mr-6 ">
+                    <div className=" md:hidden cursor-pointer mr-auto ml-6">
+                        <HiMenuAlt2 size={28} onClick={() => setOpenSideBar(true)} />
+                    </div>
                     <img
                         src={Search}
                         alt="search icon "

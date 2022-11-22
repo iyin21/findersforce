@@ -18,6 +18,23 @@ const ShiftsTable = ({ elements, status }: ShiftsTableInterface) => {
     navigate(`/planner/${id}`, { state: {status: status}})
   }
 
+function getDurationBeforeCancel(millisec: number) {
+  let seconds = Number((millisec / 1000).toFixed(0));
+  let minutes = Math.floor(seconds / 60);
+  const hours = Math.floor(minutes / 60)
+  if (minutes > 59) {
+     let  hours = Math.floor(minutes / 60);
+      hours = (hours >= 10) ? hours : 0 + hours;
+      minutes = minutes - (hours * 60);
+      minutes = (minutes >= 10) ? minutes : 0 + minutes;
+  }
+
+  seconds = Math.floor(seconds % 60);
+  seconds = (seconds >= 10) ? seconds : 0 + seconds;
+
+      return `${hours}hr ${minutes}mins`;
+}
+
   const rows = elements?.map((element, index) => (
     <tr key={index}>
         {status !== "completed" && (<td>
@@ -50,7 +67,11 @@ const ShiftsTable = ({ elements, status }: ShiftsTableInterface) => {
         {status !== "ongoing" ? (<td>{dayjs(element?.jobListing?.jobDate).format("MMM D, YYYY")} | {dayjs(element?.jobListing?.shiftStartTime).format("h:mm A")} - {dayjs(element?.jobListing.shiftEndTime).format("h:mm A")}</td>)
          : (<td>{dayjs(element?.jobListing?.shiftStartTime).format("h:mm A")} - {dayjs(element?.jobListing.shiftEndTime).format("h:mm A")}</td>)}
         <td>{element?.jobListing?.jobRate?.currency}{element?.jobListing?.jobRate?.jobRatePerHourDisplayedToDepot}/hr</td>
-        {status !== "ongoing" && (<td>{element?.jobListing?.shiftDurationInHours}hour(s)</td>)}
+        {
+          status === "upcoming" ? (<td>{element?.jobListing?.shiftDurationInHours}hour(s)</td>) 
+          : status === "completed" ? (<td>{element?.jobListing?.shiftDurationInHours}hour(s)</td>) 
+          : status === "cancelled" && (<td>{getDurationBeforeCancel(((new Date(element?.cancelTime).getTime()) - new Date(element?.clockInTime).getTime()))}</td>) 
+        }
         {status === "completed" && (<td>{element?.jobListing?.numberOfOpsRequired}</td>)}
         {status === "completed" && (
         <td>
@@ -69,7 +90,7 @@ const ShiftsTable = ({ elements, status }: ShiftsTableInterface) => {
           <td>
             <TimeEstimate 
             initialDate={new Date(element?.jobListing?.shiftEndTime)} 
-            currentDate={new Date()}/>
+            />
           </td>
         )}
         
@@ -122,7 +143,23 @@ const tableHeadCompleted = [
               role="grid"
           >
             <thead>
-               {status === "upcoming" && (
+               {status === "upcoming"  && (
+                <tr>
+                  {tableHeadUpcoming.map((item, index) => (
+                      <th
+                        key={index}
+                        style={{
+                            borderBottom: "none",
+                        }}
+                      >
+                        <p className="text-black-30 ">
+                            {item?.list}
+                        </p>
+                      </th>
+                    ))}
+                </tr>
+               )}
+               {status === "cancelled"  && (
                 <tr>
                   {tableHeadUpcoming.map((item, index) => (
                       <th
