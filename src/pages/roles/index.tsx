@@ -1,13 +1,11 @@
 import { Tabs } from "@mantine/core"
 import { useEffect, useState } from "react"
 import { FiPlus } from "react-icons/fi"
-import { FilterRequest } from "../../types/filter/filter"
 import {
     AddUser,
     Button,
     ConfirmDelete,
     EmptyState,
-    Filter,
     Pagination,
     SuccessModal,
 } from "../../components"
@@ -16,6 +14,8 @@ import RoleTable from "./components/role-table"
 import {
     useDeleteUser,
     useGetRoles,
+    useInviteShiftManger,
+    useResendInvite,
     useRevokeInvite,
 } from "../../hooks/roles/use-roles"
 import { showNotification } from "@mantine/notifications"
@@ -27,14 +27,33 @@ const Roles = () => {
     const [userId, setUserId] = useState("")
     const [userName, setUserName] = useState("")
     const [openSuccessModal, setOpenSuccessModal] = useState(false)
-    const applyFilter = (filter: FilterRequest) => {}
+    const [acceptedPage, setAcceptedPage] = useState(1)
+    const [pendingPage, setPendingPage] = useState(1)
 
-    const { data: acceptedData } = useGetRoles({
+    const { data: acceptedData, refetch: refetchAcceptedData } = useGetRoles({
         status: "accepted",
+        page: acceptedPage,
+        limit: 10,
     })
-    const { data: pendingData } = useGetRoles({
+    const { data: pendingData, refetch: refetchPendingData } = useGetRoles({
         status: "pending",
+        page: pendingPage,
+        limit: 10,
     })
+
+    const {
+        mutate: MutateInvite,
+        isLoading: isInviting,
+        isSuccess: isSent,
+        data: sentData,
+    } = useInviteShiftManger()
+
+    const handleAcceptedPage = (pageNumber: number) => {
+        setAcceptedPage(pageNumber)
+    }
+    const handlePendingPage = (pageNumber: number) => {
+        setPendingPage(pageNumber)
+    }
 
     const {
         data: deletedUserData,
@@ -57,9 +76,10 @@ const Roles = () => {
 
     const {
         data: resendData,
+        mutate: mutateResend,
         error: resendError,
         isSuccess: isSuccessfullyResent,
-    } = useRevokeInvite({
+    } = useResendInvite({
         userId,
     })
 
@@ -72,15 +92,36 @@ const Roles = () => {
     }
 
     const handleRevokeInvite = () => {
-        mutateRevoke()
+        if (userId) {
+            mutateRevoke()
+        }
     }
 
-    const handleResendInvite = () => {}
+    const handleResendInvite = () => {
+        if (userId) {
+            mutateResend()
+        }
+    }
 
     useEffect(() => {
-        if (isDeleted) {
+        if (isSent) {
             setOpenSuccessModal(true)
+            setOpenAddUser(false)
+            setTimeout(() => {
+                setOpenSuccessModal(false)
+            }, 2000)
+            refetchPendingData()
+            refetchAcceptedData()
+        }
+        if (isDeleted) {
             setOpenConfirmDelete(false)
+            showNotification({
+                message: "Shift manager has been deleted successfully",
+                title: "Success",
+                color: "green",
+            })
+            refetchPendingData()
+            refetchAcceptedData()
         }
         if (isSuccessfullyRevoked) {
             showNotification({
@@ -88,6 +129,8 @@ const Roles = () => {
                 color: "green",
                 message: "Invitation revoked successfully",
             })
+            refetchPendingData()
+            refetchAcceptedData()
         }
         if (isSuccessfullyResent) {
             showNotification({
@@ -95,6 +138,8 @@ const Roles = () => {
                 color: "green",
                 message: "Invitation resent successfully",
             })
+            refetchPendingData()
+            refetchAcceptedData()
         }
         if (resendError) {
             showNotification({
@@ -114,13 +159,55 @@ const Roles = () => {
             showNotification({
                 title: "Error",
                 color: "red",
-                message: DeleteError.message,
+                message:
+                    // @ts-ignore
+                    DeleteError.error || DeleteError?.response?.data?.error,
             })
         }
-    }, [deletedUserData, DeleteError, isDeleted, revokedData, resendData])
+        refetchPendingData()
+        refetchAcceptedData()
+    }, [
+        deletedUserData,
+        DeleteError,
+        sentData,
+        isDeleted,
+        revokedData,
+        resendData,
+        userId,
+    ])
 
     return (
         <Layout pageTitle="Roles and permission">
+            {openAddUser && (
+                <AddUser
+                    opened={openAddUser}
+                    setOpened={setOpenAddUser}
+                    isInviting={isInviting}
+                    mutateInvite={MutateInvite}
+                />
+            )}
+
+            {openConfirmDelete && (
+                <ConfirmDelete
+                    opened={openConfirmDelete}
+                    setOpened={setOpenConfirmDelete}
+                    handleDelete={() => {
+                        handleDeleteUser()
+                    }}
+                    isDeleting={isDeleting}
+                    userName={userName}
+                />
+            )}
+
+            {openSuccessModal && (
+                <SuccessModal
+                    opened={openSuccessModal}
+                    setOpened={setOpenSuccessModal}
+                    handleBack={() => {
+                        setOpenSuccessModal(false)
+                    }}
+                />
+            )}
             <div className="p-6 mt-4 md:mt-14">
                 <div className="flex flex-col-reverse md:flex-row md:justify-between md:items-center">
                     <div className="flex flex-col">
@@ -145,14 +232,6 @@ const Roles = () => {
                 </div>
 
                 <div className="mt-6">
-                    <div className="relative bottom-0 lg:bottom-0 ">
-                        <div className="absolute right-0 hidden lg:block">
-                            {" "}
-                            <div className="flex justify-between gap-3">
-                                <Filter applyFilter={applyFilter} />
-                            </div>
-                        </div>
-                    </div>
                     <Tabs
                         value={activeTab}
                         onTabChange={setActiveTab}
@@ -224,11 +303,16 @@ const Roles = () => {
                                         handleResendInvite={handleResendInvite}
                                     />
                                     <Pagination
-                                        page={1}
-                                        total={1}
-                                        onChange={() => {}}
+                                        page={acceptedPage}
+                                        total={
+                                            acceptedData?.pagination?.next
+                                                ?.page || 0
+                                        }
+                                        onChange={() => {
+                                            handleAcceptedPage(acceptedPage)
+                                        }}
                                         boundaries={1}
-                                        recordPerpage={1}
+                                        recordPerpage={acceptedData.count || 0}
                                     />
                                 </div>
                             )}
@@ -254,11 +338,16 @@ const Roles = () => {
                                         handleResendInvite={handleResendInvite}
                                     />
                                     <Pagination
-                                        page={1}
-                                        total={1}
-                                        onChange={() => {}}
+                                        page={pendingPage}
+                                        total={
+                                            pendingData?.pagination?.next
+                                                ?.page || 0
+                                        }
+                                        onChange={() => {
+                                            handlePendingPage(pendingPage)
+                                        }}
                                         boundaries={1}
-                                        recordPerpage={1}
+                                        recordPerpage={pendingData?.count || 0}
                                     />
                                 </div>
                             )}
@@ -266,31 +355,6 @@ const Roles = () => {
                     </Tabs>
                 </div>
             </div>
-            {openAddUser && (
-                <AddUser opened={openAddUser} setOpened={setOpenAddUser} />
-            )}
-
-            {openConfirmDelete && (
-                <ConfirmDelete
-                    opened={openConfirmDelete}
-                    setOpened={setOpenConfirmDelete}
-                    handleDelete={() => {
-                        handleDeleteUser()
-                    }}
-                    isDeleting={isDeleting}
-                    userName={userName}
-                />
-            )}
-
-            {openSuccessModal && (
-                <SuccessModal
-                    opened={openSuccessModal}
-                    setOpened={setOpenSuccessModal}
-                    handleBack={() => {
-                        setOpenSuccessModal(false)
-                    }}
-                />
-            )}
         </Layout>
     )
 }

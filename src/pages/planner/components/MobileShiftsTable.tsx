@@ -141,8 +141,8 @@ const MobileShiftsTable = ({
                                         ENDS_IN
                                     </h6>
                                     <TimeEstimate 
-                                        initialDate={new Date(element?.jobListing?.shiftEndTime)} 
-                                        currentDate={new Date()}/>
+                                        initialDate={new Date(element?.jobListing?.shiftEndTime)}
+                                    />
                                 </div>)
                         }
                     </div>

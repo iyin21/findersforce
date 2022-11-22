@@ -4,12 +4,13 @@ import { LayoutProps } from "../../types/layout/interfaces"
 import { useState } from "react";
 import { Drawer } from "@mantine/core";
 
-const Layout = ({ children }: LayoutProps) => {
+    
+const Layout = ({ children, noTopNav }: LayoutProps) => {
     const [openSideBar, setOpenSideBar] = useState(false);
     return (
         <div className="h-screen relative">
             <div className="w-full fixed right-0 z-20">
-                <NavBar setOpenSideBar={setOpenSideBar} />
+                <NavBar noTopNav={noTopNav} setOpenSideBar={setOpenSideBar} />
             </div>
             <div className="relative md:pl-64 h-full">
                 <div className="hidden md:block fixed bg-black-100 left-0 w-64  h-[100%] overflow-y-auto">
@@ -40,7 +41,7 @@ const Layout = ({ children }: LayoutProps) => {
                         
                     </Drawer>
                 </>
-                <main className="w-full h-full overflow-y-auto lg:px-2 py-5 ">
+                <main className={`w-full h-full overflow-y-auto  ${!noTopNav && "py-5 lg:px-2"} `}>
                     {children}
                 </main>
             </div>

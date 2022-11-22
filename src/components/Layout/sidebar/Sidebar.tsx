@@ -7,8 +7,8 @@ import styles from "./sidebar.module.scss"
 import useAuthContext from "../../../hooks/auth-hooks/useAuth"
 import handleLogOut from "../../../hooks/auth-hooks/use-logout"
 import { showNotification } from "@mantine/notifications"
-import { useProfile } from "../../../hooks/profile/use-profile"
 import FindersForceLogo from "../../../assets/FindersForceLogo.svg"
+import { useProfile } from "../../../hooks/profile/use-profile"
 import { FaTimes } from "react-icons/fa"
 import { Dispatch, SetStateAction } from "react"
 
@@ -23,7 +23,7 @@ const Sidebar = ({ setOpenSideBar }: navInterface) => {
     
 
     return (
-        <aside className="w-full text-base pb-8 pt-8 ">
+        <aside className="w-full text-base pb-8 pt-8">
             <div className="mb-8 pl-6 flex gap-8">
                 <img 
                     src={FindersForceLogo} 
@@ -37,6 +37,7 @@ const Sidebar = ({ setOpenSideBar }: navInterface) => {
                         onKeyDown={() => setOpenSideBar(false)}/>
                 </div>
             </div>
+            
             <section className="flex p-3 rounded-lg ml-1 mb-4 mr-1 bg-ash-10">
                 {data?.profileImageUrl === null ? (
                     <img
