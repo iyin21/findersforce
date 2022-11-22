@@ -13,9 +13,21 @@ export const useInviteShiftManger = () => {
     const { state } = useAuthContext()
 
     const createInvite = async (requestBody: InviteShiftMangerInterface) => {
-        const { data } = await axiosInstance.post("/invitation", requestBody, {
+        const newFormData = new FormData()
+
+        newFormData.append("invitedRole", requestBody.invitedRole)
+
+        // @ts-ignore
+        newFormData.append("companyId", requestBody.companyId)
+
+        // @ts-ignore
+        newFormData.append("regionAddress", requestBody.regionAddress)
+
+        requestBody.email.map((item) => newFormData.append("email[]", item))
+
+        const { data } = await axiosInstance.post("/invitation", newFormData, {
             headers: {
-                "Content-Type": "application/json",
+                "Content-Type": "multipart/form-data",
                 Authorization: `${state?.jwt?.token}`,
             },
         })
@@ -107,7 +119,8 @@ function useResendInvite({ userId }: { userId: string | undefined }) {
     /** API methods */
     const resendInvite = async () => {
         const { data } = await axiosInstance.post(
-            `/invitation${userId}/resend`,
+            `/invitation/${userId}/resend`,
+            null,
             {
                 headers: {
                     Authorization: `${state?.jwt?.token}`,
@@ -124,9 +137,10 @@ function useRevokeInvite({ userId }: { userId: string | undefined }) {
     const { state } = useAuthContext()
 
     /** API methods */
-    const resendInvite = async () => {
+    const revokeInvite = async () => {
         const { data } = await axiosInstance.patch(
-            `/invitation${userId}/revoke`,
+            `/invitation/${userId}/revoke`,
+            null,
             {
                 headers: {
                     Authorization: `${state?.jwt?.token}`,
@@ -136,7 +150,7 @@ function useRevokeInvite({ userId }: { userId: string | undefined }) {
 
         return data
     }
-    return useMutation<AxiosResponse, AxiosError>(resendInvite)
+    return useMutation<AxiosResponse, AxiosError>(revokeInvite)
 }
 
 export { useGetRoles, useDeleteUser, useResendInvite, useRevokeInvite }

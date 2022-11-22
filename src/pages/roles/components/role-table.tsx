@@ -29,7 +29,7 @@ const RoleTable = ({
             <td>
                 {element?.firstName} {element?.lastName}
             </td>
-            <td>{element?.address}</td>
+            <td>{element?.regionAddress}</td>
             <td>{element.email}</td>
             <td>
                 {dayjs(element?.createdAt).format("MMM D, YYYY")} |{" "}

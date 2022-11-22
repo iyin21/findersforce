@@ -78,7 +78,7 @@ const MobileRoleTable = ({
                         <div>
                             <h6 className="text-black-50 text-3sm">LOCATION</h6>
                             <p className="text-2md mt-1">
-                                {element?.address || "N/A"}
+                                {element?.regionAddress || "N/A"}
                             </p>
                         </div>
                         <div className="flex justify-between items-center gap-2 mt-3">

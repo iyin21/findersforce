@@ -6,6 +6,10 @@ export interface ProfileResponse {
     phone: string
     location: string
     companyName: string
-    profileImageUrl: any;
-    twoFa_enabled?: boolean;
+    profileImageUrl: any
+    twoFa_enabled?: boolean
+    company: {
+        _id: string
+        name: string
+    }
 }
