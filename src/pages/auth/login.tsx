@@ -60,7 +60,7 @@ const Login = () => {
     }, [])
 
     return (
-        <div className="grid grid-cols-1 lg:grid-cols-2 text-white h-screen lg:bg-black-100">
+        <div className="grid grid-cols-1 lg:grid-cols-2 text-white h-fit lg:bg-black-100">
             <div className="hidden lg:block">
                 <LandingPageText />
             </div>
