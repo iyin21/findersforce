@@ -1,4 +1,4 @@
-import { Button, Filter, Pagination } from "../../components/index"
+import { Button, EmptyState, Filter, Pagination } from "../../components/index"
 import { FiPlus } from "react-icons/fi"
 import { useEffect, useState } from "react"
 import { Tabs } from "@mantine/core"
@@ -116,7 +116,7 @@ const JobBoards = () => {
                 color: "green",
             })
         }
-        if (openSuccess && newJobId) {
+        if (openSuccess && newJobId !== "") {
             refetchActiveJobList()
             refetchDraftJobList()
         }
@@ -208,6 +208,15 @@ const JobBoards = () => {
                                             }
                                         >
                                             Active
+                                            <span
+                                                className={`{" ml-2 py-1 px-2 rounded md:text-white-100 "} ${
+                                                    activeTab === "active"
+                                                        ? "bg-white-100  lg:text-white-100 text-black-100  md:bg-red-100 text-3sm "
+                                                        : "bg-red-40 text-white-100 text-3sm"
+                                                }`}
+                                            >
+                                                {activeData?.data?.length || 0}
+                                            </span>
                                         </p>
                                     </Tabs.Tab>
                                     <Tabs.Tab value="draft">
@@ -219,53 +228,100 @@ const JobBoards = () => {
                                             }
                                         >
                                             Drafts
+                                            <span
+                                                className={`{" ml-2 py-1 px-2 rounded md:text-white-100 "} ${
+                                                    activeTab === "draft"
+                                                        ? "bg-white-100  lg:text-white-100 text-black-100  md:bg-red-100 text-3sm "
+                                                        : "bg-red-40 text-white-100 text-3sm"
+                                                }`}
+                                            >
+                                                {draftData?.data?.length || 0}
+                                            </span>
                                         </p>
                                     </Tabs.Tab>
                                 </Tabs.List>
 
                                 <Tabs.Panel value="active">
-                                    <JobBoardTable
-                                        elements={activeData?.data}
-                                        status="active"
-                                        handleCheckedJob={handleCheckedJob}
-                                        checkedJob={checkedJob}
-                                        setDeleteId={setDeleteId}
-                                        setOpenJobPost={setOpenJobPost}
-                                        setDraftStatus={setDraftStatus}
-                                        setdraftElement={setdraftElement}
-                                    />
-                                    <Pagination
-                                        page={activeActivePage}
-                                        total={
-                                            activeData?.pagination?.next
-                                                ?.page || 0
-                                        }
-                                        onChange={handleActivePage}
-                                        boundaries={1}
-                                        recordPerpage={activeData?.count || 0}
-                                    />
+                                    {activeData?.data &&
+                                    activeData?.data?.length === 0 ? (
+                                        <EmptyState
+                                            description="Active Job data will show here, when you create one"
+                                            buttonText="Post a job"
+                                            handleButtonClick={() => {
+                                                setOpenJobPost(true)
+                                            }}
+                                        />
+                                    ) : (
+                                        <div>
+                                            <JobBoardTable
+                                                elements={activeData?.data}
+                                                status="active"
+                                                handleCheckedJob={
+                                                    handleCheckedJob
+                                                }
+                                                checkedJob={checkedJob}
+                                                setDeleteId={setDeleteId}
+                                                setOpenJobPost={setOpenJobPost}
+                                                setDraftStatus={setDraftStatus}
+                                                setdraftElement={
+                                                    setdraftElement
+                                                }
+                                            />
+                                            <Pagination
+                                                page={activeActivePage}
+                                                total={
+                                                    activeData?.pagination?.next
+                                                        ?.page || 0
+                                                }
+                                                onChange={handleActivePage}
+                                                boundaries={1}
+                                                recordPerpage={
+                                                    activeData?.count || 0
+                                                }
+                                            />
+                                        </div>
+                                    )}
                                 </Tabs.Panel>
                                 <Tabs.Panel value="draft" className="p-3">
-                                    <JobBoardTable
-                                        elements={draftData?.data}
-                                        handleCheckedJob={handleCheckedJob}
-                                        checkedJob={checkedJob}
-                                        setDeleteId={setDeleteId}
-                                        status="draft"
-                                        setOpenJobPost={setOpenJobPost}
-                                        setDraftStatus={setDraftStatus}
-                                        setdraftElement={setdraftElement}
-                                    />
-                                    <Pagination
-                                        page={activeDraftPage}
-                                        total={
-                                            draftData?.pagination?.next?.page ||
-                                            0
-                                        }
-                                        onChange={handleDraftPage}
-                                        boundaries={1}
-                                        recordPerpage={draftData?.count || 0}
-                                    />
+                                    {draftData?.data &&
+                                    draftData?.data.length === 0 ? (
+                                        <EmptyState
+                                            description="Draft data will show here, when you create one"
+                                            buttonText="Post a job"
+                                            handleButtonClick={() => {
+                                                setOpenJobPost(true)
+                                            }}
+                                        />
+                                    ) : (
+                                        <div>
+                                            <JobBoardTable
+                                                elements={draftData?.data}
+                                                handleCheckedJob={
+                                                    handleCheckedJob
+                                                }
+                                                checkedJob={checkedJob}
+                                                setDeleteId={setDeleteId}
+                                                status="draft"
+                                                setOpenJobPost={setOpenJobPost}
+                                                setDraftStatus={setDraftStatus}
+                                                setdraftElement={
+                                                    setdraftElement
+                                                }
+                                            />
+                                            <Pagination
+                                                page={activeDraftPage}
+                                                total={
+                                                    draftData?.pagination?.next
+                                                        ?.page || 0
+                                                }
+                                                onChange={handleDraftPage}
+                                                boundaries={1}
+                                                recordPerpage={
+                                                    draftData?.count || 0
+                                                }
+                                            />
+                                        </div>
+                                    )}
                                 </Tabs.Panel>
                             </Tabs>
                         </div>
