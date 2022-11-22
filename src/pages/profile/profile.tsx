@@ -141,7 +141,7 @@ const Profile = () => {
 
     return (
         <>
-            <div className="grid grid-cols-1 lg:grid-cols-2 text-white h-screen lg:bg-[black]">
+            <div className="grid grid-cols-1 lg:grid-cols-2 text-white lg:bg-[black]">
                 <div className="hidden lg:block">
                     {" "}
                     <LandingPageText />
