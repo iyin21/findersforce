@@ -310,6 +310,10 @@ export function FormikStepper({ ...props }: TWizardProps) {
                                                 "ALL_OPERATIVES"
                                             )
                                         }}
+                                        style={{
+                                            backgroundColor:
+                                                "rgba(254, 215, 10, 1)",
+                                        }}
                                     >
                                         {props.isCreating
                                             ? "Publishing..."

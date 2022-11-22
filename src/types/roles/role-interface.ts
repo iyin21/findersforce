@@ -1,6 +1,8 @@
 export interface InviteShiftMangerInterface {
     email: string[]
     invitedRole: string
+    regionAddress: string | undefined
+    companyId: string | undefined
 }
 
 export interface RolesRequest {
@@ -29,9 +31,11 @@ export interface RoleResponse {
 export interface IRolesResponse {
     _id: string
     firstName: string
+    depot: string
     lastName: string
     email: string
     address: string
+    regionAddress: string
     phoneNumber: string
     invitedRole: string
     inviterRole: string
