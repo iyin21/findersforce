@@ -140,7 +140,7 @@ const JobBoards = () => {
                             className="text-2xl md:text-3xl font-creatoBold text-black-100 font-bold"
                             data-testid="job_title"
                         >
-                            Job Board
+                            Shifts Board
                         </h1>
                         <p className="text-black-60 text-2md md:text-lg font-normal font-creato">
                             All talents applying for your shifts in one glance

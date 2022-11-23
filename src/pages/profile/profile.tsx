@@ -202,7 +202,7 @@ const RMProfile = () => {
                         />
                     </div>
                     {errorText && (
-                        <span className="text-[14px] text-[#f01e2c]">
+                        <span className="text-[14px] text-red-100">
                             Password must meet requirements
                         </span>
                     )}
