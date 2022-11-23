@@ -87,15 +87,15 @@ const NavBar = ({ setOpenSideBar, noTopNav }: navInterface) => {
         <>
             <nav
                 className={`w-full  pt-6  ${
-                    !noTopNav && "bg-white-100"
+                    !noTopNav && ""
                 } `}
             >
-                <div className=" md:hidden cursor-pointer mr-auto ml-6">
-                        <HiMenuAlt2 size={28} onClick={() => setOpenSideBar(true)} />
-                </div>
                 
                 {!noTopNav && (
-                    <div className=" flex items-center justify-between px-12 gap-12 ">
+                    <div className=" flex items-center justify-end gap-6 mr-4 lg:mr-12 ">
+                        <div className=" md:hidden cursor-pointer mr-auto ml-6">
+                            <HiMenuAlt2 size={28} onClick={() => setOpenSideBar(true)} />
+                        </div>
                         <img
                             src={Search}
                             alt="search icon "

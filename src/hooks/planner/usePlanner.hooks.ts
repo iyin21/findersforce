@@ -1,5 +1,5 @@
 import { showNotification } from "@mantine/notifications"
-import { ShiftResponse } from "../../pages/Applications/interface"
+import { ShiftResponse } from "../../types/planner/interfaces"
 import { useQuery } from "@tanstack/react-query"
 import { AxiosError } from "axios"
 import { axiosInstance } from "../../services/api.service"

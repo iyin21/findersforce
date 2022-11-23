@@ -29,7 +29,7 @@ const Sidebar = ({ setOpenSideBar }: navInterface) => {
                     src={FindersForceLogo} 
                     alt="" 
                 />
-                <div className="flex items-center justify-end mb-6 md:hidden">
+                <div className="flex items-center justify-end mb-6 md:hidden ml-auto mr-8">
                     <FaTimes 
                         size={20} 
                         style={{color:"#FFFFFF"}} 

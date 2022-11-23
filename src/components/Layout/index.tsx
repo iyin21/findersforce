@@ -29,12 +29,13 @@ const Layout = ({ children, noTopNav }: LayoutProps) => {
                         styles={() => ({
                             drawer: {
                                 padding: 0,
-                                backgroundColor: "transparent"
+                                backgroundColor: "transparent",
+                                overflow: "auto"
                             }
                         })}
                     >
                         <div className="">
-                            <div className="w-full h-3/4 md:h-[500px] overflow-y-auto md:pt-[75px] bg-black-100">
+                            <div className="w-full h-3/4 md:h-[500px] overflow-y-scroll md:pt-[75px] bg-black-100">
                                 <Sidebar setOpenSideBar={setOpenSideBar}/>
                             </div>
                         </div>
