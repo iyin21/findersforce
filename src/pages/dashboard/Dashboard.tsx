@@ -21,7 +21,6 @@ import { useNavigate } from "react-router-dom"
 import Empty from "../../assets/Empty.png"
 import { DateRangePicker, DateRangePickerValue } from "@mantine/dates"
 import { useState } from "react"
-import  useAuthContext from "../../hooks/auth-hooks/useAuth"
 
 const Dashboard = () => {
     const navigate = useNavigate()
@@ -42,11 +41,6 @@ const Dashboard = () => {
         dateFrom: value?.[0],
         dateTo: value?.[1]
     });
-
-    console.log(dashboardAnalytics)
-    const { state } = useAuthContext()
-
-    console.log(state?.jwt?.token)
 
     const {
         data: upcomingShiftsData,

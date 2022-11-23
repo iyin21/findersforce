@@ -68,7 +68,7 @@ const Planner = () => {
                     <main className="md:p-6 p-6 mt-4 md:mt-14">              
                       <div className="flex justify-between items-center">
                           <div className="flex flex-col">
-                              <h1 className="text-2xl md:text-3xl font-creatoBold text-black-100 font-bold">
+                              <h1 className="text-2xl md:text-3xl font-creatoBold text-black-100 font-bold" id="header">
                                   Planner
                               </h1>
                               <p className="text-black-60 text-2md md:text-lg font-normal font-creato">
