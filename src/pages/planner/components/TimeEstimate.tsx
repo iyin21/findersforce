@@ -6,7 +6,7 @@ const timerStyles = {
                 divider: "text-yellow-100 text-3xl",
             };
 
-const TimeEstimate = ({initialDate, currentDate} : { initialDate: Date | undefined; currentDate: Date | undefined } ) => {
+const TimeEstimate = ({initialDate} : { initialDate: Date; } ) => {
                 const [timeEstimate, setTimeLeft] = useState({
                                 hours: 0,
                                 minutes: 0,
@@ -14,36 +14,31 @@ const TimeEstimate = ({initialDate, currentDate} : { initialDate: Date | undefin
                 });
 
                 const calculateTimeLeft = () => {
-                                const timeLeft =  initialDate!.getTime() - currentDate!.getTime()
-                        
-                                const timeLeftInMinutes = Math.floor(timeLeft / 60000);
+                    const currentDate = new Date()
+                                const timeLeft =  new Date(initialDate).getTime() - currentDate.getTime()
+                                const timeLeftInSeconds = Math.floor(timeLeft / 1000)
+                                const timeLeftInMinutes = Math.floor(timeLeftInSeconds / 60);
                                 const timeLeftInHours = Math.floor(timeLeftInMinutes / 60);
                         
                                 if (timeLeft === 0) {
-                                    return {
+                                    setTimeLeft( {
                                         hours: 0,
                                         minutes: 0,
                                         seconds: 0,
-                                    };
-                                }
-                        
-                                return {
+                                    });
+                                } else {
+                                    setTimeLeft({
                                     hours: timeLeftInHours % 24 || 0,
                                     minutes: timeLeftInMinutes % 60 || 0,
                                     seconds: Math.floor(timeLeft / 1000) % 60 || 0,
-                                };
+                                    });
+                                }
                 };
 
                 useEffect(() => {
-                                const timer = setInterval(() => {
-                                    setTimeLeft({
-                                        hours: calculateTimeLeft().hours,
-                                        minutes: calculateTimeLeft().minutes,
-                                        seconds: calculateTimeLeft().seconds,
-                                    });
-                                }, 1000);
-                        
-                                return () => clearInterval(timer);
+                    const timer = setInterval(calculateTimeLeft, 1000);
+
+                    return () => clearInterval(timer)
                 }, [initialDate]);
   return (
     <div className='bg-black-100 text-yellow-100 rounded-xl'>
