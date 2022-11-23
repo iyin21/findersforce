@@ -9,14 +9,34 @@ import handleLogOut from "../../../hooks/auth-hooks/use-logout"
 import { showNotification } from "@mantine/notifications"
 import FindersForceLogo from "../../../assets/FindersForceLogo.svg"
 import { useProfile } from "../../../hooks/profile/use-profile"
+import { FaTimes } from "react-icons/fa"
+import { Dispatch, SetStateAction } from "react"
 
-const Sidebar = () => {
+interface navInterface {
+    setOpenSideBar: Dispatch<SetStateAction<boolean>>;
+}
+
+const Sidebar = ({ setOpenSideBar }: navInterface) => {
     const { state, dispatch } = useAuthContext()
     const { data } = useProfile()
     const navigate = useNavigate()
+    
 
     return (
-        <aside className="w-full text-base  pt-2 pb-8 pt-14">
+        <aside className="w-full text-base pb-8 pt-8">
+            <div className="mb-8 pl-6 flex gap-8">
+                <img 
+                    src={FindersForceLogo} 
+                    alt="" 
+                />
+                <div className="flex items-center justify-end mb-6 md:hidden ml-auto mr-8">
+                    <FaTimes 
+                        size={20} 
+                        style={{color:"#FFFFFF"}} 
+                        onClick={() => setOpenSideBar(false)} 
+                        onKeyDown={() => setOpenSideBar(false)}/>
+                </div>
+            </div>
             
             <section className="flex p-3 rounded-lg ml-1 mb-4 mr-1 bg-ash-10">
                 {data?.profileImageUrl === null ? (

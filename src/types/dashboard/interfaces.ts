@@ -26,8 +26,7 @@ export type ShiftCardProps = {
      location: string | undefined,
      taskIcon: string | undefined,
      task: string | undefined,
-     initialDate?: Date,
-     currentDate?: Date,
+     initialDate?: any,
      messageIcon:string | undefined;
 }
 
@@ -36,7 +35,7 @@ export type CardProps = {
      amount:number | undefined,
      icon: string,
      style: string,
-     subtitle: number | undefined
+     subtitle: string | undefined
 }
 
 export interface DashboardResponse {
@@ -52,8 +51,14 @@ export interface DashboardResponse {
      shiftsCancelled: shiftsCancelled,
      genderDistribution: genderDistribution,
      rating: rating,
+     shiftsCompletedPerDayOfMonth: shiftsCompletedPerDayOfMonth[]
  }
 
+ export interface shiftsCompletedPerDayOfMonth {
+    dayOfMonth: string
+    count: string
+    date: Date
+ }
  export interface rating {
     averageScore: number | undefined,
     helpfulnessScore: number | undefined,
@@ -63,19 +68,19 @@ export interface DashboardResponse {
 }
  export interface amountPaid {
      total: number,
-     thisMonth: number,
+     thisMonth: string,
  }
  export interface hoursCompleted {
      total: number,
-     thisMonth: number,
+     thisMonth: string,
  }
  export interface operativesHired {
      total: number,
-     thisMonth: number,
+     thisMonth: string,
  }
  export interface shiftsCompleted {
      total: number,
-     thisMonth: number,
+     thisMonth: string,
  }
  export interface shiftsCancelled {
      total: number,
