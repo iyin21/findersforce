@@ -5,10 +5,12 @@ import { AiFillStar } from "react-icons/ai";
 
 
 
-const Rating = () => {
-
+const Rating = ({value}:{value: [Date | null, Date | null]} ) => {
   
-  const {data:dashboardAnalytics} = useGetDashboardAnalytics();
+  const {data:dashboardAnalytics} = useGetDashboardAnalytics({
+    dateFrom: value[0] ,
+    dateTo: value[1]
+  });
   
   return (
       <section className="bg-yellow-100 rounded-lg px-4 py-4">
