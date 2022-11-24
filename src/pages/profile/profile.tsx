@@ -116,7 +116,7 @@ const RMProfile = () => {
                 <LandingPageText />
             </div>
             <div className="md:my-8 lg:mr-8 bg-white-100 pt-12 px-6 md:px-16 flex flex-col rounded-[10px]">
-                <div className="block lg:hidden">
+                <div className="block m-auto lg:hidden">
                     <img src={logo} alt="finders force" className="mb-5" />
                 </div>
                 <h1 className="text-black-100 text-3xl font-extrabold">
@@ -126,7 +126,7 @@ const RMProfile = () => {
                     Please provide the following information
                 </span>
                 <div className="flex pt-2.5">
-                    <img src={locationIcon} alt="location icon" />
+                    <img src={locationIcon} alt="location icon" className="w-7 h-7"/>
                     <span className="pl-2.5 text-black-60 text-lg">
                         {formattedAddress}
                     </span>
