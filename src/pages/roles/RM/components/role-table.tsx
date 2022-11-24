@@ -2,7 +2,7 @@ import { Menu, Table } from "@mantine/core"
 import dayjs from "dayjs"
 import { Dispatch, SetStateAction } from "react"
 import { IoEllipsisVerticalSharp } from "react-icons/io5"
-import { IRolesResponse } from "../../../types/roles/role-interface"
+import { IRolesResponse } from "../../../../types/roles/role-interface"
 import MobileRoleTable from "./mobile-role-table"
 
 export interface RoleTableInterface {

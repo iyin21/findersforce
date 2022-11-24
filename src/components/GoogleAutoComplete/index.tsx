@@ -2,6 +2,7 @@
 import { useId } from "@mantine/hooks"
 import { ErrorMessage, Field, useFormikContext } from "formik"
 import { useEffect, useRef, useState } from "react"
+import { MdLocationOn } from "react-icons/md"
 
 const GoogleAutoComplete = ({
     isOpen = true,
@@ -60,19 +61,6 @@ const GoogleAutoComplete = ({
                     setFieldValue("longitude", place?.geometry?.location?.lng())
                     setFieldValue("latitude", place?.geometry?.location?.lat())
                 }
-
-                // const lga = place?.address_components?.filter(
-                //     ({ types }) =>
-                //         types.includes("sublocality_level_1") ||
-                //         types.includes("administrative_area_level_2")
-                // )[0]
-
-                // const state = place?.address_components?.filter(({ types }) =>
-                //     types.includes("locality")
-                // )[0]
-
-                // setFieldValue("lga", lga?.long_name as string)
-                // setFieldValue("state", state?.long_name as string)
             })
         }
     }
@@ -85,24 +73,30 @@ const GoogleAutoComplete = ({
 
     return (
         <>
-            <p className="text-3md font-semibold mb-3 text-neutral-80 block">
+            <p className="text-3md font-semibold mb-3  text-neutral-80 block">
                 Location
             </p>
-            <Field
-                placeholder="Enter your address"
-                type="text"
-                name={fieldName}
-                id="autocomplete"
-                innerRef={inputRef}
-                value={values[fieldName] ?? ""}
-                data-testid="address"
-                aria-label="address"
-                className={`w-full outline-none border border-black-20 p-4 rounded text-lg ${
+            <div
+                className={`w-full outline-none border border-black-20 p-4 mt-1 rounded-xl text-lg flex ${
                     errors[fieldName] && touched[fieldName]
                         ? "border-red-100"
                         : ""
-                } `}
-            />
+                }`}
+            >
+                <MdLocationOn size={35} color="#0F0D0033" className="mr-2" />{" "}
+                <Field
+                    placeholder="Enter your address"
+                    type="text"
+                    name={fieldName}
+                    id="autocomplete"
+                    innerRef={inputRef}
+                    value={values[fieldName] ?? ""}
+                    data-testid="address"
+                    aria-label="address"
+                    className={` w-full outline-none  `}
+                />
+            </div>
+
             <ErrorMessage
                 name={fieldName}
                 component="div"
