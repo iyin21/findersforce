@@ -2,7 +2,8 @@ export interface InviteShiftMangerInterface {
     email: string[]
     invitedRole: string
     regionAddress: string | undefined
-    companyId: string | undefined
+    companyId?: string | undefined
+    companyName?: string | null
 }
 
 export interface RolesRequest {

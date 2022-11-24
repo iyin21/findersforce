@@ -7,15 +7,15 @@ interface IHeadProps {
 
 const Header = ({ step }: IHeadProps) => {
     return (
-        <div className="flex justify-between">
+        <div className="flex justify-between items-center mb-4">
             <div>
                 <div className="block lg:hidden">
                     <img src={logo} alt="finders force" className="mb-5" />
                 </div>
-                <h1 className="text-black-90 text-3xl font-extrabold">
+                <h1 className="text-black-90 text-2xl md:text-3xl font-extrabold">
                     Set up your Profile
                 </h1>
-                <span className="text-black-90 opacity-70 pt-2">
+                <span className="text-black-90 opacity-70 pt-2 text-md lg:text-lg">
                     Please provide the following information
                 </span>
             </div>
@@ -27,7 +27,7 @@ const Header = ({ step }: IHeadProps) => {
                             {" "}
                             {step + 1}
                         </span>{" "}
-                        <span className="text-black-20 text-2lg">/2</span>
+                        <span className="text-black-20 text-2lg">/3</span>
                     </div>
                 }
                 sections={[

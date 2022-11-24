@@ -16,9 +16,11 @@ export const useInviteShiftManger = () => {
         const newFormData = new FormData()
 
         newFormData.append("invitedRole", requestBody.invitedRole)
-
         // @ts-ignore
         newFormData.append("companyId", requestBody.companyId)
+        // @ts-ignore
+
+        newFormData.append("companyName", requestBody.companyName)
 
         // @ts-ignore
         newFormData.append("regionAddress", requestBody.regionAddress)

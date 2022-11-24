@@ -5,5 +5,5 @@ export const HqProfileInitialValue = {
     passwordConfirm: "",
     location: "",
     accountType: "",
-    email: "",
+    email: [],
 }

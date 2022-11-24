@@ -1,26 +1,52 @@
-import { Button } from "../../components"
+import { Button, SuccessfulLogin } from "../../components"
 import { Form, Formik, FormikConfig, FormikValues } from "formik"
-import React, { ReactNode, useState } from "react"
-import { useNavigate } from "react-router-dom"
+import React, { ReactNode, useEffect, useState } from "react"
+import { useNavigate, useSearchParams } from "react-router-dom"
 import LandingPageText from "../../components/Layout/landing-page-txt"
 import Header from "./components/header"
 import { HqProfileInitialValue } from "./utils/hq-initialvalues"
 import ProfileFormFields from "./utils/profile-form-fields"
 import { Alert } from "@mantine/core"
+import { useCreateProfile } from "../../hooks/profile/use-profile"
+import { useInviteShiftManger } from "../../hooks/roles/use-roles"
 
 const HQProfile = () => {
+    const [searchParams] = useSearchParams()
+    const [openSuccessModal, setOpenSuccessModal] = useState(false)
+
+    const { mutate: mutateUser, isSuccess, data } = useInviteShiftManger()
+
+    useEffect(() => {
+        if (isSuccess) {
+            setOpenSuccessModal(true)
+        }
+    }, [data])
+
     return (
         <div className="grid grid-cols-1 lg:grid-cols-2 text-white h-screen lg:bg-[black]">
+            {openSuccessModal && (
+                <SuccessfulLogin
+                    opened={openSuccessModal}
+                    setOpened={setOpenSuccessModal}
+                />
+            )}
             <div className="hidden lg:block">
                 {" "}
                 <LandingPageText />
             </div>
-            <div className="md:my-8 lg:mr-8 bg-white-100 pt-12 px-6 md:px-16 flex flex-col rounded-[10px]">
+            <div className="my-4 md:my-8 lg:mr-8 bg-white-100 pt-12 px-6 md:px-16 flex flex-col rounded-[10px]">
                 <FormikStepper
                     // this is the initial values for the formik form
                     initialValues={HqProfileInitialValue}
                     data-testid="post_job_form"
-                    onSubmit={(values) => {}}
+                    onSubmit={(values) => {
+                        mutateUser({
+                            email: values.email,
+                            invitedRole: values.accountType,
+                            regionAddress: values.location,
+                            companyName: searchParams.get("companyName"),
+                        })
+                    }}
                 >
                     {ProfileFormFields.map(
                         ({ validationSchema, Component, name }) => (
@@ -64,7 +90,7 @@ export function FormikStepper({ ...props }: TWizardProps) {
     ) as React.ReactElement<FormikStepProps>[]
 
     const navigate = useNavigate()
-
+    const [searchParams] = useSearchParams()
     const [error, setError] = useState("")
     const [step, setStep] = useState(0)
     const currentChild = childrenArray[step]
@@ -73,13 +99,25 @@ export function FormikStepper({ ...props }: TWizardProps) {
         return step === childrenArray.length - 1
     }
 
-    const handlePreviousStep = () => {
-        if (!(step === 0)) {
-            setStep(step - 1)
-        } else {
-            navigate(`/auth/sign-up`)
-        }
+    // const handlePreviousStep = () => {
+    //     if (!(step === 0)) {
+    //         setStep(step - 1)
+    //     } else {
+    //         navigate(`/auth/sign-up`)
+    //     }
+    // }
+    const { mutate, isLoading, isError } = useCreateProfile()
+
+    const handleCreateProfile = (values: FormikValues) => {
+        mutate({
+            firstName: values.firstName,
+            lastName: values.lastName,
+            passwordConfirm: values.passwordConfirm,
+            password: values.password,
+            inviteCode: searchParams.get("code"),
+        })
     }
+
     return (
         <div>
             <Header step={step} />
@@ -88,7 +126,9 @@ export function FormikStepper({ ...props }: TWizardProps) {
                 validationSchema={currentChild.props.validationSchema}
                 onSubmit={(values, helpers) => {
                     helpers.setSubmitting(true)
-                    if (!isLastStep()) {
+                    if (!isError) {
+                        setStep(0)
+                    } else if (!isLastStep()) {
                         setStep(step + 1)
                     } else {
                         props.onSubmit(values, helpers) as Promise<any>
@@ -96,12 +136,12 @@ export function FormikStepper({ ...props }: TWizardProps) {
                     helpers.setSubmitting(false)
                 }}
             >
-                {({ isSubmitting, setFieldValue }) => (
+                {({ isSubmitting, values }) => (
                     <Form>
                         {currentChild}
 
                         <div className=" justify-between items-center">
-                            {step === 2 && (
+                            {/* {step === 2 && (
                                 <Button
                                     className="text-black-100"
                                     type="button"
@@ -109,7 +149,7 @@ export function FormikStepper({ ...props }: TWizardProps) {
                                 >
                                     Go back
                                 </Button>
-                            )}
+                            )} */}
 
                             <div className="">
                                 <Button
@@ -117,10 +157,15 @@ export function FormikStepper({ ...props }: TWizardProps) {
                                     className="w-full mt-16"
                                     variant="primary"
                                     type="submit"
-                                    disabled={isSubmitting}
+                                    disabled={isLoading}
                                     style={{
                                         backgroundColor:
                                             "rgba(254, 215, 10, 1)",
+                                    }}
+                                    onClick={() => {
+                                        step === 0
+                                            ? handleCreateProfile(values)
+                                            : ""
                                     }}
                                 >
                                     {isSubmitting

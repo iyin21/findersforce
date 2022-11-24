@@ -18,9 +18,14 @@ import HQProfile from "./hq-profile"
 
 const Profile = () => {
     const [searchParams] = useSearchParams()
+
     return (
         <div>
-            {!searchParams.get("companyName") ? <RMProfile /> : <HQProfile />}
+            {searchParams.get("accountType") === "HQ-MANAGER" ? (
+                <HQProfile />
+            ) : (
+                <RMProfile />
+            )}
         </div>
     )
 }
@@ -202,7 +207,7 @@ const RMProfile = () => {
                         />
                     </div>
                     {errorText && (
-                        <span className="text-[14px] text-red-100">
+                        <span className="text-[14px] text-[#f01e2c]">
                             Password must meet requirements
                         </span>
                     )}
