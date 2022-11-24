@@ -18,9 +18,14 @@ import HQProfile from "./hq-profile"
 
 const Profile = () => {
     const [searchParams] = useSearchParams()
+
     return (
         <div>
-            {!searchParams.get("companyName") ? <RMProfile /> : <HQProfile />}
+            {searchParams.get("accountType") === "HQ-MANAGER" ? (
+                <HQProfile />
+            ) : (
+                <RMProfile />
+            )}
         </div>
     )
 }

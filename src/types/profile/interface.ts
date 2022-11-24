@@ -13,3 +13,11 @@ export interface ProfileResponse {
         name: string
     }
 }
+
+export interface ProfileRequest {
+    firstName: string
+    lastName: string
+    password: string
+    passwordConfirm: string
+    inviteCode: string | null
+}
