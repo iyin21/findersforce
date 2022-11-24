@@ -73,11 +73,11 @@ const GoogleAutoComplete = ({
 
     return (
         <>
-            <p className="text-3md font-semibold mb-3 text-neutral-80 block">
+            <p className="text-3md font-semibold mb-3  text-neutral-80 block">
                 Location
             </p>
             <div
-                className={`w-full outline-none border border-black-20 p-4 rounded-xl text-lg flex ${
+                className={`w-full outline-none border border-black-20 p-4 mt-1 rounded-xl text-lg flex ${
                     errors[fieldName] && touched[fieldName]
                         ? "border-red-100"
                         : ""

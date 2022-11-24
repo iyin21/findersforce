@@ -7,7 +7,8 @@ export interface InviteShiftMangerInterface {
 }
 
 export interface RolesRequest {
-    status: "accepted" | "pending"
+    status: "accepted" | "pending" | "REGIONAL-MANAGER"
+    depotRole?: string
     signal?: AbortSignal
     limit?: number
     page?: number

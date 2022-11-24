@@ -18,6 +18,9 @@ const MobileRoleTable = ({
                 <div className="rounded-lg bg-black-5 mb-4" key={index}>
                     <div className="flex justify-between  items-center border-b border-black-10 p-4">
                         <div>
+                            <h6 className="text-black-50 text-3sm">
+                                FULL NAME
+                            </h6>
                             <p>
                                 {element?.firstName} {element?.lastName}
                             </p>
