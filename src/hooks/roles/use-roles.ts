@@ -16,9 +16,15 @@ export const useInviteShiftManger = () => {
         const newFormData = new FormData()
 
         newFormData.append("invitedRole", requestBody.invitedRole)
-
         // @ts-ignore
         newFormData.append("companyId", requestBody.companyId)
+
+        if (requestBody.companyName === undefined) {
+            ;("")
+        } else {
+            // @ts-ignore
+            newFormData.append("companyName", requestBody.companyName)
+        }
 
         // @ts-ignore
         newFormData.append("regionAddress", requestBody.regionAddress)
@@ -60,7 +66,7 @@ export const useInviteShiftManger = () => {
     )
 }
 
-function useGetRoles({ status, signal, page, limit }: RolesRequest) {
+function useGetRoles({ status, signal, page, limit, depotRole }: RolesRequest) {
     const { state } = useAuthContext()
 
     /** API methods */
@@ -71,6 +77,7 @@ function useGetRoles({ status, signal, page, limit }: RolesRequest) {
                 status,
                 page,
                 limit,
+                depotRole,
             },
             headers: {
                 Authorization: `${state?.jwt?.token}`,
@@ -87,6 +94,7 @@ function useGetRoles({ status, signal, page, limit }: RolesRequest) {
                 signal,
                 page,
                 limit,
+                depotRole,
             },
         ],
         () => getRoles()

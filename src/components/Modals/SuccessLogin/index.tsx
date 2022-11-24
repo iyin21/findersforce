@@ -33,7 +33,7 @@ const SuccessfulLogin = ({ opened, setOpened }: SuccessLoginProps) => {
                         You are all set!
                     </h1>
                     <span className="text-[#0F0D00B2] opacity-70 text-[14px]">
-                        Please provide the following information
+                        Please proceed to log in
                     </span>
                     <NavLink to="/login" className="w-[183px] pt-7">
                         <Button

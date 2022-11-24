@@ -20,7 +20,6 @@ export const emailInputStyle = {
     label: {
         color: "#0F0D00",
         fontSize: "16px",
-        fontWeight: "800",
     },
 }
 

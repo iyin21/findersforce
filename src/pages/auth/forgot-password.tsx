@@ -6,12 +6,10 @@ import backIcon from "../../assets/backIcon.svg"
 import { emailInputStyle } from "./utils"
 import { useForm } from "@mantine/form"
 import Button from "../../components/Core/Buttons/Button"
-import { useMediaQuery } from "@mantine/hooks"
 import logo from "../../assets/FF-logo.svg"
 import forgotPassword from "../../hooks/auth-hooks/use-forgot-password"
 
 const RecoverPassword = () => {
-    const matches = useMediaQuery("(min-width: 900px)")
     const userRef = React.useRef<HTMLInputElement>(
         null
     ) as MutableRefObject<HTMLInputElement>
@@ -44,137 +42,50 @@ const RecoverPassword = () => {
 
     return (
         <>
-            {matches ? (
-                <div className="bg-black-1 grid grid-cols-2 text-white">
+            <div className="grid grid-cols-1 lg:grid-cols-2 text-white lg:bg-black-1">
+                <div className="hidden lg:block">
                     <LandingPageText />
-                    <div className="my-8 mr-8 bg-white-100 pt-[82px] px-16 flex flex-col rounded-[10px]">
-                        <div className="bg-black-10 w-fit h-fit rounded">
-                            <NavLink to="/login">
-                                <img
-                                    src={backIcon}
-                                    alt="back button"
-                                    className="p-2.5"
-                                />
-                            </NavLink>
-                        </div>
-                        <h1 className="pt-[34px] text-black-100 font-extrabold text-3.5xl">
-                            Forgot Password
-                        </h1>
-                        <span className="text-2md text-blaq-0 pt-2 pb-[35px] max-w-[439px]">
-                            Enter your email address linked to your accout below
-                            and we`ll send you an OTP to reset your password.
-                        </span>
-                        <form
-                            onSubmit={recoverPasswordForm.onSubmit((values) =>
-                                handleSubmit(values)
-                            )}
-                        >
-                            <TextInput
-                                placeholder="example@gmail.com"
-                                label="Email Address"
-                                withAsterisk
-                                required
-                                ref={userRef}
-                                onFocusCapture={() => showError(false)}
-                                {...recoverPasswordForm.getInputProps("email")}
-                                styles={() => emailInputStyle}
-                            />
-                            <br className="mt-[-2px]" />
-                            <Button
-                                variant="primary"
-                                type="submit"
-                                style={
-                                    !isSubmitting
-                                        ? {
-                                              backgroundColor:
-                                                  "rgba(254, 215, 10, 1)",
-                                          }
-                                        : {
-                                              backgroundColor:
-                                                  "rgba(254, 215, 10, 1)",
-                                              opacity: "0.7",
-                                          }
-                                }
-                                className="text-black-100 bg-yellow-100 font-bold text-base w-full text-center py-6 rounded-l rounded-tr-2xl rounded-br"
-                            >
-                                {!isSubmitting
-                                    ? "Reset password"
-                                    : "Loading..."}
-                            </Button>
-                        </form>
-                        {error && (
-                            <Alert
-                                title="Error!"
-                                color="red"
-                                styles={() => ({ root: { marginTop: "20px" } })}
-                            >
-                                {errorMsg}
-                            </Alert>
-                        )}
-                    </div>
                 </div>
-            ) : (
-                <div className="flex flex-col items-center mx-5">
-                    <img
-                        src={logo}
-                        alt="finders force logo"
-                        className="pt-[17px]"
-                    />
-                    <h1 className="pt-5 text-black-100 font-extrabold text-2xl self-start">
+                <div className="my-8 md:mr-8 bg-white-100 md:pt-12 px-6 md:px-16 flex flex-col rounded-[10px]">
+                    <div className="hidden lg:block bg-black-10 w-fit h-fit rounded mb-8">
+                        <NavLink to="/login">
+                            <img
+                                src={backIcon}
+                                alt="back button"
+                                className="p-2.5"
+                            />
+                        </NavLink>
+                    </div>
+                    <div className="block m-auto lg:hidden">
+                        <img
+                            src={logo}
+                            alt="finders force logo"
+                            className="pb-4"
+                        />
+                    </div>
+                    <h1 className="text-black-100 font-extrabold text-2xl md:text-4xl md:pb-2.5">
                         Forgot Password
                     </h1>
-                    <span className="text-2md text-blaq-0 pt-2 pb-5 text-justify">
+                    <span className="text-2md text-blaq-0 pt-2 pb-[35px] max-w-[439px]">
                         Enter your email address linked to your accout below and
                         we`ll send you an OTP to reset your password.
                     </span>
                     <form
-                        className="w-full"
                         onSubmit={recoverPasswordForm.onSubmit((values) =>
                             handleSubmit(values)
                         )}
                     >
                         <TextInput
                             placeholder="example@gmail.com"
-                            label="Email"
+                            label="Email Address"
                             withAsterisk
                             required
                             ref={userRef}
                             onFocusCapture={() => showError(false)}
                             {...recoverPasswordForm.getInputProps("email")}
-                            styles={() => ({
-                                innerInput: {
-                                    color: "rgba(15, 13, 0, 0.8)",
-                                    fontSize: "14px",
-                                    paddingTop: "7px",
-                                    "&::placeholder": {
-                                        color: "#E7E7E5",
-                                        fontSize: "14px",
-                                        lineHeight: "17px",
-                                    },
-                                },
-                                input: {
-                                    border: "1px solid rgba(15, 13, 0, 0.1)",
-                                    height: "60px",
-                                    borderRadius: "10px",
-                                    display: "flex",
-                                    alignItems: "center",
-                                },
-                                label: {
-                                    color: "#0F0D00",
-                                    fontSize: "14px",
-                                    fontWeight: "700",
-                                },
-                            })}
+                            styles={() => emailInputStyle}
                         />
-                        {error && (
-                            <Alert
-                                title="Error!"
-                                color="red"
-                                styles={() => ({ root: { marginTop: "20px" } })}
-                            >
-                                {errorMsg}
-                            </Alert>
-                        )}
+                        <br className="mt-[-2px]" />
                         <Button
                             variant="primary"
                             type="submit"
@@ -190,13 +101,22 @@ const RecoverPassword = () => {
                                           opacity: "0.7",
                                       }
                             }
-                            className="text-black-100 absolute bottom-12 bg-yellow-100 font-bold text-base w-[90%] text-center py-6 rounded-l rounded-tr-2xl rounded-br"
+                            className="text-black-100 bg-yellow-100 font-bold text-base w-full text-center py-6 rounded-l rounded-tr-2xl rounded-br"
                         >
                             {!isSubmitting ? "Reset password" : "Loading..."}
                         </Button>
                     </form>
+                    {error && (
+                        <Alert
+                            title="Error!"
+                            color="red"
+                            styles={() => ({ root: { marginTop: "20px" } })}
+                        >
+                            {errorMsg}
+                        </Alert>
+                    )}
                 </div>
-            )}
+            </div>
         </>
     )
 }

@@ -120,14 +120,6 @@ const PostJobOne = ({ jobType }: PostJobOneProps) => {
                         values?.jobDate ? new Date(values?.jobDate) : undefined
                     }
                 />
-                {/* {errors.jobDate && (
-                    <div className="flex items-center gap-2 mt-4 px-2 md:p-4 rounded-md bg-red-10 border-l-4 border-red-100">
-                        <FiClock color="#E94444" size={20} />
-                        <p className=" text-sm md:text-lg">
-                            Please choose a Job Date
-                        </p>
-                    </div>
-                )} */}
             </div>
 
             <div className="grid grid-cols-2 gap-6 justify-between mt-4">

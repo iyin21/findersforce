@@ -29,26 +29,25 @@ export interface User {
 }
 
 export interface LoginResponse {
-    status: string;
-    message: string;
-    data: Data;
+    status: string
+    message: string
+    data: Data
 }
 
-
 export interface Data {
-    user: User;
-    jwt: jwtData | null;
+    user: User
+    jwt: jwtData | null
 }
 
 export type AuthState = {
-    isAuthenticated: boolean;
-    user: User | null;
-    jwt: jwtData | null;
+    isAuthenticated: boolean
+    user: User | null
+    jwt: jwtData | null
     persist: boolean
-};
+}
 
 // An interface for our actions
 export type AuthActionType = {
-    type: "SET_USER_DATA" | "UPDATE_USER_DATA" | "CLEAR_USER_DATA";
-    payload?: LoginResponse["data"];
-};
+    type: "SET_USER_DATA" | "UPDATE_USER_DATA" | "CLEAR_USER_DATA"
+    payload?: LoginResponse["data"]
+}
