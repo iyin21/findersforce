@@ -25,6 +25,7 @@ export interface User {
     username?: string;
     twoFa_enabled?: boolean;
     twoFa_type?: any;
+    depotRole: string
 }
 
 export interface LoginResponse {

@@ -24,7 +24,7 @@ const BarChart = ({value}:{value: [Date | null, Date | null]}) => {
 
   return (
       <>
-        <div   className="pl-4 pr-10 w-[60%]">
+        <div   className="w-[100%]">
           <div className="bg-yellow-5 rounded-t-lg cursor-pointer ">
             <div className="flex justify-between">
               <div className="px-4">

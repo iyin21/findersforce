@@ -1,8 +1,10 @@
-import Sidebar from "./sidebar/Sidebar"
+
 import NavBar from "./navbar/NavBar"
 import { LayoutProps } from "../../types/layout/interfaces"
 import { useState } from "react";
 import { Drawer } from "@mantine/core";
+import Sidebar from "./sidebar/Sidebar";
+import { FaTimes } from "react-icons/fa";
 
     
 const Layout = ({ children, noTopNav }: LayoutProps) => {
@@ -14,7 +16,7 @@ const Layout = ({ children, noTopNav }: LayoutProps) => {
             </div>
             <div className="relative md:pl-64 h-full">
                 <div className="hidden md:block fixed bg-black-100 left-0 w-64  h-[100%] overflow-y-auto">
-                    <Sidebar setOpenSideBar={setOpenSideBar} />
+                    <Sidebar/>
                 </div>
                 <>
                     <Drawer
@@ -30,13 +32,20 @@ const Layout = ({ children, noTopNav }: LayoutProps) => {
                             drawer: {
                                 padding: 0,
                                 backgroundColor: "transparent",
-                                overflow: "auto"
+                                overflow: "auto",
                             }
                         })}
                     >
-                        <div className="">
+                        <div className="relative">
+                            <div className=" md:hidden  absolute right-10 top-10">
+                                <FaTimes 
+                                    size={20} 
+                                    style={{color:"#FFFFFF"}} 
+                                    onClick={() => setOpenSideBar(false)} 
+                                    onKeyDown={() => setOpenSideBar(false)}/>
+                            </div>
                             <div className="w-full h-3/4 md:h-[500px] overflow-y-scroll md:pt-[75px] bg-black-100">
-                                <Sidebar setOpenSideBar={setOpenSideBar}/>
+                                <Sidebar/>
                             </div>
                         </div>
                         
