@@ -64,7 +64,7 @@ const DepotHqDashboard = () => {
                 <main className="md:p-6 p-6 mt-4 md:mt-14 bg-white-100 hidden lg:block ">
                     <section className=" flex bg-white-100 justify-between">
                         <div>
-                            <h1 className="font-extrabold text-4xl font-creatoBold">Dashboard</h1>
+                            <h1 className="font-extrabold text-3xl font-creatoBold">Dashboard</h1>
                             <p className="text-primary-20 text-base pb-5">
                                 Here&apos;s a snippet of all your activity on
                                 FindersForce.

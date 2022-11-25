@@ -56,9 +56,9 @@ const MobileDepotRmDashboard = () => {
     
     
     return (
-            <main className="mt-20 p-6 bg-white-100 ">
+            <main className="mt-14 p-6 bg-white-100 ">
                     <div>
-                        <h1 className="font-extrabold text-4xl font-creatoBold">Dashboard</h1>
+                        <h1 className="font-extrabold text-3xl font-creatoBold">Dashboard</h1>
                         <p className="text-primary-20 text-base pb-5">
                             Here&apos;s a snippet of all your activity on
                             FindersForce.
@@ -70,7 +70,7 @@ const MobileDepotRmDashboard = () => {
                             value={value}
                             onChange={setValue}
                             radius="md"
-                            amountOfMonths={2}
+                            amountOfMonths={1}
                         />
                     </div>
                         <section className="bg-dashboard-pattern relative  bg-cover text-white-100 pl-5 pb-5 my-5 rounded-lg flex justify-between gap-4">

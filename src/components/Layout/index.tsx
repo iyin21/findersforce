@@ -11,11 +11,11 @@ const Layout = ({ children, noTopNav }: LayoutProps) => {
     const [openSideBar, setOpenSideBar] = useState(false);
     return (
         <div className="h-screen relative">
-            <div className="w-full fixed right-0 z-20">
-                <NavBar noTopNav={noTopNav} setOpenSideBar={setOpenSideBar} />
+            <div className="fixed right-0 z-20 bg-white-100 lg:w-[84%] w-full">
+                <NavBar noTopNav={noTopNav} setOpenSideBar={setOpenSideBar}  />
             </div>
             <div className="relative md:pl-64 h-full">
-                <div className="hidden md:block fixed bg-black-100 left-0 w-64  h-[100%] overflow-y-auto">
+                <div className="hidden md:block fixed bg-black-100 left-0 w-[16%]  h-[100%] overflow-y-auto">
                     <Sidebar/>
                 </div>
                 <>

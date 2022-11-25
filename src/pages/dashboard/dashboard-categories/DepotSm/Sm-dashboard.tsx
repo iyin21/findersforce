@@ -21,7 +21,6 @@ import { DateRangePicker, DateRangePickerValue } from "@mantine/dates"
 import { useState } from "react"
 import Desktop from "../../../../assets/desktop.png"
 import MobileDepotSmDashboard from "./MobileSm-Dashboard"
-
 const ShiftManagerDashboard = () => {
     const navigate = useNavigate()
     const handleNavigate = () => {
@@ -54,13 +53,12 @@ const ShiftManagerDashboard = () => {
     })
 
     
-    
     return (
         <Layout pageTitle={"Dashboard"}>
-            <main className="md:p-6 p-6 mt-4 md:mt-14 bg-white-100 ">
+            <main className="md:p-6 p-6 mt-4 md:mt-14 bg-white-100 hidden lg:block">
                 <section className=" flex bg-white-100 justify-between">
                     <div>
-                        <h1 className="font-extrabold text-4xl font-creatoBold">Dashboard</h1>
+                        <h1 className="font-extrabold text-3xl font-creatoBold">Dashboard</h1>
                         <p className="text-primary-20 text-base pb-5">
                             Here&apos;s a snippet of all your activity on
                             FindersForce.
@@ -121,7 +119,7 @@ const ShiftManagerDashboard = () => {
                                 />
                             </div>
                         </section>
-                        <section className="flex justify-between">
+                        <section className="flex justify-between gap-8">
                             <BarChart value={value} />
                             <PieChart value={value} />
                         </section>
@@ -170,7 +168,7 @@ const ShiftManagerDashboard = () => {
                                 }
                             </div>
 
-                            <div className="overflow-y-scroll  h-52 relative rounded-t-lg my-5">
+                            <div className="overflow-y-scroll  relative rounded-t-lg my-5">
                                 <p className="text-md font-medium sticky z-20 top-0 bg-gray-100 rounded-t-lg py-3 pl-4 ">
                                     {" "}
                                     UPCOMING SHIFTS{" "}
