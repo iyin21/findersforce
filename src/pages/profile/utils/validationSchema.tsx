@@ -8,7 +8,7 @@ const AccountInfoSchema = object().shape({
 })
 
 const LocationInfoSchema = object().shape({
-    location: string().required("Required"),
+    regionAddress: string().required("Required"),
     accountType: string().required("Required"),
     // email: string().required("Required"),
 })

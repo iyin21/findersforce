@@ -19,7 +19,7 @@ const LocationInfo = () => {
 
     return (
         <div>
-            <GoogleAutoComplete fieldName="location" />
+            <GoogleAutoComplete fieldName="regionAddress" />
             <div className="mt-8">
                 <label className="text-3md font-semibold text-neutral-80 block mb-2">
                     Select user type to add
