@@ -31,15 +31,44 @@ const HQRoleTable = ({
                 <td className="hidden"></td>
             ) : (
                 <td>
-                    <p>
+                    <p className="flex items-center gap-2">
+                        <img
+                            src={`https://ui-avatars.com/api/?name=${
+                                element?.firstName + " " + element?.lastName
+                            }&background=00000033&color=000`}
+                            alt=""
+                            width={24}
+                            height={25}
+                            className="rounded-full bg-white-50 text-xl"
+                        />
                         {element?.firstName} {element?.lastName}
                     </p>
                 </td>
             )}
 
             <td>{element.email}</td>
-            <td>{element?.regionAddress || "N/A"} </td>
-            {status === "SHIFT-MANAGER" && <td>{element?.inviterRole}</td>}
+            <td>
+                {element?.depotRegion?.address ||
+                    element?.regionAddress ||
+                    "N/A"}{" "}
+            </td>
+            {status === "SHIFT-MANAGER" && (
+                <td className="flex items-center gap-2">
+                    <img
+                        src={`https://ui-avatars.com/api/?name=${
+                            element?.depotRegion?.createdBy?.firstName +
+                            " " +
+                            element?.depotRegion?.createdBy?.lastName
+                        }&background=00000033&color=000`}
+                        alt=""
+                        width={24}
+                        height={25}
+                        className="rounded-full bg-primary-50"
+                    />
+                    {element?.depotRegion?.createdBy?.firstName}{" "}
+                    {element?.depotRegion?.createdBy?.lastName}
+                </td>
+            )}
             {status === "pending" && <td>{element?.invitedRole}</td>}
             <td>
                 {dayjs(element?.createdAt).format("MMM D, YYYY")} |{" "}
