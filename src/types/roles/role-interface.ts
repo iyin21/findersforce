@@ -45,4 +45,12 @@ export interface IRolesResponse {
     status: string
     createdAt: string
     expired: boolean
+    depotRegion: {
+        address: string
+        createdBy: {
+            firstName: string
+            lastName: string
+            depotRole: string
+        }
+    }
 }

@@ -190,7 +190,7 @@ const HQRoles = () => {
     ])
     return (
         <div>
-            <div className="p-6 mt-4 md:mt-14">
+            <div className="p-6 mt-8 md:mt-14">
                 {openConfirmDelete && (
                     <ConfirmDelete
                         opened={openConfirmDelete}
