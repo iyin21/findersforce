@@ -4,6 +4,7 @@ export interface InviteShiftMangerInterface {
     regionAddress: string | undefined
     companyId?: string | undefined
     companyName?: string | null
+    jwt?: string
 }
 
 export interface RolesRequest {
