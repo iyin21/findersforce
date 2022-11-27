@@ -4,6 +4,7 @@ export interface InviteShiftMangerInterface {
     regionAddress: string | undefined
     companyId?: string | undefined
     companyName?: string | null
+    jwt?: string
 }
 
 export interface RolesRequest {
@@ -44,4 +45,12 @@ export interface IRolesResponse {
     status: string
     createdAt: string
     expired: boolean
+    depotRegion: {
+        address: string
+        createdBy: {
+            firstName: string
+            lastName: string
+            depotRole: string
+        }
+    }
 }

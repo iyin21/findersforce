@@ -6,9 +6,8 @@ import { Drawer } from "@mantine/core";
 import Sidebar from "./sidebar/Sidebar";
 import { FaTimes } from "react-icons/fa";
 
-    
 const Layout = ({ children, noTopNav }: LayoutProps) => {
-    const [openSideBar, setOpenSideBar] = useState(false);
+    const [openSideBar, setOpenSideBar] = useState(false)
     return (
         <div className="h-screen relative">
             <div className="fixed right-0 z-20 bg-white-100 lg:w-[84%] w-full">
@@ -48,10 +47,13 @@ const Layout = ({ children, noTopNav }: LayoutProps) => {
                                 <Sidebar/>
                             </div>
                         </div>
-                        
                     </Drawer>
                 </>
-                <main className={`w-full h-full overflow-y-auto  ${!noTopNav && "py-5 lg:px-2"} `}>
+                <main
+                    className={`w-full h-full overflow-y-auto  ${
+                        !noTopNav && "py-5 lg:px-2"
+                    } `}
+                >
                     {children}
                 </main>
             </div>

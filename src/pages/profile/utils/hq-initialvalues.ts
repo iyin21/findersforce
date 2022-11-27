@@ -3,7 +3,7 @@ export const HqProfileInitialValue = {
     firstName: "",
     lastName: "",
     passwordConfirm: "",
-    location: "",
+    regionAddress: "",
     accountType: "",
     email: [],
 }

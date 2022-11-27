@@ -80,7 +80,7 @@ const HQAddUser = ({
                                     <label className="text-3md font-semibold text-neutral-80 block mb-2">
                                         Select user type to add
                                     </label>
-                                    <div className="flex items-center gap-10 mt-4">
+                                    <div className="flex  flex-col md:flex-row md:items-center md:gap-10 mt-4 mb-4">
                                         <RadioButton
                                             label="Regional Manager"
                                             id="regional_manger"

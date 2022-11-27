@@ -93,7 +93,9 @@ const MobileHQRoleTable = ({
                         <div>
                             <h6 className="text-black-50 text-3sm">LOCATION</h6>
                             <p className="text-2md mt-1">
-                                {element?.regionAddress || "N/A"}
+                                {element?.depotRegion?.address ||
+                                    element?.regionAddress ||
+                                    "N/A"}
                             </p>
                         </div>
                         {status === "pending" ? (
