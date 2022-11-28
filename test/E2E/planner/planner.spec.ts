@@ -1,5 +1,5 @@
 import { test } from '@playwright/test';
-const URL = "http:localhost:3000/planner"
+const URL = "http://localhost:3000/planner"
 
 test ("a user can view planner  page", async ({page}) => {
                 await page.goto(URL);

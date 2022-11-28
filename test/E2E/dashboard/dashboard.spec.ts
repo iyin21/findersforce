@@ -1,10 +1,10 @@
 import { test, expect } from '@playwright/test';
-const URL = "http:localhost:3000/dashboard"
+const URL = "http://localhost:3000/dashboard"
 
 test("renders dashboard and links to view ongoing shifts", async ({page}) => {
                 await page.goto(URL);
                 // expect a title "to contain" a substring.
-                await expect(page.locator("text=Log In")).toBeVisible();
+                await expect(page.locator("text=Log In")).toBeVisible()
                 await page.fill('#email', "ent@pussport.com" );
                 await page.fill('#password', "Password22@");
 
@@ -18,7 +18,7 @@ test("renders dashboard and links to view ongoing shifts", async ({page}) => {
 test("renders dashboard and links to view upcoming shifts", async ({page}) => {
                 await page.goto(URL);
                 // expect a title "to contain" a substring.
-                await expect(page.locator("text=Log In")).toBeVisible();
+                await expect(page.locator("text=Log In")).toBeVisible()
                 await page.fill('#email', "ent@pussport.com" );
                 await page.fill('#password', "Password22@");
 
