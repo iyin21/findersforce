@@ -17,6 +17,8 @@ import Roles from "./pages/roles"
 import Messaging from "./pages/Messaging"
 import Settings from "./pages/Settings/index"
 import Subscriptions from "./pages/subscriptions/Subscription"
+import Location from "./pages/Location"
+import LocationBasedData from "./pages/Location/components/locationBasedData"
 
 function App() {
     return (
@@ -49,6 +51,8 @@ function App() {
                     <Route path="/support" element={<Support />} />
                     <Route path="/messaging" element={<Messaging />} />
                     <Route path="/subscriptions" element={<Subscriptions/>} />
+                    <Route path="/locations" element={<Location />} />
+                    <Route path="/locations/:locationId" element={<LocationBasedData />} />
                 </Route>
             </Route>
         </Routes>

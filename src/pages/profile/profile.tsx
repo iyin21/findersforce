@@ -126,7 +126,11 @@ const RMProfile = () => {
                     Please provide the following information
                 </span>
                 <div className="flex pt-2.5">
-                    <img src={locationIcon} alt="location icon" className="w-7 h-7"/>
+                    <img
+                        src={locationIcon}
+                        alt="location icon"
+                        className="w-7 h-7"
+                    />
                     <span className="pl-2.5 text-black-60 text-lg">
                         {formattedAddress}
                     </span>
