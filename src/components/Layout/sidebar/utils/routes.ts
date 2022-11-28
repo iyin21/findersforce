@@ -5,6 +5,7 @@ import Planner from "../assets/Planner"
 import Messaging from "../assets/Messaging"
 import RolesPermission from "../assets/RolesPermission"
 import Support from "../assets/Support"
+import Location from "../assets/Location"
 
 export interface SidebarRoutes {
     icon: React.FunctionComponent
@@ -23,5 +24,6 @@ export const RegionalManagerRoute: SidebarRoutes[] = [
         title: "Roles & Permissions",
         route: "/roles&permission",
     },
+    { icon: Location, title: "Locations", route: "/locations"},
     { icon: Support, title: "Support", route: "/support" },
 ]
