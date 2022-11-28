@@ -20,7 +20,6 @@ import Empty from "../../../../assets/Empty.png"
 import { DateRangePicker, DateRangePickerValue } from "@mantine/dates"
 import { useState } from "react"
 import Desktop from "../../../../assets/desktop.png"
-import MobileDepotSmDashboard from "./MobileSm-Dashboard"
 const ShiftManagerDashboard = () => {
     const navigate = useNavigate()
     const handleNavigate = () => {
@@ -55,8 +54,8 @@ const ShiftManagerDashboard = () => {
     
     return (
         <Layout pageTitle={"Dashboard"}>
-            <main className="md:p-6 p-6 mt-4 md:mt-14 bg-white-100 hidden lg:block">
-                <section className=" flex bg-white-100 justify-between">
+            <main className="md:p-6 p-6 mt-4 md:mt-14 bg-white-100 lg:block">
+                <section className=" lg:flex bg-white-100 justify-between block">
                     <div>
                         <h1 className="font-extrabold text-3xl font-creatoBold">Dashboard</h1>
                         <p className="text-primary-20 text-base pb-5">
@@ -64,7 +63,7 @@ const ShiftManagerDashboard = () => {
                             FindersForce.
                         </p>
                     </div>
-                    <div>
+                    <div className="lg:block flex gap-4 my-3">
                         <DateRangePicker
                             placeholder="Start date - End date"
                             value={value}
@@ -74,35 +73,37 @@ const ShiftManagerDashboard = () => {
                         />
                     </div>
                 </section>
-                <div className="flex flex-row gap-8 justify-between">
-                    <div className="basis-3/4">
-                        <section className="bg-dashboard-pattern relative  bg-cover text-white-100 pl-5 pb-5 rounded-lg flex">
-                            <div>
-                                <p className="font-extrabold text-2xl w-96 pt-5 font-creatoBold">
-                                    Access to top quality traffic management
-                                    talents.
-                                </p>
-                                <p className="pt-2 text-white-30 font-creato">
-                                    {" "}
-                                    Manage your hiring in 2 steps{" "}
-                                </p>
-                                <span className="text-yellow-100 font-medium pt-2 pb-5 font-creatoBoldMedium">
-                                    Start posting jobs
-                                </span>
-                                <img
-                                    src={UpperRightArrow2}
-                                    alt=""
-                                    className="inline"
-                                />
-                            </div>
-                            <div className="absolute right-10 bottom-3">
-                                <img 
-                                    src={Desktop} 
-                                    alt="desktop" />
+                <div className="lg:flex flex-row gap-8 justify-between block">
+                    <div className="lg:basis-3/4">
+                        <section className="bg-dashboard-pattern relative text-2md bg-cover text-white-100 pl-5 pb-5 rounded-lg">
+                            <div className="lg:block flex justify-between gap-4">
+                                <div>
+                                    <p className="font-extrabold lg:text-2xl text-2md lg:w-96 pt-5 font-creatoBold">
+                                        Access to top quality traffic management
+                                        talents.
+                                    </p>
+                                    <p className="pt-2 text-white-30 text-2md font-creato">
+                                        {" "}
+                                        Manage your hiring in 2 steps{" "}
+                                    </p>
+                                    <span className="text-yellow-100 text-2md font-medium pt-2 pb-5 font-creatoBoldMedium">
+                                        Start posting jobs
+                                    </span>
+                                    <img
+                                        src={UpperRightArrow2}
+                                        alt=""
+                                        className="inline"
+                                    />
+                                </div>
+                                <div className="lg:absolute lg:right-10 lg:bottom-3  ">
+                                    <img 
+                                        src={Desktop} 
+                                        alt="desktop" />
+                                </div>
                             </div>
                         </section>
-                        <section>
-                            <div className="flex justify-between gap-4 my-8">
+                        <section className="overflow-x-scroll lg:overflow-x-hidden my-5">
+                            <div className="lg:flex justify-between grid grid-cols-3 lg:w-full w-[850px]  gap-4">
                                 <Card
                                     title={"HOURS COMPLETED"}
                                     amount={dashboardAnalytics?.hoursCompleted?.total}
@@ -119,12 +120,12 @@ const ShiftManagerDashboard = () => {
                                 />
                             </div>
                         </section>
-                        <section className="flex justify-between gap-8">
+                        <section className="lg:flex justify-between gap-8">
                             <BarChart value={value} />
                             <PieChart value={value} />
                         </section>
                     </div>
-                    <div className="basis-1/4">
+                    <div className="lg:basis-1/4">
                         <Rating value={value}/>
                         <section>
                             <div className="relative my-5 rounded-lg">
@@ -215,9 +216,6 @@ const ShiftManagerDashboard = () => {
                         </section>
                     </div>
                 </div>
-            </main>
-            <main className="block lg:hidden">
-                    <MobileDepotSmDashboard/>
             </main>
         </Layout>
     )

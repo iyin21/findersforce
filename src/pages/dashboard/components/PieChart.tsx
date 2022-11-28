@@ -25,7 +25,7 @@ const PieChart = ({value}:{value: [Date | null, Date | null]}) => {
     },
   }
   return (
-      <div className="bg-white-100 py-4 border border-black-10 rounded-lg cursor-pointer w-[100%]">
+      <div className="bg-white-100 py-4 border border-black-10 rounded-lg cursor-pointer w-[100%] my-8">
         <p className=" font-medium px-8">GENDER DISTRIBUTION</p>
         <p className="text-sm text-black-50 pb-4 px-8">Gender distribution for operatives you have hired</p>
         <Chart

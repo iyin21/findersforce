@@ -103,6 +103,7 @@ const Planner = () => {
                                     onTabChange={setActiveTab}
                                     color="yellow"
                                     keepMounted={false}
+                                    data-testid="planner_tabs"
                                 >
                                     <Tabs.List>
                                         <Tabs.Tab value="first">
