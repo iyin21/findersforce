@@ -4,9 +4,9 @@ import { Dispatch, SetStateAction, useState } from "react"
 import { IoClose } from "react-icons/io5"
 import { object, string } from "yup"
 import Button from "../../../components/Core/Buttons/Button"
-import TagsInput from "react-tagsinput"
+import { ReactMultiEmail } from "react-multi-email"
+import "react-multi-email/dist/style.css"
 
-import "react-tagsinput/react-tagsinput.css"
 import { useProfile } from "../../../hooks/profile/use-profile"
 import GoogleAutoComplete from "../../../components/GoogleAutoComplete"
 import RadioButton from "../../../components/Core/Radio/radio"
@@ -24,10 +24,7 @@ const HQAddUser = ({
     isInviting,
     mutateInvite,
 }: AddUserInterface) => {
-    const [email, setEmail] = useState<any[]>([])
-    const handleEmailChange = (tags: any[]) => {
-        setEmail(tags)
-    }
+    const [emails, setEmails] = useState<string[]>([])
 
     const { data } = useProfile()
 
@@ -57,7 +54,7 @@ const HQAddUser = ({
                     <Formik
                         initialValues={{
                             invitedRole: "",
-                            email: email,
+                            email: emails,
                             regionAddress: "",
                         }}
                         validationSchema={object().shape({
@@ -66,7 +63,7 @@ const HQAddUser = ({
                         onSubmit={(values) => {
                             mutateInvite({
                                 invitedRole: values.invitedRole,
-                                email: email,
+                                email: emails,
                                 regionAddress: values.regionAddress,
                                 companyId: data?.company?._id,
                             })
@@ -123,18 +120,43 @@ const HQAddUser = ({
                                 </div>
 
                                 <div>
-                                    <label className="text-3md font-semibold mb-3 text-neutral-80 block">
-                                        Email
-                                    </label>
+                                    <div className="mb-2">
+                                        <label className="text-3md font-semibold text-neutral-80 block">
+                                            Send Invite (s) by Email
+                                        </label>
+                                        <span className="text-md text-black-40">
+                                            Separate email addresses with a
+                                            comma.
+                                        </span>
+                                    </div>
 
-                                    <TagsInput
-                                        value={email}
-                                        onChange={(tags) => {
-                                            handleEmailChange(tags)
-                                            setFieldValue("email", tags)
+                                    <ReactMultiEmail
+                                        placeholder="Input your email"
+                                        emails={emails}
+                                        onChange={(_emails: string[]) => {
+                                            setEmails(_emails)
+                                            setFieldValue("email", _emails)
                                         }}
-                                        inputProps={{
-                                            placeholder: "Email address",
+                                        getLabel={(
+                                            email,
+                                            index,
+                                            removeEmail
+                                        ) => {
+                                            return (
+                                                <div data-tag key={index}>
+                                                    <div data-tag-item>
+                                                        {email}
+                                                    </div>
+                                                    <span
+                                                        data-tag-handle
+                                                        onClick={() =>
+                                                            removeEmail(index)
+                                                        }
+                                                    >
+                                                        ×
+                                                    </span>
+                                                </div>
+                                            )
                                         }}
                                     />
 

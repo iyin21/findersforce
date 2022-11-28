@@ -4,9 +4,10 @@ import { Dispatch, SetStateAction, useState } from "react"
 import { IoClose } from "react-icons/io5"
 import { object, string } from "yup"
 import Button from "../../../components/Core/Buttons/Button"
-import TagsInput from "react-tagsinput"
 
-import "react-tagsinput/react-tagsinput.css"
+import { ReactMultiEmail } from "react-multi-email"
+import "react-multi-email/dist/style.css"
+
 import { useProfile } from "../../../hooks/profile/use-profile"
 
 export interface AddUserInterface {
@@ -22,10 +23,7 @@ const AddUser = ({
     isInviting,
     mutateInvite,
 }: AddUserInterface) => {
-    const [email, setEmail] = useState<any[]>([])
-    const handleEmailChange = (tags: any[]) => {
-        setEmail(tags)
-    }
+    const [emails, setEmails] = useState<string[]>([])
 
     const { data } = useProfile()
 
@@ -54,7 +52,7 @@ const AddUser = ({
                     <Formik
                         initialValues={{
                             invitedRole: "SHIFT-MANAGER",
-                            email: email,
+                            email: emails,
                             regionAddress: data?.location,
                         }}
                         validationSchema={object().shape({
@@ -63,7 +61,7 @@ const AddUser = ({
                         onSubmit={(values) => {
                             mutateInvite({
                                 invitedRole: values.invitedRole,
-                                email: email,
+                                email: emails,
                                 regionAddress: data?.location,
                                 companyId: data?.company?._id,
                             })
@@ -76,14 +74,33 @@ const AddUser = ({
                                         Email
                                     </label>
 
-                                    <TagsInput
-                                        value={email}
-                                        onChange={(tags) => {
-                                            handleEmailChange(tags)
-                                            setFieldValue("email", tags)
+                                    <ReactMultiEmail
+                                        placeholder="Input your email"
+                                        emails={emails}
+                                        onChange={(_emails: string[]) => {
+                                            setEmails(_emails)
+                                            setFieldValue("email", _emails)
                                         }}
-                                        inputProps={{
-                                            placeholder: "Email address",
+                                        getLabel={(
+                                            email,
+                                            index,
+                                            removeEmail
+                                        ) => {
+                                            return (
+                                                <div data-tag key={index}>
+                                                    <div data-tag-item>
+                                                        {email}
+                                                    </div>
+                                                    <span
+                                                        data-tag-handle
+                                                        onClick={() =>
+                                                            removeEmail(index)
+                                                        }
+                                                    >
+                                                        ×
+                                                    </span>
+                                                </div>
+                                            )
                                         }}
                                     />
 
