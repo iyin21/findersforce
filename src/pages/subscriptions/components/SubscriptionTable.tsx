@@ -2,6 +2,7 @@ import { SubscriptionTableInterface } from "../../../types/subscriptions/interfa
 import ProfileImage from "../../../assets/ProfileImage.svg"
 import { Modal, Progress, Table } from "@mantine/core"
 import { useState } from "react"
+import MobileSubscriptionTable from "./MobileSubscriptionTable"
 
 
 const SubscriptionTable = ({ elements }: SubscriptionTableInterface) => {
@@ -64,6 +65,11 @@ const SubscriptionTable = ({ elements }: SubscriptionTableInterface) => {
           
         </Table>
 
+      </div>
+      <div className="block lg:hidden">
+        <MobileSubscriptionTable
+          elements={elements}
+        />
       </div>
 
       {opened &&
