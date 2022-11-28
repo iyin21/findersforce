@@ -1,15 +1,14 @@
 import Sidebar from "./sidebar/Sidebar"
 import NavBar from "./navbar/NavBar"
 import { LayoutProps } from "../../types/layout/interfaces"
-import { useState } from "react";
-import { Drawer } from "@mantine/core";
+import { useState } from "react"
+import { Drawer } from "@mantine/core"
 
-    
 const Layout = ({ children, noTopNav }: LayoutProps) => {
-    const [openSideBar, setOpenSideBar] = useState(false);
+    const [openSideBar, setOpenSideBar] = useState(false)
     return (
         <div className="h-screen relative">
-            <div className="w-full fixed right-0 z-20">
+            <div className="w-full fixed right-0 z-20 bg-white-100 md:bg-transparent pb-3 md:pb-0">
                 <NavBar noTopNav={noTopNav} setOpenSideBar={setOpenSideBar} />
             </div>
             <div className="relative md:pl-64 h-full">
@@ -30,19 +29,22 @@ const Layout = ({ children, noTopNav }: LayoutProps) => {
                             drawer: {
                                 padding: 0,
                                 backgroundColor: "transparent",
-                                overflow: "auto"
-                            }
+                                overflow: "auto",
+                            },
                         })}
                     >
                         <div className="">
                             <div className="w-full h-3/4 md:h-[500px] overflow-y-scroll md:pt-[75px] bg-black-100">
-                                <Sidebar setOpenSideBar={setOpenSideBar}/>
+                                <Sidebar setOpenSideBar={setOpenSideBar} />
                             </div>
                         </div>
-                        
                     </Drawer>
                 </>
-                <main className={`w-full h-full overflow-y-auto  ${!noTopNav && "py-5 lg:px-2"} `}>
+                <main
+                    className={`w-full h-full overflow-y-auto  ${
+                        !noTopNav && "py-5 lg:px-2"
+                    } `}
+                >
                     {children}
                 </main>
             </div>

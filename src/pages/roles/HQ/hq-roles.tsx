@@ -190,7 +190,7 @@ const HQRoles = () => {
     ])
     return (
         <div>
-            <div className="p-6 mt-4 md:mt-14">
+            <div className="p-6 mt-8 md:mt-14">
                 {openConfirmDelete && (
                     <ConfirmDelete
                         opened={openConfirmDelete}
@@ -287,8 +287,7 @@ const HQRoles = () => {
                                                 : "bg-red-40 text-white-100 text-3sm"
                                         }`}
                                     >
-                                        {/* {acceptedData?.data?.length || 0} */}{" "}
-                                        0
+                                        {sMData?.data?.length || 0}{" "}
                                     </span>
                                 </p>
                             </Tabs.Tab>

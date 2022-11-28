@@ -65,6 +65,61 @@ export const useInviteShiftManger = () => {
         }
     )
 }
+export const useInviteHQ = () => {
+    const createInvite = async (requestBody: InviteShiftMangerInterface) => {
+        const newFormData = new FormData()
+
+        newFormData.append("invitedRole", requestBody.invitedRole)
+
+        // if (requestBody.companyName === undefined) {
+        //     ;("")
+        // } else {
+        //     // @ts-ignore
+        //     newFormData.append("companyName", requestBody.companyName)
+        // }
+
+        // @ts-ignore
+        newFormData.append("companyId", requestBody.companyId)
+
+        // @ts-ignore
+        newFormData.append("regionAddress", requestBody.regionAddress)
+
+        requestBody.email.map((item) => newFormData.append("email[]", item))
+
+        const { data } = await axiosInstance.post("/invitation", newFormData, {
+            headers: {
+                "Content-Type": "multipart/form-data",
+                Authorization: `${requestBody.jwt}`,
+            },
+        })
+        return data
+    }
+
+    return useMutation<any, AxiosError, InviteShiftMangerInterface>(
+        ["inviteShiftManager"],
+        (requestBody: InviteShiftMangerInterface) => createInvite(requestBody),
+        {
+            onSuccess: (data) => {
+                showNotification({
+                    message: data?.message || data?.message,
+                    title: "Success",
+                    color: "green",
+                })
+            },
+            onError: (err: AxiosError) => {
+                showNotification({
+                    message:
+                        // @ts-ignore
+                        err.response?.data?.error ||
+                        err.message ||
+                        "An error occurred",
+                    title: "Error",
+                    color: "red",
+                })
+            },
+        }
+    )
+}
 
 function useGetRoles({ status, signal, page, limit, depotRole }: RolesRequest) {
     const { state } = useAuthContext()

@@ -8,19 +8,24 @@ import { HqProfileInitialValue } from "./utils/hq-initialvalues"
 import ProfileFormFields from "./utils/profile-form-fields"
 import { Alert } from "@mantine/core"
 import { useCreateProfile } from "../../hooks/profile/use-profile"
-import { useInviteShiftManger } from "../../hooks/roles/use-roles"
+import { useInviteHQ } from "../../hooks/roles/use-roles"
+import { UseMutateFunction } from "react-query"
+import { AxiosError } from "axios"
+import { ProfileRequest } from "../../types/profile/interface"
 
 const HQProfile = () => {
-    const [searchParams] = useSearchParams()
+    const [step, setStep] = useState(0)
+
     const [openSuccessModal, setOpenSuccessModal] = useState(false)
 
-    const { mutate: mutateUser, isSuccess, data } = useInviteShiftManger()
+    const { mutate: mutateUser, isSuccess, data } = useInviteHQ()
+    const { mutate, isLoading, isError, data: profileData } = useCreateProfile()
 
     useEffect(() => {
         if (isSuccess) {
             setOpenSuccessModal(true)
         }
-    }, [data])
+    }, [data, isError])
 
     return (
         <div className="grid grid-cols-1 lg:grid-cols-2 text-white h-screen lg:bg-[black]">
@@ -43,10 +48,16 @@ const HQProfile = () => {
                         mutateUser({
                             email: values.email,
                             invitedRole: values.accountType,
-                            regionAddress: values.location,
-                            companyName: searchParams.get("companyName"),
+                            regionAddress: values.regionAddress,
+                            jwt: profileData?.jwt.token,
+                            companyId: profileData?.user?.depotCompany?._id,
                         })
                     }}
+                    mutate={mutate}
+                    isLoading={isLoading}
+                    isError={isError}
+                    setStep={setStep}
+                    step={step}
                 >
                     {ProfileFormFields.map(
                         ({ validationSchema, Component, name }) => (
@@ -56,7 +67,7 @@ const HQProfile = () => {
                                 onSubmit={() => {}}
                                 validationSchema={validationSchema}
                             >
-                                <Component />
+                                <Component setStep={setStep} step={step} />
                             </FormikStep>
                         )
                     )}
@@ -68,7 +79,18 @@ const HQProfile = () => {
 
 export default HQProfile
 
-interface TWizardProps extends FormikConfig<FormikValues> {}
+interface TWizardProps extends FormikConfig<FormikValues> {
+    mutate: UseMutateFunction<
+        any,
+        AxiosError<unknown, any>,
+        ProfileRequest,
+        unknown
+    >
+    isLoading: boolean
+    isError: boolean
+    setStep: React.Dispatch<React.SetStateAction<number>>
+    step: number
+}
 
 export interface FormikStepProps
     extends Pick<
@@ -92,11 +114,10 @@ export function FormikStepper({ ...props }: TWizardProps) {
     const navigate = useNavigate()
     const [searchParams] = useSearchParams()
     const [error, setError] = useState("")
-    const [step, setStep] = useState(0)
-    const currentChild = childrenArray[step]
+    const currentChild = childrenArray[props.step]
 
     function isLastStep() {
-        return step === childrenArray.length - 1
+        return props.step === childrenArray.length - 1
     }
 
     // const handlePreviousStep = () => {
@@ -106,10 +127,9 @@ export function FormikStepper({ ...props }: TWizardProps) {
     //         navigate(`/auth/sign-up`)
     //     }
     // }
-    const { mutate, isLoading, isError } = useCreateProfile()
 
     const handleCreateProfile = (values: FormikValues) => {
-        mutate({
+        props.mutate({
             firstName: values.firstName,
             lastName: values.lastName,
             passwordConfirm: values.passwordConfirm,
@@ -120,16 +140,16 @@ export function FormikStepper({ ...props }: TWizardProps) {
 
     return (
         <div>
-            <Header step={step} />
+            <Header step={props.step} />
             <Formik
                 {...props}
                 validationSchema={currentChild.props.validationSchema}
                 onSubmit={(values, helpers) => {
                     helpers.setSubmitting(true)
-                    if (!isError) {
-                        setStep(0)
+                    if (props.isError === true) {
+                        props.setStep(0)
                     } else if (!isLastStep()) {
-                        setStep(step + 1)
+                        props.setStep(props.step + 1)
                     } else {
                         props.onSubmit(values, helpers) as Promise<any>
                     }
@@ -157,13 +177,13 @@ export function FormikStepper({ ...props }: TWizardProps) {
                                     className="w-full mt-16"
                                     variant="primary"
                                     type="submit"
-                                    disabled={isLoading}
+                                    disabled={props.isLoading}
                                     style={{
                                         backgroundColor:
                                             "rgba(254, 215, 10, 1)",
                                     }}
                                     onClick={() => {
-                                        step === 0
+                                        props.step === 0
                                             ? handleCreateProfile(values)
                                             : ""
                                     }}
@@ -174,7 +194,7 @@ export function FormikStepper({ ...props }: TWizardProps) {
                                         ? "Finish"
                                         : "Next"}
                                 </Button>
-                                {step === 1 && (
+                                {props.step === 1 && (
                                     <Button
                                         size="normal"
                                         className="w-full  font-semibold"

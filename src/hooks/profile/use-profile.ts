@@ -31,6 +31,18 @@ export const useProfile = () => {
     )
 }
 
+interface InviteProfileResponse {
+    jwt: {
+        token: string
+    }
+    user: {
+        depotCompany: {
+            _id: string
+            name: string
+        }
+    }
+}
+
 export const useCreateProfile = () => {
     const { state } = useAuthContext()
 
@@ -48,7 +60,7 @@ export const useCreateProfile = () => {
 
         return data.data
     }
-    return useMutation<any, AxiosError, ProfileRequest>(
+    return useMutation<InviteProfileResponse, AxiosError, ProfileRequest>(
         ["createJobList"],
         (requestBody) => createProfileRequest(requestBody),
         {
