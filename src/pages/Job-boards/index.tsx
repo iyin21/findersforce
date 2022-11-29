@@ -17,7 +17,7 @@ import { JobBoardResponseInterface } from "../../types/job-board/interface"
 import Layout from "../../components/Layout/index"
 
 const JobBoards = () => {
-    const [activeTab, setActiveTab] = useState<string | null>("active")
+    const [activeTab, setActiveTab] = useState<string | null>("posts")
     const [openJobPost, setOpenJobPost] = useState(false)
     const [openSuccess, setOpenSuccess] = useState(false)
     const [activeActivePage, setActivePage] = useState(1)
@@ -198,19 +198,19 @@ const JobBoards = () => {
                                 data-testid="job_tabs"
                             >
                                 <Tabs.List>
-                                    <Tabs.Tab value="active">
+                                    <Tabs.Tab value="posts">
                                         {" "}
                                         <p
                                             className={
-                                                activeTab === "active"
+                                                activeTab === "posts"
                                                     ? "text-black-100 text-lg font-creatoMedium active"
                                                     : "font-creatoMedium text-black-40 text-lg inactive"
                                             }
                                         >
-                                            Active
+                                            Posts
                                             <span
                                                 className={`{" ml-2 py-1 px-2 rounded md:text-white-100 "} ${
-                                                    activeTab === "active"
+                                                    activeTab === "posts"
                                                         ? "bg-white-100  lg:text-white-100 text-black-100  md:bg-red-100 text-3sm "
                                                         : "bg-red-40 text-white-100 text-3sm"
                                                 }`}
@@ -241,7 +241,7 @@ const JobBoards = () => {
                                     </Tabs.Tab>
                                 </Tabs.List>
 
-                                <Tabs.Panel value="active">
+                                <Tabs.Panel value="posts">
                                     {activeData?.data &&
                                     activeData?.data?.length === 0 ? (
                                         <EmptyState
