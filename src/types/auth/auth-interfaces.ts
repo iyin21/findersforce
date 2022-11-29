@@ -26,6 +26,10 @@ export interface User {
     twoFa_enabled?: boolean;
     twoFa_type?: any;
     depotRole: string
+    company: {
+        _id: string
+        name: string
+    }
 }
 
 export interface LoginResponse {

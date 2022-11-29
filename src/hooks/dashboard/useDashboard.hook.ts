@@ -8,15 +8,17 @@ import useAuthContext from "../auth-hooks/useAuth"
 function useGetDashboardAnalytics ({
     dateFrom,
     dateTo,
+    location,
 }: {
     dateFrom: Date | null | undefined,
-    dateTo: Date | null | undefined
+    dateTo: Date | null | undefined,
+    location?: string | null | undefined
 }) {
     const { state } = useAuthContext()
 
     const getDashboardAnalytics = async () => {
         const { data } = await axiosInstance.get("/depot/analytics", {
-        params: {dateFrom, dateTo},
+        params: {dateFrom, dateTo, location},
         headers: {
             Authorization: `Bearer ${state?.jwt?.token}`,
             },
@@ -24,7 +26,7 @@ function useGetDashboardAnalytics ({
             return data.data           
         }
         return useQuery<string, AxiosError, DashboardData>(
-            ["dashbordAnalytics", {dateFrom, dateTo}],
+            ["dashbordAnalytics", {dateFrom, dateTo, location}],
             getDashboardAnalytics,
             {
                 onError: (err) => {

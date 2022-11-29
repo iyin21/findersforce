@@ -13,21 +13,33 @@ import BarChart from "../../components/BarChart"
 import PieChart from "../../components/PieChart"
 import Rating from "../../components/rating/Rating"
 import Layout from "../../../../components/Layout"
-import { useGetDashboardAnalytics } from "../../../../hooks/dashboard/useDashboard.hook"
+import { useGetDashboardAnalytics, useGetDepotRegions } from "../../../../hooks/dashboard/useDashboard.hook"
 import { useGetShiftHistory } from "../../../../hooks/planner/usePlanner.hooks"
 import dayjs from "dayjs"
 import { useNavigate } from "react-router-dom"
 import Empty from "../../../../assets/Empty.png"
 import { DateRangePicker, DateRangePickerValue } from "@mantine/dates"
-import { useState } from "react"
+import {  useState } from "react"
 import Desktop from "../../../../assets/desktop.png"
 import { Select } from "@mantine/core"
+import useAuthContext  from "../../../../hooks/auth-hooks/useAuth"
+
 
 const DepotHqDashboard = () => {
     const navigate = useNavigate()
     const handleNavigate = () => {
         navigate(`/planner`)
     }
+
+    const { state } = useAuthContext();
+    const companyId = state?.user?.company?._id;
+
+
+    
+   
+   const { data: regionData } = useGetDepotRegions({
+    id: companyId
+    });
 
     const currentDate = new Date();
     currentDate.setDate(currentDate.getDate() - 7)
@@ -38,9 +50,12 @@ const DepotHqDashboard = () => {
         new Date(),
       ]);
 
+    const [selectValue, setSelectValue] = useState<string | null>(null);
+
     const {data:dashboardAnalytics} = useGetDashboardAnalytics({
         dateFrom: value?.[0],
-        dateTo: value?.[1]
+        dateTo: value?.[1],
+        location: selectValue
     });
 
     const {
@@ -53,6 +68,18 @@ const DepotHqDashboard = () => {
     } = useGetShiftHistory({
         ongoing: true,
     })
+
+    let regionAddress: string[] 
+if (regionData) {
+         regionAddress = regionData?.map((item) => {
+        return (item?.address)
+       })
+       
+} else {
+     regionAddress = []
+}
+
+
 
 
     
@@ -78,12 +105,9 @@ const DepotHqDashboard = () => {
                          <Select
                                 
                                 placeholder="All Locations"
-                                data={[
-                                { value: 'react', label: 'React' },
-                                { value: 'ng', label: 'Angular' },
-                                { value: 'svelte', label: 'Svelte' },
-                                { value: 'vue', label: 'Vue' },
-                                ]}
+                                data={regionAddress}
+                                value={selectValue} 
+                                onChange={setSelectValue}
                          />
                     </div>
                 </section>
