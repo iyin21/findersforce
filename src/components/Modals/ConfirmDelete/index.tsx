@@ -8,7 +8,9 @@ export interface ConfirmDeleteInterface {
     setOpened: Dispatch<SetStateAction<boolean>>
     handleDelete: () => void
     isDeleting: boolean
-    userName: string
+    userName?: string
+    title: string
+    description: string
 }
 
 const ConfirmDelete = ({
@@ -17,6 +19,8 @@ const ConfirmDelete = ({
     userName,
     handleDelete,
     isDeleting,
+    title,
+    description,
 }: ConfirmDeleteInterface) => {
     return (
         <div>
@@ -36,12 +40,10 @@ const ConfirmDelete = ({
 
                 <div className="px-3 py-5">
                     <h3 className="text-2xl md:text-3xl font-bold text-center mb-3">
-                        Remove {userName}?
+                        {title} {userName}?
                     </h3>
                     <p className="text-black-90 text-md md:text-lg mx-auto w-4/5">
-                        You are about to remove a user with administrative
-                        access. They won`t be able to access FindersForce until
-                        you invite them again. Do you wish to continue?
+                        {description}
                     </p>
                 </div>
 
