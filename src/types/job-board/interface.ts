@@ -107,3 +107,7 @@ export interface JobInformationInterface {
     jobType: string | undefined
     createdAt: string | undefined
 }
+
+export interface BulkDeleteJobRequest {
+    jobIds: string[]
+}

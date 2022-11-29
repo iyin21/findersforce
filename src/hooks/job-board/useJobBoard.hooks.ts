@@ -1,7 +1,8 @@
 import { useMutation, useQuery } from "@tanstack/react-query"
 import { axiosInstance } from "../../services/api.service"
-import { AxiosError, AxiosResponse } from "axios"
+import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios"
 import {
+    BulkDeleteJobRequest,
     JobBoardByIdResponse,
     JobBoardRequest,
     JobBoardResponse,
@@ -177,6 +178,43 @@ function useDeleteJobList({ id }: { id: string | undefined }) {
     return useMutation<AxiosResponse, AxiosError>(deleteJob)
 }
 
+function useBulkDeleteJobList() {
+    const { state } = useAuthContext()
+    const bulkDeleteJob = async (requestBody: BulkDeleteJobRequest) => {
+        const config: AxiosRequestConfig = {
+            headers: {
+                Authorization: `${state.jwt?.token}`,
+            },
+        }
+        const { data } = await axiosInstance.patch(
+            `/job-listing/bulk/delete`,
+            requestBody,
+            config
+        )
+
+        return data
+    }
+    return useMutation<any, AxiosError, BulkDeleteJobRequest>(
+        (requestBody: BulkDeleteJobRequest) => bulkDeleteJob(requestBody),
+        {
+            onSuccess: (data) => {
+                showNotification({
+                    message: data?.message || data.message,
+                    title: "Success",
+                    color: "green",
+                })
+            },
+            onError: (err) => {
+                showNotification({
+                    message: err.message || "An error occurred",
+                    title: "Error",
+                    color: "red",
+                })
+            },
+        }
+    )
+}
+
 // get job listing by id
 function useGetJobListingById({ id }: { id: string | undefined }) {
     const { state } = useAuthContext()
@@ -312,4 +350,5 @@ export {
     useCreateJobList,
     useGetSingleJobApplication,
     useUpdateJobList,
+    useBulkDeleteJobList,
 }
