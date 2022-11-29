@@ -88,9 +88,6 @@ const JobBoardTable = ({
             <td
                 role="gridcell"
                 className="cursor-pointer h-[60px] border-b border-neutral-5"
-                // onClick={() => {
-                //     setActiveId(element._id)
-                // }}
                 data-testid="job_board_table"
             >
                 <IoIosArrowForward size={30} style={{ color: "#889088" }} />

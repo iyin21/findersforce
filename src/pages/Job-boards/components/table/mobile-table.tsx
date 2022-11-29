@@ -1,15 +1,15 @@
 import dayjs from "dayjs"
 import { IoIosArrowForward } from "react-icons/io"
 import { JobBoardResponseInterface } from "../../../../types/job-board/interface"
-import { Checkbox } from "../../../../components/index"
+// import { Checkbox } from "../../../../components/index"
 import { JobBoardInterface } from "./job-table"
 import { useNavigate } from "react-router-dom"
 
 const MobileJobTable = ({
     elements,
     status,
-    handleCheckedJob,
-    checkedJob,
+    // handleCheckedJob,
+    // checkedJob,
     setDeleteId,
     setOpenJobPost,
     setDraftStatus,
@@ -41,7 +41,7 @@ const MobileJobTable = ({
                                 setDeleteId(element?._id)
                             }}
                         >
-                            <Checkbox
+                            {/* <Checkbox
                                 id={element?._id}
                                 className="rounded-lg"
                                 name={element?.jobType?.name}
@@ -49,7 +49,7 @@ const MobileJobTable = ({
                                 checked={checkedJob.includes(element?._id)}
                                 value={element?._id}
                                 data-testid="checkbox"
-                            />
+                            /> */}
                             <label
                                 htmlFor={element?.jobType?.name}
                                 className="capitalize text-black-80"

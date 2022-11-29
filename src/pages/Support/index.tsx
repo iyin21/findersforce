@@ -31,7 +31,7 @@ const Support = () => {
                     <CgSpinner className="animate-spin text-primary-90 text-4xl" />
                 </div>
             ) : (
-                <div className="pt-6 pr-6">
+                <div className="md:p-6 p-6 mt-4 md:mt-14">
                     <div className="flex justify-between pl-6 pr-6">
                         <div>
                             <h5 className="font-bold lg:text-3xl text-2xl mb-2">
@@ -56,10 +56,10 @@ const Support = () => {
                     {allData && allData?.data.length > 0 ? (
                         phase === 1 ? (
                             <ReturningSupport
-                            setPhase={setPhase}
-                            setActiveId={setActiveId}
-                            handleRefetch={handleRefetch}
-                        />
+                                setPhase={setPhase}
+                                setActiveId={setActiveId}
+                                handleRefetch={handleRefetch}
+                            />
                         ) : (
                             <SingleComplaint
                                 setPhase={setPhase}
@@ -67,11 +67,10 @@ const Support = () => {
                             />
                         )
                     ) : (
-                        
                         <EmptyState
-                                handleClick={() => setOpenModal(true)}
-                                showSendComplaintButton
-                            />
+                            handleClick={() => setOpenModal(true)}
+                            showSendComplaintButton
+                        />
                     )}
                 </div>
             )}
