@@ -12,7 +12,7 @@ test("renders dashboard and links to view ongoing shifts", async ({page}) => {
                 await page.waitForSelector('text=Dashboard');
 
                 await page.click("[data-testid='ongoingData_link']");
-                await expect(page.locator('text=Operatives turn up for their shifts in one glance')).toBeVisible();
+                await page.waitForSelector('text=Operatives turn up for their shifts in one glance');
 });
 
 test("renders dashboard and links to view upcoming shifts", async ({page}) => {
@@ -26,5 +26,5 @@ test("renders dashboard and links to view upcoming shifts", async ({page}) => {
                 await page.waitForSelector('text=Dashboard');
 
                 await page.click("[data-testid='upcomingData_link']");
-                await expect(page.locator('text=Operatives turn up for their shifts in one glance')).toBeVisible();
+                await page.waitForSelector('text=Operatives turn up for their shifts in one glance');
 });

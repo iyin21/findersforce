@@ -91,3 +91,32 @@ export interface DashboardResponse {
      percentageFemale: number,
      percentageRatherNotSay: number
  }
+
+ export interface RegionsResponse {
+    status: string;
+    message: string;
+    data: Regions[]
+ }
+
+ export interface Regions {
+    _id: string;
+    depotCompany: string;
+    address: string;
+    createdBy: string;
+    createdAt: string;
+    updatedAt: string;
+    location: Location;
+
+ }
+
+ export interface Location {
+    type: string;
+    coordinates: number[];
+    formattedAddress: string;
+    street: string;
+    city: string;
+    state: string;
+    zipcode: string;
+    country: string;
+    _id: string
+ }

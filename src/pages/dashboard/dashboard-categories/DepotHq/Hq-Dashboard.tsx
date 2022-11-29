@@ -22,6 +22,7 @@ import { DateRangePicker, DateRangePickerValue } from "@mantine/dates"
 import { useState } from "react"
 import Desktop from "../../../../assets/desktop.png"
 import { Select } from "@mantine/core"
+
 const DepotHqDashboard = () => {
     const navigate = useNavigate()
     const handleNavigate = () => {
@@ -52,6 +53,7 @@ const DepotHqDashboard = () => {
     } = useGetShiftHistory({
         ongoing: true,
     })
+
 
     
     return (
