@@ -1,5 +1,5 @@
 import { test, expect } from "@playwright/test"
-const URL = "http:localhost:3000/dashboard"
+const URL = "http://localhost:3000/dashboard"
 
 test("renders dashboard and links to view ongoing shifts", async ({ page }) => {
     await page.goto(URL)
