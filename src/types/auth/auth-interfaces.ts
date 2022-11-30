@@ -4,28 +4,32 @@ export interface jwtData {
 }
 
 export interface User {
-    _id: string
-    firstName: string
-    lastName: string
-    email: string
-    companyName: string
-    accountType: string
-    verified: boolean
-    createdAt: Date | string
-    updatedAt: Date | string
+    _id: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    companyName: string;
+    accountType: string;
+    verified: boolean;
+    createdAt: Date | string;
+    updatedAt: Date | string;
+    accountActivated?: boolean;
+    averageRating?: number;
+    bio?: string;
+    banned?: boolean;
+    qualification?: Array<string>;
+    profileImageUrl?: any;
+    emailVerified?: boolean;
+    resume?: any;
+    skillSets?: Array<string>;
+    username?: string;
+    twoFa_enabled?: boolean;
+    twoFa_type?: any;
     depotRole: string
-    accountActivated?: boolean
-    averageRating?: number
-    bio?: string
-    banned?: boolean
-    qualification?: Array<string>
-    profileImageUrl?: any
-    emailVerified?: boolean
-    resume?: any
-    skillSets?: Array<string>
-    username?: string
-    twoFa_enabled?: boolean
-    twoFa_type?: any
+    company: {
+        _id: string
+        name: string
+    }
 }
 
 export interface LoginResponse {
