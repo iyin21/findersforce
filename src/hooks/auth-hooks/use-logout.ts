@@ -8,7 +8,7 @@ const handleLogOut = async (
     navigate: (arg0: string) => void
 ) => {
     const data = await axiosPrivate.post(
-        "https://findersforce-api.workcube.com.ng/api/v1/auth/logout",
+        "/logout",
         {
             withCredentials: true,
             headers: {

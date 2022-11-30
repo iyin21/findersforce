@@ -3,18 +3,18 @@ import useAuthContext from "./auth-hooks/useAuth"
 import { useQuery } from "@tanstack/react-query"
 import { AxiosError } from "axios"
 import { showNotification } from "@mantine/notifications"
-import useAxiosPrivate from "./../services/usePrivateAxios"
+import useAxiosInstance from "./../services/useAxiosinstance"
 import { NotificationResponse } from "types/notification-types"
 
 
 
 export default function useUserNotification() {
     const { state } = useAuthContext()
-    const axiosPrivate = useAxiosPrivate()
+    const axiosPrivate = useAxiosInstance()
     // /** API methods */
     const getUserNotifications = async () => {
         const { data } = await axiosPrivate.get(
-            "https://findersforce-api.workcube.com.ng/api/v1/user/notifications",
+            "/user/notifications",
             {
                 withCredentials: true,
                 headers: {

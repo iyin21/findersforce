@@ -1,4 +1,4 @@
-import axios, { axiosPrivate } from "../../services/api.service"
+import { axiosPrivate, axiosInstance } from "../../services/api.service"
 import useAuthContext from "./useAuth"
 
 const useRefreshToken = () => {
@@ -9,8 +9,8 @@ const useRefreshToken = () => {
             method: "POST",
         })
 
-        const res = await axios.get(
-            "https://findersforce-api.workcube.com.ng/api/v1/user/profile",
+        const res = await axiosInstance.get(
+            "/user/profile",
             {
                 headers: {
                     Authorization: `Bearer ${response.data.data.jwt.token}`,

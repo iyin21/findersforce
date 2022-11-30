@@ -9,7 +9,7 @@ export const axiosInstance = axios.create({
 })
 
 export default axios.create({
-    baseURL: "https://findersforce-api.workcube.com.ng/api/v1/auth",
+    baseURL: `${import.meta.env.VITE_BASE_AUTH_URL}`,
     withCredentials: true,
     headers: {
         "Content-Type": "application/json",
@@ -17,12 +17,12 @@ export default axios.create({
 })
 
 export const axiosPrivate = axios.create({
-    baseURL: "https://findersforce-api.workcube.com.ng/api/v1/auth",
+    baseURL: `${import.meta.env.VITE_BASE_AUTH_URL}`,
     headers: { "Content-Type": "application/json" },
     withCredentials: true,
 })
 
 export const signupAxios = axios.create({
-    baseURL: "https://findersforce-api.workcube.com.ng/api/v1/",
+    baseURL: `${import.meta.env.VITE_BASE_URL}`,
     headers: { "Content-Type": "application/json" },
 })

@@ -1,5 +1,6 @@
 import { AuthActionType } from "types/auth/auth-interfaces"
 import axios from "../../services/api.service"
+import { axiosInstance } from "../../services/api.service"
 
 const login = (
     email: string,
@@ -15,15 +16,16 @@ const login = (
         .post("/login", JSON.stringify({ email: email, password: password }))
         .then(async (response) => {
             const user = response.data?.data?.user
-            const res = await axios.get(
-                "https://findersforce-api.workcube.com.ng/api/v1/user/profile",
+            const res = await axiosInstance.get(
+                "/user/profile",
                 {
                     headers: {
                         Authorization: `Bearer ${response.data.data.jwt.token}`,
                     },
                 }
             )
-            if (user.accountType === "DEPOT") {
+
+            if (user.accountType === "DEPOT" || user?.accountType === "ADMIN") {
                 dispatch({
                     type: "SET_USER_DATA",
                     payload: {
