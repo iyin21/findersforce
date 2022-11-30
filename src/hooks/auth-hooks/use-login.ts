@@ -13,13 +13,21 @@ const login = (
 ) => {
     axios
         .post("/login", JSON.stringify({ email: email, password: password }))
-        .then((response) => {
+        .then(async (response) => {
             const user = response.data?.data?.user
+            const res = await axios.get(
+                "https://findersforce-api.workcube.com.ng/api/v1/user/profile",
+                {
+                    headers: {
+                        Authorization: `Bearer ${response.data.data.jwt.token}`,
+                    },
+                }
+            )
             if (user.accountType === "DEPOT") {
                 dispatch({
                     type: "SET_USER_DATA",
                     payload: {
-                        user: user,
+                        user: res.data.data,
                         jwt: response.data.data.jwt,
                     },
                 })

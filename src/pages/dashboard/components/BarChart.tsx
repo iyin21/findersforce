@@ -24,7 +24,7 @@ const BarChart = ({value}:{value: [Date | null, Date | null]}) => {
 
   return (
       <>
-        <div   className="pl-4 pr-10 w-[60%]">
+        <div   className="w-[100%] my-8">
           <div className="bg-yellow-5 rounded-t-lg cursor-pointer ">
             <div className="flex justify-between">
               <div className="px-4">
@@ -42,8 +42,8 @@ const BarChart = ({value}:{value: [Date | null, Date | null]}) => {
               />
             </div>
           </div>
-          <div className="flex bg-red-10 justify-between rounded-b-lg py-2">
-            <div className="flex "> 
+          <div className="flex justify-between gap- bg-red-10 rounded-b-lg py-2">
+            <div className="flex w-[80%] "> 
               <img src={CanceledShifts} alt=""  className=" px-2"/>
               <p className="text-xs font-medium text-red-100 font-creatoMedium">SHIFTS CANCELED <br />
                 <span className="text-xl font-extrabold text-black-100 font-creatoBold">{dashboardAnalytics?.shiftsCancelled?.thisMonth} </span>
@@ -52,8 +52,8 @@ const BarChart = ({value}:{value: [Date | null, Date | null]}) => {
                 <span className="text-sm text-black-70 font-creato">{dayjs(value[1]).format("YYYY-MM-DD")}</span> 
               </p>
             </div>
-            <div className="px-2">
-              <span className=" font-bold text-xs pt-3 font-creatoBold">View Details </span>
+            <div className="w-[30%]">
+              <span className=" font-bold text-3sm pt-1 font-creatoBold">View Details </span>
               <img src={UpperRightArrow} alt="" className="inline" />
             </div>
           </div>

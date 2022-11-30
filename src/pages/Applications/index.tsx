@@ -33,7 +33,7 @@ const Applications = () => {
     return (
         <Layout pageTitle={"Pending"}>
             {phase === 1 ? (
-                <div className="p-4">
+                <div className="md:p-6 p-6 mt-4 md:mt-14">
                     <h5 className="font-bold lg:text-3xl text-2xl mb-2">
                         Applications
                     </h5>

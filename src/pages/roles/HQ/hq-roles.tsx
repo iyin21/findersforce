@@ -200,6 +200,10 @@ const HQRoles = () => {
                         }}
                         isDeleting={isDeleting}
                         userName={userEmail}
+                        title="Remove"
+                        description=" You are about to remove a user with administrative
+                        access. They won`t be able to access FindersForce until
+                        you invite them again. Do you wish to continue?"
                     />
                 )}
                 {openAddUser && (
