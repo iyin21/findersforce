@@ -27,7 +27,7 @@ const LocationBasedData = () => {
     ])
     return (
         <Layout pageTitle="Location">
-            <div className="absolute md:top-6 pl-6">
+            <div className="absolute md:top-4 pl-6 z-30">
                 <div className="flex">
                     <div
                         className="hidden lg:block bg-black-10 w-fit h-fit rounded mb-8 cursor-pointer"
@@ -216,7 +216,7 @@ const LocationBasedData = () => {
                     </Tabs.List>
 
                     <Tabs.Panel value="analytics" pt="xs">
-                        <Analytics value={value} />
+                        <Analytics value={value} setValue={setValue}/>
                     </Tabs.Panel>
 
                     <Tabs.Panel value="roles" pt="xs">
