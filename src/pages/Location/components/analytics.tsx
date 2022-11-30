@@ -30,7 +30,7 @@ const Analytics = ({ value }: { value: [Date | null, Date | null] }) => {
         <div className="flex flex-row gap-8 justify-between">
             <div className="basis-3/4">
                 <section>
-                    <div className="flex justify-between my-8">
+                    <div className="flex justify-between my-8 gap-2.5">
                         <Card
                             title={"AMOUNT PAID"}
                             amount={0}

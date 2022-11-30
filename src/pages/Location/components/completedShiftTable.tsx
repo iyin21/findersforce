@@ -1,5 +1,6 @@
 import { Checkbox, Table } from "@mantine/core"
 import { IoIosArrowForward } from "react-icons/io"
+import MobileLocationCompletedShiftTable from "./mobile-tables/mobileLocationComlepletedShiftTable"
 
 const CompletedShiftTable = () => {
     const elements: any[] = [
@@ -154,6 +155,9 @@ const CompletedShiftTable = () => {
                     </thead>
                     <tbody>{rows}</tbody>
                 </Table>
+            </div>
+            <div className="block lg:hidden">
+                <MobileLocationCompletedShiftTable elements={elements}/>
             </div>
         </>
     )

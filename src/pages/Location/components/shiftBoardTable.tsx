@@ -1,6 +1,7 @@
 import { Checkbox, Table } from "@mantine/core"
 import { IoIosArrowForward } from "react-icons/io"
 import { BiUpArrowAlt } from "react-icons/bi"
+import MobileLocationShiftTable from "./mobile-tables/mobileLocationShiftTable"
 
 const ShiftBoard = () => {
     const elements: any[] = [
@@ -174,6 +175,9 @@ const ShiftBoard = () => {
                     </thead>
                     <tbody>{rows}</tbody>
                 </Table>
+            </div>
+            <div className="block lg:hidden">
+                <MobileLocationShiftTable elements={elements} />
             </div>
         </>
     )
