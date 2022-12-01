@@ -3,7 +3,7 @@ import useAuthContext from "./auth-hooks/useAuth"
 import { useQuery } from "@tanstack/react-query"
 import { AxiosError } from "axios"
 import { showNotification } from "@mantine/notifications"
-import useAxiosInstance from "./../services/useAxiosinstance"
+import useAxiosInstance from "./../services/useAxiosInstance"
 import { NotificationResponse } from "types/notification-types"
 
 
