@@ -5,6 +5,7 @@ import dayjs from "dayjs"
 // import { IoIosArrowForward } from "react-icons/io"
 import LocationIcon from "../../../assets/location.svg"
 import { useNavigate } from "react-router-dom"
+import MobileLocationTable from "./mobile-tables/mobile-location-table"
 
 // interface Prop {
 // status?: "pending" | "accepted" | "rejected" ;
@@ -118,6 +119,9 @@ const LocationTable = () => {
                     </thead>
                     <tbody>{rows}</tbody>
                 </Table>
+            </div>
+            <div className="block lg:hidden">
+                <MobileLocationTable elements={elements} />
             </div>
         </>
     )

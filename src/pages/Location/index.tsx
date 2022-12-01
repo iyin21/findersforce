@@ -28,7 +28,7 @@ const Location = () => {
                     </div>
                     <Button
                         variant="primary"
-                        className="py-3 font-semibold font-creatoMedium"
+                        className="py-3 font-semibold font-creatoMedium ml-2 md:ml-0"
                         iconLeft={<FiPlus size={20} />}
                         onClick={() => setOpened(true)}
                         data-testid="add_location_btn"

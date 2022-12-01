@@ -2,6 +2,7 @@ import { Table } from "@mantine/core"
 import dayjs from "dayjs"
 import { MdEdit } from "react-icons/md"
 import { RiDeleteBin5Line } from "react-icons/ri"
+import MobileLocationRoleTable from "./mobile-tables/mobilelocationRoleTable"
 
 const elements = [
     {
@@ -79,9 +80,9 @@ const RolesTable = () => {
             </td>
             <td>
                 {index === 0 ? (
-                    <MdEdit color="rgba(15, 13, 0, 0.6)" size={16}/>
+                    <MdEdit color="rgba(15, 13, 0, 0.6)" size={16} />
                 ) : (
-                    <RiDeleteBin5Line color="#E94444" size={16}/>
+                    <RiDeleteBin5Line color="#E94444" size={16} />
                 )}
             </td>
         </tr>
@@ -111,6 +112,9 @@ const RolesTable = () => {
                     </thead>
                     <tbody>{rows}</tbody>
                 </Table>
+            </div>
+            <div className="block lg:hidden">
+                <MobileLocationRoleTable elements={elements} />
             </div>
         </>
     )
