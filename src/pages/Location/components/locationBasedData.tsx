@@ -27,7 +27,7 @@ const LocationBasedData = () => {
     ])
     return (
         <Layout pageTitle="Location">
-            <div className="absolute md:top-6 pl-6">
+            <div className="absolute md:top-4 pl-6 z-30">
                 <div className="flex">
                     <div
                         className="hidden lg:block bg-black-10 w-fit h-fit rounded mb-8 cursor-pointer"
@@ -41,7 +41,7 @@ const LocationBasedData = () => {
                     </div>
 
                     {activeTab === "analytics" ? (
-                        <div className="pl-4">
+                        <div className="pl-4 hidden md:block">
                             <DateRangePicker
                                 placeholder="Start date - End date"
                                 value={value}
@@ -49,11 +49,7 @@ const LocationBasedData = () => {
                                 radius="md"
                                 amountOfMonths={2}
                                 icon={<BsCalendar2Date />}
-                                styles={() => ({
-                                    wrapper: {
-                                        width: "320px",
-                                    },
-                                })}
+                                
                             />
                         </div>
                     ) : null}
@@ -61,12 +57,12 @@ const LocationBasedData = () => {
             </div>
             <div className="md:p-6 p-6 mt-4 md:mt-10">
                 <div className="flex justify-between items-center">
-                    <div className="flex">
+                    <div className="flex pt-2 md:pt-0">
                         <img src={locationIcon} alt="location" width={37} />
 
-                        <div className="flex flex-col pl-2.5">
+                        <div className="flex flex-col pl-2.5 pr-3">
                             <h1
-                                className="text-2xl md:text-3xl font-creatoBold text-black-100 font-extrabold"
+                                className="text-xl md:text-3xl font-creatoBold text-black-100 font-extrabold"
                                 data-testid="location_title"
                             >
                                 Birmingham, United Kingdom
@@ -125,7 +121,7 @@ const LocationBasedData = () => {
                                 <span
                                     className={`{" ml-2 py-1 px-2 rounded text-white-100 "} ${
                                         activeTab === "roles"
-                                            ? "bg-white lg:text-white-100 text-dark-green-500  lg:bg-red-100 text-3sm "
+                                            ? "bg-white lg:text-white-100 text-dark-green-500  md:bg-red-100 text-3sm "
                                             : "bg-gray-100 text-white-100 text-3sm"
                                     }`}
                                 >
@@ -146,7 +142,7 @@ const LocationBasedData = () => {
                                 <span
                                     className={`{" ml-2 py-1 px-2 rounded text-white-100 "} ${
                                         activeTab === "shifts-board"
-                                            ? "bg-white lg:text-white-100 text-dark-green-500  lg:bg-red-100 text-3sm "
+                                            ? "bg-white lg:text-white-100 text-dark-green-500  md:bg-red-100 text-3sm "
                                             : "bg-gray-100 text-white-100 text-3sm"
                                     }`}
                                 >
@@ -167,7 +163,7 @@ const LocationBasedData = () => {
                                 <span
                                     className={`{" ml-2 py-1 px-2 rounded text-white-100 "} ${
                                         activeTab === "active-shifts"
-                                            ? "bg-white lg:text-white-100 text-dark-green-500  lg:bg-red-100 text-3sm "
+                                            ? "bg-white lg:text-white-100 text-dark-green-500  md:bg-red-100 text-3sm "
                                             : "bg-gray-100 text-white-100 text-3sm"
                                     }`}
                                 >
@@ -188,7 +184,7 @@ const LocationBasedData = () => {
                                 <span
                                     className={`{" ml-2 py-1 px-2 rounded text-white-100 "} ${
                                         activeTab === "upcoming-shifts"
-                                            ? "bg-white lg:text-white-100 text-dark-green-500  lg:bg-red-100 text-3sm "
+                                            ? "bg-white lg:text-white-100 text-dark-green-500  md:bg-red-100 text-3sm "
                                             : "bg-gray-100 text-white-100 text-3sm"
                                     }`}
                                 >
@@ -209,7 +205,7 @@ const LocationBasedData = () => {
                                 <span
                                     className={`{" ml-2 py-1 px-2 rounded text-white-100 "} ${
                                         activeTab === "completed-shifts"
-                                            ? "bg-white lg:text-white-100 text-dark-green-500  lg:bg-red-100 text-3sm "
+                                            ? "bg-white lg:text-white-100 text-dark-green-500  md:bg-red-100 text-3sm "
                                             : "bg-gray-100 text-white-100 text-3sm"
                                     }`}
                                 >
@@ -220,7 +216,7 @@ const LocationBasedData = () => {
                     </Tabs.List>
 
                     <Tabs.Panel value="analytics" pt="xs">
-                        <Analytics value={value} />
+                        <Analytics value={value} setValue={setValue}/>
                     </Tabs.Panel>
 
                     <Tabs.Panel value="roles" pt="xs">

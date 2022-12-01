@@ -1,6 +1,7 @@
 import { Table } from "@mantine/core"
 import { IoIosArrowForward } from "react-icons/io"
 import ProfileImage from "../../../assets/ProfileImage.svg"
+import MobileLocationUpcomingShiftTable from "./mobile-tables/mobileLocationUpcomingShiftTable"
 
 const UpcomingShift = () => {
     const elements: any[] = [
@@ -110,6 +111,9 @@ const UpcomingShift = () => {
                     </thead>
                     <tbody>{rows}</tbody>
                 </Table>
+            </div>
+            <div className="block lg:hidden">
+                <MobileLocationUpcomingShiftTable elements={elements}/>
             </div>
         </>
     )

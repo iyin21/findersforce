@@ -1,6 +1,7 @@
 import { Table } from "@mantine/core"
 import { IoIosArrowForward } from "react-icons/io"
 import ProfileImage from "../../../assets/ProfileImage.svg"
+import MobileLocationActiveShiftTable from "./mobile-tables/mobileLocationActiveShiftTable"
 
 const timerStyles = {
     time: "mb-0 font-bold text-2xl lg:text-2mxl",
@@ -149,6 +150,10 @@ const ActiveShift = () => {
                     <tbody>{rows}</tbody>
                 </Table>
             </div>
+            <div className="block lg:hidden">
+                <MobileLocationActiveShiftTable elements={elements}/>
+            </div>
+            
         </>
     )
 }
