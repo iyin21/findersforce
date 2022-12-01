@@ -8,10 +8,10 @@ const useEnableTwoFactor = (
 ) => {
     protectedAxios
         .patch(
-            "/enable-2fa",
-            JSON.stringify({
+            "/auth/enable-2fa",
+            {
                 type: "email",
-            }),
+            },
             {
                 headers: {
                     Authorization: `${token}`,

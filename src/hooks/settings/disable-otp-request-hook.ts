@@ -3,7 +3,7 @@ import useAuthContext from "../auth-hooks/useAuth"
 import { useQuery } from "@tanstack/react-query"
 import { AxiosError } from "axios"
 import { showNotification } from "@mantine/notifications"
-import useAxiosPrivate from "../../services/usePrivateAxios"
+import useAxiosInstance from "../../services/useAxiosInstance"
 
 interface disable2FaRequestResponse {
     message: string
@@ -18,10 +18,10 @@ interface disable2FaRequestResponse {
 
 export default function useDisableTwoFactorRequest() {
     const { state } = useAuthContext()
-    const axiosPrivate = useAxiosPrivate()
+    const axiosPrivate = useAxiosInstance()
     // /** API methods */
     const requestToDisable2fa = async () => {
-        const { data } = await axiosPrivate.get("/disable-2fa-request", {
+        const { data } = await axiosPrivate.get("/auth/disable-2fa-request", {
             withCredentials: true,
             headers: {
                 Authorization: `${state?.jwt?.token}`,
