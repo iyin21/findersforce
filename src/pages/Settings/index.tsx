@@ -19,7 +19,7 @@ import { useForm } from "@mantine/form"
 import useUpdatePassword from "../../hooks/settings/change-password-hook"
 import { useNavigate } from "react-router-dom"
 import { useAuthContext } from "../../pages/auth/context/authContext"
-import useAxiosPrivate from "../../services/usePrivateAxios"
+import useAxiosInstance from "../../services/useAxiosInstance"
 import OtpContainer from "../../components/OtpContainer/otp-container"
 import useDisableTwoFactor from "../../hooks/settings/disable2fa-hook"
 import useEnableTwoFactor from "../../hooks/settings/enable2fa-hook"
@@ -75,7 +75,7 @@ const Settings = () => {
     const navigate = useNavigate()
     const [isPublishing, setIsPublishing] = useState(false)
     const { state } = useAuthContext()
-    const protectedAxios = useAxiosPrivate()
+    const protectedAxios = useAxiosInstance()
 
     useEffect(() => {
         if (data) setChecked(data?.twoFa_enabled ?? false)

@@ -10,10 +10,10 @@ const useDisableTwoFactor = (
 ) => {
     protectedAxios
         .patch(
-            "/disable-2fa",
-            JSON.stringify({
+            "/auth/disable-2fa",
+            {
                 code: otp,
-            }),
+            },
             {
                 headers: {
                     Authorization: `${token}`,

@@ -1,5 +1,4 @@
 import { AuthActionType } from "types/auth/auth-interfaces"
-import axios from "../../services/api.service"
 import { axiosInstance } from "../../services/api.service"
 
 const login = (
@@ -12,8 +11,8 @@ const login = (
     dispatch: (arg0: AuthActionType) => void,
     navigate: (arg0: string, arg1: { replace: boolean }) => void
 ) => {
-    axios
-        .post("/login", JSON.stringify({ email: email, password: password }))
+    axiosInstance
+        .post("/auth/login", { email: email, password: password })
         .then(async (response) => {
             const user = response.data?.data?.user
             const res = await axiosInstance.get(
@@ -37,7 +36,7 @@ const login = (
             } else {
                 showError(true)
                 setErrorMsg(
-                    "Unauthorized! You have to be a Depot manager to have access"
+                    "Unauthorized! You have to be a Depot manager or an Admin to have access"
                 )
                 setIsSubmitting(false)
             }
