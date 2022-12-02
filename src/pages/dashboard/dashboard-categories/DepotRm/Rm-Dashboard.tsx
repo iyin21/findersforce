@@ -58,8 +58,8 @@ const RegionalManagerDashboard = () => {
             <main className="md:p-6 p-6 mt-4 md:mt-14 bg-white-100 lg:block">
                 <section className=" lg:flex bg-white-100 justify-between block">
                     <div>
-                        <h1 className="font-extrabold text-3xl font-creatoBold">Dashboard</h1>
-                        <p className="text-primary-20 text-base pb-5">
+                        <h1 className="font-extrabold text-3.5xl font-creatoBold">Dashboard</h1>
+                        <p className="text-black-60 font-creato text-base pb-5">
                             Here&apos;s a snippet of all your activity on
                             FindersForce.
                         </p>
@@ -75,19 +75,19 @@ const RegionalManagerDashboard = () => {
                     </div>
                 </section>
                 <div className="lg:flex flex-row gap-8 justify-between block">
-                    <div className="lg:basis-3/4">
-                        <section className="bg-dashboard-pattern relative text-2md bg-cover text-white-100 pl-5 pb-5 rounded-lg">
+                    <div className="lg:basis-[75%]">
+                        <section className="bg-[url('/src/assets/Thumbnail.svg')] relative text-2md bg-cover text-white-100 pl-5 pb-5 rounded-lg">
                             <div className="lg:block flex justify-between gap-4">
                                 <div>
                                     <p className="font-extrabold lg:text-2xl text-2md lg:w-96 pt-5 font-creatoBold">
                                         Access to top quality traffic management
                                         talents.
                                     </p>
-                                    <p className="pt-2 text-white-30 text-2md font-creato">
+                                    <p className="pt-2 text-white-30 lg:text-3md text-2md font-creato">
                                         {" "}
                                         Manage your hiring in 2 steps{" "}
                                     </p>
-                                    <span className="text-yellow-100 text-2md font-medium pt-2 pb-5 font-creatoBoldMedium">
+                                    <span className="text-yellow-100 lg:text-3md text-2md font-medium pt-2 pb-5 font-creatoBoldMedium">
                                         Start posting jobs
                                     </span>
                                     <img
@@ -133,7 +133,7 @@ const RegionalManagerDashboard = () => {
                             <PieChart value={value} />
                         </section>
                     </div>
-                    <div className="lg:basis-1/4">
+                    <div className="lg:basis-[25%]">
                         <Rating value={value}/>
                         <section>
                             <div className="relative my-5 rounded-lg">

@@ -29,9 +29,9 @@ const BarChart = ({value}:{value: [Date | null, Date | null]}) => {
             <div className="flex justify-between">
               <div className="px-4">
                 <p className="font-extrabold text-2xl font-creatoBold">{dashboardAnalytics?.shiftsCompleted?.total}</p>
-                <p className="text-xs tracking-wider font-creato">SHIFTS COMPLETED</p>
+                <p className="text-3sm tracking-wider font-creato">SHIFTS COMPLETED</p>
               </div>
-              <p className="text-xs p-4 font-creato">This Month <span className="text-green-100 text-base font-extrabold font-creatoBold">{dashboardAnalytics?.shiftsCompleted?.thisMonth}</span></p>
+              <p className="text-md p-4 font-creato">This Month <span className="text-green-100 text-lg font-extrabold font-creatoBold">{dashboardAnalytics?.shiftsCompleted?.thisMonth}</span></p>
             </div>
             <div className="">
               <Chart
@@ -45,7 +45,7 @@ const BarChart = ({value}:{value: [Date | null, Date | null]}) => {
           <div className="flex justify-between gap- bg-red-10 rounded-b-lg py-2">
             <div className="flex w-[80%] "> 
               <img src={CanceledShifts} alt=""  className=" px-2"/>
-              <p className="text-xs font-medium text-red-100 font-creatoMedium">SHIFTS CANCELED <br />
+              <p className="text-3sm font-medium text-red-100 font-creatoMedium">SHIFTS CANCELED <br />
                 <span className="text-xl font-extrabold text-black-100 font-creatoBold">{dashboardAnalytics?.shiftsCancelled?.thisMonth} </span>
                 <span className="text-sm text-black-70 font-creato">From {dayjs(value?.[0]).format("YYYY-MM-DD")} </span> 
                 <img src={Arrow} alt="arrow icon" className="inline px-1" /> 
