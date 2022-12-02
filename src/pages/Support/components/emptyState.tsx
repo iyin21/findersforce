@@ -20,7 +20,7 @@ const EmptyState = ({
                 <button
                     data-testid="support_btn"
                     className="bg-yellow-100 rounded rounded-tr-2xl flex justify-center items-center font-bold body-medium py-4 w-full mt-6"
-                    //@ts-expect-error
+                    // @ts-expect-error
                     onClick={() => handleClick()}
                 >
                     <GoPlus size="30px" color="black" />
