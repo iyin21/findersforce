@@ -42,6 +42,7 @@
         "react-router-dom": "^6.4.2",
         "react-tagsinput": "^3.20.0",
         "styled-components": "^5.3.6",
+        "tdweb": "^1.8.0",
         "yup": "^0.32.11"
     },
     "devDependencies": {
@@ -90,6 +91,7 @@
         "prettier": "^2.7.1",
         "sass": "^1.54.4",
         "tailwindcss": "^3.1.8",
+        "telegram": "^2.14.8",
         "tsc-files": "^1.1.3",
         "typescript": "^4.6.4",
         "vite": "^3.0.7",

@@ -14,12 +14,156 @@ import ReadIcon from "./assets/read.svg"
 import Avatar from "../Applications/assets/avatar.png"
 import { MdGroup } from "react-icons/md"
 import AddGroup from "../../components/Modals/Messaging/addGroupModal"
+//import { Airgram, Auth, prompt, toObject  } from 'tdweb-airgram'
+//import { Airgram, } from 'tdweb-airgram/'
+//import { Auth } from 'airgram/src/components/Auth' // We borrow the component only for demonstration purposes.
+import { TelegramClient, Api } from "telegram"
+import { StringSession } from "telegram/sessions"
+import { useEffect } from "react"
+import { Field, Formik, Form, FormikValues } from "formik"
+import FormikControls from "../../components/Form/FormControls/form-controls"
+import { validateTelegramLoginRequest } from "./utils/validateTelegramLoginRequest"
 
 const Messaging = () => {
+    const [phase, setPhase] = useState(1)
+    const [phone, setPhone] = useState("")
+    const [phoneCodeHash, setPhoneCodeHash] = useState("")
+    const [newClient, setNewClient] = useState<TelegramClient>()
+    const [session, setSession] = useState("")
+
+    //Telegram
+
+    const apiId = 24059115
+
+    const apiHash = "f8ca1cdf32ffe5d7be4e2852677c6341"
+    const stringSession = new StringSession(
+        sessionStorage.getItem("session") || ""
+    ) // fill this later with the value from session.save()
+    const client = new TelegramClient(stringSession, apiId, apiHash, {
+        connectionRetries: 1000,
+        testServers: true,
+    })
+    console.log(sessionStorage.getItem("session"))
+
+    // const getMei = async () => {
+    //     console.log("Loading interactive example...")
+    //     const client = new TelegramClient(stringSession, apiId, apiHash, {
+    //         connectionRetries: 5,
+    //     })
+    //     await client.start({
+    //         phoneNumber: async () => (await window.prompt("Please enter your number: ")) || "",
+    //         password: async () =>
+    //             (await window.prompt("Please enter your password: ")) || "",
+    //         phoneCode: async () =>
+    //             (await window.prompt("Please enter the code you received: ")) ||
+    //             "",
+    //         onError: (err) => console.log(err),
+    //     })
+    //     console.log("You should now be connected.")
+    //     console.log(client.session.save()) // Save this string to avoid logging in again
+    //     await client.sendMessage("me", { message: "Hello!" })
+    // }
+    useEffect(() => {
+        ;async () => {
+            if (!(await client.checkAuthorization())) {
+                setPhase(2)
+                console.log("hlj")
+            } else {
+                setPhase(3)
+                const dialogs = await client.getDialogs({})
+                console.log(dialogs)
+                console.log("hliiij")
+            }
+        }
+        ;async () => {
+            if (phase === 3) {
+                const result = await newClient?.getDialogs({})
+                if (result) {
+                    console.log(result)
+                    console.log("hdh")
+                }
+                const me = await client.getMe()
+                console.log(me)
+            }
+        }
+        console.log("hhhhliiij")
+    }, [client, phase])
+
+    const handleSubmit = async (
+        values: FormikValues,
+        callback: () => Promise<unknown>
+    ) => {
+        await client.connect()
+
+        try {
+            const result = await callback()
+            if (result) {
+                console.log("result", result)
+                if (phase === 1) {
+                    setPhase(2)
+                } else {
+                    setPhase(3)
+                }
+            }
+        } catch (err) {
+            console.log(err)
+        }
+    }
+    const handleSendCode = async (values: FormikValues) => {
+        await client.connect()
+
+        //const { phoneCodeHash, isCodeViaApp }
+        try {
+            const result = await client.sendCode(
+                {
+                    apiId: apiId,
+                    apiHash: apiHash,
+                },
+                values.phoneNumber
+            )
+            if (result) {
+                setNewClient(client)
+                setPhoneCodeHash(result.phoneCodeHash)
+                setPhase(2)
+                console.log("result:", result)
+            }
+        } catch (err) {
+            console.log("Code error:", err)
+        }
+    }
+    const handleSignIn = async (values: FormikValues) => {
+        //await client.connect()
+
+        try {
+            const result = await newClient?.invoke(
+                new Api.auth.SignIn({
+                    phoneNumber: phone,
+                    phoneCodeHash,
+                    phoneCode: values.code,
+                })
+            )
+
+            if (result) {
+                console.log("result", result)
+                console.log("hdggh")
+                console.log("jj", newClient?.session.save())
+                setSession(newClient?.session.save() || "")
+                sessionStorage.setItem(
+                    "session",
+                    newClient?.session.save() || ""
+                )
+                setPhase(3)
+                console.log(session)
+            }
+        } catch (err) {
+            console.log(err)
+        }
+    }
     const [openMenu, setOpenMenu] = useState(false)
     const [message, setMessage] = useState("")
     const [activeIndex, setActiveIndex] = useState(0)
-    const [openModal, setOpenModal]=useState(false);
+    const [openModal, setOpenModal] = useState(false)
+    console.log(session)
     const chatList = [
         {
             title: "Revive Traffic one Way",
@@ -51,184 +195,339 @@ const Messaging = () => {
             time: "5:29 PM",
         },
     ]
+
+    // const airgram = new Airgram({
+    //   apiId: 17349 as number | undefined,
+    //   apiHash: "344583e45741c457fe1862106095a5eb",
+    //   command: "./tdlib/libtdjson",
+    //   logVerbosityLevel: 2
+    // })
+    // airgram.use(new airgram.Auth({
+    //     code: () => prompt(`Please enter the secret code:\n`),
+    //     phoneNumber: () => prompt(`Please enter your phone number:\n`)
+    //   }))
+
+    //   void (async () => {
+    //     const me = toObject(await airgram.api.getMe())
+    //     console.log(`[Me] `, me)
+    //   })
+
+    // Getting all updates
+    //   airgram.use((ctx, next) => {
+    //     if ('update' in ctx) {
+    //       console.log(`[all updates][${ctx._}]`, JSON.stringify(ctx.update))
+    //     }
+    //     return next()
+    //   })
+
+    //   // Getting new messages
+    //   airgram.on('updateNewMessage', async ({ update }) => {
+    //     const { message } = update
+    //     console.log('[new message]', message)
+    //   })
+
     return (
         <Layout pageTitle="Messaging" noTopNav>
-            <div>
-                {openModal &&(
-                    <AddGroup opened={openModal} setOpened={setOpenModal} />
-                )}
-                <>
-                
-                    <Drawer
-                        opened={openMenu}
-                        onClose={() => setOpenMenu(false)}
-                        //size="75%"
-                        withCloseButton={false}
-                         overlayBlur={2}
-                        overlayColor="#132013"
-                         overlayOpacity={0.5}
+            {phase === 1 ? (
+                <div>
+                    <h5>Sign in to telegram</h5>
+                    <Formik
+                        initialValues={{
+                            phoneNumber: "",
+                        }}
+                        validationSchema={validateTelegramLoginRequest}
+                        onSubmit={(values) => {
+                            setPhone(values.phoneNumber)
+                            handleSendCode(values)
+                            //     handleSubmit(values, () => {
+                            //         return client.sendCode(
+                            //             {
+                            //                 apiId: apiId,
+                            //                 apiHash: apiHash,
+                            //             },
+                            //             values.phoneNumber
+                            //         )
+                            //     })
+                        }}
                     >
-                        <div className="pl-4 pt-4">
-                        <img src={CompanyLogo} alt="" />
-                        <h5 className="font-bold text-2lg">Revive Traffic</h5>
-                        <p className="text-black-40 pt-2">+44 04 7743 1239</p>
-                        </div>
-                        
-                        <hr className="text-[#E7E7E7] mt-4"/>
-                        <div className="flex pt-4 pl-4 items-center">
-                            <div className="bg-[#56B3F5] rounded p-2">
-                            <MdGroup color="white" />
-                                </div> 
-                            <p className="pl-2 cursor-pointer" onClick={()=>setOpenModal(true)}>New Group</p>
-                        </div>
-                        <div className="absolute bottom-4 pl-4 text-black-40">
-                            <p className="font-bold">Telegram Desktop</p>
-                            <p className="font-normal">Version 4.1.1 -About</p>
-                        </div>
-                    </Drawer>
-                </>
-                <div className="flex justify-between  ">
-                    <div className="border-r-2 h-screen border-[#E7E7E7] w-[500px] pt-8">
-                        <div className="flex pl-4 items-center">
-                            <div onClick={() => setOpenMenu(true)} data-testid="menu_btn" className="cursor-pointer">
-                            <FcMenu
-                                size={30}
-                                
-                            />
-                            </div>
-                            
-                            
-                            <Input
-                                control=""
-                                type="text"
-                                placeholder="Search"
-                                className="md:h-8.5 bg-black-5 ml-2"
-                            />
-                        </div>
-                        <div className="mt-8">
-                            {chatList.map((item, index) => (
-                                <div
-                                    key={index}
-                                    className={`flex p-2 items-center ${
-                                        activeIndex === index
-                                            ? "bg-blue-100 text-white-100"
-                                            : "bg-white-100 text-black-90"
-                                    }`}
-                                    onClick={() => setActiveIndex(index)}
-                                >
-                                    <img
-                                        src={item.image}
-                                        width="30px"
-                                        height={50}
-                                        alt=""
+                        {({ values }) => (
+                            <Form>
+                                <div className="w-full">
+                                    <label
+                                        htmlFor="phoneNumber"
+                                        className="text-md md:text-3md mb-2 block"
+                                    >
+                                        Phone Number
+                                    </label>
+                                    <FormikControls
+                                        data-testid="phoneNumber"
+                                        id="phoneNumber"
+                                        control="input"
+                                        name="phoneNumber"
+                                        type="tel"
+                                        placeholder="0"
+                                        className="rounded"
+                                        aria-label="quantity"
                                     />
-                                    <div className="flex justify-between w-full">
-                                        <div className="pl-2">
-                                            <div className="flex items-center">
-                                                {item.group && <MdGroup />}
-                                                <h5 className="text-3md font-bold">
-                                                    {item.title}
-                                                </h5>
+                                </div>
+                                <button
+                                    className="bg-yellow-100 rounded rounded-tr-2xl flex justify-center items-center font-bold body-medium p-4  px-10 ml-4"
+                                    type="submit"
+                                    style={{
+                                        backgroundColor:
+                                            "rgba(254, 215, 10, 1)",
+                                    }}
+                                >
+                                    Next
+                                    {/* {isLoading ? "Loading.." : "Next"} */}
+                                </button>
+                            </Form>
+                        )}
+                    </Formik>
+                </div>
+            ) : phase === 2 ? (
+                <div>
+                    <h5>{phone}</h5>
+                    <p>Please enter the code you just have just received </p>
+                    <Formik
+                        initialValues={{
+                            code: "",
+                        }}
+                        //validationSchema={validateTelegramLoginRequest}
+                        onSubmit={(values) => {
+                            handleSignIn(values)
+                            // handleSubmit(values, () => {
+                            //     console.log(values.code)
+                            //     return client.invoke(
+                            //         new Api.auth.SignIn({
+                            //             phoneNumber: phone,
+                            //             phoneCodeHash,
+                            //             phoneCode: values.code,
+                            //         })
+                            //     )
+                            // })
+                        }}
+                    >
+                        {({ values }) => (
+                            <Form>
+                                <div className="w-full">
+                                    <FormikControls
+                                        data-testid="code"
+                                        id="code"
+                                        control="input"
+                                        name="code"
+                                        type="text"
+                                        placeholder="0"
+                                        className="rounded"
+                                        //aria-label="quantity"
+                                    />
+                                </div>
+                                <button
+                                    className="bg-yellow-100 rounded rounded-tr-2xl flex justify-center items-center font-bold body-medium p-4  px-10 ml-4"
+                                    type="submit"
+                                    style={{
+                                        backgroundColor:
+                                            "rgba(254, 215, 10, 1)",
+                                    }}
+                                >
+                                    Next
+                                    {/* {isLoading ? "Loading.." : "Next"} */}
+                                </button>
+                            </Form>
+                        )}
+                    </Formik>
+                </div>
+            ) : (
+                <div>
+                    {openModal && (
+                        <AddGroup opened={openModal} setOpened={setOpenModal} />
+                    )}
+                    <>
+                        <Drawer
+                            opened={openMenu}
+                            onClose={() => setOpenMenu(false)}
+                            //size="75%"
+                            withCloseButton={false}
+                            overlayBlur={2}
+                            overlayColor="#132013"
+                            overlayOpacity={0.5}
+                        >
+                            <div className="pl-4 pt-4">
+                                <img src={CompanyLogo} alt="" />
+                                <h5 className="font-bold text-2lg">
+                                    Revive Traffic
+                                </h5>
+                                <p className="text-black-40 pt-2">
+                                    +44 04 7743 1239
+                                </p>
+                            </div>
+
+                            <hr className="text-[#E7E7E7] mt-4" />
+                            <div className="flex pt-4 pl-4 items-center">
+                                <div className="bg-[#56B3F5] rounded p-2">
+                                    <MdGroup color="white" />
+                                </div>
+                                <p
+                                    className="pl-2 cursor-pointer"
+                                    onClick={() => setOpenModal(true)}
+                                >
+                                    New Group
+                                </p>
+                            </div>
+                            <div className="absolute bottom-4 pl-4 text-black-40">
+                                <p className="font-bold">Telegram Desktop</p>
+                                <p className="font-normal">
+                                    Version 4.1.1 -About
+                                </p>
+                            </div>
+                        </Drawer>
+                    </>
+                    <div className="flex justify-between  ">
+                        <div className="border-r-2 h-screen border-[#E7E7E7] w-[500px] pt-8">
+                            <div className="flex pl-4 items-center">
+                                <div
+                                    onClick={() => setOpenMenu(true)}
+                                    data-testid="menu_btn"
+                                    className="cursor-pointer"
+                                >
+                                    <FcMenu size={30} />
+                                </div>
+
+                                <Input
+                                    control=""
+                                    type="text"
+                                    placeholder="Search"
+                                    className="md:h-8.5 bg-black-5 ml-2"
+                                />
+                            </div>
+                            <div className="mt-8">
+                                {chatList.map((item, index) => (
+                                    <div
+                                        key={index}
+                                        className={`flex p-2 items-center ${
+                                            activeIndex === index
+                                                ? "bg-blue-100 text-white-100"
+                                                : "bg-white-100 text-black-90"
+                                        }`}
+                                        onClick={() => setActiveIndex(index)}
+                                    >
+                                        <img
+                                            src={item.image}
+                                            width="30px"
+                                            height={50}
+                                            alt=""
+                                        />
+                                        <div className="flex justify-between w-full">
+                                            <div className="pl-2">
+                                                <div className="flex items-center">
+                                                    {item.group && <MdGroup />}
+                                                    <h5 className="text-3md font-bold">
+                                                        {item.title}
+                                                    </h5>
+                                                </div>
+                                                <p className="text-[8px]">
+                                                    {item.message}
+                                                </p>
                                             </div>
-                                            <p className="text-[8px]">
-                                                {item.message}
-                                            </p>
-                                        </div>
-                                        <div className="text-[8px] mr-0">
-                                            <p className="flex">
-                                                <img src={ReadIcon} alt="" />
-                                                <span className="pl-2">
-                                                    {item.time}
-                                                </span>
-                                            </p>
-                                            <p
-                                                className={`text-right rounded ml-8 ${
-                                                    activeIndex === index
-                                                        ? "bg-white-80"
-                                                        : "bg-black-30"
-                                                }`}
-                                            >
-                                                {item.count}
-                                            </p>
+                                            <div className="text-[8px] mr-0">
+                                                <p className="flex">
+                                                    <img
+                                                        src={ReadIcon}
+                                                        alt=""
+                                                    />
+                                                    <span className="pl-2">
+                                                        {item.time}
+                                                    </span>
+                                                </p>
+                                                <p
+                                                    className={`text-right rounded ml-8 ${
+                                                        activeIndex === index
+                                                            ? "bg-white-80"
+                                                            : "bg-black-30"
+                                                    }`}
+                                                >
+                                                    {item.count}
+                                                </p>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                    <div className="w-full pt-8">
-                        <div className="flex justify-between pl-4 pr-8 pb-2">
-                            <div>
-                                <p className="body-small font-bold">
-                                    Reveive Traffic
-                                </p>
-                                <p className="text-neutral-100 body-extra-small pt-1 font-bold">
-                                    46 Members
-                                </p>
-                            </div>
-                            <div className="flex gap-6 text-black-40 cursor-pointer">
-                                <MdCall size={30} />
-                                <HiVideoCamera size={30} />
-                                <BiSearch size={30} />
-                                <AiOutlineMore size={30} />
+                                ))}
                             </div>
                         </div>
-                        <hr className="text-[#E7E7E7]" />
-                        {messages.map((item, index) => (
-                            <div
-                                className="bg-black-5 mt-8 ml-10 w-[500px] rounded-[20px] p-4 mb-8"
-                                key={index}
-                            >
-                                <div className="flex justify-between">
-                                    <p
-                                        className={`${
-                                            item.name === "David"
-                                                ? "text-red-190"
-                                                : "text-blue-90"
-                                        } body-small`}
-                                    >
-                                        {item.name}
+                        <div className="w-full pt-8">
+                            <div className="flex justify-between pl-4 pr-8 pb-2">
+                                <div>
+                                    <p className="body-small font-bold">
+                                        Reveive Traffic
                                     </p>
-                                    {/* <p className="text-black-40 text-md">
+                                    <p className="text-neutral-100 body-extra-small pt-1 font-bold">
+                                        46 Members
+                                    </p>
+                                </div>
+                                <div className="flex gap-6 text-black-40 cursor-pointer">
+                                    <MdCall size={30} />
+                                    <HiVideoCamera size={30} />
+                                    <BiSearch size={30} />
+                                    <AiOutlineMore size={30} />
+                                </div>
+                            </div>
+                            <hr className="text-[#E7E7E7]" />
+                            {messages.map((item, index) => (
+                                <div
+                                    className="bg-black-5 mt-8 ml-10 w-[500px] rounded-[20px] p-4 mb-8"
+                                    key={index}
+                                >
+                                    <div className="flex justify-between">
+                                        <p
+                                            className={`${
+                                                item.name === "David"
+                                                    ? "text-red-190"
+                                                    : "text-blue-90"
+                                            } body-small`}
+                                        >
+                                            {item.name}
+                                        </p>
+                                        {/* <p className="text-black-40 text-md">
                                     Reply
                                 </p> */}
+                                    </div>
+                                    <p className="mt-2 text-black-90 text-md">
+                                        {item.message}
+                                    </p>
+                                    <p className="text-black-40 text-md flex justify-end mt-2">
+                                        {item.time}
+                                    </p>
                                 </div>
-                                <p className="mt-2 text-black-90 text-md">
-                                    {item.message}
-                                </p>
-                                <p className="text-black-40 text-md flex justify-end mt-2">
-                                    {item.time}
-                                </p>
-                            </div>
-                        ))}
-                        
-                        <div className="fixed bottom-0 w-full border-t border-[#E7E7E7]  pl-10 h-14 items-center flex">
-                            <input
-                                type="text"
-                                placeholder="Write a message"
-                                className="focus:outline-none w-[500px] "
-                                value={message}
-                                onChange={(e) =>
-                                    setMessage(e.currentTarget.value)
-                                }
-                            />
-                            {/* p
+                            ))}
+
+                            <div className="fixed bottom-0 w-full border-t border-[#E7E7E7]  pl-10 h-14 items-center flex">
+                                <input
+                                    type="text"
+                                    placeholder="Write a message"
+                                    className="focus:outline-none w-[500px] "
+                                    value={message}
+                                    onChange={(e) =>
+                                        setMessage(e.currentTarget.value)
+                                    }
+                                />
+                                {/* p
                             <img src={SendImg} alt="" /> */}
-                            <button
-                                className=" border-none ml-6"
-                                //onClick={() => handleClick()}
-                                //disabled={isLoading}
-                            >
-                                {/* {isUpdatingComplaintComment ? (
+                                <button
+                                    className=" border-none ml-6"
+                                    //onClick={() => handleClick()}
+                                    //disabled={isLoading}
+                                >
+                                    {/* {isUpdatingComplaintComment ? (
                                         <CgSpinner className="animate-spin text-primary-90 text-3xl" />
                                     ) : ( */}
-                                <img src={SendImg} alt="" />
-                                {/* )} */}
-                            </button>
+                                    <img src={SendImg} alt="" />
+                                    {/* )} */}
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            )}
         </Layout>
     )
 }
