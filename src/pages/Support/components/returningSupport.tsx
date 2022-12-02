@@ -125,6 +125,7 @@ const ReturningSupport = ({ setPhase, setActiveId, handleRefetch }: Props) => {
                             <EmptyState
                                 //handleClick={() => setOpenModal(true)}
                                 showSendComplaintButton={false}
+                                description="Formal complaint pending by FindersForce support team will show here"
                             />
                         )}
                     </Tabs.Panel>
@@ -148,6 +149,7 @@ const ReturningSupport = ({ setPhase, setActiveId, handleRefetch }: Props) => {
                             <EmptyState
                                 //handleClick={() => setOpenModal(true)}
                                 showSendComplaintButton={false}
+                                description="Formal complaint being reviewed by FindersForce support team will show here."
                             />
                         )}
                     </Tabs.Panel>
@@ -171,6 +173,7 @@ const ReturningSupport = ({ setPhase, setActiveId, handleRefetch }: Props) => {
                             <EmptyState
                                 handleClick={() => setOpenModal(true)}
                                 showSendComplaintButton={false}
+                                description=" Formal complaint resolved by FindersForce support team will show here"
                             />
                         )}
                     </Tabs.Panel>
