@@ -70,6 +70,7 @@ const Support = () => {
                         <EmptyState
                             handleClick={() => setOpenModal(true)}
                             showSendComplaintButton
+                            description="Formal support sent to FindersForce will show here"
                         />
                     )}
                 </div>

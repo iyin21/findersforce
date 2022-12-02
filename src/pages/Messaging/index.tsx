@@ -15,6 +15,7 @@ import Avatar from "../Applications/assets/avatar.png"
 import { MdGroup } from "react-icons/md"
 import AddGroup from "../../components/Modals/Messaging/addGroupModal"
 
+
 const Messaging = () => {
     const [openMenu, setOpenMenu] = useState(false)
     const [message, setMessage] = useState("")
