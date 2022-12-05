@@ -111,3 +111,25 @@ export interface JobInformationInterface {
 export interface BulkDeleteJobRequest {
     jobIds: string[]
 }
+
+export interface ISearchRequest {
+    q?: string
+    page?: number
+    limit?: number
+    signal?: AbortSignal
+}
+
+export interface ISearchResponse {
+    currentPage: number
+    nextPage: number
+    prevPage: number
+    totalRecords: number
+    totalPages: number
+    results: {
+        _id: string
+        firstName: string
+        lastName: string
+        averageRating: number
+        profileImageUrl: string
+    }[]
+}

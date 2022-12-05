@@ -20,4 +20,5 @@ export interface ProfileRequest {
     password: string
     passwordConfirm: string
     inviteCode: string | null
+    courseLink: string
 }

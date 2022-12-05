@@ -4,6 +4,7 @@ import { HQDepotType, RegionalManager } from "../../utils/user-types"
 import HQRoles from "./HQ/hq-roles"
 import { CgSpinner } from "react-icons/cg"
 import RMRoles from "./RM"
+import FindersForceLogo from "../../assets/FindersForceLogo.svg"
 
 const Roles = () => {
     const { state } = useAuthContext()
@@ -23,8 +24,8 @@ const Roles = () => {
                 <>
                     <div className="h-screen w-full flex items-center justify-center">
                         <img
-                            src="/logo/voriancorelli-logo.png"
-                            alt=""
+                            src={FindersForceLogo}
+                            alt="finders force"
                             className="animate-pulse"
                         />
                         <CgSpinner className="animate-spin text-primary-90 text-2xl ml-3" />
