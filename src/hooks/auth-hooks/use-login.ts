@@ -1,4 +1,5 @@
 import { AuthActionType } from "types/auth/auth-interfaces"
+import { admin } from "../../utils/user-types"
 import { axiosInstance } from "../../services/api.service"
 
 const login = (
@@ -32,7 +33,7 @@ const login = (
                         jwt: response.data.data.jwt,
                     },
                 })
-                navigate(from, { replace: true })
+                user?.accountType === admin ? navigate("/analytics", { replace: true }) : navigate(from, { replace: true })
             } else {
                 showError(true)
                 setErrorMsg(
