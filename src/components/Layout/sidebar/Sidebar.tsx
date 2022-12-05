@@ -1,9 +1,10 @@
 import { useMemo } from "react";
 import useAuthContext from "../../../hooks/auth-hooks/useAuth"
 import RegionalManagerSidebar from "./sidebar-categories/Rm-Sidebar";
-import { RegionalManager, shiftManager, HQDepotType } from "../../../utils/user-types"
+import { RegionalManager, shiftManager, HQDepotType, admin } from "../../../utils/user-types"
 import ShiftManagerSidebar from "./sidebar-categories/Sm-Sidebar";
 import DepotHqSidebar from "./sidebar-categories/Hq-Sidebar";
+import AdminSidebar from "./sidebar-categories/Ad-Sidebar";
 
 
 const Sidebar = () => {
@@ -25,6 +26,10 @@ const Sidebar = () => {
 
   if (userState?.depotRole === HQDepotType ) {
     return <DepotHqSidebar />
+  }
+
+  if (userState?.accountType === admin) {
+    return <AdminSidebar />
   }
   
   if(!userState) {
