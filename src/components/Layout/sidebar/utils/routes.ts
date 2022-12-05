@@ -7,6 +7,15 @@ import RolesPermission from "../assets/RolesPermission"
 import Locations from "../assets/Locations"
 import Subscriptions from "../assets/Subscriptions"
 import Support from "../assets/Support"
+import Analytics from "../assets/Analytics"
+import Depots from "../assets/Depots"
+import Approval from "../assets/Approvals"
+import Payments from "../assets/Payments"
+import GeoTracking from "../assets/GeoTracking"
+import AdminSupport from "../assets/AdminSupport"
+import AllUsers from "../assets/All-Users"
+import AdminRolesPermission from "../assets/AdminRolesPermission"
+import Subscription from "../assets/Subscription"
 
 export interface SidebarRoutes {
     icon: React.FunctionComponent
@@ -50,4 +59,16 @@ export const depotHqRoute: SidebarRoutes[] = [
     { icon: Locations, title: "Locations", route: "/locations" },
     { icon: Subscriptions, title: "Subscriptions", route: "/subscriptions" },
     { icon: Support, title: "Support", route: "/support" },
+]
+
+export const adminRoute: SidebarRoutes[] = [
+    { icon: Analytics, title: "Analytics", route: "/analytics" },
+    { icon: Depots, title: "Depots", route: "/depots" },
+    { icon: Approval, title: "Approvals", route: "/approvals" },
+    { icon: Payments, title: "Payment", route: "/payments" },
+    { icon: Subscription, title: "Subscription", route: "/admin-subscription" },
+    { icon: GeoTracking, title: "Geotracking", route: "/geotracking" },
+    { icon: AdminSupport, title: "Support", route: "/admin-support" },
+    { icon: AllUsers, title: "All users", route: "/all-users" },
+    { icon: AdminRolesPermission, title: "Roles and Permission", route: "/roles-permission" },
 ]

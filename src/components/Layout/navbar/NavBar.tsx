@@ -59,12 +59,12 @@ const NavBar = ({ setOpenSideBar, noTopNav }: navInterface) => {
                     <div className="ml-2 md:ml-4 my-2">
                         <span className="text-lg py-[19px]">{item.title}</span>
                         <p className="text-sm md:text-3sm opacity-60">
-                            {item.description.substring(0, 95).concat("...")}
+                            {item?.description?.substring(0, 95).concat("...")}
                         </p>
                     </div>
 
                     <span className="text-black-neutral ml-auto text-2sm">
-                        <>{dayjs(item.createdAt).fromNow()}</>
+                        <>{dayjs(item?.createdAt).fromNow()}</>
                     </span>
                 </div>
                 <hr className="border-black-20" />

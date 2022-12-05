@@ -19,6 +19,7 @@ import Settings from "./pages/Settings/index"
 import Subscriptions from "./pages/subscriptions/Subscription"
 import Location from "./pages/Location"
 import LocationBasedData from "./pages/Location/components/locationBasedData"
+import AdminAnalytics from "./pages/Admin/Analytics"
 
 function App() {
     return (
@@ -53,6 +54,7 @@ function App() {
                     <Route path="/subscriptions" element={<Subscriptions/>} />
                     <Route path="/locations" element={<Location />} />
                     <Route path="/locations/:locationId" element={<LocationBasedData />} />
+                    <Route path="/analytics" element={<AdminAnalytics />} />
                 </Route>
             </Route>
         </Routes>
