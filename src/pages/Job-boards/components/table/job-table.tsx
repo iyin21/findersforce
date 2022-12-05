@@ -1,4 +1,3 @@
-// import { Checkbox } from "@components/index"
 import { Table } from "@mantine/core"
 import { Checkbox } from "../../../../components/index"
 import { IoIosArrowForward } from "react-icons/io"

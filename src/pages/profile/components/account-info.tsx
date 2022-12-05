@@ -53,6 +53,21 @@ const AccountInfo = () => {
                     />
                 </div>
             </div>
+            <div className="mt-3">
+                <label className="text-3md font-semibold text-neutral-80 block mb-2">
+                    Depot Video Link
+                </label>
+                <FormikControls
+                    type="text"
+                    name="courseLink"
+                    control="input"
+                    placeholder="Provide link for your depot"
+                    aria-label="Depot Video Link"
+                    required
+                    className="rounded"
+                    data-testid="courseLink"
+                />
+            </div>
             <div
                 onFocusCapture={() => {
                     showErrorText(false)

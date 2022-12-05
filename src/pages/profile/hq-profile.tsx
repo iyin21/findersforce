@@ -120,14 +120,6 @@ export function FormikStepper({ ...props }: TWizardProps) {
         return props.step === childrenArray.length - 1
     }
 
-    // const handlePreviousStep = () => {
-    //     if (!(step === 0)) {
-    //         setStep(step - 1)
-    //     } else {
-    //         navigate(`/auth/sign-up`)
-    //     }
-    // }
-
     const handleCreateProfile = (values: FormikValues) => {
         props.mutate({
             firstName: values.firstName,
@@ -135,6 +127,7 @@ export function FormikStepper({ ...props }: TWizardProps) {
             passwordConfirm: values.passwordConfirm,
             password: values.password,
             inviteCode: searchParams.get("code"),
+            courseLink: values.courseLink,
         })
     }
 
@@ -161,16 +154,6 @@ export function FormikStepper({ ...props }: TWizardProps) {
                         {currentChild}
 
                         <div className=" justify-between items-center">
-                            {/* {step === 2 && (
-                                <Button
-                                    className="text-black-100"
-                                    type="button"
-                                    onClick={() => handlePreviousStep()}
-                                >
-                                    Go back
-                                </Button>
-                            )} */}
-
                             <div className="">
                                 <Button
                                     size="normal"

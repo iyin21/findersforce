@@ -57,7 +57,7 @@ const PostJobOne = ({ jobType }: PostJobOneProps) => {
         <div className="p-3">
             <div className="mt-1">
                 <label className="text-3md font-semibold text-black-100 block mb-2">
-                    Shift type
+                    Task type
                 </label>
                 <FormikControls
                     control="select"
@@ -83,7 +83,7 @@ const PostJobOne = ({ jobType }: PostJobOneProps) => {
             </div>
             <div className="mt-4 border-b border-black-10 pb-4 mb-5">
                 <label className="text-3md font-semibold text-neutral-80 block mb-2">
-                    Select Shift Mode
+                    Select Shift Type
                 </label>
                 <div className="flex items-center gap-10 mt-4">
                     <Radio
@@ -165,7 +165,7 @@ const PostJobOne = ({ jobType }: PostJobOneProps) => {
                     />
                 </div>
             </div>
-            <div className="flex items-center gap-2 mt-4 px-2 md:p-4 rounded-md bg-green-10 border-l-4 border-green-100">
+            <div className="flex items-center gap-2 mt-4 px-2 p-4 rounded-md bg-green-10 border-l-4 border-green-100">
                 <FiClock color="#4DB25D" size={20} />
                 <p className=" text-sm md:text-lg">
                     This shift will last for <strong>{toTime} hours</strong>{" "}

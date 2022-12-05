@@ -1,5 +1,4 @@
 import { useFormikContext } from "formik"
-// import { BsFillTrashFill } from "react-icons/bs"
 import { MdLocationOn, MdModeEdit } from "react-icons/md"
 
 interface profileSummary {
@@ -31,7 +30,6 @@ const HQProfileSummary = ({ setStep, step }: profileSummary) => {
                             setStep(step - 1)
                         }}
                     />
-                    {/* <BsFillTrashFill size={25} color="#E94444" /> */}
                 </div>
             </div>
             <div className="mt-4 ml-12 grid grid-cols-2">
