@@ -22,7 +22,6 @@ const Summary = ({ jobQualification }: SummaryProps) => {
     }>()
 
     const { data: jobType } = useGetJobType()
-
     const shiftTime = new Date(values?.shiftStartTime)
     const jobTime = new Date(shiftTime)
     const toTime = Number(values.shiftDurationInHours)

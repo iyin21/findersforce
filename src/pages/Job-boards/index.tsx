@@ -52,7 +52,7 @@ const JobBoards = () => {
             setDeleteBtn(true)
             setCheckedJob([...checkedJob, value])
         } else {
-            setDeleteBtn(false)
+            // setDeleteBtn(false)
             setCheckedJob(checkedJob.filter((item) => item !== value))
         }
     }

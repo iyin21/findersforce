@@ -9,21 +9,19 @@ import {
 } from "../types"
 import useAuthContext from "../../../hooks/auth-hooks/useAuth"
 import { useMutation, useQuery } from "@tanstack/react-query"
-import { FormikValues } from "formik"
-
+// import { FormikValues } from "formik"
 
 interface UpdateComplaintCommentRequest {
     message: string
 }
-interface CreateComplaintRequest {
-    complaintCategory: string
-    image?: File | null
-    complaintIssues: string[]
-    description: string
-}
+// interface CreateComplaintRequest {
+//     complaintCategory: string
+//     image?: File | null
+//     complaintIssues: string[]
+//     description: string
+// }
 
 function useGetAllComplaints() {
-    
     const { state } = useAuthContext()
     const getAllComplaints = async () => {
         const { data } = await axiosInstance.get("/complaints", {
@@ -82,7 +80,6 @@ function useGetComplaints({ status }: { status: string }) {
 }
 
 function useGetSingleComplaint({ id }: { id: string }) {
-    
     const { state } = useAuthContext()
     const getSingleComplaint = async () => {
         const { data } = await axiosInstance.get(`/complaints/${id}`, {
@@ -117,18 +114,18 @@ function useCreateComplaint() {
         const config: AxiosRequestConfig = {
             headers: {
                 Authorization: `Bearer ${state?.jwt?.token}`,
-                //"content-type": "multipart/formdata",
+                // "content-type": "multipart/formdata",
             },
         }
-        //const formData = new FormData()
-        
+        // const formData = new FormData()
+
         // complaintIssues?.map((item) =>
         //     formData.append("complaintIssues[]", item)
         // )
         // if(complaintCategory){
         //     formData.append("complaintCategory", complaintCategory)
         // }
-        
+
         // formData.append("description", description)
         // if (image) {
         //     formData.append("image", image)
@@ -145,14 +142,12 @@ function useCreateComplaint() {
     return useMutation<
         SingleComplaintResponse,
         AxiosError,
-        { formData: FormData}
+        { formData: FormData }
     >(
         ["CreateComplaint"],
-        ({
-            formData
-        }) =>
+        ({ formData }) =>
             createComplaint({
-                formData
+                formData,
             }),
         {
             onError: (err) => {

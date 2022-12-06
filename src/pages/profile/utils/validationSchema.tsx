@@ -4,6 +4,7 @@ const AccountInfoSchema = object().shape({
     password: string().required("Required"),
     firstName: string().required("Required"),
     lastName: string().required("Required"),
+    courseLink: string().required("Required"),
     passwordConfirm: string().required("Required"),
 })
 

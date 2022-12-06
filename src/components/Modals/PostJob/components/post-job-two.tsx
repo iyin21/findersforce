@@ -10,6 +10,9 @@ interface PostJobTwoProps {
 }
 
 const PostJobTwo = ({ jobQualification }: PostJobTwoProps) => {
+    // this handles the ref that gets triggered when the user clicks on the upload button
+    const ref = useRef<HTMLInputElement | null>(null)
+    const [file, setFile] = useState<string[]>([])
     // this updates the formik values in PostJob.tsx
     const { setFieldValue, values } = useFormikContext<{
         jobDescription: string
@@ -17,10 +20,6 @@ const PostJobTwo = ({ jobQualification }: PostJobTwoProps) => {
         additionalInfoImageUrls: File[]
     }>()
     //
-    // this handles the ref that gets triggered when the user clicks on the upload button
-    const ref = useRef<HTMLInputElement | null>(null)
-
-    const [file, setFile] = useState<string[]>([])
 
     function uploadSingleFile(e: any) {
         setFile([...file, ...e.target.files])
