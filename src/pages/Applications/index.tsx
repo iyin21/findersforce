@@ -3,14 +3,31 @@ import ApplicationTable from "./components/application-table"
 import { useState } from "react"
 import { useGetApplications } from "./hooks/application.hook"
 import { CgSpinner } from "react-icons/cg"
-import { IoFilterSharp } from "react-icons/io5"
 import ApplicationDetails from "./sub-navigations/ApplicationDetails"
 import ShiftDetails from "./sub-navigations/ShiftDetails"
 import Layout from "../../components/Layout/index"
 import EmptyState from "../../components/EmptyStates/index"
 import { useNavigate } from "react-router-dom"
+import Pagination from "../../components/Pagination/pagination"
+import  Filter  from "../../components/Filter/index"
+import { FilterRequest } from "../../types/filter/filter"
 
 const Applications = () => {
+    const [activePendingPage, setPendingPage] = useState(1);
+    const handlePendingPage = (pageNumber: number) => {
+        setPendingPage(pageNumber)
+    }
+    const [activeAcceptedPage, setAcceptedPage] = useState(1);
+    const handleAcceptedPage = (pageNumber: number) => {
+        setAcceptedPage(pageNumber)
+    }
+    const [activeRejectedPage, setRejectedPage] = useState(1);
+    const handleRejectedPage = (pageNumber: number) => {
+        setRejectedPage(pageNumber)
+    }
+
+    const applyFilter = (filter: FilterRequest) => {}
+
     const [activeTab, setActiveTab] = useState<string | null>("pending")
     const { data: pendingData, isLoading: isLoadingPendingData } =
         useGetApplications({
@@ -55,12 +72,18 @@ const Applications = () => {
                         </div>
                     ) : (
                         <div>
-                            <div className="relative">
-                                <div className="flex absolute right-10 items-center cursor-pointer">
-                                    <IoFilterSharp />
-                                    <p className="pl-2">Filter</p>
-                                </div>
-                            </div>
+                            <div className="relative lg:pb-4 bottom-0 lg:bottom-0">
+                              <div className="absolute right-0 w-fit ">
+                                  {" "}
+                                  <Filter applyFilter={applyFilter} className="" />
+                              </div>
+                          </div>
+                          <div className=" lg:hidden relative p-8">
+                              <div className="absolute right-0 top-0 w-fit ">
+                                  {" "}
+                                  <Filter applyFilter={applyFilter} className="" />
+                              </div>
+                          </div>
                             <Tabs
                                 value={activeTab}
                                 // active={activeTab}
@@ -128,6 +151,17 @@ const Applications = () => {
                                             }
                                         />
                                     )}
+                                            <Pagination
+                                                  page={activePendingPage}
+                                                  total={activePendingPage}
+                                                  onChange={handlePendingPage}
+                                                  boundaries={1}
+                                                  recordPerpage={
+                                                      pendingData?.data
+                                                          ? pendingData?.data.length
+                                                          : 1
+                                                  }
+                                              />
                                 </Tabs.Panel>
                                 <Tabs.Panel value="accepted">
                                     {acceptedData?.data &&
@@ -146,6 +180,17 @@ const Applications = () => {
                                             }
                                         />
                                     )}
+                                    <Pagination
+                                                  page={activeAcceptedPage}
+                                                  total={activeAcceptedPage}
+                                                  onChange={handleAcceptedPage}
+                                                  boundaries={1}
+                                                  recordPerpage={
+                                                      acceptedData?.data
+                                                          ? acceptedData?.data.length
+                                                          : 1
+                                                  }
+                                      />
                                 </Tabs.Panel>
                                 <Tabs.Panel value="rejected">
                                     {rejectedData?.data &&
@@ -164,6 +209,17 @@ const Applications = () => {
                                             }
                                         />
                                     )}
+                                    <Pagination
+                                                  page={activeRejectedPage}
+                                                  total={activeRejectedPage}
+                                                  onChange={handleRejectedPage}
+                                                  boundaries={1}
+                                                  recordPerpage={
+                                                      rejectedData?.data
+                                                          ? rejectedData?.data.length
+                                                          : 1
+                                                  }
+                                      />
                                 </Tabs.Panel>
                             </Tabs>
                         </div>
