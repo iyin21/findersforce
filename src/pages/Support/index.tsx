@@ -17,7 +17,7 @@ const Support = () => {
     const [handleRefetch, setHandleRefetch] = useState(false)
 
     return (
-        <Layout pageTitle="Suppport">
+        <Layout pageTitle="Support">
             {openModal && (
                 <SupportModal
                     setOpened={setOpenModal}
