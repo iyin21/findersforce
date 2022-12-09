@@ -1,15 +1,24 @@
 import { showNotification } from "@mantine/notifications"
 import { useQuery } from "@tanstack/react-query"
 import { AxiosError } from "axios"
-import { DashboardData } from "../../types/dashboard/interfaces"
+import { DashboardData, RegionsResponse } from "../../types/dashboard/interfaces"
 import { axiosInstance } from "../../services/api.service"
 import useAuthContext from "../auth-hooks/useAuth"
 
-function useGetDashboardAnalytics () {
+function useGetDashboardAnalytics ({
+    dateFrom,
+    dateTo,
+    location,
+}: {
+    dateFrom: Date | null | undefined,
+    dateTo: Date | null | undefined,
+    location?: string | null | undefined
+}) {
     const { state } = useAuthContext()
 
     const getDashboardAnalytics = async () => {
         const { data } = await axiosInstance.get("/depot/analytics", {
+        params: {dateFrom, dateTo, location},
         headers: {
             Authorization: `Bearer ${state?.jwt?.token}`,
             },
@@ -17,8 +26,8 @@ function useGetDashboardAnalytics () {
             return data.data           
         }
         return useQuery<string, AxiosError, DashboardData>(
-            ["dashbordAnalytics"],
-            ({ signal }) => getDashboardAnalytics(),
+            ["dashbordAnalytics", {dateFrom, dateTo, location}],
+            getDashboardAnalytics,
             {
                 onError: (err) => {
                 showNotification({
@@ -31,6 +40,38 @@ function useGetDashboardAnalytics () {
         )
 }
 
+function useGetDepotRegions ({
+    id
+}: {
+    id?: string
+}) {
+    const { state } = useAuthContext();
+    const getDepotRegions = async () => {
+        const { data } = await axiosInstance.get(`/depot/company/${id}/regions`, {
+            headers: {
+                Authorization: `Bearer ${state?.jwt?.token}`,
+                },
+        })
+        return data.data
+    }
+    return useQuery<unknown, AxiosError, RegionsResponse["data"]>(
+        ["regions", { id }],
+        getDepotRegions,
+
+        {
+            onError: (err) => {
+                showNotification({
+                    title: "Error",
+                    message: err.message,
+                    color: "red",
+                })
+            },
+        }
+    )
+
+}
+
 export {
-    useGetDashboardAnalytics
+    useGetDashboardAnalytics,
+    useGetDepotRegions
 }

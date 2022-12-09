@@ -67,6 +67,7 @@ module.exports = {
             black: {
                 1: "rgba(0, 0, 0, 1)",
                 2: "rgba(0, 0, 0, 0.02)",
+                3: "rgba(15, 13, 0, 0.03)",
                 5: "rgba(0, 0, 0, 0.05)",
                 10: "rgba(15, 13, 0, 0.1)",
                 20: "rgba(15, 13, 0, 0.2)",
@@ -123,9 +124,6 @@ module.exports = {
             creatoDisplayItalic: ["CreatoDisplayItalic", "sans-serif"],
         },
         extend: {
-            backgroundImage: {
-                "dashboard-pattern": "url('./src/assets/Thumbnail.svg')",
-            },
         },
     },
     plugins: [],

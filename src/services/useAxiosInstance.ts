@@ -1,14 +1,14 @@
-import { axiosPrivate } from "../services/api.service"
+import { axiosInstance } from "./api.service"
 import { useEffect } from "react"
 import useRefreshToken from "../hooks/auth-hooks/use-refresh-tokens"
 import useAuthContext from "../hooks/auth-hooks/useAuth"
 
-const useAxiosPrivate = () => {
+const useAxiosInstance = () => {
     const { state } = useAuthContext()
     const refresh = useRefreshToken()
 
     useEffect(() => {
-        const requestIntercept = axiosPrivate.interceptors.request.use(
+        const requestIntercept = axiosInstance.interceptors.request.use(
             (config) => {
                 if (
                     config &&
@@ -24,12 +24,12 @@ const useAxiosPrivate = () => {
                 }
                 return config
             },
-            (error) => Promise.reject(error)
+            (error: any) => Promise.reject(error)
         )
 
-        const responseIntercept = axiosPrivate.interceptors.response.use(
-            (response) => response,
-            async (error) => {
+        const responseIntercept = axiosInstance.interceptors.response.use(
+            (response: any) => response,
+            async (error: { config: any; response: { status: number } }) => {
                 const prevRequest = error?.config
                 if (error?.response?.status === 403 && !prevRequest?.sent) {
                     prevRequest.sent = true
@@ -37,19 +37,19 @@ const useAxiosPrivate = () => {
                     prevRequest.headers[
                         "Authorization"
                     ] = `Bearer ${newAccessToken}`
-                    return axiosPrivate(prevRequest)
+                    return axiosInstance(prevRequest)
                 }
                 return Promise.reject(error)
             }
         )
 
         return () => {
-            axiosPrivate.interceptors.request.eject(requestIntercept)
-            axiosPrivate.interceptors.response.eject(responseIntercept)
+            axiosInstance.interceptors.request.eject(requestIntercept)
+            axiosInstance.interceptors.response.eject(responseIntercept)
         }
     }, [state.jwt?.token, refresh])
 
-    return axiosPrivate
+    return axiosInstance
 }
 
-export default useAxiosPrivate
+export default useAxiosInstance

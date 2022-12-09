@@ -7,7 +7,8 @@ import { IoFilterSharp } from "react-icons/io5"
 import ApplicationDetails from "./sub-navigations/ApplicationDetails"
 import ShiftDetails from "./sub-navigations/ShiftDetails"
 import Layout from "../../components/Layout/index"
-import EmptyState from "../Support/components/emptyState"
+import EmptyState from "../../components/EmptyStates/index"
+import { useNavigate } from "react-router-dom"
 
 const Applications = () => {
     const [activeTab, setActiveTab] = useState<string | null>("pending")
@@ -30,10 +31,15 @@ const Applications = () => {
     const [phase, setPhase] = useState(1)
     const [activeId, setActiveId] = useState("")
     const [shiftId, setShiftId] = useState("")
+
+    const navigate = useNavigate()
+    const handleNavigate = () => {
+        navigate("/job-boards")
+    }
     return (
         <Layout pageTitle={"Pending"}>
             {phase === 1 ? (
-                <div className="p-4">
+                <div className="md:p-6 p-6 mt-4 md:mt-14">
                     <h5 className="font-bold lg:text-3xl text-2xl mb-2">
                         Applications
                     </h5>
@@ -114,7 +120,13 @@ const Applications = () => {
                                             setActiveId={setActiveId}
                                         />
                                     ) : (
-                                        <EmptyState />
+                                        <EmptyState 
+                                            description="Applications you send will show here until the depot makes a decision"
+                                            buttonText="Add new application"
+                                            handleButtonClick={
+                                                () => handleNavigate()
+                                            }
+                                        />
                                     )}
                                 </Tabs.Panel>
                                 <Tabs.Panel value="accepted">
@@ -126,7 +138,13 @@ const Applications = () => {
                                             setActiveId={setActiveId}
                                         />
                                     ) : (
-                                        <EmptyState />
+                                        <EmptyState 
+                                            description="Accepted applications will show here."
+                                            buttonText="Add new application"
+                                            handleButtonClick={
+                                                () => handleNavigate()
+                                            }
+                                        />
                                     )}
                                 </Tabs.Panel>
                                 <Tabs.Panel value="rejected">
@@ -138,7 +156,13 @@ const Applications = () => {
                                             setActiveId={setActiveId}
                                         />
                                     ) : (
-                                        <EmptyState />
+                                        <EmptyState 
+                                            description="Rejected applications will show here"
+                                            buttonText="Add new application"
+                                            handleButtonClick={
+                                                () => handleNavigate()
+                                            }
+                                        />
                                     )}
                                 </Tabs.Panel>
                             </Tabs>

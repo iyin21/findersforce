@@ -62,7 +62,7 @@ export default function Checkbox({
                 </label>
                 <label
                     htmlFor={id}
-                    className={` ml-2 ${classNames?.label || ""}`}
+                    className={` font-creato ml-2 ${classNames?.label || ""}`}
                 >
                     {label}
                 </label>

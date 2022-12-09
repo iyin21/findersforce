@@ -1,7 +1,7 @@
 import TimeEstimate from "../../../pages/planner/components/TimeEstimate"
 import { ShiftCardProps } from "../../../types/dashboard/interfaces"
 
-const Card:React.FC<ShiftCardProps> = ({profileImage,firstName, lastName,messageIcon,calenderIcon,date,clockIcon,startTime,endTime,duration,locationIcon,location,taskIcon,task,initialDate,currentDate,status}) => {
+const Card:React.FC<ShiftCardProps> = ({profileImage,firstName, lastName,messageIcon,calenderIcon,date,clockIcon,startTime,endTime,duration,locationIcon,location,taskIcon,task,initialDate,status}) => {
 
   
   return (
@@ -33,7 +33,7 @@ const Card:React.FC<ShiftCardProps> = ({profileImage,firstName, lastName,message
             <div>
             <TimeEstimate 
             initialDate={initialDate} 
-            currentDate={currentDate}/>
+            />
           </div>
           )}
         </div>

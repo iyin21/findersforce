@@ -11,4 +11,5 @@ export const initialValues = {
     additionalInfoImageUrls: [],
     isPublished: "",
     jobAccessibleTo: "",
+    operativeIds: [],
 }

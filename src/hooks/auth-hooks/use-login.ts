@@ -1,5 +1,6 @@
 import { AuthActionType } from "types/auth/auth-interfaces"
-import axios from "../../services/api.service"
+import { admin } from "../../utils/user-types"
+import { axiosInstance } from "../../services/api.service"
 
 const login = (
     email: string,
@@ -11,23 +12,32 @@ const login = (
     dispatch: (arg0: AuthActionType) => void,
     navigate: (arg0: string, arg1: { replace: boolean }) => void
 ) => {
-    axios
-        .post("/login", JSON.stringify({ email: email, password: password }))
-        .then((response) => {
+    axiosInstance
+        .post("/auth/login", { email: email, password: password })
+        .then(async (response) => {
             const user = response.data?.data?.user
-            if (user.accountType === "DEPOT") {
+            const res = await axiosInstance.get(
+                "/user/profile",
+                {
+                    headers: {
+                        Authorization: `Bearer ${response.data.data.jwt.token}`,
+                    },
+                }
+            )
+
+            if (user.accountType === "DEPOT" || user?.accountType === "ADMIN") {
                 dispatch({
                     type: "SET_USER_DATA",
                     payload: {
-                        user: user,
+                        user: res.data.data,
                         jwt: response.data.data.jwt,
                     },
                 })
-                navigate(from, { replace: true })
+                user?.accountType === admin ? navigate("/analytics", { replace: true }) : navigate(from, { replace: true })
             } else {
                 showError(true)
                 setErrorMsg(
-                    "Unauthorized! You have to be a Depot manager to have access"
+                    "Unauthorized! You have to be a Depot manager or an Admin to have access"
                 )
                 setIsSubmitting(false)
             }

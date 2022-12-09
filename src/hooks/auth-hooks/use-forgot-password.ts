@@ -1,4 +1,4 @@
-import axios from "../../services/api.service"
+import { axiosInstance } from "../../services/api.service"
 
 const forgotPassword = (
     email: string,
@@ -7,8 +7,8 @@ const forgotPassword = (
     setErrorMsg: (msg: string) => void,
     showError: (val: boolean) => void
 ) => {
-    axios
-        .post("/request-password-reset", JSON.stringify({ email: email }), {
+    axiosInstance
+        .post("/auth/request-password-reset", { email: email }, {
             headers: { "Content-Type": "application/json" },
             withCredentials: true,
         })

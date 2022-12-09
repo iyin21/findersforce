@@ -12,9 +12,12 @@ export { default as Filter } from "./Filter/index"
 
 // Modals
 export { default as AddUser } from "./Modals/AddUser"
+export { default as HQAddUser } from "./Modals/AddUser/hq-add-user"
 export { default as PostJob } from "./Modals/PostJob"
 export { default as ConfirmDelete } from "./Modals/ConfirmDelete"
+export { default as ConfirmPost } from "./Modals/ConfirmPost"
 export { default as SuccessModal } from "./Modals/SuccessModal"
+export { default as SuccessfulLogin } from "./Modals/SuccessLogin"
 
 // google autocomplete
 export { default as GoogleAutoComplete } from "./GoogleAutoComplete/index"

@@ -4,6 +4,7 @@ import { Loader } from "@mantine/core"
 import useRefreshToken from "../../hooks/auth-hooks/use-refresh-tokens"
 import useAuthContext from "../../hooks/auth-hooks/useAuth"
 import { showNotification } from "@mantine/notifications"
+import FindersForceLogo from "../../assets/FF-logo.svg"
 
 const PersistLogin = () => {
     const { state } = useAuthContext()
@@ -17,7 +18,7 @@ const PersistLogin = () => {
             } catch (error) {
                 showNotification({
                     title: "Require login",
-                    message: "Session expired, login to continue"
+                    message: "Session expired, login to continue",
                 })
             } finally {
                 setIsLoading(false)
@@ -32,8 +33,13 @@ const PersistLogin = () => {
     return (
         <>
             {isLoading ? (
-                <div className="absolute inset-1/2">
-                    <Loader color="rgba(254, 215, 10, 1)" />
+                <div className="h-screen w-full flex items-center justify-center">
+                    <img
+                        src={FindersForceLogo}
+                        alt=""
+                        className="animate-pulse"
+                    />
+                    <Loader color="rgba(254, 215, 10, 1)" className="pl-2.5" />
                 </div>
             ) : (
                 <Outlet />

@@ -16,7 +16,6 @@ import Filter from "../../../components/Filter/index"
 import { FilterRequest } from "../../../types/filter/filter";
 import MobileShiftsDetailsTable from "./MobileShiftsDetailsTable";
 import Message from "../../../assets/Messaging.svg"
-import { useGetDashboardAnalytics } from "../../../hooks/dashboard/useDashboard.hook";
 
 
 
@@ -44,7 +43,7 @@ const ShiftsDetailTable = () => {
   })
 
 
-  const {data:dashboardAnalytics} = useGetDashboardAnalytics();
+
 
   const navigate = useNavigate()
   const [activePage, setActivePage] = useState(1)
@@ -71,7 +70,7 @@ const [opened, setOpened] = useState(false)
       </td>
       {element?.clockInTime === null ? (<td>N/A</td>):(<td>{dayjs(element?.clockInTime).format("h:mm A")}</td>) }
       {element?.clockOutTime === null ? (<td>N/A</td>):(<td>{dayjs(element?.clockOutTime).format("h:mm A")}</td>)}
-      <td>{element?.jobListing?.shiftDurationInHours}hrs</td>
+      <td>{element?.jobListing?.shiftDurationInHours}hour(s)</td>
       <td>{element?.jobListing?.jobRate?.currency}{element?.jobListing?.jobRate?.jobRatePerHourDisplayedToDepot}/hr</td>
       <td>
           <div className="flex items-center gap-1">
@@ -111,9 +110,7 @@ const [opened, setOpened] = useState(false)
 const element = shiftsData?.results?.find((item) => item?.jobListing?._id === jobListingId)
 const singleElement = singleShift?.results?.find((item) => item?.jobListing?._id === jobListingId)
 
-
-const { data: operaiveData} = useGetOperativeRatingSummary({id: singleElement?.operative?._id})
-console.log(operaiveData)
+const { data: operativeData} = useGetOperativeRatingSummary({id: singleElement?.operative?._id})
   return (
     <>
     <Layout>
@@ -124,7 +121,7 @@ console.log(operaiveData)
       :
       (
       <>
-        <div className="md:p-6 px-6 py-8">
+        <div className="md:p-6 p-6 mt-4 md:mt-14">
             <div className="bg-gray-80 w-fit p-3 rounded-lg cursor-pointer">
               <AiOutlineArrowLeft size={20} onClick={() => navigate("/planner")}/>
             </div>
@@ -237,29 +234,29 @@ console.log(operaiveData)
                 <div className="flex gap-5 w-[40%]">
                   <div>
                     <p className="text-2md">Rating</p>
-                    <p>{singleElement?.operativeRating} <AiFillStar size={20} style={{color: "#FED70A"}}/></p>
+                    <p>{operativeData?.avgAverageScore} <AiFillStar size={20} style={{color: "#FED70A"}}/></p>
                   </div>
                 </div>
                 <div className="w-[50%]">
                   <div className="flex justify-between place-items-center">
                     <p className=" text-[md] font-medium">Professionalism</p>
-                    {Number(dashboardAnalytics?.rating?.professionalismScore) <= 2 ? (<Progress value={Number(dashboardAnalytics?.rating?.professionalismScore)/5 * 100} color="#F44336" className="w-[50%]"/>) 
+                    {Number(operativeData?.avgProfessionalismScore) <= 2 ? (<Progress value={Number(operativeData?.avgProfessionalismScore)/5 * 100} color="#F44336" className="w-[50%]"/>) 
                       :
-                      (<Progress value={Number(dashboardAnalytics?.rating?.professionalismScore)/5 * 100} color="#4DB25D" className="w-[50%]"/>)
+                      (<Progress value={Number(operativeData?.avgProfessionalismScore)/5 * 100} color="#4DB25D" className="w-[50%]"/>)
                     }
                   </div>
                   <div className="flex justify-between place-items-center">
                     <p className=" text-[md] font-medium">Punctuality</p>
-                    {Number(dashboardAnalytics?.rating?.helpfulnessScore) <= 2 ? (<Progress value={Number(dashboardAnalytics?.rating?.helpfulnessScore)/5 * 100} color="#F44336" className="w-[50%]"/>) 
+                    {Number(operativeData?.avgHelpfulnessScore) <= 2 ? (<Progress value={Number(operativeData?.avgHelpfulnessScore)/5 * 100} color="#F44336" className="w-[50%]"/>) 
                     :
-                    (<Progress value={Number(dashboardAnalytics?.rating?.helpfulnessScore)/5 * 100} color="#4DB25D" className="w-[50%]"/>)
+                    (<Progress value={Number(operativeData?.avgHelpfulnessScore)/5 * 100} color="#4DB25D" className="w-[50%]"/>)
                     }
                   </div>
                   <div className="flex justify-between place-items-center">
                     <p className=" text-[md] font-medium">Helpfulness</p>
-                    {Number(dashboardAnalytics?.rating?.organizationScore) <= 2 ? (<Progress value={Number(dashboardAnalytics?.rating?.organizationScore)/5 * 100} color="#F44336" className="w-[50%]"/>) 
+                    {Number(operativeData?.avgOrganizationScore) <= 2 ? (<Progress value={Number(operativeData?.avgOrganizationScore)/5 * 100} color="#F44336" className="w-[50%]"/>) 
                     :
-                    (<Progress value={Number(dashboardAnalytics?.rating?.organizationScore)/5 * 100} color="#4DB25D" className="w-[50%]"/>)
+                    (<Progress value={Number(operativeData?.avgOrganizationScore)/5 * 100} color="#4DB25D" className="w-[50%]"/>)
                     }
                   </div>
                 </div>
@@ -285,7 +282,7 @@ console.log(operaiveData)
                 </div>
                 <div>
                   <p className=" px-8 pt-6 text-2md text-black-60">SHIFT DURATION</p>
-                  <p className="text-2md px-8 font-medium">{singleElement?.jobListing?.shiftDurationInHours} Hrs 
+                  <p className="text-2md px-8 font-medium">{singleElement?.jobListing?.shiftDurationInHours} Hour(s) 
                   ({dayjs(singleElement?.jobListing?.shiftStartTime).format("h:mm A")} - {dayjs(singleElement?.jobListing?.shiftEndTime).format("h:mm A")} )</p>
                 </div>
               </section>

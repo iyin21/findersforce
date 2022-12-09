@@ -2,7 +2,7 @@ import { Menu, Table } from "@mantine/core"
 import dayjs from "dayjs"
 import { Dispatch, SetStateAction } from "react"
 import { IoEllipsisVerticalSharp } from "react-icons/io5"
-import { IRolesResponse } from "../../../types/roles/role-interface"
+import { IRolesResponse } from "../../../../types/roles/role-interface"
 import MobileRoleTable from "./mobile-role-table"
 
 export interface RoleTableInterface {
@@ -29,7 +29,7 @@ const RoleTable = ({
             <td>
                 {element?.firstName} {element?.lastName}
             </td>
-            <td>{element?.address}</td>
+            <td>{element?.regionAddress}</td>
             <td>{element.email}</td>
             <td>
                 {dayjs(element?.createdAt).format("MMM D, YYYY")} |{" "}

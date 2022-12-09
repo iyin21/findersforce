@@ -16,6 +16,11 @@ import ShiftsDetailTable from "./pages/planner/components/ShiftsDetailsTable"
 import Roles from "./pages/roles"
 import Messaging from "./pages/Messaging"
 import Settings from "./pages/Settings/index"
+import Subscriptions from "./pages/subscriptions/Subscription"
+import Location from "./pages/Location"
+import LocationBasedData from "./pages/Location/components/locationBasedData"
+import AdminAnalytics from "./pages/Admin/Analytics"
+import SupportMedium from "./pages/Support/support-medium"
 
 function App() {
     return (
@@ -45,8 +50,13 @@ function App() {
                         element={<ShiftsDetailTable />}
                     />
                     <Route path="/roles&permission" element={<Roles />} />
-                    <Route path="/support" element={<Support />} />
+                    <Route path="/support" element={<SupportMedium />} />
+                    <Route path="/support/complaint" element={<Support />} />
                     <Route path="/messaging" element={<Messaging />} />
+                    <Route path="/subscriptions" element={<Subscriptions/>} />
+                    <Route path="/locations" element={<Location />} />
+                    <Route path="/locations/:locationId" element={<LocationBasedData />} />
+                    <Route path="/analytics" element={<AdminAnalytics />} />
                 </Route>
             </Route>
         </Routes>

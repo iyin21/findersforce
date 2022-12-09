@@ -1,4 +1,10 @@
-import { Button, EmptyState, Filter, Pagination } from "../../components/index"
+import {
+    Button,
+    ConfirmDelete,
+    EmptyState,
+    Filter,
+    Pagination,
+} from "../../components/index"
 import { FiPlus } from "react-icons/fi"
 import { useEffect, useState } from "react"
 import { Tabs } from "@mantine/core"
@@ -9,6 +15,7 @@ import { FilterRequest } from "../../types/filter/filter"
 import { CgSpinner } from "react-icons/cg"
 import { BsFillTrashFill } from "react-icons/bs"
 import {
+    useBulkDeleteJobList,
     useDeleteJobList,
     useJobBoards,
 } from "../../hooks/job-board/useJobBoard.hooks"
@@ -17,12 +24,13 @@ import { JobBoardResponseInterface } from "../../types/job-board/interface"
 import Layout from "../../components/Layout/index"
 
 const JobBoards = () => {
-    const [activeTab, setActiveTab] = useState<string | null>("active")
+    const [activeTab, setActiveTab] = useState<string | null>("posts")
     const [openJobPost, setOpenJobPost] = useState(false)
     const [openSuccess, setOpenSuccess] = useState(false)
     const [activeActivePage, setActivePage] = useState(1)
     const [activeDraftPage, setDraftPage] = useState(1)
     const [deleteBtn, setDeleteBtn] = useState(false)
+    const [openBulkConfirmModal, setOpenBulkConfirmModal] = useState(false)
     const [checkedJob, setCheckedJob] = useState<string[]>([])
     const [deleteId, setDeleteId] = useState("")
     const [newJobId, setNewJobId] = useState("")
@@ -44,7 +52,7 @@ const JobBoards = () => {
             setDeleteBtn(true)
             setCheckedJob([...checkedJob, value])
         } else {
-            setDeleteBtn(false)
+            // setDeleteBtn(false)
             setCheckedJob(checkedJob.filter((item) => item !== value))
         }
     }
@@ -69,6 +77,13 @@ const JobBoards = () => {
     }
 
     const {
+        data: deletedBulkJob,
+        isLoading: isDeletingBulkJob,
+        mutate: mutateDeletedBulkJob,
+        isSuccess: isSuccessfulBulkDelete,
+    } = useBulkDeleteJobList()
+
+    const {
         data: activeData,
         isLoading: isLoadingActiveData,
         refetch: refetchActiveJobList,
@@ -91,20 +106,32 @@ const JobBoards = () => {
         // amount: draftJobFilter.amount,
     })
 
-    const handleDelete = () => {
-        mutate()
-    }
-
     const {
         data: deletedJob,
         isLoading: isDeleting,
-        mutate,
+        // mutate,
         isSuccess: isSuccessful,
         error,
     } = useDeleteJobList({ id: deleteId })
 
+    // const handleDelete = () => {
+    //     mutate()
+    // }
+
+    const handleBulkDelete = () => {
+        mutateDeletedBulkJob({
+            jobIds: checkedJob,
+        })
+    }
+
     useEffect(() => {
         if (checkedJob.length === 0) {
+            setDeleteBtn(false)
+        }
+        if (isSuccessfulBulkDelete) {
+            refetchActiveJobList()
+            refetchDraftJobList()
+            setOpenBulkConfirmModal(false)
             setDeleteBtn(false)
         }
         if (isSuccessful) {
@@ -116,7 +143,7 @@ const JobBoards = () => {
                 color: "green",
             })
         }
-        if (openSuccess && newJobId) {
+        if (openSuccess && newJobId !== "") {
             refetchActiveJobList()
             refetchDraftJobList()
         }
@@ -129,10 +156,38 @@ const JobBoards = () => {
         }
         refetchActiveJobList()
         refetchDraftJobList()
-    }, [deletedJob, activeData, draftData])
+    }, [deletedJob, activeData, draftData, deletedBulkJob])
 
     return (
         <Layout pageTitle={"Shifts"}>
+            {openJobPost && (
+                <PostJob
+                    opened={openJobPost}
+                    setOpened={setOpenJobPost}
+                    setOpenSuccess={setOpenSuccess}
+                    setNewJobId={setNewJobId}
+                    draftStatus={draftStatus}
+                    singleDraftData={draftElement}
+                />
+            )}
+            {openSuccess && (
+                <JobSuccessful
+                    opened={openSuccess}
+                    setOpened={setOpenSuccess}
+                    newJobId={newJobId}
+                />
+            )}
+            {openBulkConfirmModal && (
+                <ConfirmDelete
+                    opened={openBulkConfirmModal}
+                    setOpened={setOpenBulkConfirmModal}
+                    handleDelete={handleBulkDelete}
+                    isDeleting={isDeletingBulkJob}
+                    title="Delete Shift"
+                    description="This action cannot be undone. 
+                    Operatives will no longer see this on their dashboard"
+                />
+            )}
             <div className="md:p-6 p-6 mt-4 md:mt-14">
                 <div className="flex justify-between items-center">
                     <div className="flex flex-col">
@@ -140,7 +195,7 @@ const JobBoards = () => {
                             className="text-2xl md:text-3xl font-creatoBold text-black-100 font-bold"
                             data-testid="job_title"
                         >
-                            Job Board
+                            Shifts Board
                         </h1>
                         <p className="text-black-60 text-2md md:text-lg font-normal font-creato">
                             All talents applying for your shifts in one glance
@@ -164,16 +219,19 @@ const JobBoards = () => {
                             <div className="flex justify-between gap-3">
                                 {deleteBtn && (
                                     <Button
-                                        variant="danger"
+                                        variant="clear"
                                         size="normal"
                                         iconLeft={
-                                            <BsFillTrashFill color="#fff" />
+                                            <BsFillTrashFill color="#E94444" />
                                         }
                                         data-testid="delete_btn"
-                                        onClick={() => handleDelete()}
-                                        className="text-white-100 min-w-[50px] lg:w-auto mr-3 py-3 lg:py-4"
+                                        onClick={() =>
+                                            setOpenBulkConfirmModal(true)
+                                        }
+                                        // onClick={() => handleDelete()}
+                                        className="text-red-100 lg:w-auto mr-3 py-3 lg:py-4"
                                     >
-                                        <span className="lg:block hidden text-white-100">
+                                        <span className="lg:block hidden text-red-100">
                                             {isDeleting
                                                 ? "is deleting"
                                                 : "Delete"}
@@ -198,16 +256,25 @@ const JobBoards = () => {
                                 data-testid="job_tabs"
                             >
                                 <Tabs.List>
-                                    <Tabs.Tab value="active">
+                                    <Tabs.Tab value="posts">
                                         {" "}
                                         <p
                                             className={
-                                                activeTab === "active"
+                                                activeTab === "posts"
                                                     ? "text-black-100 text-lg font-creatoMedium active"
                                                     : "font-creatoMedium text-black-40 text-lg inactive"
                                             }
                                         >
-                                            Active
+                                            Posts
+                                            <span
+                                                className={`{" ml-2 py-1 px-2 rounded md:text-white-100 "} ${
+                                                    activeTab === "posts"
+                                                        ? "bg-white-100  lg:text-white-100 text-black-100  md:bg-red-100 text-3sm "
+                                                        : "bg-red-40 text-white-100 text-3sm"
+                                                }`}
+                                            >
+                                                {activeData?.data?.length || 0}
+                                            </span>
                                         </p>
                                     </Tabs.Tab>
                                     <Tabs.Tab value="draft">
@@ -219,11 +286,20 @@ const JobBoards = () => {
                                             }
                                         >
                                             Drafts
+                                            <span
+                                                className={`{" ml-2 py-1 px-2 rounded md:text-white-100 "} ${
+                                                    activeTab === "draft"
+                                                        ? "bg-white-100  lg:text-white-100 text-black-100  md:bg-red-100 text-3sm "
+                                                        : "bg-red-40 text-white-100 text-3sm"
+                                                }`}
+                                            >
+                                                {draftData?.data?.length || 0}
+                                            </span>
                                         </p>
                                     </Tabs.Tab>
                                 </Tabs.List>
 
-                                <Tabs.Panel value="active">
+                                <Tabs.Panel value="posts">
                                     {activeData?.data &&
                                     activeData?.data?.length === 0 ? (
                                         <EmptyState
@@ -309,23 +385,6 @@ const JobBoards = () => {
                         </div>
                     )}
                 </div>{" "}
-                {openJobPost && (
-                    <PostJob
-                        opened={openJobPost}
-                        setOpened={setOpenJobPost}
-                        setOpenSuccess={setOpenSuccess}
-                        setNewJobId={setNewJobId}
-                        draftStatus={draftStatus}
-                        singleDraftData={draftElement}
-                    />
-                )}
-                {openSuccess && (
-                    <JobSuccessful
-                        opened={openSuccess}
-                        setOpened={setOpenSuccess}
-                        newJobId={newJobId}
-                    />
-                )}
             </div>
         </Layout>
     )

@@ -1,8 +1,11 @@
 import { useGetDashboardAnalytics } from "../../../hooks/dashboard/useDashboard.hook";
 import { Chart } from "react-google-charts"
 
-const PieChart = () => {
-  const {data:dashboardAnalytics} = useGetDashboardAnalytics();
+const PieChart = ({value}:{value: [Date | null, Date | null]}) => {
+  const {data:dashboardAnalytics} = useGetDashboardAnalytics({
+    dateFrom: value[0] ,
+    dateTo: value[1]
+  });
 
   const pieChartData = [
     ["genderDistribution", "percentage"],
@@ -22,9 +25,9 @@ const PieChart = () => {
     },
   }
   return (
-      <div className="bg-white-100 py-4 px-10 border border-black-10 rounded-lg cursor-pointer">
-        <p className=" font-medium">GENDER DISTRIBUTION</p>
-        <p className="text-sm text-black-50 pb-4">Gender distribution for operatives you have hired</p>
+      <div className="bg-white-100 py-4 border border-black-10 rounded-lg cursor-pointer w-[100%] my-8">
+        <p className=" font-medium px-8 text-md">GENDER DISTRIBUTION</p>
+        <p className="text-sm text-black-50 pb-4 px-8">Gender distribution for operatives you have hired</p>
         <Chart
         chartType="PieChart"
         data={pieChartData}

@@ -4,26 +4,28 @@ import { Dispatch, SetStateAction, useState } from "react"
 import { IoClose } from "react-icons/io5"
 import { object, string } from "yup"
 import Button from "../../../components/Core/Buttons/Button"
-import TagsInput from "react-tagsinput"
 
-import "react-tagsinput/react-tagsinput.css"
+import { ReactMultiEmail } from "react-multi-email"
+import "react-multi-email/dist/style.css"
+
 import { useProfile } from "../../../hooks/profile/use-profile"
-import { useInviteShiftManger } from "../../../hooks/roles/use-roles"
 
 export interface AddUserInterface {
     opened: boolean
     setOpened: Dispatch<SetStateAction<boolean>>
+    isInviting: boolean
+    mutateInvite: any
 }
 
-const AddUser = ({ opened, setOpened }: AddUserInterface) => {
-    const [email, setEmail] = useState<any[]>([])
-    const handleEmailChange = (tags: any[]) => {
-        setEmail(tags)
-    }
+const AddUser = ({
+    opened,
+    setOpened,
+    isInviting,
+    mutateInvite,
+}: AddUserInterface) => {
+    const [emails, setEmails] = useState<string[]>([])
 
     const { data } = useProfile()
-
-    const { mutate, isLoading } = useInviteShiftManger()
 
     return (
         <div>
@@ -50,33 +52,55 @@ const AddUser = ({ opened, setOpened }: AddUserInterface) => {
                     <Formik
                         initialValues={{
                             invitedRole: "SHIFT-MANAGER",
-                            email: email,
+                            email: emails,
+                            regionAddress: data?.location,
                         }}
                         validationSchema={object().shape({
                             invitedRole: string().required("Required"),
                         })}
                         onSubmit={(values) => {
-                            mutate({
+                            mutateInvite({
                                 invitedRole: values.invitedRole,
-                                email: email,
+                                email: emails,
+                                regionAddress: data?.location,
+                                companyId: data?.company?._id,
                             })
                         }}
                     >
-                        {({ isSubmitting, errors, setFieldValue }) => (
+                        {({ errors, setFieldValue }) => (
                             <Form className="space-y-6">
                                 <div>
                                     <label className="text-3md font-semibold mb-3 text-neutral-80 block">
                                         Email
                                     </label>
 
-                                    <TagsInput
-                                        value={email}
-                                        onChange={(tags) => {
-                                            handleEmailChange(tags)
-                                            setFieldValue("email", tags)
+                                    <ReactMultiEmail
+                                        placeholder="Input your email"
+                                        emails={emails}
+                                        onChange={(_emails: string[]) => {
+                                            setEmails(_emails)
+                                            setFieldValue("email", _emails)
                                         }}
-                                        inputProps={{
-                                            placeholder: "Email address",
+                                        getLabel={(
+                                            email,
+                                            index,
+                                            removeEmail
+                                        ) => {
+                                            return (
+                                                <div data-tag key={index}>
+                                                    <div data-tag-item>
+                                                        {email}
+                                                    </div>
+                                                    <span
+                                                        data-tag-handle
+                                                        onClick={() =>
+                                                            removeEmail(index)
+                                                        }
+                                                    >
+                                                        ×
+                                                    </span>
+                                                </div>
+                                            )
                                         }}
                                     />
 
@@ -100,9 +124,13 @@ const AddUser = ({ opened, setOpened }: AddUserInterface) => {
                                     <Button
                                         variant="primary"
                                         type="submit"
-                                        disabled={isLoading}
+                                        disabled={isInviting}
+                                        style={{
+                                            backgroundColor:
+                                                "rgba(254, 215, 10, 1)",
+                                        }}
                                     >
-                                        {isLoading
+                                        {isInviting
                                             ? "Adding user..."
                                             : "Add user"}
                                         {/* Add user */}

@@ -1,4 +1,4 @@
-import { axiosPrivate } from "../../services/api.service"
+import { axiosInstance } from "../../services/api.service"
 import { AuthActionType } from "types/auth/auth-interfaces"
 
 const handleLogOut = async (
@@ -7,8 +7,8 @@ const handleLogOut = async (
     dispatch: (arg0: AuthActionType) => void,
     navigate: (arg0: string) => void
 ) => {
-    const data = await axiosPrivate.post(
-        "https://findersforce-api.workcube.com.ng/api/v1/auth/logout",
+    const data = await axiosInstance.post(
+        "/auth/logout",
         {
             withCredentials: true,
             headers: {

@@ -3627,13 +3627,6 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react-tagsinput@^3.19.9":
-  version "3.19.9"
-  resolved "https://registry.yarnpkg.com/@types/react-tagsinput/-/react-tagsinput-3.19.9.tgz#0bcfa38ab235cca043d31908d492f79e3f7f207c"
-  integrity sha512-NisSj7GS4q6jaU9qWtXnHoCmcW4vKqNC9m9CQ0HloD5YbWXaHxJ8HkELSsQb2EKIM9pX6hbJENkhZ4ApiJ4ygA==
-  dependencies:
-    "@types/react" "*"
-
 "@types/react@*", "@types/react@^18.0.17":
   version "18.0.25"
   resolved "https://registry.yarnpkg.com/@types/react/-/react-18.0.25.tgz#8b1dcd7e56fe7315535a4af25435e0bb55c8ae44"
@@ -12305,6 +12298,14 @@ react-merge-refs@^1.0.0:
   resolved "https://registry.yarnpkg.com/react-merge-refs/-/react-merge-refs-1.1.0.tgz#73d88b892c6c68cbb7a66e0800faa374f4c38b06"
   integrity sha512-alTKsjEL0dKH/ru1Iyn7vliS2QRcBp9zZPGoWxUOvRGWPUYgjo+V01is7p04It6KhgrzhJGnIj9GgX8W4bZoCQ==
 
+react-multi-email@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/react-multi-email/-/react-multi-email-1.0.1.tgz#1b8d335998e9d2df74fdfaa70e4553e12eabccf1"
+  integrity sha512-/LvxIypoRyejhS1bAWKXgTgQPNsQcNveI7Gj7cF00arq7UruLweupX7l1+Vgv/f9Yona/zRKvjMuSiIRJaVm7A==
+  dependencies:
+    react "^18.2.0"
+    react-dom "^18.2.0"
+
 react-onclickoutside@^6.12.0:
   version "6.12.2"
   resolved "https://registry.yarnpkg.com/react-onclickoutside/-/react-onclickoutside-6.12.2.tgz#8e6cf80c7d17a79f2c908399918158a7b02dda01"
@@ -12351,11 +12352,6 @@ react-router@6.4.3:
   integrity sha512-BT6DoGn6aV1FVP5yfODMOiieakp3z46P1Fk0RNzJMACzE7C339sFuHebfvWtnB4pzBvXXkHP2vscJzWRuUjTtA==
   dependencies:
     "@remix-run/router" "1.0.3"
-
-react-tagsinput@^3.20.0:
-  version "3.20.0"
-  resolved "https://registry.yarnpkg.com/react-tagsinput/-/react-tagsinput-3.20.0.tgz#2aa802ee95ba13efa2ea1e04f638f4e5013f0334"
-  integrity sha512-znuxyJAXj0rd3wIabBK5+WN5RHBk9EkS25DrojBdHjT+0p/6SFvOScdugHcwzksdNGnu7Oo7+oVw+LiHMkUXJg==
 
 react-textarea-autosize@8.3.4:
   version "8.3.4"

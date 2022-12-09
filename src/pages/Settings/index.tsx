@@ -8,7 +8,7 @@ import {
     Tabs,
     TextInput,
 } from "@mantine/core"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import InputText from "./components/textInput"
 import { useProfile } from "../../hooks/profile/use-profile"
 import CompanyLogo from "../../assets/companyLogo.svg"
@@ -19,7 +19,12 @@ import { useForm } from "@mantine/form"
 import useUpdatePassword from "../../hooks/settings/change-password-hook"
 import { useNavigate } from "react-router-dom"
 import { useAuthContext } from "../../pages/auth/context/authContext"
-import useAxiosPrivate from "../../services/usePrivateAxios"
+import useAxiosInstance from "../../services/useAxiosInstance"
+import OtpContainer from "../../components/OtpContainer/otp-container"
+import useDisableTwoFactor from "../../hooks/settings/disable2fa-hook"
+import useEnableTwoFactor from "../../hooks/settings/enable2fa-hook"
+import useDisableTwoFactorRequest from "../../hooks/settings/disable-otp-request-hook"
+import { showNotification } from "@mantine/notifications"
 
 const inputStyle: {} = {
     input: {
@@ -63,12 +68,18 @@ const Settings = () => {
     const [checked, setChecked] = useState(data?.twoFa_enabled ?? false)
     const [activeTab, setActiveTab] = useState<string | null>("general")
     const [openModal, setOpenModal] = useState(false)
+    const [open, setOpen] = useState(false)
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [errorMsg, setErrorMsg] = useState("")
     const [error, showError] = useState(false)
     const navigate = useNavigate()
+    const [isPublishing, setIsPublishing] = useState(false)
     const { state } = useAuthContext()
-    const protectedAxios = useAxiosPrivate()
+    const protectedAxios = useAxiosInstance()
+
+    useEffect(() => {
+        if (data) setChecked(data?.twoFa_enabled ?? false)
+    }, [])
 
     const updatePasswordForm = useForm({
         initialValues: {
@@ -88,11 +99,9 @@ const Settings = () => {
     const handleUpdatePassword = ({
         currentPassword,
         newPassword,
-        confirmPassword,
     }: {
         currentPassword: string
         newPassword: string
-        confirmPassword: string
     }) => {
         setIsSubmitting(true)
         useUpdatePassword(
@@ -106,6 +115,38 @@ const Settings = () => {
             setOpenModal,
             protectedAxios
         )
+    }
+
+    const handleDisable2fa = (values: any) => {
+        setIsPublishing(true)
+        useDisableTwoFactor(
+            Object.values(values).join(""),
+            setIsPublishing,
+            state.jwt?.token ?? " ",
+            protectedAxios,
+            setChecked
+        )
+    }
+
+    const { data: response } = useDisableTwoFactorRequest()
+
+    const handleSwitch = () => {
+        if (checked === false) {
+            useEnableTwoFactor(
+                protectedAxios,
+                state.jwt?.token ?? " ",
+                setChecked
+            )
+        } else {
+            if (response) {
+                showNotification({
+                    title: "Success",
+                    // @ts-ignore
+                    message: response.message,
+                })
+                setOpen(true)
+            }
+        }
     }
 
     return (
@@ -222,15 +263,54 @@ const Settings = () => {
                                     checked={checked}
                                     color="green"
                                     size="md"
-                                    onChange={(event) =>
-                                        setChecked(event.currentTarget.checked)
-                                    }
+                                    onChange={handleSwitch}
                                 />
                             </div>
                         </div>
                     </Tabs.Panel>
                 </Tabs>
             </div>
+            <Modal
+                opened={open}
+                withCloseButton
+                closeOnClickOutside
+                overlayOpacity={0.55}
+                overlayBlur={3}
+                closeOnEscape={false}
+                centered
+                onClose={() => setOpen(!open)}
+                title="Verify it's you"
+                styles={() => ({
+                    title: {
+                        fontWeight: 800,
+                        fontSize: "32px",
+                        lineHeight: "38px",
+                    },
+                    close: {
+                        color: "black",
+                    },
+                    header: {
+                        padding: "20px",
+                    },
+                    body: {
+                        padding: "0 20px 20px 20px",
+                    },
+                })}
+            >
+                <div>
+                    <span className="text-black-60 text-lg">
+                        We’ve sent an OTP to the email attached to this account{" "}
+                    </span>
+                    <p className="pt-9 pb-3 font-bold text-2md">
+                        Enter 5 digit OTP
+                    </p>
+                    <OtpContainer
+                        handleSubmit={handleDisable2fa}
+                        text="Disable 2fa"
+                        isSubmitting={isPublishing}
+                    />
+                </div>
+            </Modal>
             <Modal
                 opened={openModal}
                 centered

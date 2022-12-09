@@ -1,11 +1,5 @@
-import { Alert, Modal } from "@mantine/core"
-import React, {
-    Dispatch,
-    ReactNode,
-    SetStateAction,
-    useEffect,
-    useState,
-} from "react"
+import { Modal } from "@mantine/core"
+import { Dispatch, SetStateAction, useEffect, useState } from "react"
 import { Form, Formik, FormikValues } from "formik"
 import { Header } from "./components/header"
 import SupportForm1 from "./components/supportForm1"
@@ -72,10 +66,9 @@ const SupportModal = ({
             <Formik
                 onSubmit={(values) => {
                     if (step === 1) {
-                        //console.log(values)
+                        // console.log(values)
                         setStep(step + 1)
                     } else {
-                        
                         handleSubmit(values)
                     }
                 }}

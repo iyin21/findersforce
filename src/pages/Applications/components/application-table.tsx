@@ -4,7 +4,10 @@ import { HiChevronRight } from "react-icons/hi"
 import Avatar from "../assets/avatar.svg"
 import Star from "../assets/star.svg"
 import dayjs from "dayjs"
+import { BiUpArrowAlt } from "react-icons/bi"
+import { BsArrowDownShort } from "react-icons/bs"
 import { IoIosArrowForward } from "react-icons/io"
+import { useEffect, useState } from "react"
 
 interface Prop {
     // status?: "pending" | "accepted" | "rejected" ;
@@ -14,6 +17,37 @@ interface Prop {
     setActiveId: (val: string) => void
 }
 const ApplicationTable = ({ elements, setPhase, setActiveId }: Prop) => {
+    const [orderState, setOrderState] = useState(false)
+    useEffect(() => {
+        elements.sort((a, b) => {
+            return a.jobMatchPercentage > b.jobMatchPercentage
+                ? -1
+                : a.jobMatchPercentage < b.jobMatchPercentage
+                ? 1
+                : 0
+        })
+    }, [])
+
+    const descending = () => {
+        setOrderState((state) => !state)
+        elements.sort((a, b) => {
+            return a.jobMatchPercentage > b.jobMatchPercentage
+                ? -1
+                : a.jobMatchPercentage < b.jobMatchPercentage
+                ? 1
+                : 0
+        })
+    }
+    const ascending = () => {
+        setOrderState((state) => !state)
+        elements.sort((a, b) => {
+            return a.jobMatchPercentage > b.jobMatchPercentage
+                ? 1
+                : a.jobMatchPercentage < b.jobMatchPercentage
+                ? -1
+                : 0
+        })
+    }
     const rows = elements.map((item, index) => (
         <tr key={index}>
             <td className="flex">{index}</td>
@@ -72,19 +106,85 @@ const ApplicationTable = ({ elements, setPhase, setActiveId }: Prop) => {
                 <Table verticalSpacing="md">
                     <thead>
                         <tr>
-                            {tableHead.map((item, index) => (
-                                <th
-                                    key={index}
-                                    style={{
-                                        color: "rgba(15, 13, 0, 0.3)",
-                                        fontSize: "13px",
-                                        borderBottom: "none",
-                                    }}
-                                    className="text-black-30"
-                                >
-                                    {item.toUpperCase()}
-                                </th>
-                            ))}
+                            {tableHead.map((item, index) =>
+                                item === "match" ? (
+                                    <>
+                                        <th
+                                            key={index}
+                                            style={{
+                                                color: "rgba(15, 13, 0, 0.3)",
+                                                fontSize: "13px",
+                                                borderBottom: "none",
+                                            }}
+                                            className="text-black-30"
+                                        >
+                                            <div className="flex">
+                                                <span>
+                                                    {item.toUpperCase()}
+                                                </span>
+                                                <BiUpArrowAlt
+                                                    size={20}
+                                                    onClick={
+                                                        !orderState
+                                                            ? ascending
+                                                            : () => {}
+                                                    }
+                                                    color={
+                                                        orderState
+                                                            ? "rgba(15, 13, 0, 0.9)"
+                                                            : "rgba(15, 13, 0, 0.3)"
+                                                    }
+                                                    className={`${
+                                                        orderState
+                                                            ? "bg-yellow-100"
+                                                            : ""
+                                                    } rounded-[50px] ml-2 ${
+                                                        !orderState
+                                                            ? "cursor-pointer"
+                                                            : "cursor-disable"
+                                                    }`}
+                                                />
+                                                <BsArrowDownShort
+                                                    size={20}
+                                                    onClick={
+                                                        orderState
+                                                            ? descending
+                                                            : () => {}
+                                                    }
+                                                    color={
+                                                        !orderState
+                                                            ? "rgba(15, 13, 0, 0.9)"
+                                                            : "rgba(15, 13, 0, 0.3)"
+                                                    }
+                                                    className={`${
+                                                        !orderState
+                                                            ? "bg-yellow-100"
+                                                            : ""
+                                                    } rounded-[50px] ml-2 ${
+                                                        orderState
+                                                            ? "cursor-pointer"
+                                                            : "cursor-disable"
+                                                    }`}
+                                                />
+                                            </div>
+                                        </th>
+                                    </>
+                                ) : (
+                                    <>
+                                        <th
+                                            key={index}
+                                            style={{
+                                                color: "rgba(15, 13, 0, 0.3)",
+                                                fontSize: "13px",
+                                                borderBottom: "none",
+                                            }}
+                                            className="text-black-30"
+                                        >
+                                            {item.toUpperCase()}
+                                        </th>
+                                    </>
+                                )
+                            )}
                         </tr>
                     </thead>
                     <tbody>{rows}</tbody>

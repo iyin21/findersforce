@@ -1,4 +1,4 @@
-import { signupAxios } from "../../services/api.service"
+import { axiosInstance } from "../../services/api.service"
 
 const setProfile = (
     password: string,
@@ -7,21 +7,26 @@ const setProfile = (
     opened: boolean,
     firstName: string,
     lastName: string,
+    accountType: string,
     setIsSubmitting: (val: boolean) => void,
     setErrorMsg: (msg: string) => void,
     showError: (val: boolean) => void,
-    setOpened: (val: boolean) => void
+    setOpened: (val: boolean) => void,
+    courseLink?: string,
 ) => {
-    signupAxios
+    const requestBody = {
+        firstName: firstName,
+        lastName: lastName,
+        password: password,
+        passwordConfirm: confirmPassword,
+        inviteCode: inviteCode,
+        courseLink: courseLink
+    }
+    accountType === "SHIFT-MANAGER" ? delete requestBody.courseLink : null
+    axiosInstance
         .post(
             "/invitation/accept",
-            JSON.stringify({
-                firstName: firstName,
-                lastName: lastName,
-                password: password,
-                passwordConfirm: confirmPassword,
-                inviteCode: inviteCode,
-            })
+            requestBody
         )
         .then((response) => {
             setOpened(!opened)

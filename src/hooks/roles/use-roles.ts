@@ -13,9 +13,27 @@ export const useInviteShiftManger = () => {
     const { state } = useAuthContext()
 
     const createInvite = async (requestBody: InviteShiftMangerInterface) => {
-        const { data } = await axiosInstance.post("/invitation", requestBody, {
+        const newFormData = new FormData()
+
+        newFormData.append("invitedRole", requestBody.invitedRole)
+        // @ts-ignore
+        newFormData.append("companyId", requestBody.companyId)
+
+        if (requestBody.companyName === undefined) {
+            ;("")
+        } else {
+            // @ts-ignore
+            newFormData.append("companyName", requestBody.companyName)
+        }
+
+        // @ts-ignore
+        newFormData.append("regionAddress", requestBody.regionAddress)
+
+        requestBody.email.map((item) => newFormData.append("email[]", item))
+
+        const { data } = await axiosInstance.post("/invitation", newFormData, {
             headers: {
-                "Content-Type": "application/json",
+                "Content-Type": "multipart/form-data",
                 Authorization: `${state?.jwt?.token}`,
             },
         })
@@ -47,8 +65,63 @@ export const useInviteShiftManger = () => {
         }
     )
 }
+export const useInviteHQ = () => {
+    const createInvite = async (requestBody: InviteShiftMangerInterface) => {
+        const newFormData = new FormData()
 
-function useGetRoles({ status, signal, page, limit }: RolesRequest) {
+        newFormData.append("invitedRole", requestBody.invitedRole)
+
+        // if (requestBody.companyName === undefined) {
+        //     ;("")
+        // } else {
+        //     // @ts-ignore
+        //     newFormData.append("companyName", requestBody.companyName)
+        // }
+
+        // @ts-ignore
+        newFormData.append("companyId", requestBody.companyId)
+
+        // @ts-ignore
+        newFormData.append("regionAddress", requestBody.regionAddress)
+
+        requestBody.email.map((item) => newFormData.append("email[]", item))
+
+        const { data } = await axiosInstance.post("/invitation", newFormData, {
+            headers: {
+                "Content-Type": "multipart/form-data",
+                Authorization: `${requestBody.jwt}`,
+            },
+        })
+        return data
+    }
+
+    return useMutation<any, AxiosError, InviteShiftMangerInterface>(
+        ["inviteShiftManager"],
+        (requestBody: InviteShiftMangerInterface) => createInvite(requestBody),
+        {
+            onSuccess: (data) => {
+                showNotification({
+                    message: data?.message || data?.message,
+                    title: "Success",
+                    color: "green",
+                })
+            },
+            onError: (err: AxiosError) => {
+                showNotification({
+                    message:
+                        // @ts-ignore
+                        err.response?.data?.error ||
+                        err.message ||
+                        "An error occurred",
+                    title: "Error",
+                    color: "red",
+                })
+            },
+        }
+    )
+}
+
+function useGetRoles({ status, signal, page, limit, depotRole }: RolesRequest) {
     const { state } = useAuthContext()
 
     /** API methods */
@@ -59,6 +132,7 @@ function useGetRoles({ status, signal, page, limit }: RolesRequest) {
                 status,
                 page,
                 limit,
+                depotRole,
             },
             headers: {
                 Authorization: `${state?.jwt?.token}`,
@@ -75,6 +149,7 @@ function useGetRoles({ status, signal, page, limit }: RolesRequest) {
                 signal,
                 page,
                 limit,
+                depotRole,
             },
         ],
         () => getRoles()
@@ -88,9 +163,10 @@ function useDeleteUser({ userId }: { userId: string | undefined }) {
     const deleteUser = async () => {
         const { data } = await axiosInstance.patch(
             `/admin/delete/user/${userId}`,
+            null,
             {
                 headers: {
-                    Authorization: `Bearer ${state?.jwt?.token}`,
+                    Authorization: `${state?.jwt?.token}`,
                 },
             }
         )
@@ -106,7 +182,8 @@ function useResendInvite({ userId }: { userId: string | undefined }) {
     /** API methods */
     const resendInvite = async () => {
         const { data } = await axiosInstance.post(
-            `/invitation${userId}/resend`,
+            `/invitation/${userId}/resend`,
+            null,
             {
                 headers: {
                     Authorization: `${state?.jwt?.token}`,
@@ -123,9 +200,10 @@ function useRevokeInvite({ userId }: { userId: string | undefined }) {
     const { state } = useAuthContext()
 
     /** API methods */
-    const resendInvite = async () => {
+    const revokeInvite = async () => {
         const { data } = await axiosInstance.patch(
-            `/invitation${userId}/revoke`,
+            `/invitation/${userId}/revoke`,
+            null,
             {
                 headers: {
                     Authorization: `${state?.jwt?.token}`,
@@ -135,7 +213,7 @@ function useRevokeInvite({ userId }: { userId: string | undefined }) {
 
         return data
     }
-    return useMutation<AxiosResponse, AxiosError>(resendInvite)
+    return useMutation<AxiosResponse, AxiosError>(revokeInvite)
 }
 
 export { useGetRoles, useDeleteUser, useResendInvite, useRevokeInvite }

@@ -1,7 +1,10 @@
 import { useMutation, useQuery } from "@tanstack/react-query"
 import { axiosInstance } from "../../services/api.service"
-import { AxiosError, AxiosResponse } from "axios"
+import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios"
 import {
+    BulkDeleteJobRequest,
+    ISearchRequest,
+    ISearchResponse,
     JobBoardByIdResponse,
     JobBoardRequest,
     JobBoardResponse,
@@ -30,7 +33,6 @@ JobBoardRequest) {
                 isPublished,
                 page,
                 meetingPoint,
-                // amount,
                 limit,
             },
             headers: {
@@ -177,6 +179,43 @@ function useDeleteJobList({ id }: { id: string | undefined }) {
     return useMutation<AxiosResponse, AxiosError>(deleteJob)
 }
 
+function useBulkDeleteJobList() {
+    const { state } = useAuthContext()
+    const bulkDeleteJob = async (requestBody: BulkDeleteJobRequest) => {
+        const config: AxiosRequestConfig = {
+            headers: {
+                Authorization: `${state.jwt?.token}`,
+            },
+        }
+        const { data } = await axiosInstance.patch(
+            `/job-listing/bulk/delete`,
+            requestBody,
+            config
+        )
+
+        return data
+    }
+    return useMutation<any, AxiosError, BulkDeleteJobRequest>(
+        (requestBody: BulkDeleteJobRequest) => bulkDeleteJob(requestBody),
+        {
+            onSuccess: (data) => {
+                showNotification({
+                    message: data?.message || data.message,
+                    title: "Success",
+                    color: "green",
+                })
+            },
+            onError: (err) => {
+                showNotification({
+                    message: err.message || "An error occurred",
+                    title: "Error",
+                    color: "red",
+                })
+            },
+        }
+    )
+}
+
 // get job listing by id
 function useGetJobListingById({ id }: { id: string | undefined }) {
     const { state } = useAuthContext()
@@ -215,12 +254,6 @@ function useCreateJobList() {
             ...values,
         }
 
-        const deleteAdditionalImage = () => {
-            if (formData.additionalInfoImageUrls === "") {
-                delete formData.additionalInfoImageUrls
-            }
-        }
-        deleteAdditionalImage()
         const newFormData = new FormData()
 
         Object.keys(formData).forEach((key) => {
@@ -229,9 +262,27 @@ function useCreateJobList() {
                     newFormData.append(`additionalInfoImageUrls`, image)
                 })
             } else {
+                // this appends all the data of the formdata to the newFormData
                 newFormData.append(key, values[key])
+                // this deletes the operative ids that is not array from the newFormData
+                newFormData.delete("operativeIds")
+                // this appends the operative id that is an array to the newFormData that will be sent to the backend. This will only work on posting to HQ selected operatives
+                values.operativeIds?.map((item: string) =>
+                    newFormData.append("operativeIds", item)
+                )
             }
         })
+
+        const deleteAdditionalImage = () => {
+            if (formData.additionalInfoImageUrls === "") {
+                delete formData.additionalInfoImageUrls
+            }
+            if (formData.operativeIds === "") {
+                delete formData.operativeIds
+            }
+        }
+
+        deleteAdditionalImage()
 
         const { data } = await axiosInstance.post(
             "/job-listing/",
@@ -303,6 +354,40 @@ function useUpdateJobList({ id }: { id: string | undefined }) {
     )
 }
 
+function useSearchOperatives({ q, page, limit, signal }: ISearchRequest) {
+    const { state } = useAuthContext()
+
+    /** API methods */
+    const getSearchOperatives = async () => {
+        const { data } = await axiosInstance.get("/depot/operatives", {
+            signal,
+            params: {
+                q,
+                page,
+                limit,
+            },
+            headers: {
+                Authorization: `${state?.jwt?.token}`,
+            },
+        })
+        return data.data
+    }
+
+    return useQuery<string, AxiosError, ISearchResponse>(
+        ["searchOperatives"],
+        () => getSearchOperatives(),
+        {
+            onError: (err) => {
+                showNotification({
+                    title: "Error",
+                    // @ts-ignore
+                    message: err.message || err?.response?.data?.error,
+                })
+            },
+        }
+    )
+}
+
 export {
     useJobBoards,
     useDeleteJobList,
@@ -312,4 +397,6 @@ export {
     useCreateJobList,
     useGetSingleJobApplication,
     useUpdateJobList,
+    useBulkDeleteJobList,
+    useSearchOperatives,
 }

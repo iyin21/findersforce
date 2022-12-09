@@ -27,7 +27,6 @@
         "@tanstack/react-query": "^4.1.3",
         "@types/google.maps": "^3.50.5",
         "@types/react-datepicker": "^4.8.0",
-        "@types/react-tagsinput": "^3.19.9",
         "@typescript-eslint/eslint-plugin": "^5.33.1",
         "axios": "^1.1.3",
         "dayjs": "^1.11.6",
@@ -38,9 +37,9 @@
         "react-dom": "^18.2.0",
         "react-google-charts": "^4.0.0",
         "react-icons": "^4.6.0",
+        "react-multi-email": "^1.0.1",
         "react-query": "^3.39.2",
         "react-router-dom": "^6.4.2",
-        "react-tagsinput": "^3.20.0",
         "styled-components": "^5.3.6",
         "tdweb": "^1.8.0",
         "yup": "^0.32.11"

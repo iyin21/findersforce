@@ -14,11 +14,11 @@ const useUpdatePassword = (
 ) => {
     protectedAxios
         .patch(
-            "/update-password",
-            JSON.stringify({
+            "/auth/update-password",
+            {
                 password: currentPassword,
                 newPassword: newPassword,
-            }),
+            },
             {
                 headers: {
                     Authorization: `${token}`,
