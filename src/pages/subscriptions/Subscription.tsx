@@ -1,35 +1,35 @@
-import Layout from "../../components/Layout/index"
-import SubscriptionTable from "./components/SubscriptionTable"
-
+import useAuthContext from "../../hooks/auth-hooks/useAuth";
+import { useMemo } from "react";
+import { admin, HQDepotType } from "../../utils/user-types";
+import AdminSubscription from "./subscription-categories/Ad-Subscription";
+import HqSubscription from "./subscription-categories/Hq-Subscription";
+import FindersForceLogo from "../../assets/FindersForceLogo.svg"
+import { CgSpinner } from "react-icons/cg";
 
 const Subscription = () => {
-  return (
-    <Layout>
-        <main className="md:p-6 p-6 mt-4 md:mt-14">
-          <div className="flex justify-between items-center">
-            <div className="flex flex-col">
-                <h1 className="text-2xl md:text-3xl font-creatoBold text-black-100 font-bold" id="header">
-                    Subscriptions
-                </h1>
-                <p className="text-black-60 text-2md md:text-lg font-normal font-creato">
-                    Monthly payment to FindersForce in one glance
-                </p>
-            </div>
-          </div>
-          <div className="px-0 pt-10 md:pt-4">
-            <SubscriptionTable 
-              elements={new Array(8).fill({
-                amount: 1200,
-                contactPerson: "Shaquan Roberts",
-                paymentReference: "PHFF7685RERD-799P8J",
-                monthPaid: "Nov 15, 2022 | 9:31 AM",
-                id: "1",
-              })}
-            />
-          </div>
-        </main>
-    </Layout>
-  )
-}
 
-export default Subscription
+                const { state } = useAuthContext();
+                
+                const userState = useMemo(() => {
+                    return state.user;
+                  }, [state.user]);
+                
+                  switch (true) {
+                    case userState?.accountType === admin:
+                        return <AdminSubscription/>;
+                    case userState?.depotRole === HQDepotType:
+                        return <HqSubscription/>
+                    
+                    default:
+                        return (
+                            <>
+                                <div className="h-screen w-full flex items-center justify-center">
+                                    <img src={FindersForceLogo} alt="" className="animate-pulse" />
+                                    <CgSpinner className="animate-spin text-primary-90 text-2xl ml-3" />
+                                </div>
+                            </>
+                        )
+                  }
+            }
+            
+            export default Subscription
