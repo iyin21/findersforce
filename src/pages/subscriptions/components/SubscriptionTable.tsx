@@ -1,19 +1,27 @@
 import { SubscriptionTableInterface } from "../../../types/subscriptions/interface"
 import ProfileImage from "../../../assets/ProfileImage.svg"
-import { Modal, Progress, Table } from "@mantine/core"
+import { Modal, Progress, Table, } from "@mantine/core"
 import { useMemo, useState } from "react"
 import MobileSubscriptionTable from "./MobileSubscriptionTable"
 import useAuthContext from "../../../hooks/auth-hooks/useAuth"
 import { admin, HQDepotType } from "../../../utils/user-types"
+import { IoIosArrowForward } from "react-icons/io"
+// import { useNavigate } from "react-router-dom"
 
 
 const SubscriptionTable = ({ elements }: SubscriptionTableInterface) => {
-  const [opened, setOpened] = useState(false)
+  const [download, setDownload] = useState(false)
   const { state } = useAuthContext();
                 
   const userState = useMemo(() => {
       return state.user;
     }, [state.user]);
+    // const navigate = useNavigate()
+    // const handleNavigate = (id: string,) => {
+    //   navigate(`/subscription/${id}`)
+    // }
+
+    
 
   const rows = elements?.map((element, index) => (
     <tr key={index}>
@@ -37,8 +45,12 @@ const SubscriptionTable = ({ elements }: SubscriptionTableInterface) => {
         }
         <td> {element?.monthPaid} </td>
         {userState?.depotRole === HQDepotType && 
-        <td className="text-green-100" onClick={() => setOpened(true)}>
+        <td className="text-green-100" onClick={() => setDownload(true)}>
         Download Reciept
+      </td>}
+      {userState?.accountType === admin && 
+        <td className="text-green-100" >
+        <IoIosArrowForward size={30} style={{ color: "#889088" }}  />
       </td>}
     </tr>
   ))
@@ -114,11 +126,11 @@ const SubscriptionTable = ({ elements }: SubscriptionTableInterface) => {
         />
       </div>
 
-      {opened &&
+      {download &&
         <Modal
         centered
-        opened={opened}
-        onClose={() => setOpened(false)}
+        opened={download}
+        onClose={() => setDownload(false)}
         withCloseButton={false}
         overlayOpacity={0.55}
         overlayBlur={3}
@@ -139,6 +151,8 @@ const SubscriptionTable = ({ elements }: SubscriptionTableInterface) => {
           </div>
         </Modal>
       }
+
+          
     </>
   )
 }
