@@ -50,7 +50,7 @@ const ApplicationTable = ({ elements, setPhase, setActiveId }: Prop) => {
     }
     const rows = elements.map((item, index) => (
         <tr key={index}>
-            <td className="flex">{index}</td>
+            <td className="flex">{index + 1}</td>
             <td>
                 <p className="flex">
                     <img src={Avatar} alt="" />

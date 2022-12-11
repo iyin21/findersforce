@@ -11,17 +11,19 @@ function useGetShiftHistory({
     upcoming,
     ongoing,
     completed,
-    cancelled
+    cancelled,
+    jobMeetingPoint
 }: {
     upcoming?: boolean
     ongoing?: boolean
     completed?: boolean
     cancelled?: boolean
+    jobMeetingPoint?: string
 }) {
     const { state } = useAuthContext()
     const getShiftHistory = async () => {
         const { data } = await axiosInstance.get(`/schedule`, {
-            params: {upcoming, ongoing, completed, cancelled },
+            params: {upcoming, ongoing, completed, cancelled, jobMeetingPoint },
             headers: {
                 Authorization: `Bearer ${state?.jwt?.token}`,
             },
@@ -30,7 +32,7 @@ function useGetShiftHistory({
     }
 
     return useQuery<unknown, AxiosError, ShiftResponse["data"]>(
-        ["shiftHistory", {upcoming, ongoing, completed, cancelled }],
+        ["shiftHistory", {upcoming, ongoing, completed, cancelled, jobMeetingPoint }],
         getShiftHistory,
 
         {

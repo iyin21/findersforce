@@ -30,31 +30,66 @@ const Planner = () => {
         setCompletedPage(pageNumber)
     }
 
-    const applyFilter = (filter: FilterRequest) => {}
+    const [upcomingShiftsFilter, setUpcomingShiftsFilter] = useState<FilterRequest>({
+        // meetingPoint: "",
+        // amount: [],
+    })
+    const [ongoingShiftsFilter, setOngoingShiftsFilter] = useState<FilterRequest>({
+        // meetingPoint: "",
+        // amount: [],
+    })
+    const [cancelledShiftsFilter, setCancelledShiftsFilter] = useState<FilterRequest>({
+        // meetingPoint: "",
+        // amount: [],
+    })
+    const [completedShiftsFilter, setCompletedShiftsFilter] = useState<FilterRequest>({
+        // meetingPoint: "",
+        // amount: [],
+    })
+
+    const applyFilter = (filter: FilterRequest) => {
+        if (activeTab === "first") {
+            setUpcomingShiftsFilter(filter)
+            setUpcomingPage(1)
+        } else if (activeTab === "second") {
+            setOngoingShiftsFilter(filter)
+            setOngoingPage(1)
+        } else if ( activeTab === "third") {
+            setCancelledShiftsFilter(filter)
+            setCancelledPage(1)
+        } else {
+            setCompletedShiftsFilter(filter)
+            setCompletedPage(1)
+        }
+    }
 
     const {
         data: upcomingShiftsData,
         isLoading: isLoadingUpcomingData
     } = useGetShiftHistory({
         upcoming: true,
+        jobMeetingPoint: upcomingShiftsFilter?.meetingPoint
     })
     const {
         data: ongoingShiftsData,
         isLoading: isLoadingOngoingData
     } = useGetShiftHistory({
         ongoing: true,
+        jobMeetingPoint: ongoingShiftsFilter?.meetingPoint
     })
     const {
         data: cancelledShiftsData,
         isLoading: isLoadingCancelledData
     } = useGetShiftHistory({
         cancelled: true,
+        jobMeetingPoint: cancelledShiftsFilter?.meetingPoint
     })
     const {
         data: completedShiftsData,
         isLoading: isLoadingCompletedData
     } = useGetShiftHistory({
         completed: true,
+        jobMeetingPoint: completedShiftsFilter?.meetingPoint
     })
 
     const navigate = useNavigate()
