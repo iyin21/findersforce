@@ -21,6 +21,7 @@ import Location from "./pages/Location"
 import LocationBasedData from "./pages/Location/components/locationBasedData"
 import AdminAnalytics from "./pages/Admin/Analytics"
 import SupportMedium from "./pages/Support/support-medium"
+import Approvals from "./pages/Approvals"
 
 function App() {
     return (
@@ -57,6 +58,7 @@ function App() {
                     <Route path="/locations" element={<Location />} />
                     <Route path="/locations/:locationId" element={<LocationBasedData />} />
                     <Route path="/analytics" element={<AdminAnalytics />} />
+                    <Route path="/approvals" element={<Approvals />} />
                 </Route>
             </Route>
         </Routes>

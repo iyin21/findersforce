@@ -23,7 +23,7 @@ export interface Data {
     createdAt: Date
     updatedAt: Date
     depot: string
-    _v: number
+    __v: number
     completedShfts: number;
     certificates: Certificates[];
     jobMatchPercentage:number;
@@ -75,6 +75,7 @@ export interface User {
     username: string
     firstName: string
     lastName: string
+    gender: string
     email: string
     averageRating: number
     resumeUrl: string

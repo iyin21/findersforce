@@ -1,16 +1,18 @@
 import { Tabs } from "@mantine/core"
-import ApplicationTable from "./components/application-table"
 import { useState } from "react"
-import { useGetApplications } from "./hooks/application.hook"
+import { useGetApplications } from "../../pages/Applications/hooks/application.hook"
 import { CgSpinner } from "react-icons/cg"
 import { IoFilterSharp } from "react-icons/io5"
-import ApplicationDetails from "./sub-navigations/ApplicationDetails"
-import ShiftDetails from "./sub-navigations/ShiftDetails"
+import ApplicationDetails from "./sub-navigations/application-details"
+import ShiftDetails from "./sub-navigations/ShiftHistory/index"
 import Layout from "../../components/Layout/index"
 import EmptyState from "../../components/EmptyStates/index"
 import { useNavigate } from "react-router-dom"
+import PendingTable from "./components/Tables/pending-table"
+import AcceptedTable from "./components/Tables/accepted-table"
+import RejectedTable from "./components/Tables/rejected-table"
 
-const Applications = () => {
+const Approvals = () => {
     const [activeTab, setActiveTab] = useState<string | null>("pending")
     const { data: pendingData, isLoading: isLoadingPendingData } =
         useGetApplications({
@@ -41,10 +43,10 @@ const Applications = () => {
             {phase === 1 ? (
                 <div className="md:p-6 p-6 mt-4 md:mt-14">
                     <h5 className="font-bold lg:text-3xl text-2xl mb-2">
-                        Applications
+                        Approvals
                     </h5>
                     <p className="text-black-60 mb-2">
-                        Operatives who apply for shifts appear here
+                        Operatives who apply to Finders force appear here
                     </p>
 
                     {isLoadingPendingData ||
@@ -80,7 +82,7 @@ const Applications = () => {
                                     >
                                         Pending
                                         <span className="bg-red-100 rounded ml-2 py-0.5 px-1 text-white-100 text-sm">
-                                            {pendingData?.data?.length || 0}
+                                            {pendingData?.data?.length ?? 0}
                                         </span>
                                     </Tabs.Tab>
 
@@ -94,7 +96,7 @@ const Applications = () => {
                                     >
                                         Accepted
                                         <span className="bg-red-100 rounded ml-2 py-0.5 px-1 text-white-100 text-sm">
-                                            {acceptedData?.data?.length ?? 0}
+                                            {acceptedData?.data?.length || 0}
                                         </span>
                                     </Tabs.Tab>
                                     <Tabs.Tab
@@ -113,8 +115,8 @@ const Applications = () => {
                                 </Tabs.List>
                                 <Tabs.Panel value="pending">
                                     {pendingData?.data &&
-                                    pendingData?.data.length > 0 ? (
-                                        <ApplicationTable
+                                    pendingData?.data?.length > 0 ? (
+                                        <PendingTable
                                             elements={pendingData?.data || []}
                                             setPhase={setPhase}
                                             setActiveId={setActiveId}
@@ -130,10 +132,10 @@ const Applications = () => {
                                     )}
                                 </Tabs.Panel>
                                 <Tabs.Panel value="accepted">
-                                    {acceptedData?.data &&
-                                    acceptedData?.data.length > 0 ? (
-                                        <ApplicationTable
-                                            elements={acceptedData?.data || []}
+                                    {pendingData?.data &&
+                                    pendingData?.data.length > 0 ? (
+                                        <AcceptedTable
+                                            elements={pendingData?.data || []}
                                             setPhase={setPhase}
                                             setActiveId={setActiveId}
                                         />
@@ -148,10 +150,10 @@ const Applications = () => {
                                     )}
                                 </Tabs.Panel>
                                 <Tabs.Panel value="rejected">
-                                    {rejectedData?.data &&
-                                    rejectedData?.data.length > 0 ? (
-                                        <ApplicationTable
-                                            elements={rejectedData?.data || []}
+                                    {pendingData?.data &&
+                                    pendingData?.data?.length > 0 ? (
+                                        <RejectedTable
+                                            elements={pendingData?.data || []}
                                             setPhase={setPhase}
                                             setActiveId={setActiveId}
                                         />
@@ -182,4 +184,4 @@ const Applications = () => {
     )
 }
 
-export default Applications
+export default Approvals
