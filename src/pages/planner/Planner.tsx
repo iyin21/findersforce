@@ -30,22 +30,10 @@ const Planner = () => {
         setCompletedPage(pageNumber)
     }
 
-    const [upcomingShiftsFilter, setUpcomingShiftsFilter] = useState<FilterRequest>({
-        // meetingPoint: "",
-        // amount: [],
-    })
-    const [ongoingShiftsFilter, setOngoingShiftsFilter] = useState<FilterRequest>({
-        // meetingPoint: "",
-        // amount: [],
-    })
-    const [cancelledShiftsFilter, setCancelledShiftsFilter] = useState<FilterRequest>({
-        // meetingPoint: "",
-        // amount: [],
-    })
-    const [completedShiftsFilter, setCompletedShiftsFilter] = useState<FilterRequest>({
-        // meetingPoint: "",
-        // amount: [],
-    })
+    const [upcomingShiftsFilter, setUpcomingShiftsFilter] = useState<FilterRequest>()
+    const [ongoingShiftsFilter, setOngoingShiftsFilter] = useState<FilterRequest>()
+    const [cancelledShiftsFilter, setCancelledShiftsFilter] = useState<FilterRequest>()
+    const [completedShiftsFilter, setCompletedShiftsFilter] = useState<FilterRequest>()
 
     const applyFilter = (filter: FilterRequest) => {
         if (activeTab === "first") {
