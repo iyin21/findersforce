@@ -8,7 +8,7 @@ import { IDepotRating } from "../../types/dashboard/interfaces"
 
 
 function useGetShiftHistory({
-    upcoming,
+    
     ongoing,
     completed,
     cancelled,
@@ -23,7 +23,7 @@ function useGetShiftHistory({
     const { state } = useAuthContext()
     const getShiftHistory = async () => {
         const { data } = await axiosInstance.get(`/schedule`, {
-            params: {upcoming, ongoing, completed, cancelled, jobMeetingPoint },
+            params: { ongoing, completed, cancelled, jobMeetingPoint },
             headers: {
                 Authorization: `Bearer ${state?.jwt?.token}`,
             },
@@ -32,7 +32,7 @@ function useGetShiftHistory({
     }
 
     return useQuery<unknown, AxiosError, ShiftResponse["data"]>(
-        ["shiftHistory", {upcoming, ongoing, completed, cancelled, jobMeetingPoint }],
+        ["shiftHistory", { ongoing, completed, cancelled, jobMeetingPoint }],
         getShiftHistory,
 
         {

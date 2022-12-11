@@ -1,9 +1,9 @@
 
 import { Checkbox, Table } from "@mantine/core"
-import { AiFillStar, AiOutlineArrowUp } from "react-icons/ai"
+import {  AiOutlineArrowUp } from "react-icons/ai"
 import { IoIosArrowForward } from "react-icons/io"
 import { ShiftsTableInterface } from "../../../types/planner/interfaces"
-import ProfileImage from "../../../assets/ProfileImage.svg"
+// import ProfileImage from "../../../assets/ProfileImage.svg"
 import dayjs from "dayjs"
 import { useNavigate } from "react-router-dom"
 import MobileShiftsTable from "./MobileShiftsTable"
@@ -37,13 +37,15 @@ function getDurationBeforeCancel(millisec: number) {
 
   const rows = elements?.map((element, index) => (
     <tr key={index}>
-        {status !== "completed" && (<td>
+        
+        <td>{ element?._id}</td>
+        {/* {status !== "completed" && (<td>
           <div className="flex items-center gap-2">
             <img src={ProfileImage} alt="profile_image" />
             <p>{element?.operative?.firstName} {element?.operative?.lastName}</p>
           </div>
-        </td>)}
-        {status !== "completed" ? 
+        </td>)} */}
+        {status !== "cancelled" ? 
         (<td>{element?.jobListing?.jobType?.name}</td>)
         :
         (<td>
@@ -72,15 +74,7 @@ function getDurationBeforeCancel(millisec: number) {
           : status === "completed" ? (<td>{element?.jobListing?.shiftDurationInHours}hour(s)</td>) 
           : status === "cancelled" && (<td>{getDurationBeforeCancel(((new Date(element?.cancelTime).getTime()) - new Date(element?.clockInTime).getTime()))}</td>) 
         }
-        {status === "completed" && (<td>{element?.jobListing?.numberOfOpsRequired}</td>)}
-        {status === "completed" && (
-        <td>
-          <div className="flex items-center gap-1">
-            <AiFillStar size={20} style={{color: "#FED70A"}}/>
-            <p>{element?.operativeRating}</p>
-          </div>
-        </td>
-        )}
+        
         <td>
             <p className="text-black-100 bg-yellow-100 rounded-3xl text-center font-bold p-1 w-fit px-3 py-1 text-3sm font-creatoBlack">
                        {element?.jobListing?.jobMeetingPoint}
@@ -107,7 +101,6 @@ function getDurationBeforeCancel(millisec: number) {
 ));
 
 const tableHeadUpcoming = [
-  { list: "NAME" },
   { list: "JOB TYPE" },
   { list: "LOCATION" },
   { list: "DATE" },
@@ -116,7 +109,6 @@ const tableHeadUpcoming = [
   { list: "MODE" },
 ]
 const tableHeadActive = [
-  { list: "NAME" },
   { list: "JOB TYPE" },
   { list: "LOCATION" },
   { list: "SCHEDULE" },
