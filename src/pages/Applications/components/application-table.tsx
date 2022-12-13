@@ -55,30 +55,30 @@ const ApplicationTable = ({ elements, setPhase, setActiveId }: Prop) => {
                 <p className="flex">
                     <img src={Avatar} alt="" />
                     <span className="pl-2">
-                        {item.user.firstName + " " + item.user.lastName}
+                        {item?.user?.firstName + " " + item?.user?.lastName}
                     </span>
                 </p>
             </td>
 
-            <td>{item.jobListing.jobType.name}</td>
-            <td>{item.jobListing.jobQualification.name}</td>
+            <td>{item?.jobListing?.jobType?.name}</td>
+            <td>{item?.jobListing?.jobQualification?.name}</td>
             <td className="text-green-100 font-medium">
-                {item.jobMatchPercentage}%
+                {item?.jobMatchPercentage}%
             </td>
             <td>
                 <p className="flex">
                     <img src={Star} alt="" />
-                    <span className="pl-1">{item.user.averageRating}</span>
+                    <span className="pl-1">{item?.user?.averageRating}</span>
                 </p>
             </td>
-            <td>{dayjs(item.createdAt).format("MMM D, YYYY")}</td>
-            <td>{dayjs(item.createdAt).format("h:mm A")}</td>
+            <td>{dayjs(item?.createdAt).format("MMM D, YYYY")}</td>
+            <td>{dayjs(item?.createdAt).format("h:mm A")}</td>
             <td
                 className="cursor-pointer"
                 data-testid="view_application"
                 onClick={
                     () => {
-                        setActiveId(item._id)
+                        setActiveId(item?._id)
                         setPhase(2)
                     }
                     // navigate(`/applications/${item._id}`)
@@ -196,13 +196,13 @@ const ApplicationTable = ({ elements, setPhase, setActiveId }: Prop) => {
                         className="rounded bg-black-5 mb-4 pb-4 cursor-pointer"
                         key={index}
                         onClick={() => {
-                            setActiveId(item._id)
+                            setActiveId(item?._id)
                             setPhase(2)
                         }}
                     >
                         <div className="flex justify-between border-b border-black-20 p-4">
                             <p className="font-medium text-2lg">
-                                {item.user.firstName + " " + item.user.lastName}
+                                {item?.user?.firstName + " " + item?.user?.lastName}
                             </p>
                             <IoIosArrowForward
                                 size={20}
@@ -216,7 +216,7 @@ const ApplicationTable = ({ elements, setPhase, setActiveId }: Prop) => {
                                         JOB TYPE
                                     </h6>
                                     <p className="text-2md mt-1">
-                                        {item.jobListing.jobType.name}
+                                        {item?.jobListing?.jobType?.name}
                                     </p>
                                 </div>
 
@@ -225,7 +225,7 @@ const ApplicationTable = ({ elements, setPhase, setActiveId }: Prop) => {
                                         QUALIFICATION
                                     </h6>
                                     <p className="text-2md mt-1">
-                                        {item.jobListing.jobQualification.name}
+                                        {item?.jobListing?.jobQualification?.name}
                                     </p>
                                 </div>
                                 <div className="mt-4">
@@ -233,11 +233,11 @@ const ApplicationTable = ({ elements, setPhase, setActiveId }: Prop) => {
                                         DATE APPLIED
                                     </h6>
                                     <p className="text-2md mt-1">
-                                        {dayjs(item.createdAt).format(
+                                        {dayjs(item?.createdAt).format(
                                             "MMM D, YYYY"
                                         ) +
                                             ", " +
-                                            dayjs(item.createdAt).format(
+                                            dayjs(item?.createdAt).format(
                                                 "h:mm A"
                                             )}
                                     </p>
@@ -249,7 +249,7 @@ const ApplicationTable = ({ elements, setPhase, setActiveId }: Prop) => {
                                         MATCH
                                     </h6>
                                     <p className="text-2md mt-1">
-                                        {item.jobMatchPercentage}%
+                                        {item?.jobMatchPercentage}%
                                     </p>
                                 </div>
 
@@ -258,7 +258,7 @@ const ApplicationTable = ({ elements, setPhase, setActiveId }: Prop) => {
                                         RATING
                                     </h6>
                                     <p className="text-2md mt-1">
-                                        {item.user.averageRating}
+                                        {item?.user?.averageRating}
                                     </p>
                                 </div>
                             </div>

@@ -6,7 +6,7 @@ import MobileSubscriptionTable from "./MobileSubscriptionTable"
 import useAuthContext from "../../../hooks/auth-hooks/useAuth"
 import { admin, HQDepotType } from "../../../utils/user-types"
 import { IoIosArrowForward } from "react-icons/io"
-// import { useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 
 
 const SubscriptionTable = ({ elements }: SubscriptionTableInterface) => {
@@ -16,10 +16,10 @@ const SubscriptionTable = ({ elements }: SubscriptionTableInterface) => {
   const userState = useMemo(() => {
       return state.user;
     }, [state.user]);
-    // const navigate = useNavigate()
-    // const handleNavigate = (id: string,) => {
-    //   navigate(`/subscription/${id}`)
-    // }
+    const navigate = useNavigate()
+    const handleNavigate = () => {
+      navigate(`/subscription/id`)
+    }
 
     
 
@@ -50,7 +50,7 @@ const SubscriptionTable = ({ elements }: SubscriptionTableInterface) => {
       </td>}
       {userState?.accountType === admin && 
         <td className="text-green-100" >
-        <IoIosArrowForward size={30} style={{ color: "#889088" }}  />
+        <IoIosArrowForward size={30} style={{ color: "#889088" }} onClick={() => handleNavigate()}  />
       </td>}
     </tr>
   ))

@@ -68,6 +68,7 @@ export interface JobListing {
     hasApplied: boolean
     hasFavorited: boolean
     endedShift: boolean
+    listingId: string
 }
 
 export interface User {

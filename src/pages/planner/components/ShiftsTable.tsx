@@ -38,7 +38,7 @@ function getDurationBeforeCancel(millisec: number) {
   const rows = elements?.map((element, index) => (
     <tr key={index}>
         
-        <td>{ element?._id}</td>
+        <td>{ element?.jobListing?.listingId}</td>
         {/* {status !== "completed" && (<td>
           <div className="flex items-center gap-2">
             <img src={ProfileImage} alt="profile_image" />

@@ -13,6 +13,7 @@ import SmPlanner from "./planner-categories/Sm-Planner";
 const Planner = () => {
 
     const { state } = useAuthContext();
+    console.log(state.jwt?.token)
     
     const userState = useMemo(() => {
         return state.user;

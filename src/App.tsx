@@ -56,7 +56,7 @@ function App() {
                     <Route path="/messaging" element={<Messaging />} />
                     <Route path="/subscription" element={<Subscription/>} />
                     <Route
-                        path="/subscription/:id"
+                        path="/subscription/id"
                         element={<SubscriptionDetails />}
                     />
                     <Route path="/locations" element={<Location />} />
