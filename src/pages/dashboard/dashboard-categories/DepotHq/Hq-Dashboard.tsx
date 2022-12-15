@@ -214,7 +214,7 @@ if (regionData) {
                                 }
                             </div>
 
-                            <div className="overflow-y-scroll  relative rounded-t-lg my-5">
+                            <div className="overflow-y-scroll h-52 relative rounded-t-lg my-5">
                                 <p className="text-md font-medium sticky z-20 top-0 bg-gray-100 rounded-t-lg py-3 pl-4 ">
                                     {" "}
                                     UPCOMING SHIFTS{" "}

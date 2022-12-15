@@ -60,7 +60,7 @@ const ApplicationTable = ({ elements, setPhase, setActiveId }: Prop) => {
                 </p>
             </td>
 
-            <td>{item?.jobListing?.jobType?.name}</td>
+            <td>{item?.jobListing?.listingId}</td>
             <td>{item?.jobListing?.jobQualification?.name}</td>
             <td className="text-green-100 font-medium">
                 {item?.jobMatchPercentage}%
@@ -71,8 +71,7 @@ const ApplicationTable = ({ elements, setPhase, setActiveId }: Prop) => {
                     <span className="pl-1">{item?.user?.averageRating}</span>
                 </p>
             </td>
-            <td>{dayjs(item?.createdAt).format("MMM D, YYYY")}</td>
-            <td>{dayjs(item?.createdAt).format("h:mm A")}</td>
+            <td>{dayjs(item?.createdAt).format("MMM D, YYYY")} | {dayjs(item?.createdAt).format("h:mm A")}</td>
             <td
                 className="cursor-pointer"
                 data-testid="view_application"
@@ -92,12 +91,11 @@ const ApplicationTable = ({ elements, setPhase, setActiveId }: Prop) => {
     const tableHead = [
         "NO",
         "name",
-        "job Type",
+        "shift Type",
         "Qualification",
         "match",
         "rating",
         "date Applied",
-        "time Applied",
         "",
     ]
     return (
@@ -213,10 +211,10 @@ const ApplicationTable = ({ elements, setPhase, setActiveId }: Prop) => {
                             <div>
                                 <div className="mt-2">
                                     <h6 className="text-black-50 text-3sm">
-                                        JOB TYPE
+                                        SHIFT TYPE
                                     </h6>
                                     <p className="text-2md mt-1">
-                                        {item?.jobListing?.jobType?.name}
+                                        {item?.jobListing?.listingId}
                                     </p>
                                 </div>
 

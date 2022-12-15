@@ -69,6 +69,8 @@ export interface JobListing {
     hasFavorited: boolean
     endedShift: boolean
     listingId: string
+    fullyPaidByAdmin: boolean
+    fullyPaidByDepot: boolean
 }
 
 export interface User {

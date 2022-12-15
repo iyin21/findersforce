@@ -1,11 +1,11 @@
 import { HiArrowLeft } from "react-icons/hi"
 import { HiChevronRight } from "react-icons/hi"
 import Avatar from "../../assets/avatar.png"
-import { useNavigate } from "react-router-dom"
+// import { useNavigate } from "react-router-dom"
 import Resume from "../../assets/resume.svg"
-import Google from "../../assets/google.svg"
+// import Google from "../../assets/google.svg"
 import { BsCheck, BsX } from "react-icons/bs"
-import Download from "../../assets/downloadIcon.svg"
+// import Download from "../../assets/downloadIcon.svg"
 import View from "../../assets/view.svg"
 import Message from "../../assets/message.svg"
 import CheckedIcon from "../../assets/check.svg"
@@ -21,7 +21,7 @@ import { useEffect } from "react"
 import { showNotification } from "@mantine/notifications"
 
 interface Prop {
-    //status?: "pending" | "accepted" | "rejected" ;
+    // status?: "pending" | "accepted" | "rejected" ;
 
     setPhase: (val: number) => void
 
@@ -29,8 +29,8 @@ interface Prop {
     setShiftId: (val: string) => void
 }
 const ApplicationDetails = ({ setPhase, activeId, setShiftId }: Prop) => {
-    //const { applicationId } = useParams<{ applicationId: string }>()
-    const navigate = useNavigate()
+    // const { applicationId } = useParams<{ applicationId: string }>()
+    // const navigate = useNavigate()
 
     const { data, isLoading } = useGetApplicationDetails({
         id: activeId || "",
@@ -45,7 +45,7 @@ const ApplicationDetails = ({ setPhase, activeId, setShiftId }: Prop) => {
         isLoading: isLoadingRejectedData,
         mutate: rejectMutate,
     } = useUpdateApplication({ id: activeId || "" })
-    console.log(data)
+    
     const handleAccept = () => {
         acceptMutate({ status: "WON" })
     }
@@ -86,7 +86,7 @@ const ApplicationDetails = ({ setPhase, activeId, setShiftId }: Prop) => {
                                 <img
                                     src={data?.user.profileImageUrl || Avatar}
                                     className="rounded-full  h-14 w-14"
-                                    alt="profile-picture"
+                                    alt="profile"
                                 />
                                 <button className="bg-green-10 p-2 lg:mr-4 flex text-green-100 font-bold items-center  rounded rounded-tr-2xl lg:hidden block">
                                     <img
@@ -212,7 +212,7 @@ const ApplicationDetails = ({ setPhase, activeId, setShiftId }: Prop) => {
                                             setShiftId(data?.user._id || "")
                                             setPhase(3)
                                         }
-                                        //navigate(`/applications/${item._id}`)
+                                        // navigate(`/applications/${item._id}`)
                                     }
                                 >
                                     View shift history
@@ -234,14 +234,14 @@ const ApplicationDetails = ({ setPhase, activeId, setShiftId }: Prop) => {
                                         Message {data?.user.firstName}
                                     </button>
                                     <p
-                                        //href={`/applications/${applicationId}/${data?.user._id}`}
+                                        // href={`/applications/${applicationId}/${data?.user._id}`}
                                         className="flex ml-4 items-center font-bold cursor-pointer"
                                         onClick={
                                             () => {
                                                 setShiftId(data?.user._id || "")
                                                 setPhase(3)
                                             }
-                                            //navigate(`/applications/${item._id}`)
+                                            // navigate(`/applications/${item._id}`)
                                         }
                                     >
                                         View shift history
@@ -329,15 +329,15 @@ const ApplicationDetails = ({ setPhase, activeId, setShiftId }: Prop) => {
                                         className="text-white-100 pl-2"
                                         href={data?.user.resumeUrl}
                                         target="_blank"
-                                        //rel="noreferrer"
-                                        //target="_blank"
-                                        //rel="noopener noreferrer"
+                                        // rel="noreferrer"
+                                        // target="_blank"
+                                        // rel="noopener noreferrer"
 
                                         download={`${
                                             data?.user.firstName +
                                             "-" +
                                             data?.user.lastName
-                                        }.pdf`}
+                                        }.pdf`} rel="noreferrer"
                                     >
                                         View
                                     </a>

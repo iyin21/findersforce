@@ -14,7 +14,7 @@ const MobileShiftsDetailsTable = () => {
   
     const location = useLocation()
 
-    const queryStatus = location.state.status
+    const queryStatus = location?.state?.status
 
     const {
         data:shiftsData,
