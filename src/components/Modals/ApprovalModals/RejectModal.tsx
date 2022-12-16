@@ -5,7 +5,7 @@ import { BsX } from "react-icons/bs"
 interface prop {
     openRejectModal: boolean
     setOpenRejectModal: any
-    handleReject: () => void
+    handleReject: ({moreInfo, reason}: {moreInfo: string, reason: string | null}) => void
     isLoadingAcceptedData: boolean
     isLoadingRejectedData: boolean
 }
@@ -17,6 +17,7 @@ const RejectModal = ({
     isLoadingAcceptedData,
 }: prop) => {
     const [value, setValue] = useState<string | null>(null)
+    const [moreInfo, setMoreInfo] = useState("")
     return (
         <Modal
             opened={openRejectModal}
@@ -89,6 +90,8 @@ const RejectModal = ({
                     placeholder=""
                     label="More Information"
                     autosize
+                    value={moreInfo}
+                    onChange={e => setMoreInfo(e.currentTarget.value)}
                     required={false}
                     radius={"md"}
                     minRows={10}
@@ -112,7 +115,7 @@ const RejectModal = ({
                     </span>
                     <button
                         className="bg-red-10 p-4 rounded rounded-tr-2xl flex items-center font-bold body-medium px-6"
-                        onClick={() => handleReject()}
+                        onClick={() => handleReject({moreInfo: "", reason: value})}
                         disabled={
                             isLoadingAcceptedData || isLoadingRejectedData
                         }

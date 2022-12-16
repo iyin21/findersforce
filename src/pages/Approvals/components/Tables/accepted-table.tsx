@@ -1,5 +1,5 @@
 import { Table, Checkbox } from "@mantine/core"
-import { Data } from "../../../Applications/interface"
+import { Data } from "../../../../types/approval/approval-interface"
 import { HiChevronRight } from "react-icons/hi"
 import Avatar from "../../../Applications/assets/avatar.svg"
 import dayjs from "dayjs"
@@ -20,7 +20,7 @@ const AcceptedTable = ({ elements, setPhase, setActiveId }: Prop) => {
                     <Checkbox
                         id={item?._id}
                         className="rounded-lg"
-                        name={item?.jobListing?.jobType?.name}
+                        // name={item?.jobListing?.jobType?.name}
                         // onChange={handleCheckedProduct}
                         // checked={checkedProduct.includes(element?._id)}
                         value={item?._id}
@@ -28,20 +28,21 @@ const AcceptedTable = ({ elements, setPhase, setActiveId }: Prop) => {
                     />
                 </div>
             </td>
+            <td>{index + 1}</td>
             <td>
                 <p className="flex">
                     <img src={Avatar} alt="" />
                     <span className="pl-2">
-                        {item.user.firstName + " " + item.user.lastName}
+                        {item.firstName + " " + item.lastName}
                     </span>
                 </p>
             </td>
 
-            <td>{item.user.email}</td>
-            <td>{item.user.gender}</td>
-            <td>{item.jobListing.jobQualification.name}</td>
+            <td>{item.email}</td>
+            <td>{item.gender}</td>
+            <td>{item.qualification[0].name}</td>
             <td>
-                {"12"}
+                {item.completedShifts}
                 {/* use shift history to get each user's shift completed */}
             </td>
             <td>{dayjs(item.createdAt).format("MMM D, YYYY")}</td>
@@ -84,6 +85,17 @@ const AcceptedTable = ({ elements, setPhase, setActiveId }: Prop) => {
                             >
                                 <Checkbox />
                             </th>
+                            <th
+                                style={{
+                                    color: "rgba(15, 13, 0, 0.3)",
+                                    fontSize: "13px",
+                                    borderBottom: "none",
+                                }}
+                                className="text-black-30"
+                            >
+                                {"NO"}
+                            </th>
+
                             {tableHead.map((item, index) => (
                                 <>
                                     <th
@@ -116,7 +128,7 @@ const AcceptedTable = ({ elements, setPhase, setActiveId }: Prop) => {
                     >
                         <div className="flex justify-between border-b border-black-20 p-4">
                             <p className="font-medium text-2lg">
-                                {item.user.firstName + " " + item.user.lastName}
+                                {item.firstName + " " + item.lastName}
                             </p>
                             <IoIosArrowForward
                                 size={20}
@@ -130,7 +142,7 @@ const AcceptedTable = ({ elements, setPhase, setActiveId }: Prop) => {
                                         EMAIL
                                     </h6>
                                     <p className="text-2md mt-1">
-                                        {item.user.email}
+                                        {item.email}
                                     </p>
                                 </div>
 
@@ -138,9 +150,7 @@ const AcceptedTable = ({ elements, setPhase, setActiveId }: Prop) => {
                                     <h6 className="text-black-50 text-3sm">
                                         GENDER
                                     </h6>
-                                    <p className="text-2md mt-1">
-                                        {item.user.gender}
-                                    </p>
+                                    <p className="text-2md mt-1">{"unset"}</p>
                                 </div>
                                 <div className="mt-4">
                                     <h6 className="text-black-50 text-3sm">
@@ -162,18 +172,14 @@ const AcceptedTable = ({ elements, setPhase, setActiveId }: Prop) => {
                                     <h6 className="text-black-50 text-3sm">
                                         QUALIFICATION
                                     </h6>
-                                    <p className="text-2md mt-1">
-                                        {item.jobMatchPercentage}%
-                                    </p>
+                                    <p className="text-2md mt-1">{"unset"}</p>
                                 </div>
 
                                 <div className="mt-4">
                                     <h6 className="text-black-50 text-3sm">
                                         ID TYPE
                                     </h6>
-                                    <p className="text-2md mt-1">
-                                        {item.user.averageRating}
-                                    </p>
+                                    <p className="text-2md mt-1">{"unset"}</p>
                                 </div>
                             </div>
                         </div>

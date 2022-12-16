@@ -7,4 +7,5 @@ export const HqProfileInitialValue = {
     regionAddress: "",
     accountType: "",
     email: [],
+    subscriptionPlan: ""
 }

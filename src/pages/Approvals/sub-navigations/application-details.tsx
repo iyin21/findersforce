@@ -8,10 +8,7 @@ import Message from "../../Applications/assets/message.svg"
 import CheckedIcon from "../../Applications/assets/check.svg"
 import UnverifiedIcon from "../../Applications/assets/unverified.svg"
 
-import {
-    useGetApplicationDetails,
-    useUpdateApplication,
-} from "../../Applications/hooks/application.hook"
+import { useGetOperativeDetails, useUpdateOperative } from "../../../hooks/approval-hooks/approval.hook"
 import dayjs from "dayjs"
 import { CgSpinner } from "react-icons/cg"
 import { useState } from "react"
@@ -27,26 +24,26 @@ interface Prop {
     setShiftId: (val: string) => void
 }
 const ApplicationDetails = ({ setPhase, activeId, setShiftId }: Prop) => {
-    const { data, isLoading } = useGetApplicationDetails({
+    const { data, isLoading } = useGetOperativeDetails({
         id: activeId || "",
     })
     const {
         data: acceptedData,
         isLoading: isLoadingAcceptedData,
         mutate: acceptMutate,
-    } = useUpdateApplication({ id: activeId || "" })
+    } = useUpdateOperative({ id: data?.results[0].doc._id || "" })
     const {
         data: rejectedData,
         isLoading: isLoadingRejectedData,
         mutate: rejectMutate,
-    } = useUpdateApplication({ id: activeId || "" })
+    } = useUpdateOperative({ id: data?.results[0].doc._id || "" })
     //    console.log(data)
     const handleAccept = () => {
-        acceptMutate({ status: "WON" })
+        acceptMutate({ status: "accepted" })
     }
 
-    const handleReject = () => {
-        rejectMutate({ status: "LOST" })
+    const handleReject = ({moreInfo, reason}: {moreInfo: string, reason: string | null}) => {
+        rejectMutate({ status: "rejected", moreInformation: moreInfo, rejectReason: reason })
     }
     useEffect(() => {
         if (rejectedData || acceptedData) {
@@ -116,27 +113,27 @@ const ApplicationDetails = ({ setPhase, activeId, setShiftId }: Prop) => {
                                 <div className="flex justify-between mt-2 lg:mt-0">
                                     <h5 className="font-extrabold text-2mxl">
                                         {" "}
-                                        {data?.user.firstName +
+                                        {data?.results[0]?.firstName +
                                             " " +
-                                            data?.user.lastName}
+                                            data?.results[0]?.lastName}
                                     </h5>
                                 </div>
 
                                 <p className="text-black-100">
                                     <span className="text-lg">
-                                        {data?.user.gender}
+                                        {data?.results[0]?.gender}
                                     </span>
                                     <span className="text-black-10 pl-1">
                                         |
                                     </span>
                                     <span className="text-black-100 pl-1 font-normal">
-                                        {data?.user.email}
+                                        {data?.results[0]?.email}
                                     </span>
                                 </p>
                             </div>
                         </div>
 
-                        {data?.status === "PENDING" ? (
+                        {data?.results[0].doc.status === "pending" ? (
                             <div className=" hidden lg:flex">
                                 <button
                                     className="bg-red-10 p-4 rounded rounded-tr-2xl flex items-center font-bold body-medium px-6"
@@ -157,7 +154,7 @@ const ApplicationDetails = ({ setPhase, activeId, setShiftId }: Prop) => {
                     </div>
                     <div className="lg:grid grid-cols-2 mt-4">
                         <div className="">
-                            {data?.status !== "PENDING" && (
+                            {data?.results[0].doc.status !== "pending" && (
                                 <div className="items-center  hidden lg:flex">
                                     <button className="bg-green-10 p-6 mr-4 flex text-green-100 font-bold items-center px-10 rounded rounded-tr-2xl">
                                         <img
@@ -165,15 +162,15 @@ const ApplicationDetails = ({ setPhase, activeId, setShiftId }: Prop) => {
                                             alt=""
                                             className="mr-2"
                                         />
-                                        Message {data?.user.firstName}
+                                        Message {data?.results[0].firstName}
                                     </button>
                                     <p
                                         // href={`/applications/${applicationId}/${data?.user._id}`}
                                         className="flex ml-4 items-center font-bold cursor-pointer"
                                         onClick={
                                             () => {
-                                                setShiftId(data?.user._id || "")
-                                                setPhase(3)
+//                                                setShiftId(data?.results[0]._id || "")
+//                                                setPhase(3)
                                             }
                                             // navigate(`/applications/${item._id}`)
                                         }
@@ -190,17 +187,17 @@ const ApplicationDetails = ({ setPhase, activeId, setShiftId }: Prop) => {
                                         QUALIFICATION
                                     </p>
                                     <p className="font-bold body-regular">
-                                        {data?.jobListing.jobQualification.name}
+                                        {data?.results[0].skillset[0].name}
                                     </p>
                                 </div>
                                 <p className="mt-12 text-black-50 font-medium body-mediumn mb-2">
                                     SKILLS
                                 </p>
-                                <p className="font-bold">M2, M3, M4</p>
+                                <p className="font-bold">{data?.results[0].skillset[0].name}</p>
                                 <p className="mt-12 text-black-50 font-medium body-mediumn mb-2">
                                     PROFESSIONAL SUMMARY
                                 </p>
-                                <p>{data?.user.bio}</p>
+                                <p>{data?.results[0].bio}</p>
                             </div>
                         </div>
                         <div className="pl-4 mt-4">
@@ -210,11 +207,11 @@ const ApplicationDetails = ({ setPhase, activeId, setShiftId }: Prop) => {
                                         DATE APPLIED
                                     </p>
                                     <p className="font-bold body-regular">
-                                        {dayjs(data?.createdAt).format(
+                                        {dayjs(data?.results[0].createdAt).format(
                                             "MMMM D YYYY"
                                         )}
                                         <span>|</span>{" "}
-                                        {dayjs(data?.createdAt).format(
+                                        {dayjs(data?.results[0].createdAt).format(
                                             "h:mm A"
                                         )}
                                     </p>
@@ -228,9 +225,9 @@ const ApplicationDetails = ({ setPhase, activeId, setShiftId }: Prop) => {
                                             RESUME
                                         </p>
                                         <p className="text-white-100 font-bold :text-[14px] lg:text-[17px] pb-1">
-                                            {data?.user.firstName +
+                                            {data?.results[0]?.firstName +
                                                 "-" +
-                                                data?.user.lastName +
+                                                data?.results[0].lastName +
                                                 "-Resume.pdf"}
                                         </p>
                                         <p className="text-white-50 body-extra-small">
@@ -241,16 +238,16 @@ const ApplicationDetails = ({ setPhase, activeId, setShiftId }: Prop) => {
                                         <img src={View} alt="" />
                                         <a
                                             className="text-white-100 pl-2"
-                                            href={data?.user.resumeUrl}
+                                            href={data?.results[0].resumeUrl}
                                             target="_blank"
                                             // rel="noreferrer"
                                             // target="_blank"
                                             // rel="noopener noreferrer"
 
                                             download={`${
-                                                data?.user.firstName +
+                                                data?.results[0].firstName +
                                                 "-" +
-                                                data?.user.lastName
+                                                data?.results[0].lastName
                                             }.pdf`}
                                             rel="noreferrer"
                                         >
@@ -266,9 +263,9 @@ const ApplicationDetails = ({ setPhase, activeId, setShiftId }: Prop) => {
                                             RESUME
                                         </p>
                                         <p className="text-white-100 font-bold :text-[14px] lg:text-[17px] pb-1">
-                                            {data?.user.firstName +
+                                            { data?.results[0].firstName +
                                                 "-" +
-                                                data?.user.lastName +
+                                                data?.results[0].lastName +
                                                 "-Resume.pdf"}
                                         </p>
                                         <p className="text-white-50 body-extra-small">
@@ -279,16 +276,16 @@ const ApplicationDetails = ({ setPhase, activeId, setShiftId }: Prop) => {
                                         <img src={View} alt="" />
                                         <a
                                             className="text-white-100 pl-2"
-                                            href={data?.user.resumeUrl}
+                                            href={data?.results[0].resumeUrl}
                                             target="_blank"
                                             // rel="noreferrer"
                                             // target="_blank"
                                             // rel="noopener noreferrer"
 
                                             download={`${
-                                                data?.user.firstName +
+                                                data?.results[0].firstName +
                                                 "-" +
-                                                data?.user.lastName
+                                                data?.results[0].lastName
                                             }.pdf`}
                                             rel="noreferrer"
                                         >
@@ -305,8 +302,8 @@ const ApplicationDetails = ({ setPhase, activeId, setShiftId }: Prop) => {
                                         </p>
                                         <p className="font-medium body-regular">
                                             {
-                                                data?.jobListing
-                                                    .jobQualification.name
+                                                data?.results[0]
+                                                    .qualification[0].name
                                             }
                                         </p>
                                     </div>
@@ -315,9 +312,9 @@ const ApplicationDetails = ({ setPhase, activeId, setShiftId }: Prop) => {
                                             RATING
                                         </p>
                                         <p className="font-bold body-regular">
-                                            {data?.user.averageRating}
+                                            {data?.results[0].averageRating}
                                             <span className="font-medium text-black-50 ">
-                                                ({data?.completedShfts} shifts)
+                                                ({data?.results[0].completedShifts} shifts)
                                             </span>
                                         </p>
                                     </div>
@@ -325,13 +322,13 @@ const ApplicationDetails = ({ setPhase, activeId, setShiftId }: Prop) => {
                                 <p className="mt-6 text-black-50 font-medium body-mediumn mb-2">
                                     PROFESSIONAL SUMMARY
                                 </p>
-                                <p>{data?.user.bio}</p>
+                                <p>{data?.results[0]?.bio}</p>
                             </div>
                             <div className="my-4 p-4 border border-black-10 rounded-[10px]">
                                 <p className="body-medium text-black-50 pb-2 font-medium">
                                     CERTIFICATIONS
                                 </p>
-                                {data?.certificates.map((item, index) => (
+                                {data?.results[0]?.certificates?.map((item, index) => (
                                     <div
                                         key={index}
                                         className="flex items-start mb-4 justify-between"

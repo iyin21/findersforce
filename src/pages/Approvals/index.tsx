@@ -1,6 +1,5 @@
 import { Tabs } from "@mantine/core"
 import { useState } from "react"
-import { useGetApplications } from "../../pages/Applications/hooks/application.hook"
 import { CgSpinner } from "react-icons/cg"
 import { IoFilterSharp } from "react-icons/io5"
 import ApplicationDetails from "./sub-navigations/application-details"
@@ -11,23 +10,23 @@ import { useNavigate } from "react-router-dom"
 import PendingTable from "./components/Tables/pending-table"
 import AcceptedTable from "./components/Tables/accepted-table"
 import RejectedTable from "./components/Tables/rejected-table"
+import { useGetAllOperativeUsers } from "../../hooks/approval-hooks/approval.hook"
 
 const Approvals = () => {
     const [activeTab, setActiveTab] = useState<string | null>("pending")
     const { data: pendingData, isLoading: isLoadingPendingData } =
-        useGetApplications({
-            status: "PENDING",
-            // page: 1,
+        useGetAllOperativeUsers({
+            docStatus: "pending",
         })
+
     const { data: acceptedData, isLoading: isLoadingAcceptedData } =
-        useGetApplications({
-            status: "WON",
-            page: 1,
+        useGetAllOperativeUsers({
+            docStatus: "accepted",
         })
+    
     const { data: rejectedData, isLoading: isLoadingRejectedData } =
-        useGetApplications({
-            status: "LOST",
-            page: 1,
+        useGetAllOperativeUsers({
+            docStatus: "rejected",
         })
 
     const [phase, setPhase] = useState(1)
@@ -82,7 +81,7 @@ const Approvals = () => {
                                     >
                                         Pending
                                         <span className="bg-red-100 rounded ml-2 py-0.5 px-1 text-white-100 text-sm">
-                                            {pendingData?.data?.length ?? 0}
+                                            {pendingData?.data?.results?.length ?? 0}
                                         </span>
                                     </Tabs.Tab>
 
@@ -90,13 +89,13 @@ const Approvals = () => {
                                         value="accepted"
                                         className={`body-regular mr-6 ${
                                             activeTab === "accepted"
-                                                ? "text-yellow-100 font-bold active"
+                                                ? "text-green-100 font-bold active"
                                                 : "text-black-60 inactive"
                                         }`}
                                     >
                                         Accepted
                                         <span className="bg-red-100 rounded ml-2 py-0.5 px-1 text-white-100 text-sm">
-                                            {acceptedData?.data?.length || 0}
+                                            {acceptedData?.data?.results?.length || 0}
                                         </span>
                                     </Tabs.Tab>
                                     <Tabs.Tab
@@ -109,15 +108,15 @@ const Approvals = () => {
                                     >
                                         Rejected
                                         <span className="bg-red-100 rounded ml-2 py-0.5 px-1 text-white-100 text-sm">
-                                            {rejectedData?.data?.length || 0}
+                                            {rejectedData?.data?.results?.length || 0}
                                         </span>
                                     </Tabs.Tab>
                                 </Tabs.List>
                                 <Tabs.Panel value="pending">
-                                    {pendingData?.data &&
-                                    pendingData?.data?.length > 0 ? (
+                                    {pendingData?.data?.results &&
+                                    pendingData?.data?.results?.length > 0 ? (
                                         <PendingTable
-                                            elements={pendingData?.data || []}
+                                            elements={pendingData?.data?.results || []}
                                             setPhase={setPhase}
                                             setActiveId={setActiveId}
                                         />
@@ -132,10 +131,10 @@ const Approvals = () => {
                                     )}
                                 </Tabs.Panel>
                                 <Tabs.Panel value="accepted">
-                                    {pendingData?.data &&
-                                    pendingData?.data.length > 0 ? (
+                                    {acceptedData?.data?.results &&
+                                    acceptedData?.data?.results?.length > 0 ? (
                                         <AcceptedTable
-                                            elements={pendingData?.data || []}
+                                            elements={acceptedData?.data?.results || []}
                                             setPhase={setPhase}
                                             setActiveId={setActiveId}
                                         />
@@ -150,10 +149,10 @@ const Approvals = () => {
                                     )}
                                 </Tabs.Panel>
                                 <Tabs.Panel value="rejected">
-                                    {pendingData?.data &&
-                                    pendingData?.data?.length > 0 ? (
+                                    {rejectedData?.data?.results &&
+                                    rejectedData?.data?.results?.length > 0 ? (
                                         <RejectedTable
-                                            elements={pendingData?.data || []}
+                                            elements={rejectedData?.data?.results || []}
                                             setPhase={setPhase}
                                             setActiveId={setActiveId}
                                         />

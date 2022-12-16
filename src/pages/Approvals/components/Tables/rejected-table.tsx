@@ -1,5 +1,5 @@
 import { Table } from "@mantine/core"
-import { Data } from "../../../Applications/interface"
+import { Data } from "../../../../types/approval/approval-interface"
 import { HiChevronRight } from "react-icons/hi"
 import Avatar from "../../../Applications/assets/avatar.svg"
 import dayjs from "dayjs"
@@ -18,6 +18,7 @@ const RejectedTable = ({ elements, setPhase, setActiveId }: Prop) => {
     const [open, setOpen] = useState(false)
     const rows = elements.map((item, index) => (
         <tr key={index}>
+            <td>{index + 1}</td>
             <td>
                 <span className="text-lg">{Number(index + 1).toString()}</span>
             </td>
@@ -25,15 +26,15 @@ const RejectedTable = ({ elements, setPhase, setActiveId }: Prop) => {
                 <p className="flex">
                     <img src={Avatar} alt="" />
                     <span className="pl-2">
-                        {item.user.firstName + " " + item.user.lastName}
+                        {item.firstName + " " + item.lastName}
                     </span>
                 </p>
             </td>
 
-            <td>{item.user.email}</td>
-            <td>{item.user.gender}</td>
-            <td>{item.jobListing.jobQualification.name}</td>
-            <td>{dayjs(item.createdAt).format("MMM D, YYYY")}</td>
+            <td>{item.gender}</td>
+            <td>{item.qualification[0].name}</td>
+            <td>{item.doc.rejectReason}</td>
+            <td>{dayjs(item.doc.updatedAt).format("MMM D, YYYY")}</td>
             <td
                 className="cursor-pointer"
                 data-testid="view_application"
@@ -104,7 +105,7 @@ const RejectedTable = ({ elements, setPhase, setActiveId }: Prop) => {
                     >
                         <div className="flex justify-between border-b border-black-20 p-4">
                             <p className="font-medium text-2lg">
-                                {item.user.firstName + " " + item.user.lastName}
+                                {item.firstName + " " + item.lastName}
                             </p>
                             <IoIosArrowForward
                                 size={20}
@@ -118,7 +119,7 @@ const RejectedTable = ({ elements, setPhase, setActiveId }: Prop) => {
                                         EMAIL
                                     </h6>
                                     <p className="text-2md mt-1">
-                                        {item.user.email}
+                                        {item.email}
                                     </p>
                                 </div>
 
@@ -127,7 +128,7 @@ const RejectedTable = ({ elements, setPhase, setActiveId }: Prop) => {
                                         GENDER
                                     </h6>
                                     <p className="text-2md mt-1">
-                                        {item.user.gender}
+                                        {item.gender}
                                     </p>
                                 </div>
                                 <div className="mt-4">
@@ -151,7 +152,7 @@ const RejectedTable = ({ elements, setPhase, setActiveId }: Prop) => {
                                         QUALIFICATION
                                     </h6>
                                     <p className="text-2md mt-1">
-                                        {item.jobMatchPercentage}%
+                                        {"unset"}
                                     </p>
                                 </div>
 
@@ -160,7 +161,7 @@ const RejectedTable = ({ elements, setPhase, setActiveId }: Prop) => {
                                         ID TYPE
                                     </h6>
                                     <p className="text-2md mt-1">
-                                        {item.user.averageRating}
+                                        {item.doc.docType}
                                     </p>
                                 </div>
                             </div>
