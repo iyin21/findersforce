@@ -1,11 +1,12 @@
 import { RingProgress } from "@mantine/core"
-import logo from "../../../assets/FF-logo.svg"
+import logo from "../../assets/FF-logo.svg"
 
 interface IHeadProps {
     step: number
+    title: string
 }
 
-const Header = ({ step }: IHeadProps) => {
+const Header = ({ step, title }: IHeadProps) => {
     return (
         <div className="flex justify-between items-center mb-4">
             <div>
@@ -13,12 +14,13 @@ const Header = ({ step }: IHeadProps) => {
                     <img src={logo} alt="finders force" className="mb-5" />
                 </div>
                 <h1 className="text-black-90 text-2xl md:text-3xl font-extrabold">
-                    Set up your Profile
+                    {title}
                 </h1>
                 <span className="text-black-90 opacity-70 pt-2 text-md lg:text-lg">
                     Please provide the following information
                 </span>
             </div>
+
             <RingProgress
                 size={95}
                 label={

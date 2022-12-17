@@ -3,7 +3,7 @@ import { Form, Formik, FormikConfig, FormikValues } from "formik"
 import React, { ReactNode, useEffect, useState } from "react"
 import { useNavigate, useSearchParams } from "react-router-dom"
 import LandingPageText from "../../components/Layout/landing-page-txt"
-import Header from "./components/header"
+import Header from "../../components/Header/header"
 import { HqProfileInitialValue } from "./utils/hq-initialvalues"
 import ProfileFormFields from "./utils/profile-form-fields"
 import { Alert } from "@mantine/core"
@@ -133,7 +133,7 @@ export function FormikStepper({ ...props }: TWizardProps) {
 
     return (
         <div>
-            <Header step={props.step} />
+            <Header step={props.step} title="Set up your Profile" />
             <Formik
                 {...props}
                 validationSchema={currentChild.props.validationSchema}

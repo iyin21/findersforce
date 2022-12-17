@@ -135,7 +135,7 @@ function useGetJobQualification() {
     const { state } = useAuthContext()
 
     /** API methods */
-    const getJobType = async () => {
+    const getJobQualification = async () => {
         const { data } = await axiosInstance.get(
             "/job-listing/job-qualification",
             {
@@ -149,7 +149,39 @@ function useGetJobQualification() {
 
     return useQuery<string, AxiosError, JobBoardByIdResponse[]>(
         ["jobQualification"],
-        ({ signal }) => getJobType(),
+        ({ signal }) => getJobQualification(),
+        {
+            onError: (err) => {
+                showNotification({
+                    title: "Error",
+                    // @ts-ignore
+                    message: err.message || err?.response?.data?.error,
+                })
+            },
+        }
+    )
+}
+
+// get job qualification by category
+function useGetJobQualificationCategory() {
+    const { state } = useAuthContext()
+
+    /** API methods */
+    const getJobQualificationCategory = async () => {
+        const { data } = await axiosInstance.get(
+            "/job-listing/job-qualification-category",
+            {
+                headers: {
+                    Authorization: `${state?.jwt?.token}`,
+                },
+            }
+        )
+        return data.data.results
+    }
+
+    return useQuery<string, AxiosError, JobBoardByIdResponse[]>(
+        ["jobQualificationCategory"],
+        ({ signal }) => getJobQualificationCategory(),
         {
             onError: (err) => {
                 showNotification({
@@ -399,4 +431,5 @@ export {
     useUpdateJobList,
     useBulkDeleteJobList,
     useSearchOperatives,
+    useGetJobQualificationCategory,
 }

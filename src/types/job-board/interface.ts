@@ -76,6 +76,7 @@ export interface JobBoardResponseInterface {
 export interface JobBoardByIdResponse {
     _id: string
     name: string
+    jobQualificationCategoryId: string
 }
 
 export interface CreateJobListRequestInterface {

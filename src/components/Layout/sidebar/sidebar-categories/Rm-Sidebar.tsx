@@ -10,26 +10,18 @@ import { showNotification } from "@mantine/notifications"
 import FindersForceLogo from "../../../../assets/FindersForceLogo.svg"
 import { useProfile } from "../../../../hooks/profile/use-profile"
 
-
-
-const RegionalManagerSidebar
- = () => {
+const RegionalManagerSidebar = () => {
     const { state, dispatch } = useAuthContext()
     const { data } = useProfile()
     const navigate = useNavigate()
-    
 
     return (
         <aside className="w-full text-base pb-8 pt-8">
             <div className="mb-8 pl-6 flex gap-8">
-                <img 
-                    src={FindersForceLogo} 
-                    alt="" 
-                />
-                
+                <img src={FindersForceLogo} alt="" />
             </div>
-            
-            <section className="flex p-3 rounded-lg ml-1 mb-4 mr-1 bg-ash-10">
+
+            <section className="flex items-center p-3 rounded-lg ml-1 mb-4 mr-1 bg-ash-10">
                 {data?.profileImageUrl === null ? (
                     <img
                         className="inline rounded-full p-2"
@@ -38,7 +30,7 @@ const RegionalManagerSidebar
                     />
                 ) : (
                     <img
-                        className="inline rounded-full p-2"
+                        className="inline rounded-full p-2  w-[50px] h-[50px]"
                         src={data?.profileImageUrl}
                         alt="profileImage"
                     />
@@ -73,7 +65,12 @@ const RegionalManagerSidebar
             </ul>
             <hr className="bg-white-10 border-2 w-10/12 m-auto" />
             <section className="flex gap-10 p-3">
-                <img src={Setting} alt="" className="cursor-pointer" onClick={() => navigate("/settings")}/>
+                <img
+                    src={Setting}
+                    alt=""
+                    className="cursor-pointer"
+                    onClick={() => navigate("/settings")}
+                />
                 <img
                     src={Logout}
                     alt=""
@@ -93,4 +90,3 @@ const RegionalManagerSidebar
 }
 
 export default RegionalManagerSidebar
-
