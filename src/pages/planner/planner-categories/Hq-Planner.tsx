@@ -1,4 +1,4 @@
-import { Alert, Tabs } from "@mantine/core"
+import { Alert, Select, Tabs } from "@mantine/core"
 import { useState } from "react"
 import ShiftsTable from "../components/ShiftsTable"
 import { useGetShiftHistory } from "../../../hooks/planner/usePlanner.hooks"
@@ -10,12 +10,22 @@ import { FilterRequest } from "../../../types/filter/filter"
 import EmptyView from "../../../components/EmptyStates/index"
 import { useNavigate } from "react-router-dom"
 import { IoAlertCircle } from "react-icons/io5"
+import useAuthContext from "../../../hooks/auth-hooks/useAuth"
+import { useGetDepotRegions } from "../../../hooks/dashboard/useDashboard.hook"
 
 const HqPlanner = () => {
     const [activeTab, setActiveTab] = useState<string | null>("active")
     const [activeOngoingPage, setOngoingPage] = useState(1)
     const [activeCancelledPage, setCancelledPage] = useState(1)
     const [activeCompletedPage, setCompletedPage] = useState(1)
+    const [selectValue, setSelectValue] = useState<string | null>(null)
+
+    const { state } = useAuthContext()
+    const companyId = state?.user?.company?._id
+
+    const { data: regionData } = useGetDepotRegions({
+        id: companyId,
+    })
 
     const handleOngoingPage = (pageNumber: number) => {
         setOngoingPage(pageNumber)
@@ -64,7 +74,6 @@ const HqPlanner = () => {
         })
 
     const shiftsDuration: any = completedShiftsData?.results?.map((item) => {
-        
         return item?.jobListing?.shiftDurationInHours
     })
 
@@ -73,18 +82,25 @@ const HqPlanner = () => {
         totalDuration += Number(shiftsDuration[i])
     }
 
-    const shiftsAmount:any = completedShiftsData?.results?.map((item) => {
-        
-        return(
-           ( Number(item?.jobListing?.jobRate?.jobRatePerHourDisplayedToDepot) * Number(item?.jobListing?.shiftDurationInHours) )
+    const shiftsAmount: any = completedShiftsData?.results?.map((item) => {
+        return (
+            Number(item?.jobListing?.jobRate?.jobRatePerHourDisplayedToDepot) *
+            Number(item?.jobListing?.shiftDurationInHours)
         )
-        
     })
     let totalAmount = 0
     for (let i = 0; i < shiftsAmount?.length; i++) {
-         totalAmount += Number(shiftsAmount[i])
+        totalAmount += Number(shiftsAmount[i])
     }
-    
+
+    let regionAddress: string[]
+    if (regionData) {
+        regionAddress = regionData?.map((item) => {
+            return item?.address
+        })
+    } else {
+        regionAddress = []
+    }
 
     const navigate = useNavigate()
 
@@ -103,6 +119,14 @@ const HqPlanner = () => {
                             Operatives turn up for their shifts in one glance
                         </p>
                     </div>
+                    <div>
+                        <Select
+                            placeholder="All Locations"
+                            data={regionAddress}
+                            value={selectValue}
+                            onChange={setSelectValue}
+                        />
+                    </div>
                 </div>
                 {activeTab === "completed" && (
                     <div className="relative mt-4">
@@ -113,8 +137,8 @@ const HqPlanner = () => {
                         >
                             You have a total of {totalDuration} hours,{" "}
                             {completedShiftsData?.results?.length} completed
-                            shift(s) to pay for, to the value of <strong>£
-                            {totalAmount}</strong>
+                            shift(s) to pay for, to the value of{" "}
+                            <strong>£{totalAmount}</strong>
                         </Alert>
                     </div>
                 )}

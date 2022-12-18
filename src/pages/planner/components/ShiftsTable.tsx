@@ -11,9 +11,9 @@ import TimeEstimate from "./TimeEstimate"
 
 const ShiftsTable = ({ elements, status }: ShiftsTableInterface) => {
     const navigate = useNavigate()
-    const handleNavigate = (id: string, status: string) => {
-        navigate(`/planner/${id}`, { state: { status: status } })
-    }
+    // const handleNavigate = (id: string, status: string) => {
+    //     navigate(`/planner/${id}`, { state: { status: status } })
+    // }
 
     // function getDurationBeforeCancel(millisec: number) {
     //   let seconds = Number((millisec / 1000).toFixed(0));
@@ -109,7 +109,7 @@ const ShiftsTable = ({ elements, status }: ShiftsTableInterface) => {
                     size={30}
                     style={{ color: "#889088" }}
                     onClick={() =>
-                        handleNavigate(element?.jobListing?._id, status)
+                        navigate(`/planner/${element?.jobListing?._id}`, {state:{status: status, scheduleId: element?._id}})
                     }
                 />
             </td>

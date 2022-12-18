@@ -1,10 +1,11 @@
 import { showNotification } from "@mantine/notifications"
-import { ShiftResponse } from "../../types/planner/interfaces"
-import { useQuery } from "@tanstack/react-query"
-import { AxiosError } from "axios"
+import { PaymentEvidenceUpload, ShiftResponse } from "../../types/planner/interfaces"
+import { useMutation, useQuery } from "@tanstack/react-query"
+import { AxiosError, AxiosRequestConfig } from "axios"
 import { axiosInstance } from "../../services/api.service"
 import useAuthContext from "../auth-hooks/useAuth"
 import { IDepotRating } from "../../types/dashboard/interfaces"
+
 
 
 function useGetShiftHistory({
@@ -145,6 +146,48 @@ function useGetOperativeRatingSummary({
 }
 
 
+function usePaymentEvidenceUpload ({scheduleId}: {scheduleId: string}) {
+    const { state } = useAuthContext()
+
+    const uploadPaymentEvidence = async (requestBody: { file: File; }) => {
+        
+        const config: AxiosRequestConfig = {
+            headers: {
+                Authorization: `Bearer ${state?.jwt?.token}`,
+                "content-type": "multipart/formdata",
+            },
+            params: {
+                scheduleId
+            }
+        };
+
+        
+            const formData = new FormData();
+            formData.append("paymentEvidence", requestBody.file);
+        
+
+            const { data } = await axiosInstance.post(`/depot/payment-evidence`, formData, config);
+            return data;
+        
+    };
+
+    return useMutation<PaymentEvidenceUpload, AxiosError, { file: File; }>(
+        ["uploadPaymentEvidence"],
+        (requestBody: { file: File; }) => uploadPaymentEvidence(requestBody),
+        {
+            
+            onError: (err) => {
+                showNotification({
+                    message:  err.message || "An error occurred",
+                    title: "Error",
+                    color: "red",
+                });
+            },
+        },
+    );
+};
+
+
 
 
 
@@ -152,5 +195,6 @@ export {
     useGetShiftHistory, 
     useGetShiftHistoryByJobListingId,
     useGetSingleSchedule,
-    useGetOperativeRatingSummary
+    useGetOperativeRatingSummary,
+    usePaymentEvidenceUpload
 }

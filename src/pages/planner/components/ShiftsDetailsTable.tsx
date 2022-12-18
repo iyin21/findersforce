@@ -1,5 +1,5 @@
 import { Modal, Progress, Table, Tabs } from "@mantine/core"
-import { useRef, useState } from "react"
+import { ChangeEvent, useEffect, useRef, useState } from "react"
 import { BiDotsVerticalRounded } from "react-icons/bi"
 import { FaAngleRight, FaTimes } from "react-icons/fa"
 import Layout from "../../../components/Layout/index"
@@ -7,6 +7,7 @@ import {
     useGetOperativeRatingSummary,
     useGetShiftHistoryByJobListingId,
     useGetSingleSchedule,
+    usePaymentEvidenceUpload,
 } from "../../../hooks/planner/usePlanner.hooks"
 import dayjs from "dayjs"
 import { AiFillStar, AiOutlineArrowLeft } from "react-icons/ai"
@@ -15,8 +16,8 @@ import ProfileImage from "../../../assets/ProfileImage.svg"
 import { useLocation, useNavigate, useParams } from "react-router-dom"
 import { CgSpinner } from "react-icons/cg"
 import Pagination from "../../../components/Pagination/pagination"
-import Filter from "../../../components/Filter/index"
-import { FilterRequest } from "../../../types/filter/filter"
+// import Filter from "../../../components/Filter/index"
+// import { FilterRequest } from "../../../types/filter/filter"
 import MobileShiftsDetailsTable from "./MobileShiftsDetailsTable"
 import Message from "../../../assets/Messaging.svg"
 import { Button, Checkbox } from "../../../components"
@@ -26,10 +27,12 @@ import TimeEstimate from "./TimeEstimate"
 
 const ShiftsDetailTable = () => {
     const { jobListingId } = useParams<string>()
+    
 
     const location = useLocation()
 
-    const queryStatus = location?.state?.status
+    const queryStatus = location?.state?.status;
+    const scheduleId = location?.state?.scheduleId;
 
     const { data: shiftsData, isLoading: isLoadingShiftsData } =
         useGetShiftHistoryByJobListingId({
@@ -41,17 +44,38 @@ const ShiftsDetailTable = () => {
         jobListingId: jobListingId,
     })
 
+    const { data, isError, mutate, } = usePaymentEvidenceUpload({
+        scheduleId: scheduleId
+    })
+
     const [activeTab, setActiveTab] = useState<string | null>("unpaid")
     const [checkedShift, setCheckedShift] = useState<string[]>([])
+    const [buttonState, setButtonState] = useState(false)
 
+    function handleFinishPayment () {
+        setPayment(!payment);
+        setButtonState(!buttonState);
+    }
     const navigate = useNavigate()
     const [activePage, setActivePage] = useState(1)
 
-    const applyFilter = (filter: FilterRequest) => {}
+    // const applyFilter = (filter: FilterRequest) => {}
 
     const handleActivePage = (pageNumber: number) => {
         setActivePage(pageNumber)
     }
+    useEffect(() => {
+        if (data && data.status === "success") {
+            // setShowModal((prev) => ({ ...prev, status: false }));
+            // setShowSuccessDocUploadModal(true);
+            // console.log("successfully uploaded doc")
+            setButtonState(true)
+        }
+
+        if (isError) {
+            // console.log("error")
+        }
+    }, [data, isError]);
 
     const handleCheckedShift = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { value } = e.target
@@ -84,11 +108,35 @@ const ShiftsDetailTable = () => {
     const [menu, setMenu] = useState(false)
     const [payment, setPayment] = useState(false)
     const ref = useRef<HTMLInputElement | null>(null)
-    const [file, setFile] = useState<string[]>([])
+    const [, setError] = useState("");
+    const [, setFileName] = useState("");
+    // const [file, setFile] = useState<string[]>([])
 
-    function uploadSingleFile(e: any) {
-        setFile([...file, ...e.target.files])
-    }
+   const handleDocumentUpload = (e: ChangeEvent<HTMLInputElement>) => {
+        // setError("");
+        const uploadedFile = e.target.files?.[0];
+
+        if (uploadedFile) {
+            setError("");
+            if (
+                !(
+                    uploadedFile.name.toLowerCase().endsWith(".pdf") ||
+                    uploadedFile.name.toLowerCase().endsWith(".jpg") ||
+                    uploadedFile.name.toLowerCase().endsWith(".jpeg") ||
+                    uploadedFile.name.toLowerCase().endsWith(".png")
+                )
+            ) {
+                return setError("Invalid format. Accepted format is JPG, PNG or PDF");
+            }
+
+            setFileName(uploadedFile.name);
+            // setShowButton(false);
+
+            // call upload doc api
+            mutate({ file: uploadedFile });
+             
+        }
+    };
 
     const rows = shiftsData?.results?.map((element, index) => (
         <tr key={index}>
@@ -375,14 +423,14 @@ const ShiftsDetailTable = () => {
                                     </div>
                                 )}
                             </div>
-                            {queryStatus === "completed" && (
+                            {/* {queryStatus === "completed" && (
                                 <div className="relative lg:pb-4 bottom-0 lg:bottom-0">
                                     <div className="absolute right-0 ">
                                         {" "}
                                         <Filter applyFilter={applyFilter} />
                                     </div>
                                 </div>
-                            )}
+                            )} */}
                         </div>
                         <div className="hidden lg:block " data-testid="planner">
                             {queryStatus !== "completed" ? (
@@ -637,11 +685,8 @@ const ShiftsDetailTable = () => {
                                     <div className="text-center">
                                         <input
                                             type="file"
-                                            disabled={file.length === 2}
                                             className="hidden"
-                                            onChange={(e) =>
-                                                uploadSingleFile(e)
-                                            }
+                                            onChange={ handleDocumentUpload }
                                             multiple
                                             accept="image/png,image/jpeg"
                                             ref={ref}
@@ -656,16 +701,29 @@ const ShiftsDetailTable = () => {
                                 </div>
                             </div>
                             <div className="flex justify-between  py-5 mx-auto mb-8">
+                                {!buttonState && 
+                                (
                                 <Button onClick={() => setPayment(!payment)}>
                                     Cancel
                                 </Button>
-                                <Button
+                                )}
+                                {!buttonState ? 
+                                (<Button
                                     variant="primary"
                                     className="text-white-100 "
                                     size="small"
+                                    style={{ backgroundColor: "rgba(0, 0, 0, 0.1)" ,cursor: "default",}}
                                 >
                                     Proceed
-                                </Button>
+                                </Button>) : 
+                                (<Button
+                                    variant="primary"
+                                    className="text-white-100 ml-auto"
+                                    size="small"
+                                    onClick={() => handleFinishPayment()}
+                                >
+                                    Proceed
+                                </Button>)}
                             </div>
                         </div>
                     </Modal>
