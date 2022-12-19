@@ -86,6 +86,18 @@ const PostJobOne = ({ jobType }: PostJobOneProps) => {
                     Select Shift Type
                 </label>
                 <div className="flex items-center gap-10 mt-4">
+                    {" "}
+                    <Radio
+                        label="Meet Onsite"
+                        id="meet_onsite"
+                        name="jobMeetingPoint"
+                        checked={
+                            // true
+                            values?.jobMeetingPoint === "SITE" ? true : false
+                        }
+                        onChange={() => handleChecked("SITE")}
+                        value={values?.jobMeetingPoint}
+                    />
                     <Radio
                         label="Depot First"
                         id="depot_first"
@@ -95,16 +107,6 @@ const PostJobOne = ({ jobType }: PostJobOneProps) => {
                         }
                         onChange={() => handleChecked("DEPOT")}
                         value={values.jobMeetingPoint}
-                    />
-                    <Radio
-                        label="Meet Onsite"
-                        id="meet_onsite"
-                        name="jobMeetingPoint"
-                        checked={
-                            values?.jobMeetingPoint === "SITE" ? true : false
-                        }
-                        onChange={() => handleChecked("SITE")}
-                        value={values?.jobMeetingPoint}
                     />
                 </div>
             </div>
@@ -136,7 +138,7 @@ const PostJobOne = ({ jobType }: PostJobOneProps) => {
                         selected={
                             values?.shiftStartTime
                                 ? new Date(values?.shiftStartTime)
-                                : new Date()
+                                : null
                         }
                         timeCaption="Time"
                         dateFormat="h:mm aa"
@@ -154,9 +156,7 @@ const PostJobOne = ({ jobType }: PostJobOneProps) => {
                         showTimeSelectOnly
                         // @ts-ignore
                         selected={
-                            values?.shiftStartTime
-                                ? new Date(jobTime)
-                                : new Date()
+                            values?.shiftStartTime ? new Date(jobTime) : null
                         }
                         timeCaption="Time"
                         dateFormat="h:mm aa"

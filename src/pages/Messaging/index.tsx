@@ -674,7 +674,7 @@ const Messaging = () => {
                                                         /> */}
                                                         <span className="pl-2">
                                                             {dayjs(
-                                                            item.date
+                                                                item.date
                                                             ).format("h:mm A,")}
                                                         </span>
                                                     </p>
