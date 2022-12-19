@@ -13,7 +13,7 @@ const ShiftTable = ({ elements }: Prop) => {
         <tr key={index}>
             <td>{dayjs(item?.createdAt).format("MMM D, YYYY")}</td>
             <td>{item?.jobListing.jobLocation.formattedAddress}</td>
-            <td>{item.jobListing.shiftStartTime}</td>
+            <td>{dayjs(item.jobListing.shiftStartTime).format("h:mm A")}</td>
             <td>{dayjs(item?.jobListing.shiftEndTime).format("h:mm A")}</td>
             <td>{item?.jobListing.shiftDurationInHours}</td>
             <td>
