@@ -1,32 +1,32 @@
 import { Table } from "@mantine/core"
-//import { Data } from "src/pages/Applications/interface"
+// import { Data } from "src/pages/Applications/interface"
 import { Result } from "../../../interface"
 import Star from "../../../assets/star.svg"
 import dayjs from "dayjs"
-import { IoIosArrowForward } from "react-icons/io"
+// import { IoIosArrowForward } from "react-icons/io"
 
 interface Prop {
     elements: Result[]
 }
 const ShiftTable = ({ elements }: Prop) => {
-    const tableData = [
-        {
-            date: "11 jan 2022",
-            location: "Iolaire Road, New Invent...",
-            timeIn: "11:01AM",
-            timtout: "1:01AM",
-            duration: "2 hrs 2 mins",
-            amount: "$140/hr",
-            rating: "4.9",
-            status: "completed",
-        },
-    ]
+    // const tableData = [
+    //     {
+    //         date: "11 jan 2022",
+    //         location: "Iolaire Road, New Invent...",
+    //         timeIn: "11:01AM",
+    //         timtout: "1:01AM",
+    //         duration: "2 hrs 2 mins",
+    //         amount: "$140/hr",
+    //         rating: "4.9",
+    //         status: "completed",
+    //     },
+    // ]
 
     const rows = elements.map((item, index) => (
-        <tr key={index}>
+        <tr key={index} className="font-creato">
             <td>{dayjs(item?.createdAt).format("MMM D, YYYY")}</td>
             <td>{item?.jobListing.jobLocation.formattedAddress}</td>
-            <td>{item.jobListing.shiftStartTime}</td>
+            <td>{dayjs(item.jobListing.shiftStartTime).format("hh:mm A")}</td>
             <td>{dayjs(item?.jobListing.shiftEndTime).format("h:mm A")}</td>
             <td>{item?.jobListing.shiftDurationInHours}</td>
             <td>
@@ -38,7 +38,9 @@ const ShiftTable = ({ elements }: Prop) => {
             <td>
                 <p className="flex">
                     <img src={Star} alt="" />
-                    <span className="pl-1">{item?.depotRating}</span>
+                    <span className="pl-1">
+                        {item?.depotRating?.averageScore}
+                    </span>
                 </p>
             </td>
             <td>
@@ -62,7 +64,13 @@ const ShiftTable = ({ elements }: Prop) => {
     return (
         <>
             <div className="hidden lg:block ">
-                <Table verticalSpacing="md">
+                <Table
+                    verticalSpacing="md"
+                    style={{
+                        backgroundColor: "#FFFFFF",
+                        fontFamily: "CreatoDisplay",
+                    }}
+                >
                     <thead>
                         <tr>
                             {tableHead.map((item, index) => (
@@ -87,7 +95,7 @@ const ShiftTable = ({ elements }: Prop) => {
             <div className="block lg:hidden mt-4">
                 {elements.map((item, index) => (
                     <div
-                        className="rounded bg-black-5 mb-4 pb-4 cursor-pointer"
+                        className="rounded bg-black-5 mb-4 pb-4 cursor-pointer font-creato"
                         key={index}
                     >
                         <div className="flex justify-between border-b border-black-20 p-4">
@@ -162,7 +170,8 @@ const ShiftTable = ({ elements }: Prop) => {
                                     <p className="flex text-2md mt-1">
                                         <img src={Star} alt="" />
                                         <span className="pl-1">
-                                            {item?.depotRating}
+                                            {item?.depotRating?.averageScore ||
+                                                0}
                                         </span>
                                     </p>
                                 </div>
@@ -172,10 +181,9 @@ const ShiftTable = ({ elements }: Prop) => {
                                     </h6>
 
                                     <p className="text-2md mt-1">
-                                    
-                                        
-                                        {dayjs(item?.createdAt).format("MMM D, YYYY")}
-                                    
+                                        {dayjs(item?.createdAt).format(
+                                            "MMM D, YYYY"
+                                        )}
                                     </p>
                                 </div>
                             </div>
