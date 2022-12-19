@@ -3,30 +3,16 @@ import { Table } from "@mantine/core"
 import { Result } from "../../../interface"
 import Star from "../../../assets/star.svg"
 import dayjs from "dayjs"
-// import { IoIosArrowForward } from "react-icons/io"
 
 interface Prop {
     elements: Result[]
 }
 const ShiftTable = ({ elements }: Prop) => {
-    // const tableData = [
-    //     {
-    //         date: "11 jan 2022",
-    //         location: "Iolaire Road, New Invent...",
-    //         timeIn: "11:01AM",
-    //         timtout: "1:01AM",
-    //         duration: "2 hrs 2 mins",
-    //         amount: "$140/hr",
-    //         rating: "4.9",
-    //         status: "completed",
-    //     },
-    // ]
-
     const rows = elements.map((item, index) => (
         <tr key={index} className="font-creato">
             <td>{dayjs(item?.createdAt).format("MMM D, YYYY")}</td>
             <td>{item?.jobListing.jobLocation.formattedAddress}</td>
-            <td>{dayjs(item.jobListing.shiftStartTime).format("hh:mm A")}</td>
+            <td>{dayjs(item.jobListing.shiftStartTime).format("h:mm A")}</td>
             <td>{dayjs(item?.jobListing.shiftEndTime).format("h:mm A")}</td>
             <td>{item?.jobListing.shiftDurationInHours}</td>
             <td>
@@ -39,7 +25,7 @@ const ShiftTable = ({ elements }: Prop) => {
                 <p className="flex">
                     <img src={Star} alt="" />
                     <span className="pl-1">
-                        {item?.depotRating?.averageScore}
+                        {item?.depotRating.averageScore || 0}
                     </span>
                 </p>
             </td>
@@ -170,7 +156,7 @@ const ShiftTable = ({ elements }: Prop) => {
                                     <p className="flex text-2md mt-1">
                                         <img src={Star} alt="" />
                                         <span className="pl-1">
-                                            {item?.depotRating?.averageScore ||
+                                            {item?.depotRating.averageScore ||
                                                 0}
                                         </span>
                                     </p>
