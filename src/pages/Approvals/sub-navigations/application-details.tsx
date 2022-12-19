@@ -73,7 +73,14 @@ const ApplicationDetails = ({ setPhase, activeId, setShiftId }: Prop) => {
 
     const [openRejectModal, setOpenRejectModal] = useState(false)
     const [openApproveModal, setOpenApproveModal] = useState(false)
+    const skillSet = data?.results?.map((item) => {
+        return item.skillset.map((item) => item.name)
+    })
 
+    const qualifications = data?.results?.map((item) => {
+        return item.qualification.map((item) => item.name)
+    })
+   
     return (
         <>
             <RejectModal
@@ -202,14 +209,14 @@ const ApplicationDetails = ({ setPhase, activeId, setShiftId }: Prop) => {
                                         QUALIFICATION
                                     </p>
                                     <p className="font-bold body-regular">
-                                        {data?.results[0].skillset[0].name}
+                                        {qualifications?.join(", ")}
                                     </p>
                                 </div>
                                 <p className="mt-12 text-black-50 font-medium body-mediumn mb-2">
                                     SKILLS
                                 </p>
                                 <p className="font-bold">
-                                    {data?.results[0].skillset[0].name}
+                                    {skillSet?.join(", ")}
                                 </p>
                                 <p className="mt-12 text-black-50 font-medium body-mediumn mb-2">
                                     PROFESSIONAL SUMMARY
@@ -281,8 +288,7 @@ const ApplicationDetails = ({ setPhase, activeId, setShiftId }: Prop) => {
                                         </p>
                                         <p className="font-medium body-regular">
                                             {
-                                                data?.results[0]
-                                                    .qualification[0].name
+                                                qualifications?.join(", ")
                                             }
                                         </p>
                                     </div>
@@ -312,7 +318,7 @@ const ApplicationDetails = ({ setPhase, activeId, setShiftId }: Prop) => {
                                 <p className="body-medium text-black-50 pb-2 font-medium">
                                     CERTIFICATIONS
                                 </p>
-                                {data?.results[0]?.certificates?.map(
+                                {data?.results[0]?.certifications?.map(
                                     (item, index) => (
                                         <div
                                             key={index}

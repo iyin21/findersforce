@@ -13,6 +13,10 @@ interface Prop {
     setActiveId: (val: string) => void
 }
 const AcceptedTable = ({ elements, setPhase, setActiveId }: Prop) => {
+    const qualificationName = elements.map((item) => {
+        return item.qualification.map((item) => item.name)
+    })
+
     const rows = elements.map((item, index) => (
         <tr key={index}>
             <td>
@@ -40,7 +44,7 @@ const AcceptedTable = ({ elements, setPhase, setActiveId }: Prop) => {
 
             <td>{item.email}</td>
             <td>{item.gender}</td>
-            <td>{item.qualification[0].name}</td>
+            <td>{qualificationName[index].join(", ")}</td>
             <td>
                 {item.completedShifts}
                 {/* use shift history to get each user's shift completed */}

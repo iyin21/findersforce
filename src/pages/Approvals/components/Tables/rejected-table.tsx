@@ -16,6 +16,9 @@ interface Prop {
     setActiveId: (val: string) => void
 }
 const RejectedTable = ({ elements, setPhase, setActiveId }: Prop) => {
+    const qualificationName = elements.map((item) => {
+        return item.qualification.map((item) => item.name)
+    })
     const [open, setOpen] = useState(false)
     const [element, setElement] = useState<Data>()
     const handleModalOpen = (id: string) => {
@@ -39,7 +42,7 @@ const RejectedTable = ({ elements, setPhase, setActiveId }: Prop) => {
             </td>
 
             <td>{item.gender}</td>
-            <td>{item.qualification[0].name}</td>
+            <td>{qualificationName[index].join(", ")}</td>
             <td>{item.doc.rejectReason}</td>
             <td>{dayjs(item.doc.updatedAt).format("MMM D, YYYY")}</td>
             <td
