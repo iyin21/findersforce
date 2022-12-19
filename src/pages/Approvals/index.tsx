@@ -6,7 +6,7 @@ import ApplicationDetails from "./sub-navigations/application-details"
 import ShiftDetails from "./sub-navigations/ShiftHistory/index"
 import Layout from "../../components/Layout/index"
 import EmptyState from "./components/EmptyState"
-// import Pagination from "../../components/Pagination/pagination"
+import Pagination from "../../components/Pagination/pagination"
 import PendingTable from "./components/Tables/pending-table"
 import AcceptedTable from "./components/Tables/accepted-table"
 import RejectedTable from "./components/Tables/rejected-table"
@@ -14,23 +14,19 @@ import { useGetAllOperativeUsers } from "../../hooks/approval-hooks/approval.hoo
 
 const Approvals = () => {
     const [activeTab, setActiveTab] = useState<string | null>("pending")
-    // const [activePendingPage, setPendingPage] = useState(1)
-    // const [activeAcceptedPage, setAcceptedPage] = useState(1)
-    // const [activeRejectedPage, setRejectedPage] = useState(1)
-    // const [activeCompletedPage, setCompletedPage] = useState(1)
+    const [activePendingPage, setPendingPage] = useState(1)
+    const [activeAcceptedPage, setAcceptedPage] = useState(1)
+    const [activeRejectedPage, setRejectedPage] = useState(1)
 
-    // const handlePendingPage = (pageNumber: number) => {
-    //     setUpcomingPage(pageNumber)
-    // }
-    // const handleAcceptedPage = (pageNumber: number) => {
-    //     setOngoingPage(pageNumber)
-    // }
-    // const handleRejectedPage = (pageNumber: number) => {
-    //     setCancelledPage(pageNumber)
-    // }
-    // const handleCompletedPage = (pageNumber: number) => {
-    //     setCompletedPage(pageNumber)
-    // }
+    const handlePendingPage = (pageNumber: number) => {
+        setPendingPage(pageNumber)
+    }
+    const handleAcceptedPage = (pageNumber: number) => {
+        setAcceptedPage(pageNumber)
+    }
+    const handleRejectedPage = (pageNumber: number) => {
+        setRejectedPage(pageNumber)
+    }
 
     const { data: pendingData, isLoading: isLoadingPendingData } =
         useGetAllOperativeUsers({
@@ -142,6 +138,18 @@ const Approvals = () => {
                                     ) : (
                                         <EmptyState description="Documents uploaded by users will show here until an admin makes a decision" />
                                     )}
+                                    <Pagination
+                                        page={activePendingPage}
+                                        total={activePendingPage}
+                                        onChange={handlePendingPage}
+                                        boundaries={1}
+                                        recordPerpage={
+                                            pendingData?.data?.results
+                                                ? pendingData?.data?.results
+                                                      .length
+                                                : 1
+                                        }
+                                    />
                                 </Tabs.Panel>
                                 <Tabs.Panel value="accepted">
                                     {acceptedData?.data?.results &&
@@ -157,6 +165,18 @@ const Approvals = () => {
                                     ) : (
                                         <EmptyState description="Accepted users will show here." />
                                     )}
+                                    <Pagination
+                                        page={activeAcceptedPage}
+                                        total={activeAcceptedPage}
+                                        onChange={handleAcceptedPage}
+                                        boundaries={1}
+                                        recordPerpage={
+                                            acceptedData?.data?.results
+                                                ? acceptedData?.data?.results
+                                                      .length
+                                                : 1
+                                        }
+                                    />
                                 </Tabs.Panel>
                                 <Tabs.Panel value="rejected">
                                     {rejectedData?.data?.results &&
@@ -172,6 +192,18 @@ const Approvals = () => {
                                     ) : (
                                         <EmptyState description="Rejected user documents will show here" />
                                     )}
+                                    <Pagination
+                                        page={activeRejectedPage}
+                                        total={activeRejectedPage}
+                                        onChange={handleRejectedPage}
+                                        boundaries={1}
+                                        recordPerpage={
+                                            rejectedData?.data?.results
+                                                ? rejectedData?.data?.results
+                                                      .length
+                                                : 1
+                                        }
+                                    />
                                 </Tabs.Panel>
                             </Tabs>
                         </div>

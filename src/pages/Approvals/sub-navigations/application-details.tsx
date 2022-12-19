@@ -8,7 +8,10 @@ import Message from "../../Applications/assets/message.svg"
 import CheckedIcon from "../../Applications/assets/check.svg"
 import UnverifiedIcon from "../../Applications/assets/unverified.svg"
 
-import { useGetOperativeDetails, useUpdateOperative } from "../../../hooks/approval-hooks/approval.hook"
+import {
+    useGetOperativeDetails,
+    useUpdateOperative,
+} from "../../../hooks/approval-hooks/approval.hook"
 import dayjs from "dayjs"
 import { CgSpinner } from "react-icons/cg"
 import { useState } from "react"
@@ -42,8 +45,18 @@ const ApplicationDetails = ({ setPhase, activeId, setShiftId }: Prop) => {
         acceptMutate({ status: "accepted" })
     }
 
-    const handleReject = ({moreInfo, reason}: {moreInfo: string, reason: string | null}) => {
-        rejectMutate({ status: "rejected", moreInformation: moreInfo, rejectReason: reason })
+    const handleReject = ({
+        moreInfo,
+        reason,
+    }: {
+        moreInfo: string
+        reason: string | null
+    }) => {
+        rejectMutate({
+            status: "rejected",
+            moreInformation: moreInfo,
+            rejectReason: reason,
+        })
     }
     useEffect(() => {
         if (rejectedData || acceptedData) {
@@ -169,8 +182,10 @@ const ApplicationDetails = ({ setPhase, activeId, setShiftId }: Prop) => {
                                         className="flex ml-4 items-center font-bold cursor-pointer"
                                         onClick={
                                             () => {
-//                                                setShiftId(data?.results[0]._id || "")
-//                                                setPhase(3)
+                                                setShiftId(
+                                                    data?.results[0]._id || ""
+                                                )
+                                                setPhase(3)
                                             }
                                             // navigate(`/applications/${item._id}`)
                                         }
@@ -193,7 +208,9 @@ const ApplicationDetails = ({ setPhase, activeId, setShiftId }: Prop) => {
                                 <p className="mt-12 text-black-50 font-medium body-mediumn mb-2">
                                     SKILLS
                                 </p>
-                                <p className="font-bold">{data?.results[0].skillset[0].name}</p>
+                                <p className="font-bold">
+                                    {data?.results[0].skillset[0].name}
+                                </p>
                                 <p className="mt-12 text-black-50 font-medium body-mediumn mb-2">
                                     PROFESSIONAL SUMMARY
                                 </p>
@@ -207,13 +224,13 @@ const ApplicationDetails = ({ setPhase, activeId, setShiftId }: Prop) => {
                                         DATE APPLIED
                                     </p>
                                     <p className="font-bold body-regular">
-                                        {dayjs(data?.results[0].createdAt).format(
-                                            "MMMM D YYYY"
-                                        )}
+                                        {dayjs(
+                                            data?.results[0].createdAt
+                                        ).format("MMMM D YYYY")}
                                         <span>|</span>{" "}
-                                        {dayjs(data?.results[0].createdAt).format(
-                                            "h:mm A"
-                                        )}
+                                        {dayjs(
+                                            data?.results[0].createdAt
+                                        ).format("h:mm A")}
                                     </p>
                                 </div>
                             </div>
@@ -226,44 +243,6 @@ const ApplicationDetails = ({ setPhase, activeId, setShiftId }: Prop) => {
                                         </p>
                                         <p className="text-white-100 font-bold :text-[14px] lg:text-[17px] pb-1">
                                             {data?.results[0]?.firstName +
-                                                "-" +
-                                                data?.results[0].lastName +
-                                                "-Resume.pdf"}
-                                        </p>
-                                        <p className="text-white-50 body-extra-small">
-                                            5.93 MB
-                                        </p>
-                                    </div>
-                                    <button className="rounded-md lg:p-4 lg:border border-white-100 flex items-center ml-auto">
-                                        <img src={View} alt="" />
-                                        <a
-                                            className="text-white-100 pl-2"
-                                            href={data?.results[0].resumeUrl}
-                                            target="_blank"
-                                            // rel="noreferrer"
-                                            // target="_blank"
-                                            // rel="noopener noreferrer"
-
-                                            download={`${
-                                                data?.results[0].firstName +
-                                                "-" +
-                                                data?.results[0].lastName
-                                            }.pdf`}
-                                            rel="noreferrer"
-                                        >
-                                            View
-                                        </a>
-                                    </button>
-                                </div>
-
-                                <div className="flex">
-                                    <img src={Resume} alt="Resume" />
-                                    <div className="pl-4">
-                                        <p className="text-white-50 body-small pb-1">
-                                            RESUME
-                                        </p>
-                                        <p className="text-white-100 font-bold :text-[14px] lg:text-[17px] pb-1">
-                                            { data?.results[0].firstName +
                                                 "-" +
                                                 data?.results[0].lastName +
                                                 "-Resume.pdf"}
@@ -314,7 +293,12 @@ const ApplicationDetails = ({ setPhase, activeId, setShiftId }: Prop) => {
                                         <p className="font-bold body-regular">
                                             {data?.results[0].averageRating}
                                             <span className="font-medium text-black-50 ">
-                                                ({data?.results[0].completedShifts} shifts)
+                                                (
+                                                {
+                                                    data?.results[0]
+                                                        .completedShifts
+                                                }{" "}
+                                                shifts)
                                             </span>
                                         </p>
                                     </div>
@@ -328,46 +312,54 @@ const ApplicationDetails = ({ setPhase, activeId, setShiftId }: Prop) => {
                                 <p className="body-medium text-black-50 pb-2 font-medium">
                                     CERTIFICATIONS
                                 </p>
-                                {data?.results[0]?.certificates?.map((item, index) => (
-                                    <div
-                                        key={index}
-                                        className="flex items-start mb-4 justify-between"
-                                    >
-                                        <div className="">
-                                            <p className="font-bold body-normal">
-                                                {item.name}
-                                            </p>
-                                            <p className="text-black-90 body-medium pb-1">
-                                                {item.issuingOrganisation}
-                                            </p>
-                                            <p className="body-small text-black-70">
-                                                Issued{" "}
-                                                {dayjs(item.dateIssued).format(
-                                                    "MM YYYY"
-                                                )}
-                                            </p>
-                                            <p className="body-small text-black-70">
-                                                Credential {item.credentialId}
-                                            </p>
-                                        </div>
-                                        {item.status === "accepted" ? (
-                                            <div className="flex bg-green-10 rounded-full p-2">
-                                                <img src={CheckedIcon} alt="" />
-                                                <p className="pl-2">Verified</p>
-                                            </div>
-                                        ) : (
-                                            <div className="flex bg-red-10 rounded-full p-2">
-                                                <img
-                                                    src={UnverifiedIcon}
-                                                    alt=""
-                                                />
-                                                <p className="pl-2">
-                                                    Unverified
+                                {data?.results[0]?.certificates?.map(
+                                    (item, index) => (
+                                        <div
+                                            key={index}
+                                            className="flex items-start mb-4 justify-between"
+                                        >
+                                            <div className="">
+                                                <p className="font-bold body-normal">
+                                                    {item.name}
+                                                </p>
+                                                <p className="text-black-90 body-medium pb-1">
+                                                    {item.issuingOrganisation}
+                                                </p>
+                                                <p className="body-small text-black-70">
+                                                    Issued{" "}
+                                                    {dayjs(
+                                                        item.dateIssued
+                                                    ).format("MM YYYY")}
+                                                </p>
+                                                <p className="body-small text-black-70">
+                                                    Credential{" "}
+                                                    {item.credentialId}
                                                 </p>
                                             </div>
-                                        )}
-                                    </div>
-                                ))}
+                                            {item.status === "accepted" ? (
+                                                <div className="flex bg-green-10 rounded-full p-2">
+                                                    <img
+                                                        src={CheckedIcon}
+                                                        alt=""
+                                                    />
+                                                    <p className="pl-2">
+                                                        Verified
+                                                    </p>
+                                                </div>
+                                            ) : (
+                                                <div className="flex bg-red-10 rounded-full p-2">
+                                                    <img
+                                                        src={UnverifiedIcon}
+                                                        alt=""
+                                                    />
+                                                    <p className="pl-2">
+                                                        Unverified
+                                                    </p>
+                                                </div>
+                                            )}
+                                        </div>
+                                    )
+                                )}
                             </div>
                         </div>
                     </div>
