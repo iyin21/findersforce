@@ -189,7 +189,7 @@ const JobBoards = () => {
                 />
             )}
             <div className="md:p-6 p-6 mt-4 md:mt-14">
-                <div className="flex justify-between items-center">
+                <div className="flex flex-col lg:flex-row lg:justify-between lg:items-center">
                     <div className="flex flex-col">
                         <h1
                             className="text-2xl md:text-3xl font-creatoBold text-black-100 font-bold"
@@ -203,7 +203,7 @@ const JobBoards = () => {
                     </div>
                     <Button
                         variant="primary"
-                        className="py-3 font-semibold font-creatoMedium"
+                        className="py-3 font-semibold font-creatoMedium my-4 lg:my-0"
                         iconLeft={<FiPlus size={20} />}
                         onClick={() => setOpenJobPost(true)}
                         data-testid="job_post_btn"

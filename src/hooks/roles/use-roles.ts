@@ -4,7 +4,7 @@ import { useMutation, useQuery } from "@tanstack/react-query"
 import { AxiosError, AxiosResponse } from "axios"
 import { showNotification } from "@mantine/notifications"
 import {
-    InviteShiftMangerInterface,
+    InviteUserInterface,
     RoleResponse,
     RolesRequest,
 } from "../../types/roles/role-interface"
@@ -12,7 +12,7 @@ import {
 export const useInviteShiftManger = () => {
     const { state } = useAuthContext()
 
-    const createInvite = async (requestBody: InviteShiftMangerInterface) => {
+    const createInvite = async (requestBody: InviteUserInterface) => {
         const newFormData = new FormData()
 
         newFormData.append("invitedRole", requestBody.invitedRole)
@@ -40,9 +40,9 @@ export const useInviteShiftManger = () => {
         return data
     }
 
-    return useMutation<any, AxiosError, InviteShiftMangerInterface>(
+    return useMutation<any, AxiosError, InviteUserInterface>(
         ["inviteShiftManager"],
-        (requestBody: InviteShiftMangerInterface) => createInvite(requestBody),
+        (requestBody: InviteUserInterface) => createInvite(requestBody),
         {
             onSuccess: (data) => {
                 showNotification({
@@ -66,17 +66,10 @@ export const useInviteShiftManger = () => {
     )
 }
 export const useInviteHQ = () => {
-    const createInvite = async (requestBody: InviteShiftMangerInterface) => {
+    const createInvite = async (requestBody: InviteUserInterface) => {
         const newFormData = new FormData()
 
         newFormData.append("invitedRole", requestBody.invitedRole)
-
-        // if (requestBody.companyName === undefined) {
-        //     ;("")
-        // } else {
-        //     // @ts-ignore
-        //     newFormData.append("companyName", requestBody.companyName)
-        // }
 
         // @ts-ignore
         newFormData.append("companyId", requestBody.companyId)
@@ -95,9 +88,9 @@ export const useInviteHQ = () => {
         return data
     }
 
-    return useMutation<any, AxiosError, InviteShiftMangerInterface>(
+    return useMutation<any, AxiosError, InviteUserInterface>(
         ["inviteShiftManager"],
-        (requestBody: InviteShiftMangerInterface) => createInvite(requestBody),
+        (requestBody: InviteUserInterface) => createInvite(requestBody),
         {
             onSuccess: (data) => {
                 showNotification({
