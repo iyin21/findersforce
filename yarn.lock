@@ -2128,11 +2128,6 @@
   resolved "https://registry.yarnpkg.com/@open-draft/until/-/until-1.0.3.tgz#db9cc719191a62e7d9200f6e7bab21c5b848adca"
   integrity sha512-Aq58f5HiWdyDlFffbbSjAlv596h/cOnt2DO1w3DOC7OJ5EHs0hd/nycJfiu9RJbT6Yk6F1knnRRXNSpxoIVZ9Q==
 
-"@pdftron/webviewer@^8.11.0":
-  version "8.11.0"
-  resolved "https://registry.yarnpkg.com/@pdftron/webviewer/-/webviewer-8.11.0.tgz#11f948f93bcb701c5d32357d650a17455bfa14b7"
-  integrity sha512-TWtvSDAvig/7IQq9gqn1SSYL0cpWSfWo5gEsqmNqRc/qUEEsuZUqpSDXi5zQFX0xr5wWnLSQvrnGKK0iJdKWPg==
-
 "@playwright/test@^1.27.1":
   version "1.28.0"
   resolved "https://registry.yarnpkg.com/@playwright/test/-/test-1.28.0.tgz#8de83f9d2291bba3f37883e33431b325661720d9"
