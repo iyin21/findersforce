@@ -7,7 +7,7 @@ import { MdCall } from "react-icons/md"
 import { HiVideoCamera } from "react-icons/hi"
 import { BiSearch } from "react-icons/bi"
 import { AiOutlineMore } from "react-icons/ai"
-import { useState, useCallback } from "react"
+import { useState, useCallback, ChangeEvent } from "react"
 import SendImg from "../Support/assets/images/send.svg"
 import { Drawer } from "@mantine/core"
 import ReadIcon from "./assets/read.svg"
@@ -30,21 +30,31 @@ import { CgSpinner } from "react-icons/cg"
 import { NewMessageEvent, NewMessage } from "telegram/events"
 import TelegramLogo from "./assets/telegramLogo.svg"
 import { showNotification } from "@mantine/notifications"
+import { Buffer } from "buffer"
+import FileDownloadIcon from "./assets/fileDownloadIcon.svg"
+import ImageMessage from "./components/ImageMessage"
+import { GrAttachment } from "react-icons/gr"
+import { betterConsoleLog } from "telegram/Helpers"
+import FileModal from "./components/fileModal"
 
 interface Message {
     text: string
     name: string
     time: string
+    media?: Api.TypeMessageMedia
+    fileName?: string
+    fileSize?: string
 }
+
 const Messaging = () => {
     const [phase, setPhase] = useState(1)
     const [phone, setPhone] = useState("")
     const [phoneCodeHash, setPhoneCodeHash] = useState("")
     const [newClient, setNewClient] = useState<TelegramClient>()
-    const [session, setSession] = useState("")
+    //const [session, setSession] = useState("")
     const [dialog, setDialog] = useState<any[]>([])
     const [activeChat, setActiveChat] = useState("")
-    const [chatHistory, setChatHistory] = useState<Message[]>([])
+    const [chatHistory, setChatHistory] = useState<Api.Message[]>([])
     const [isLoadingMessages, setIsLoadingMessages] = useState(false)
     const [me, setMe] = useState<any>()
     const [isFetchingDialog, setIsFetchingDialog] = useState(false)
@@ -52,17 +62,19 @@ const Messaging = () => {
     const [chatId, setChatId] = useState<bigInt.BigInteger>()
     const [isSendingCode, setIsSendingCode] = useState(false)
     const [isSigningIn, setIsSigningIn] = useState(false)
+    const [imgBuffer, setImgBuffer] = useState("")
+    const [ibuffer, setIBuffer] = useState<Buffer | null>(null)
 
     //Telegram
 
-    const apiId = import.meta.env.VITE_TELEGRAM_API_ID
+    const apiId = import.meta.env.VITE_TELEGRAM_API_ID as number
 
     const apiHash = import.meta.env.VITE_TELEGRAM_API_HASH
     const stringSession = new StringSession(
         sessionStorage.getItem("session") || ""
     ) // fill this later with the value from session.save()
     const client = new TelegramClient(stringSession, apiId, apiHash, {
-        connectionRetries: 1000,
+        connectionRetries: 10000,
         //testServers: true,
     })
 
@@ -98,31 +110,6 @@ const Messaging = () => {
                     )) {
                         console.log(message.id, message._sender.firstName)
                     }
-                    // const hey = await client.iterMessages("GramJS Chat", {  })
-                    // if (hey) {
-                    //     console.log("hey", hey)
-                    // }
-                    // async function eventPrint(event:any) {
-                    //     const message = event.message
-
-                    //     // Checks if it's a private message (from user or bot)
-                    //     if (event.isPrivate){
-                    //         // prints sender id
-                    //         console.log(message.senderId);
-                    //         // read message
-                    //         if (message.text == "hello"){
-                    //             const sender = await message.getSender();
-                    //             console.log("sender is",sender);
-                    //             await client.sendMessage(sender,{
-                    //                 message:`hi your id is ${message.senderId}`
-                    //             });
-                    //         }
-                    //     }
-                    // }
-                    // // adds an event handler for new messages
-                    // client.addEventHandler(eventPrint, new NewMessage({chats,}));
-
-                    // client.addEventHandler(eventPrint, new NewMessage({}));
                 }
             } finally {
                 setIsFetchingDialog(false)
@@ -132,24 +119,6 @@ const Messaging = () => {
         if (phase === 3) {
             run()
 
-            // client.addEventHandler(async (event) => {
-            //     if (event instanceof Api.UpdateNewMessage) {
-            //         console.log("hey")
-            //         console.log(event.message);
-            //     //     const message = event.message;
-            //     //     if ((message instanceof MessageEmpty)) {
-            //     //         return;
-            //     //     }
-            //     //     message._finishInit(
-            //     //         client,
-            //     //         message._entities || new Map(),
-            //     //         undefined
-            //     //     );
-            //     //     const msg = await message.respond({
-            //     //         message: "text is" + message.text
-            //     //     });
-            //      }
-            // });
             async function eventPrint(event: NewMessageEvent) {
                 const message = event.message
                 const sender = await message.getSender()
@@ -172,16 +141,24 @@ const Messaging = () => {
                     console.log(getChat?.firstName + " " + getChat?.lastName)
                     //@ts-expect-error
                     if (chatId?.value === id.value) {
-                        console.log("hey ypoyu")
                         setChatHistory((chat) => [
-                            ...chat,
-                            {
-                                text: message.text,
-                                name:
-                                    message._sender?.username ||
-                                    message._sender?.firstName,
-                                time: dayjs(message.date).format("h:mm A,"),
-                            },
+                            ...chat, message
+                            // {
+                            //     text: message.text,
+                            //     name:
+                            //         message._sender?.username ||
+                            //         message._sender?.firstName,
+                            //     time: dayjs(
+                            //         new Date(message.date * 1000)
+                            //     ).format("h:mm A,"),
+                            //     ...(message.media && { media: message.media }),
+                            //     ...(message.file?.name && {
+                            //         fileName: message.file.name,
+                            //     }),
+                            //     ...(message.file?.size && {
+                            //         fileSize: message.file.size,
+                            //     }),
+                            // },
                         ])
                     } else {
                         console.log("hjhj", dialog[0].message.chat?.id?.value)
@@ -240,6 +217,10 @@ const Messaging = () => {
             }
         }
         run()
+        // sessionStorage.removeItem(
+        //     "session"
+        // )
+        // setPhase(1)
     }, [])
 
     const handleSubmit = async (
@@ -264,12 +245,13 @@ const Messaging = () => {
     }
 
     const handleShowMessages = async (value: string) => {
+        setIsLoadingMessages(true)
         await client.connect()
 
         // if (me) {
         //     console.log("me", me)
         // }
-        setIsLoadingMessages(true)
+
         setActiveChat(value)
         try {
             const result = await newClient?.getMessages(value, {
@@ -278,42 +260,54 @@ const Messaging = () => {
             })
             if (result) {
                 console.log("njhi", result)
-                // for (const msg of result) {
-                //     if (msg.media) {
-                //         //setTimeout(some code, 600000)
-                //         const buffer = await client.downloadMedia(msg.media, {
-                //             workers: 1,
+                //CustomMessage.file
+                if (result[7].media) {
+                    //setTimeout(some code, 600000)
+                    
+                    const buffer = await client.downloadMedia(result[7].media, {
+                        //@ts-expect-error
+                        workers: 1,
+                    })
+                    console.log("jhj", buffer)
+                    if (buffer) {
+                        // //@ts-expect-error
+                        // const img = new Buffer.from(buffer).toString("base64")
+                        const hh = Buffer.from(buffer).toString("base64")
+                        //console.log("jhjh", img);
+                        console.log("jhjh", `data:image/png;base64,${hh}`)
+                        setImgBuffer(hh)
+                    }
 
-                //         });
-                //     console.log(buffer)
-                //     }
-                // }
-                // result.filter((item) => item.media)
-                //         .map((item) => ({
-                //             const buffer = await client.downloadMedia(msg.media, {
-                //                 workers: 1,
-                //             });
-                //         }))
-                // if (result.media) {
-                //     setTimeout(some code, 600000)
-                //     const buffer = await client.downloadMedia(msg.media, {
-                //         workers: 1,
-                //     });
-                //     //console.log(buffer)
-                // }
+                    
+                }
                 setChatId(result[0].chat?.id)
 
                 setChatHistory(() => [
                     // ...chat,
                     ...result
-                        .filter((item) => item.message !== undefined)
-                        .map((item) => ({
-                            text: item?.message,
-                            name:
-                                item._sender?.username ||
-                                item._sender?.firstName,
-                            time: dayjs(item.date).format("h:mm A, MMM YYYY"),
-                        })),
+                        .filter(
+                            (item: Api.Message) => item.message !== undefined
+                        )
+                        .map((item: Api.Message) => (
+                            item
+                        //     {
+                        //     // text: item?.message,
+
+                        //     // name:
+                        //     //     item._sender?.username ||
+                        //     //     item._sender?.firstName,
+                        //     // time: dayjs(new Date(item.date * 1000)).format(
+                        //     //     "h:mm A, DD, MMM YYYY"
+                        //     // ),
+                        //     // ...(item.media && { media: item.media }),
+                        //     // ...(item.file?.name && {
+                        //     //     fileName: item.file.name,
+                        //     // }),
+                        //     // ...(item.file?.size && {
+                        //     //     fileSize: item.file.size,
+                        //     // }),
+                        // }
+                        )),
                 ])
             }
         } finally {
@@ -367,13 +361,11 @@ const Messaging = () => {
             if (result) {
                 console.log("result", result)
 
-                setSession(newClient?.session.save() || "")
                 sessionStorage.setItem(
                     "session",
                     newClient?.session.save() || ""
                 )
                 setPhase(3)
-                console.log(session)
             }
         } catch (err: any) {
             setIsSigningIn(false)
@@ -392,6 +384,12 @@ const Messaging = () => {
     const [activeIndex, setActiveIndex] = useState<number | null>(null)
     const [openModal, setOpenModal] = useState(false)
     const [isLoadingSendMessage, setIsLoadingSendMessage] = useState(false)
+    const [openFileModal, setOpenFileModal] = useState(false)
+    const [fileUpload, setFileUpload] = useState<File>()
+    const [filePath, setFilePath] = useState("")
+    const [uploadedFile, setUploadedFile] = useState<
+        Api.InputFile | null | Api.InputFileBig
+    >(null)
 
     const handleSendMessage = async () => {
         setIsLoadingSendMessage(true)
@@ -423,8 +421,84 @@ const Messaging = () => {
     useEffect(() => {
         scrollToBottom()
     }, [containerRef, chatHistory])
+    const handleClick = async (media: any) => {
+        try {
+            const buffer = await client.downloadMedia(media, {
+                //@ts-expect-error
+                workers: 1,
+            })
+            if (buffer) {
+                const imageBuffer = Buffer.from(buffer).toString("base64")
+                //console.log("jhjh", img);
+                console.log("jhjh", `data:image/png;base64,${imageBuffer}`)
+                // setImgBuffer(imageBuffer)
+                const anchorEl = document.createElement("a")
+
+                anchorEl.href = `data:image/png;base64,${imageBuffer}`
+                anchorEl.target = "_blank"
+                anchorEl.rel = "noopener"
+                // setTimeout is needed in order to open files in iOS Safari.
+                setTimeout(() => {
+                    anchorEl.click()
+                })
+            }
+        } finally {
+        }
+    }
+
+    // this handles the ref that gets triggered when the user clicks on the attach icon
+    const ref = useRef<HTMLInputElement | null>(null)
+
+    const handleUpload = async (e: ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0]
+        console.log("file", e.target.files)
+
+        if (file) {
+            // console.log(
+            //     (window.URL || window.webkitURL).createObjectURL(
+            //         e.target.files?.[0]
+            //     )
+            // )
+            // setFilePath((window.URL || window.webkitURL).createObjectURL(
+            //     e.target.files?.[0]
+            // ))
+            // setFileUpload(e.target.files?.[0])
+            // setOpenFileModal(true)
+            try {
+                const result = await newClient?.uploadFile({
+                    file: file,
+                    workers: 1,
+                })
+                if (result) {
+                    console.log("ffk..ks", result)
+                    setFileUpload(e.target.files?.[0])
+                    setUploadedFile(result)
+                    setOpenFileModal(true)
+                    console.log("hey")
+                }
+            } catch (err) {
+                console.log(err)
+                showNotification({
+                    title: "Error",
+                    message: "Error uploading file, plese try again",
+
+                    color: "red",
+                })
+            }
+        }
+    }
+
     return (
         <Layout pageTitle="Messaging" noTopNav>
+            <FileModal
+                opened={openFileModal}
+                setOpened={setOpenFileModal}
+                file={fileUpload}
+                client={newClient}
+                chat={activeChat}
+                fileBuffer={ibuffer}
+                uploadedFile={uploadedFile}
+            />
             <div className="h-screen relative">
                 {isLoading || isFetchingDialog ? (
                     <div className="h-screen w-full flex mt-24 justify-center">
@@ -674,7 +748,7 @@ const Messaging = () => {
                                                         /> */}
                                                         <span className="pl-2">
                                                             {dayjs(
-                                                            item.date
+                                                                item.date
                                                             ).format("h:mm A,")}
                                                         </span>
                                                     </p>
@@ -704,6 +778,11 @@ const Messaging = () => {
                                             <p className="text-neutral-100 body-extra-small pt-1 font-bold">
                                                 46 Members
                                             </p>
+                                            {/* {imgBuffer && (
+                                                <img
+                                                    src={`data:image/jpeg;base64,${imgBuffer}`}
+                                                />
+                                            )} */}
                                         </div>
                                         <div className="flex gap-6 text-black-40 cursor-pointer">
                                             <MdCall size={30} />
@@ -718,36 +797,92 @@ const Messaging = () => {
                                         ref={containerRef}
                                     >
                                         {chatHistory.map((item, index) => (
-                                            <div
-                                                className="bg-black-5 mt-8 ml-10 w-[500px] rounded-[20px] p-4 mb-2"
-                                                key={index}
-                                            >
-                                                <div className="flex justify-between">
-                                                    <p
-                                                        className={`${
-                                                            item.name ===
-                                                            me?.firstName
-                                                                ? "text-red-190"
-                                                                : "text-blue-90"
-                                                        } body-small`}
-                                                    >
-                                                        {item.name}
-                                                    </p>
-                                                    {/* <p className="text-black-40 text-md">
+                                            <div key={index}>
+                                                {item.media ? (
+                                                    <div>
+                                                        <div className="bg-black-5 mt-8 ml-10 w-[300px] rounded-tl-[20px] rounded-tr-[20px] p-4 ">
+                                                            <p
+                                                                className={`${
+                                                                    item._sender?.username ||item._sender?.firstName,
+                                                                    me?.firstName
+                                                                        ? "text-red-190"
+                                                                        : "text-blue-90"
+                                                                } body-small`}
+                                                            >
+                                                                {item._sender?.username ||item._sender?.firstName}
+                                                            </p>
+                                                        </div>
+                                                        <ImageMessage
+                                                            data={item.media}
+                                                            client={client}
+                                                            newClient={
+                                                                newClient
+                                                            }
+                                                            item={item}
+                                                            // fileName={
+                                                            //     item.fileName
+                                                            // }
+                                                            // fileSize={
+                                                            //     item.fileSize
+                                                            // }
+                                                        />
+                                                        <div className="bg-black-5 ml-10 w-[300px] rounded-br-[20px] rounded-bl-[20px] p-4 ">
+                                                            <p className="mt-2 text-black-90 text-md">
+                                                                {item.text}
+                                                            </p>
+                                                            <p className="text-black-40 text-md flex justify-end mt-2">
+                                                                {dayjs(new Date(item.date * 1000)).format("h:mm A, DD, MMM YYYY")}
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                ) : (
+                                                    <div className="bg-black-5 mt-8 ml-10 w-[500px] rounded-[20px] p-4 mb-2">
+                                                        <div className="flex justify-between">
+                                                            <p
+                                                                className={`${
+                                                                    item._sender?.username ||item._sender?.firstName===
+                                                                    me?.firstName
+                                                                        ? "text-red-190"
+                                                                        : "text-blue-90"
+                                                                } body-small`}
+                                                            >
+                                                                {item._sender?.username ||item._sender?.firstName}
+                                                            </p>
+                                                            {/* <p className="text-black-40 text-md">
                                             Reply
                                         </p> */}
-                                                </div>
-                                                <p className="mt-2 text-black-90 text-md">
-                                                    {item.text}
-                                                </p>
-                                                <p className="text-black-40 text-md flex justify-end mt-2">
-                                                    {item.time}
-                                                </p>
+                                                        </div>
+                                                        <p className="mt-2 text-black-90 text-md">
+                                                            {item.text}
+                                                        </p>
+                                                        <p className="text-black-40 text-md flex justify-end mt-2">
+                                                        {dayjs(new Date(item.date * 1000)).format("h:mm A, DD, MMM YYYY")}
+                                                        </p>
+                                                    </div>
+                                                )}
                                             </div>
                                         ))}
                                     </div>
 
                                     <div className="fixed bottom-0 w-full border-t border-[#E7E7E7] bg-white-100  pl-10 h-14 mt-0 items-center flex">
+                                        <div
+                                            className="pr-2"
+                                            onClick={() => {
+                                                ref.current?.click()
+                                            }}
+                                        >
+                                            {" "}
+                                            <GrAttachment color="rgba(15, 13, 0, 0.5)" />
+                                            <input
+                                                data-testid="file-upload"
+                                                //ref={fileInputRef}
+                                                type="file"
+                                                hidden
+                                                onChange={handleUpload}
+                                                ref={ref}
+                                            />
+                                        </div>
+
                                         <input
                                             type="text"
                                             placeholder="Write a message"
