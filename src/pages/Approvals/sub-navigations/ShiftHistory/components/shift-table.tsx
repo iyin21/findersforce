@@ -9,6 +9,7 @@ interface Prop {
 const ShiftTable = ({ elements }: Prop) => {
     const rows = elements.map((item, index) => (
         <tr key={index}>
+            <td>{index + 1}</td>
             <td>{dayjs(item?.createdAt).format("MMM D, YYYY")}</td>
             <td>{item?.jobListing.jobLocation.formattedAddress}</td>
             <td>{dayjs(item.jobListing.shiftStartTime).format("h:mm A")}</td>
@@ -23,11 +24,11 @@ const ShiftTable = ({ elements }: Prop) => {
             <td>
                 <p className="flex">
                     <img src={Star} alt="" />
-                    <span className="pl-1">{item?.depotRating}</span>
+                    <span className="pl-1">{item?.depotRating?.averageScore || 0}</span>
                 </p>
             </td>
-            <td>
-                {index % 2 === 0 ? (
+             <td>
+                {item.cancelStatus === true ? (
                     <p className="text-white-100 bg-green-100 pl-1.5 py-1 rounded-full w-20">
                         completed
                     </p>
@@ -41,6 +42,7 @@ const ShiftTable = ({ elements }: Prop) => {
     ))
 
     const tableHead = [
+        "no",
         "Date",
         "Location",
         "Time in",
@@ -153,7 +155,7 @@ const ShiftTable = ({ elements }: Prop) => {
                                     <p className="flex text-2md mt-1">
                                         <img src={Star} alt="" />
                                         <span className="pl-1">
-                                            {item?.depotRating}
+                                            {item?.depotRating?.averageScore || 0}
                                         </span>
                                     </p>
                                 </div>

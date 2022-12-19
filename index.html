@@ -13,6 +13,10 @@
     <body>
         <div id="root"></div>
         <script type="module" src="/src/main.tsx"></script>
+        <script type="module">
+            import { Buffer } from "buffer"
+            window.Buffer = Buffer
+        </script>
         <script
             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyChBkPBpluPcMVW0154FwBeVUdkqwMGB0k&v=weekly&libraries=places"
             strategy="afterInteractive"

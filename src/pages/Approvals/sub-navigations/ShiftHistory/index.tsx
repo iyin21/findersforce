@@ -18,7 +18,7 @@ const ShiftDetails = ({
     const { data, isLoading } = useGetShiftHistory({
         operativeId: shiftId || "",
     })
-
+    
     const item = data?.results.find(
         (item: { operative: { _id: string } }) => item.operative._id === shiftId
     )
@@ -29,7 +29,7 @@ const ShiftDetails = ({
                     <CgSpinner className="animate-spin text-primary-90 text-4xl" />
                 </div>
             ) : (
-                <div className="pt-4 px-6">
+                <div className="pt-8 px-6">
                     <span
                         onClick={() => setPhase(2)}
                         className="p-3 rounded inline-flex items-center justify-center bg-black-10 cursor-pointer"
@@ -56,9 +56,8 @@ const ShiftDetails = ({
                                     <span className="text-black-10 pl-1">
                                         |
                                     </span>
-                                    <span className="text-green-100 pl-1 font-bold">
-                                        {item?.jobListing.jobMatchPercentage}%
-                                        Match
+                                    <span className="text-black-70 pl-1 font-normal">
+                                        Shift History
                                     </span>
                                 </p>
                             </div>
