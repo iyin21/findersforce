@@ -1,11 +1,8 @@
 import { Modal } from "@mantine/core"
-import { Dispatch, SetStateAction, useEffect, useState } from "react"
+import { Dispatch, SetStateAction, useState } from "react"
 import { TelegramClient, Api } from "telegram"
-import { CustomFile } from "telegram/client/uploads"
-import { Buffer } from "buffer"
+
 import { showNotification } from "@mantine/notifications"
-import { GrDocument } from "react-icons/gr";
-import { TiDocument } from "react-icons/ti";
 import { AiFillFile } from "react-icons/ai";
 
 interface FileModalProps {
@@ -14,7 +11,6 @@ interface FileModalProps {
     file?: File
     client?: TelegramClient
     chat: string
-    fileBuffer: Buffer | null
     uploadedFile: Api.InputFile | null | Api.InputFileBig
 }
 const FileModal = ({
@@ -23,36 +19,24 @@ const FileModal = ({
     file,
     client,
     chat,
-    fileBuffer,
     uploadedFile,
 }: FileModalProps) => {
     const [caption, setCaption] = useState("")
     const [isSending, setIsSending] = useState(false)
-    const [ibuffer, setIBuffer] = useState<Buffer | null>(null)
+    
 
     const handleSendFile = async () => {
         setIsSending(true)
-        let reader = new FileReader()
-        // if (file) {
-        //     reader.readAsDataURL(file)
-        //     reader.onload = () => {
-        //         console.log("reader", reader.result)
-        //         //@ts-expect-error
-        //         const fileBuffer = Buffer.from(reader.result)
-
-        //         setIBuffer(fileBuffer)
-        //     }
-        // }
-        // console.log("jjjoln", fileBuffer)
+        
         try {
             if (uploadedFile && client) {
-                //console.log("jjjoln", fileBuffer)
+                
 
                 const result = await client.sendFile(chat, {
-                    //file: new Uint8Array(ibuffer),
+                
                     file: uploadedFile,
 
-                    //new CustomFile(file.name, file.size,  ),
+            
                     caption: caption,
                     ...(file?.type.includes("video")
                         ? { videoNote: true }

@@ -1,5 +1,5 @@
 import { Modal } from "@mantine/core"
-import { Dispatch, SetStateAction, useEffect, useState } from "react"
+import { Dispatch, SetStateAction,  } from "react"
 
 interface ImageModalProps {
     opened: boolean

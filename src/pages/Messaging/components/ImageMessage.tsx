@@ -1,115 +1,92 @@
 import { useEffect, useState } from "react"
-import FileDownloadIcon from "../assets/fileDownloadIcon.svg"
 import { TelegramClient, Api } from "telegram"
 import { Buffer } from "buffer"
 import { AiOutlineArrowDown } from "react-icons/ai"
 import { CgSpinner } from "react-icons/cg"
 import ImageModal from "./ImageModal"
-import { message } from "telegram/client"
 import { AiFillFile } from "react-icons/ai"
-import { iterMessages } from "telegram/client/messages"
+import { showNotification } from "@mantine/notifications"
 
-type TPhoto = {
-    photo: any
-    photoThumbnail?: number[]
-    photoCaption: string
-    photoid: number
-    filePath: string
-    fileId: number
-}
 export default function ImageMessage({
     data,
     client,
-    newClient,
-    fileName,
-    fileSize,
-    item
+
+    item,
 }: {
     data: any
     client: TelegramClient
-    newClient?: TelegramClient
-    fileName?: string
-    fileSize?: string
-    item:Api.Message
+
+    item: Api.Message
 }) {
     const [isDownloading, setIsDownloading] = useState(false)
-    const [imageContent, setImageDataContent] = useState<TPhoto | null>(null)
 
     const [thumbnailImg, setThumbnailImg] = useState("")
     const [image, setImage] = useState("")
     const [openImageModal, setOpenImageModal] = useState(false)
-    const [document, setDocument] = useState<Buffer|string>("")
+    const [document, setDocument] = useState<Buffer | string>("")
+    const [webPage, setWebpage]= useState<Buffer | string>("")
 
     useEffect(() => {
         if (data.photo) {
             handleImageContent()
-        //     handleImageContent()
-         } else {
-             console.log("crygxfxrs")
-             handleDocumentContent()
-         }
-        
+        }  else {
+            
+            handleDocumentContent()
+        }
     }, [])
     const handleImageContent = async () => {
-        //await client.connect()
+        // await client.connect()
         try {
             const thumbnailBuffer = await client.downloadMedia(data, {
                 progressCallback: console.log,
                 thumb: 0,
-                //outputFile: "path/to/downloads_dir",
+                // outputFile: "path/to/downloads_dir",
             })
             if (thumbnailBuffer) {
-                console.log("fgg", thumbnailBuffer)
                 const thumbnail =
                     Buffer.from(thumbnailBuffer).toString("base64")
-                //data.photo.sizes[0].
+                // data.photo.sizes[0].
                 setThumbnailImg(thumbnail)
             }
-        } catch (err) {
-            console.log("error", err)
-        }
+        } catch (err) {}
     }
     const handleDocumentContent = async () => {
-        console.log("docymtyy")
         await client.connect()
         try {
             const buffer = await client.downloadMedia(data, {})
             if (buffer) {
-                console.log("uyvyuu", buffer)
-                const thumbnail = Buffer.from(buffer).toString("base64")
-                console.log("document", thumbnail)
-            
                 //@ts-expect-error
                 setDocument(buffer)
-                
             }
         } catch (err) {
             console.log("error", err)
         }
     }
-    //console.log("data", data)
-    //console.log("image", imageContent)
+    
     const handleClick = async () => {
         setIsDownloading(true)
         await client.connect()
-        //if(newClient){
         try {
             const buffer = await client.downloadMedia(data, {})
             if (buffer) {
                 const imageBuffer = Buffer.from(buffer).toString("base64")
-                console.log("jjgg", buffer)
+
                 setImage(imageBuffer)
             }
-        } catch (err) {
-            console.log("error", err)
+        } catch (err: any) {
+            showNotification({
+                title: "Error",
+                message:
+                    err.errorMessage || "An error occured, pleease try again",
+                color: "red",
+            })
         } finally {
             setIsDownloading(false)
         }
-        //}
     }
-    // console.log("data", data)
-    //@ts-expect-error
-    console.log("file", item.file?.size?.value)
+
+    //@ts-expect-erro
+    // console.log("file", item.file?.size?.value)
     return (
         <>
             <ImageModal
@@ -117,18 +94,20 @@ export default function ImageMessage({
                 setOpened={setOpenImageModal}
                 imageSource={`data:image/jpeg;base64,${image}`}
             />
-            {data.className === "MessageMediaDocument" &&item.file? (
+            {data.className === "MessageMediaDocument" && item.file ? (
                 <a
                     className="flex items-center ml-10 bg-black-5 w-[300px] pl-4"
                     onClick={() => handleDocumentContent()}
-                    href={window.URL.createObjectURL(new Blob([document as Buffer], { type: item.file.mimeType }))}
+                    href={window.URL.createObjectURL(
+                        new Blob([document as Buffer], {
+                            type: item.file.mimeType,
+                        })
+                    )}
                     target="_blank"
                     //rel="noreferrer"
                     download={item.file.name}
-                    
                 >
                     <div className="rounded-full bg-blue-100 p-3">
-                        {/* <GrDocument color="white" size="20px"/> */}
                         <AiFillFile color="white" size="20px" />
                     </div>
                     <div className="ml-2">
@@ -136,6 +115,18 @@ export default function ImageMessage({
                         {/* <p>{item.file?.size}</p> */}
                     </div>
                 </a>
+            ) : data.className === "MessageMediaWebPage" &&item.file ? (
+                <div>
+                    <iframe
+                        src={data.webpage.embedUrl}
+                        className="ml-10"
+                        height="300"
+                        width="300"
+                        allow="fullscreen"
+                    ></iframe>
+
+                   
+                </div>
             ) : (
                 <div
                     className="rounded-[20px] cursor-pointer   ml-10 "
@@ -160,8 +151,6 @@ export default function ImageMessage({
                                         size="20px"
                                     />
                                 )}
-
-                                {/* <img src={FileDownloadIcon} alt="" /> */}
                             </div>
                             <img
                                 src={`data:image/png;base64,${thumbnailImg}`}
