@@ -36,6 +36,7 @@ export interface JobBoardResponseInterface {
     isPublished: boolean
     jobAccessibleTo: string
     createdAt: string
+    listingId: string
     jobLocation: {
         formattedAddress: string
         street: string
@@ -107,6 +108,7 @@ export interface JobInformationInterface {
     shiftEndTime: string | undefined
     jobType: string | undefined
     createdAt: string | undefined
+    additionalInfoImageUrls: string[] | undefined
 }
 
 export interface BulkDeleteJobRequest {

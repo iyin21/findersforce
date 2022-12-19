@@ -15,12 +15,11 @@ import Avatar from "../Applications/assets/avatar.png"
 import { MdGroup } from "react-icons/md"
 import AddGroup from "../../components/Modals/Messaging/addGroupModal"
 
-
 const Messaging = () => {
     const [openMenu, setOpenMenu] = useState(false)
     const [message, setMessage] = useState("")
     const [activeIndex, setActiveIndex] = useState(0)
-    const [openModal, setOpenModal]=useState(false);
+    const [openModal, setOpenModal] = useState(false)
     const chatList = [
         {
             title: "Revive Traffic one Way",
@@ -55,32 +54,40 @@ const Messaging = () => {
     return (
         <Layout pageTitle="Messaging" noTopNav>
             <div>
-                {openModal &&(
+                {openModal && (
                     <AddGroup opened={openModal} setOpened={setOpenModal} />
                 )}
                 <>
-                
                     <Drawer
                         opened={openMenu}
                         onClose={() => setOpenMenu(false)}
-                        //size="75%"
+                        // size="75%"
                         withCloseButton={false}
-                         overlayBlur={2}
+                        overlayBlur={2}
                         overlayColor="#132013"
-                         overlayOpacity={0.5}
+                        overlayOpacity={0.5}
                     >
                         <div className="pl-4 pt-4">
-                        <img src={CompanyLogo} alt="" />
-                        <h5 className="font-bold text-2lg">Revive Traffic</h5>
-                        <p className="text-black-40 pt-2">+44 04 7743 1239</p>
+                            <img src={CompanyLogo} alt="" />
+                            <h5 className="font-bold text-2lg">
+                                Revive Traffic
+                            </h5>
+                            <p className="text-black-40 pt-2">
+                                +44 04 7743 1239
+                            </p>
                         </div>
-                        
-                        <hr className="text-[#E7E7E7] mt-4"/>
+
+                        <hr className="text-[#E7E7E7] mt-4" />
                         <div className="flex pt-4 pl-4 items-center">
                             <div className="bg-[#56B3F5] rounded p-2">
-                            <MdGroup color="white" />
-                                </div> 
-                            <p className="pl-2 cursor-pointer" onClick={()=>setOpenModal(true)}>New Group</p>
+                                <MdGroup color="white" />
+                            </div>
+                            <p
+                                className="pl-2 cursor-pointer"
+                                onClick={() => setOpenModal(true)}
+                            >
+                                New Group
+                            </p>
                         </div>
                         <div className="absolute bottom-4 pl-4 text-black-40">
                             <p className="font-bold">Telegram Desktop</p>
@@ -91,14 +98,14 @@ const Messaging = () => {
                 <div className="flex justify-between  ">
                     <div className="border-r-2 h-screen border-[#E7E7E7] w-[500px] pt-8">
                         <div className="flex pl-4 items-center">
-                            <div onClick={() => setOpenMenu(true)} data-testid="menu_btn" className="cursor-pointer">
-                            <FcMenu
-                                size={30}
-                                
-                            />
+                            <div
+                                onClick={() => setOpenMenu(true)}
+                                data-testid="menu_btn"
+                                className="cursor-pointer"
+                            >
+                                <FcMenu size={30} />
                             </div>
-                            
-                            
+
                             <Input
                                 control=""
                                 type="text"
@@ -202,7 +209,7 @@ const Messaging = () => {
                                 </p>
                             </div>
                         ))}
-                        
+
                         <div className="fixed bottom-0 w-full border-t border-[#E7E7E7]  pl-10 h-14 items-center flex">
                             <input
                                 type="text"
@@ -217,8 +224,8 @@ const Messaging = () => {
                             <img src={SendImg} alt="" /> */}
                             <button
                                 className=" border-none ml-6"
-                                //onClick={() => handleClick()}
-                                //disabled={isLoading}
+                                // onClick={() => handleClick()}
+                                // disabled={isLoading}
                             >
                                 {/* {isUpdatingComplaintComment ? (
                                         <CgSpinner className="animate-spin text-primary-90 text-3xl" />

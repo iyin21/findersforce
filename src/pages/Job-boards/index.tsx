@@ -189,7 +189,7 @@ const JobBoards = () => {
                 />
             )}
             <div className="md:p-6 p-6 mt-4 md:mt-14">
-                <div className="flex flex-row md:flex-col lg:justify-between lg:items-center">
+                <div className="flex flex-col lg:flex-row lg:justify-between lg:items-center">
                     <div className="flex flex-col">
                         <h1
                             className="text-2xl md:text-3xl font-creatoBold text-black-100 font-bold"

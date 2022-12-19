@@ -174,6 +174,9 @@ const SingleJobBoard = () => {
                                     shiftEndTime={data?.shiftEndTime}
                                     shiftStartTime={data?.shiftStartTime}
                                     shiftMode={data?.jobMeetingPoint}
+                                    additionalInfoImageUrls={
+                                        data?.additionalInfoImageUrls
+                                    }
                                 />
                             </Tabs.Panel>
                             <Tabs.Panel value="second">

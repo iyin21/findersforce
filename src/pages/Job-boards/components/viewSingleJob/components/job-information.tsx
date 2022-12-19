@@ -14,6 +14,7 @@ const JobInformation = ({
     shiftStartTime,
     shiftEndTime,
     createdAt,
+    additionalInfoImageUrls,
 }: JobInformationInterface) => {
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 justify-between mt-4">
@@ -21,6 +22,13 @@ const JobInformation = ({
                 <div className="bg-yellow-20 p-4 md:px-6 md:py-10 rounded-2xl h-full">
                     <h6 className="text-black-40 text-2md mb-4">DESCRIPTION</h6>
                     <p className="text-lg text-black-80">{description}</p>
+
+                    <div className="mt-6">
+                        <h6 className="text-black-40 text-2md mb-4">IMAGES</h6>
+                        {/* {   
+                            additionalInfoImageUrls?.length > 0 ? () : ()
+                        } */}
+                    </div>
                 </div>
             </div>
             <div className="grid gap-y-6 grid-cols-2 md:py-10 md:px-4  grid-rows-2 border-t pt-6 md:border-t-0 md:border-l md:pl-6 border-black-10 mt-6 md:mt-0">
