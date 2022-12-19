@@ -6,6 +6,7 @@ import dayjs from "dayjs"
 import { IoIosArrowForward } from "react-icons/io"
 import RejectedApplicationModal from "../../../../components/Modals/ApprovalModals/RejectedApplicationModal"
 import { useState } from "react"
+import { useUpdateOperative } from "../../../../hooks/approval-hooks/approval.hook"
 
 interface Prop {
     // status?: "pending" | "accepted" | "rejected" ;
@@ -16,9 +17,15 @@ interface Prop {
 }
 const RejectedTable = ({ elements, setPhase, setActiveId }: Prop) => {
     const [open, setOpen] = useState(false)
+    const [element, setElement] = useState<Data>()
+    const handleModalOpen = (id: string) => {
+        elements.forEach((element) => {
+            return element._id === id ? setElement(element) : null
+        })
+        setOpen(true)
+    }
     const rows = elements.map((item, index) => (
         <tr key={index}>
-            <td>{index + 1}</td>
             <td>
                 <span className="text-lg">{Number(index + 1).toString()}</span>
             </td>
@@ -40,7 +47,7 @@ const RejectedTable = ({ elements, setPhase, setActiveId }: Prop) => {
                 data-testid="view_application"
                 onClick={
                     () => {
-                        setOpen(true)
+                        handleModalOpen(item._id)
                     }
                     // navigate(`/applications/${item._id}`)
                 }
@@ -59,35 +66,37 @@ const RejectedTable = ({ elements, setPhase, setActiveId }: Prop) => {
         "date rejected",
         "action",
     ]
+    const { isLoading: isLoadingAcceptedData, mutate: acceptMutate } =
+        useUpdateOperative({ id: element?._id || "" })
+
+    const handleAccept = () => {
+        acceptMutate({ status: "accepted" })
+    }
     return (
         <>
             <RejectedApplicationModal
                 openModal={open}
                 setOpenModal={setOpen}
-                handleAccept={function (): void {
-                    throw new Error("Function not implemented.")
-                }}
-                isLoadingAcceptedData={false}
-                isLoadingRejectedData={false}
+                element={element}
+                handleAccept={handleAccept}
+                isLoadingAcceptedData={isLoadingAcceptedData}
             />
             <div className="hidden lg:block ">
                 <Table verticalSpacing="md">
                     <thead>
                         <tr>
                             {tableHead.map((item, index) => (
-                                <>
-                                    <th
-                                        key={index}
-                                        style={{
-                                            color: "rgba(15, 13, 0, 0.3)",
-                                            fontSize: "13px",
-                                            borderBottom: "none",
-                                        }}
-                                        className="text-black-30"
-                                    >
-                                        {item.toUpperCase()}
-                                    </th>
-                                </>
+                                <th
+                                    key={index}
+                                    style={{
+                                        color: "rgba(15, 13, 0, 0.3)",
+                                        fontSize: "13px",
+                                        borderBottom: "none",
+                                    }}
+                                    className="text-black-30"
+                                >
+                                    {item.toUpperCase()}
+                                </th>
                             ))}
                         </tr>
                     </thead>
@@ -151,9 +160,7 @@ const RejectedTable = ({ elements, setPhase, setActiveId }: Prop) => {
                                     <h6 className="text-black-50 text-3sm">
                                         QUALIFICATION
                                     </h6>
-                                    <p className="text-2md mt-1">
-                                        {"unset"}
-                                    </p>
+                                    <p className="text-2md mt-1">{"unset"}</p>
                                 </div>
 
                                 <div className="mt-4">

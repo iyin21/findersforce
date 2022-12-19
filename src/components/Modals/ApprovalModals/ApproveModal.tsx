@@ -1,7 +1,7 @@
 import { Modal } from "@mantine/core"
 import { BsCheck } from "react-icons/bs"
 import { MdCancel } from "react-icons/md"
-import Check from "../../../pages/Applications/assets/check.svg"
+import Check from "../../../assets/check.svg"
 
 interface prop {
     openApproveModal: boolean

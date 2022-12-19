@@ -1,23 +1,22 @@
-import { useState } from "react"
-import { Select, Textarea, Modal } from "@mantine/core"
+import { Textarea, Modal } from "@mantine/core"
 import { BsCheck } from "react-icons/bs"
 import Avatar from "../../../pages/Applications/assets/avatar.svg"
+import { Data } from "../../../types/approval/approval-interface"
 
 interface prop {
     openModal: boolean
     setOpenModal: any
+    element: Data | undefined
     handleAccept: () => void
     isLoadingAcceptedData: boolean
-    isLoadingRejectedData: boolean
 }
 const RejectedApplicationModal = ({
     openModal,
     setOpenModal,
     handleAccept,
-    isLoadingRejectedData,
+    element,
     isLoadingAcceptedData,
 }: prop) => {
-    const [value, setValue] = useState<string | null>(null)
     return (
         <Modal
             opened={openModal}
@@ -57,49 +56,23 @@ const RejectedApplicationModal = ({
                         <div className="flex justify-between mt-2 lg:mt-0">
                             <h5 className="font-extrabold text-2mxl">
                                 {" "}
-                                {"abiodun" +
-                                    " " +
-                                   "timothy"}
+                                {element?.firstName + " " + element?.lastName}
                             </h5>
                         </div>
 
                         <p className="text-black-100">
-                            <span className="text-lg">{"male"}</span>
+                            <span className="text-lg">{element?.gender}</span>
                             <span className="text-black-10 pl-1">|</span>
                             <span className="text-black-100 pl-1 font-normal">
-                                {"timu@gmail.com"}
+                                {element?.email}
                             </span>
                         </p>
                     </div>
                 </div>
-                <Select
+                <Textarea
                     label="Reason"
-                    placeholder="Pick one"
-                    value={value}
-                    required
-                    onChange={setValue}
-                    data={[
-                        {
-                            value: "Unclear identification",
-                            label: "Unclear identification",
-                        },
-                        {
-                            value: "Wrong identification",
-                            label: " Wrong identification",
-                        },
-                        {
-                            value: "Expired Identification",
-                            label: "Expired Identification",
-                        },
-                        {
-                            value: "Unverifiable Identifcation",
-                            label: "Unverifiable Identifcation",
-                        },
-                        {
-                            value: "Others",
-                            label: "Others",
-                        },
-                    ]}
+                    value={element?.doc.rejectReason ?? ""}
+                    disabled
                     styles={() => ({
                         label: {
                             fontSize: "15px",
@@ -120,6 +93,8 @@ const RejectedApplicationModal = ({
                     label="More Information"
                     autosize
                     required={false}
+                    disabled
+                    value={element?.doc.moreInformation ?? ""}
                     radius={"md"}
                     minRows={7}
                     styles={() => ({
@@ -145,7 +120,7 @@ const RejectedApplicationModal = ({
                         className="bg-green-100 p-4 ml-4 flex text-white-100 items-center rounded rounded-tr-2xl font-bold body-medium px-6"
                         onClick={() => handleAccept()}
                         disabled={
-                            isLoadingAcceptedData || isLoadingRejectedData
+                            isLoadingAcceptedData 
                         }
                     >
                         <BsCheck size="30px" color="white" />

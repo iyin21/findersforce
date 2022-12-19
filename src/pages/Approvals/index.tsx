@@ -5,8 +5,8 @@ import { IoFilterSharp } from "react-icons/io5"
 import ApplicationDetails from "./sub-navigations/application-details"
 import ShiftDetails from "./sub-navigations/ShiftHistory/index"
 import Layout from "../../components/Layout/index"
-import EmptyState from "../../components/EmptyStates/index"
-import { useNavigate } from "react-router-dom"
+import EmptyState from "./components/EmptyState"
+// import Pagination from "../../components/Pagination/pagination"
 import PendingTable from "./components/Tables/pending-table"
 import AcceptedTable from "./components/Tables/accepted-table"
 import RejectedTable from "./components/Tables/rejected-table"
@@ -14,6 +14,24 @@ import { useGetAllOperativeUsers } from "../../hooks/approval-hooks/approval.hoo
 
 const Approvals = () => {
     const [activeTab, setActiveTab] = useState<string | null>("pending")
+    // const [activePendingPage, setPendingPage] = useState(1)
+    // const [activeAcceptedPage, setAcceptedPage] = useState(1)
+    // const [activeRejectedPage, setRejectedPage] = useState(1)
+    // const [activeCompletedPage, setCompletedPage] = useState(1)
+
+    // const handlePendingPage = (pageNumber: number) => {
+    //     setUpcomingPage(pageNumber)
+    // }
+    // const handleAcceptedPage = (pageNumber: number) => {
+    //     setOngoingPage(pageNumber)
+    // }
+    // const handleRejectedPage = (pageNumber: number) => {
+    //     setCancelledPage(pageNumber)
+    // }
+    // const handleCompletedPage = (pageNumber: number) => {
+    //     setCompletedPage(pageNumber)
+    // }
+
     const { data: pendingData, isLoading: isLoadingPendingData } =
         useGetAllOperativeUsers({
             docStatus: "pending",
@@ -23,7 +41,7 @@ const Approvals = () => {
         useGetAllOperativeUsers({
             docStatus: "accepted",
         })
-    
+
     const { data: rejectedData, isLoading: isLoadingRejectedData } =
         useGetAllOperativeUsers({
             docStatus: "rejected",
@@ -33,10 +51,6 @@ const Approvals = () => {
     const [activeId, setActiveId] = useState("")
     const [shiftId, setShiftId] = useState("")
 
-    const navigate = useNavigate()
-    const handleNavigate = () => {
-        navigate("/job-boards")
-    }
     return (
         <Layout pageTitle={"Pending"}>
             {phase === 1 ? (
@@ -81,7 +95,8 @@ const Approvals = () => {
                                     >
                                         Pending
                                         <span className="bg-red-100 rounded ml-2 py-0.5 px-1 text-white-100 text-sm">
-                                            {pendingData?.data?.results?.length ?? 0}
+                                            {pendingData?.data?.results
+                                                ?.length ?? 0}
                                         </span>
                                     </Tabs.Tab>
 
@@ -95,7 +110,8 @@ const Approvals = () => {
                                     >
                                         Accepted
                                         <span className="bg-red-100 rounded ml-2 py-0.5 px-1 text-white-100 text-sm">
-                                            {acceptedData?.data?.results?.length || 0}
+                                            {acceptedData?.data?.results
+                                                ?.length || 0}
                                         </span>
                                     </Tabs.Tab>
                                     <Tabs.Tab
@@ -108,7 +124,8 @@ const Approvals = () => {
                                     >
                                         Rejected
                                         <span className="bg-red-100 rounded ml-2 py-0.5 px-1 text-white-100 text-sm">
-                                            {rejectedData?.data?.results?.length || 0}
+                                            {rejectedData?.data?.results
+                                                ?.length || 0}
                                         </span>
                                     </Tabs.Tab>
                                 </Tabs.List>
@@ -116,54 +133,44 @@ const Approvals = () => {
                                     {pendingData?.data?.results &&
                                     pendingData?.data?.results?.length > 0 ? (
                                         <PendingTable
-                                            elements={pendingData?.data?.results || []}
+                                            elements={
+                                                pendingData?.data?.results || []
+                                            }
                                             setPhase={setPhase}
                                             setActiveId={setActiveId}
                                         />
                                     ) : (
-                                        <EmptyState 
-                                            description="Applications you send will show here until the depot makes a decision"
-                                            buttonText="Add new application"
-                                            handleButtonClick={
-                                                () => handleNavigate()
-                                            }
-                                        />
+                                        <EmptyState description="Documents uploaded by users will show here until an admin makes a decision" />
                                     )}
                                 </Tabs.Panel>
                                 <Tabs.Panel value="accepted">
                                     {acceptedData?.data?.results &&
                                     acceptedData?.data?.results?.length > 0 ? (
                                         <AcceptedTable
-                                            elements={acceptedData?.data?.results || []}
+                                            elements={
+                                                acceptedData?.data?.results ||
+                                                []
+                                            }
                                             setPhase={setPhase}
                                             setActiveId={setActiveId}
                                         />
                                     ) : (
-                                        <EmptyState 
-                                            description="Accepted applications will show here."
-                                            buttonText="Add new application"
-                                            handleButtonClick={
-                                                () => handleNavigate()
-                                            }
-                                        />
+                                        <EmptyState description="Accepted users will show here." />
                                     )}
                                 </Tabs.Panel>
                                 <Tabs.Panel value="rejected">
                                     {rejectedData?.data?.results &&
                                     rejectedData?.data?.results?.length > 0 ? (
                                         <RejectedTable
-                                            elements={rejectedData?.data?.results || []}
+                                            elements={
+                                                rejectedData?.data?.results ||
+                                                []
+                                            }
                                             setPhase={setPhase}
                                             setActiveId={setActiveId}
                                         />
                                     ) : (
-                                        <EmptyState 
-                                            description="Rejected applications will show here"
-                                            buttonText="Add new application"
-                                            handleButtonClick={
-                                                () => handleNavigate()
-                                            }
-                                        />
+                                        <EmptyState description="Rejected user documents will show here" />
                                     )}
                                 </Tabs.Panel>
                             </Tabs>

@@ -97,19 +97,17 @@ const AcceptedTable = ({ elements, setPhase, setActiveId }: Prop) => {
                             </th>
 
                             {tableHead.map((item, index) => (
-                                <>
-                                    <th
-                                        key={index}
-                                        style={{
-                                            color: "rgba(15, 13, 0, 0.3)",
-                                            fontSize: "13px",
-                                            borderBottom: "none",
-                                        }}
-                                        className="text-black-30"
-                                    >
-                                        {item.toUpperCase()}
-                                    </th>
-                                </>
+                                <th
+                                    key={index}
+                                    style={{
+                                        color: "rgba(15, 13, 0, 0.3)",
+                                        fontSize: "13px",
+                                        borderBottom: "none",
+                                    }}
+                                    className="text-black-30"
+                                >
+                                    {item.toUpperCase()}
+                                </th>
                             ))}
                         </tr>
                     </thead>

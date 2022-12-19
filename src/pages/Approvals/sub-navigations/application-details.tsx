@@ -31,12 +31,12 @@ const ApplicationDetails = ({ setPhase, activeId, setShiftId }: Prop) => {
         data: acceptedData,
         isLoading: isLoadingAcceptedData,
         mutate: acceptMutate,
-    } = useUpdateOperative({ id: data?.results[0].doc._id || "" })
+    } = useUpdateOperative({ id: data?.results[0]._id || "" })
     const {
         data: rejectedData,
         isLoading: isLoadingRejectedData,
         mutate: rejectMutate,
-    } = useUpdateOperative({ id: data?.results[0].doc._id || "" })
+    } = useUpdateOperative({ id: data?.results[0]._id || "" })
     //    console.log(data)
     const handleAccept = () => {
         acceptMutate({ status: "accepted" })

@@ -87,9 +87,10 @@ function useUpdateOperative({ id }: { id: string }) {
                 Authorization: `Bearer ${state?.jwt?.token}`,
             },
         }
+        const body = rejectReason === "" ? { status } : { status, moreInformation, rejectReason }
         const { data } = await axiosInstance.patch(
             `/admin/kyc/${id}`,
-            { status, moreInformation, rejectReason },
+            body,
             config
         )
 

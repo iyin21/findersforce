@@ -115,7 +115,7 @@ const RejectModal = ({
                     </span>
                     <button
                         className="bg-red-10 p-4 rounded rounded-tr-2xl flex items-center font-bold body-medium px-6"
-                        onClick={() => handleReject({moreInfo: "", reason: value})}
+                        onClick={() => handleReject({moreInfo: moreInfo, reason: value})}
                         disabled={
                             isLoadingAcceptedData || isLoadingRejectedData
                         }
