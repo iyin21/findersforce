@@ -23,18 +23,19 @@ const JobInformation = ({
                     <h6 className="text-black-40 text-2md mb-4">DESCRIPTION</h6>
                     <p className="text-lg text-black-80">{description}</p>
 
-                    <div className="mt-6">
+                    <div className="mt-10">
                         <h6 className="text-black-40 text-2md mb-4">IMAGES</h6>
-                        {additionalInfoImageUrls &&
-                            additionalInfoImageUrls.map((image, index) => (
-                                <div key={index}>
+                        <div className="flex gap-4">
+                            {additionalInfoImageUrls &&
+                                additionalInfoImageUrls.map((image, index) => (
                                     <img
                                         src={image}
                                         alt={image}
-                                        className="w-[30%] rounded"
+                                        className="w-[20%] h-[100px] object-cover rounded"
+                                        key={index}
                                     />
-                                </div>
-                            ))}
+                                ))}
+                        </div>
                     </div>
                 </div>
             </div>

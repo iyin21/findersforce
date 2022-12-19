@@ -17,6 +17,7 @@ import { showNotification } from "@mantine/notifications"
 import ApplicationJobTable from "./components/application-table"
 import Layout from "../../../../components/Layout"
 import PostJob from "../../../../components/Modals/PostJob"
+import { Pagination } from "../../../../components"
 
 const SingleJobBoard = () => {
     const { jobBoardId } = useParams<string>()
@@ -24,6 +25,11 @@ const SingleJobBoard = () => {
     const [openJobPost, setOpenJobPost] = useState(false)
     const [openSuccess, setOpenSuccess] = useState(false)
     const [newJobId, setNewJobId] = useState("")
+    const [activeApplicationPage, setActiveApplicationPage] = useState(1)
+
+    const handleActivePage = (pageNumber: number) => {
+        setActiveApplicationPage(pageNumber)
+    }
 
     const navigate = useNavigate()
     const { data, isLoading: isLoadingSingleData } = useGetJobListingById({
@@ -183,9 +189,24 @@ const SingleJobBoard = () => {
                                 {applicationData?.data?.length === 0 ? (
                                     <EmptyApplication id={jobBoardId} />
                                 ) : (
-                                    <ApplicationJobTable
-                                        elements={applicationData?.data}
-                                    />
+                                    <div>
+                                        <ApplicationJobTable
+                                            elements={applicationData?.data}
+                                        />
+                                        <Pagination
+                                            page={activeApplicationPage}
+                                            total={
+                                                applicationData?.pagination
+                                                    ?.totalPages || 0
+                                            }
+                                            onChange={handleActivePage}
+                                            boundaries={1}
+                                            recordPerpage={
+                                                applicationData?.pagination
+                                                    .totalRecords || 0
+                                            }
+                                        />
+                                    </div>
                                 )}
                             </Tabs.Panel>
                         </Tabs>

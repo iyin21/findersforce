@@ -23,6 +23,11 @@ export interface JobBoardResponse {
             page: number
             limit: number
         }
+        currentPage: number
+        nextPage: number
+        prevPage: number
+        totalRecords: number
+        totalPages: number
     }
     data: JobBoardResponseInterface[]
 }

@@ -92,8 +92,8 @@ const PostJobOne = ({ jobType }: PostJobOneProps) => {
                         id="meet_onsite"
                         name="jobMeetingPoint"
                         checked={
-                            true
-                            // values?.jobMeetingPoint === "SITE" ? true : false
+                            // true
+                            values?.jobMeetingPoint === "SITE" ? true : false
                         }
                         onChange={() => handleChecked("SITE")}
                         value={values?.jobMeetingPoint}
