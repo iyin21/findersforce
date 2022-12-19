@@ -1,7 +1,7 @@
 import { Table } from "@mantine/core"
 import { IoIosArrowForward } from "react-icons/io"
-import ProfileImage from "../../../assets/ProfileImage.svg"
-import MobileLocationActiveShiftTable from "./mobile-tables/mobileLocationActiveShiftTable"
+import ProfileImage from "../../../../assets/ProfileImage.svg"
+import MobileLocationActiveShiftTable from "../mobile-tables/mobileLocationActiveShiftTable"
 
 const timerStyles = {
     time: "mb-0 font-bold text-2xl lg:text-2mxl",

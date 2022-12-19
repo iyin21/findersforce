@@ -1,17 +1,17 @@
 import FormikControls from "../../../../components/Form/FormControls/form-controls"
-import { ErrorMessage, Field, useFormikContext } from "formik"
+import { useFormikContext } from "formik"
 import Checkbox from "../../../Core/Checkbox/checkbox"
-import {useState} from "react"
+import { useState } from "react"
 
 const SupportForm1 = () => {
-    const { setFieldValue, values } = useFormikContext<{
+    const { setFieldValue } = useFormikContext<{
         emailAddress: string
         complaintCategory: string
         complaintIssue: string
         description: string
     }>()
-    const [checkedComplaint, setCheckedComplaint] = useState<string[]>([]);
-   
+    const [checkedComplaint, setCheckedComplaint] = useState<string[]>([])
+
     const complaintIssues = [
         "Violence",
         "Foul Language",
@@ -26,20 +26,24 @@ const SupportForm1 = () => {
         "Not Working/Broken",
         "Unclear/Vague",
         " Unsuitable/Outdated",
-        
     ]
 
     const handleChecked = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { value } = e.target;
-        const isChecked = e.target.checked;
+        const { value } = e.target
+        const isChecked = e.target.checked
         if (isChecked) {
-            setCheckedComplaint([...checkedComplaint, value]);
+            setCheckedComplaint([...checkedComplaint, value])
             setFieldValue("complaintIssue", [...checkedComplaint, value])
         } else {
-            setCheckedComplaint(checkedComplaint.filter((item) => item !== value));
-            setFieldValue("complaintIssue", checkedComplaint.filter((item) => item !== value))
+            setCheckedComplaint(
+                checkedComplaint.filter((item) => item !== value)
+            )
+            setFieldValue(
+                "complaintIssue",
+                checkedComplaint.filter((item) => item !== value)
+            )
         }
-    };
+    }
 
     return (
         <div className="px-4">
@@ -53,11 +57,10 @@ const SupportForm1 = () => {
                 <FormikControls
                     control="input"
                     name="emailAddress"
-                    //type="text"
+                    // type="text"
                     className="rounded bg-white-100"
-                    
                     disabled
-                    //defaultValue={values.emailAddress}
+                    // defaultValue={values.emailAddress}
                 />
             </div>
             <div className="w-full mt-4">
@@ -71,10 +74,10 @@ const SupportForm1 = () => {
                     control="input"
                     name="complaintCategory"
                     type="text"
-                    //placeholder="Select an option--"
+                    // placeholder="Select an option--"
                     className="rounded"
                     aria-label="Who/what is the complaint about?"
-                   id="complaintCategory"
+                    id="complaintCategory"
                 />
             </div>
             <div className="w-full mt-4">
@@ -85,15 +88,17 @@ const SupportForm1 = () => {
                     What is the issue?
                 </label>
                 <div className="grid grid-cols-2">
-                {complaintIssues.map((item) => (
-                        <Checkbox key={item} value={item} label={item} id={item} onChange={handleChecked}
-                        
-                        checked={checkedComplaint.includes(item)} />
-                        
+                    {complaintIssues.map((item) => (
+                        <Checkbox
+                            key={item}
+                            value={item}
+                            label={item}
+                            id={item}
+                            onChange={handleChecked}
+                            checked={checkedComplaint.includes(item)}
+                        />
                     ))}
                 </div>
-                
-                
             </div>
             <div className="w-full">
                 <label
@@ -111,10 +116,7 @@ const SupportForm1 = () => {
                     style={{
                         resize: "none",
                     }}
-                    
                 />
-               
-               
             </div>
         </div>
     )

@@ -1,4 +1,3 @@
-
 export interface ApplicationResponse {
     status: true
     count: number
@@ -23,25 +22,23 @@ export interface Data {
     createdAt: Date
     updatedAt: Date
     depot: string
-    _v: number
-    completedShfts: number;
-    certificates: Certificates[];
-    jobMatchPercentage:number;
+    __v: number
+    completedShfts: number
+    certificates: Certificates[]
+    jobMatchPercentage: number
 }
 export interface Certificates {
-    _id:string;
-    user: string;
-    name: string;
-    status: string;
-    issuingOrganisation: string;
-    credentialId: string;
-    dateIssued: Date;
-    createdAt: Date;
-    updatedAt: Date;
-    __v: number;
+    _id: string
+    user: string
+    name: string
+    status: string
+    issuingOrganisation: string
+    credentialId: string
+    dateIssued: Date
+    createdAt: Date
+    updatedAt: Date
+    __v: number
     deleted: boolean
-    
-
 }
 export interface JobListing {
     _id: string
@@ -75,6 +72,7 @@ export interface User {
     username: string
     firstName: string
     lastName: string
+    gender: string
     email: string
     averageRating: number
     resumeUrl: string
@@ -136,7 +134,7 @@ export interface ShiftResponse {
 }
 
 export interface Result {
-    jobMatchPercentage: string;
+    jobMatchPercentage: string
     cancelReason: string
     cancelReasonMoreDetails: string
     cancelStatus: boolean
@@ -170,7 +168,7 @@ export interface Result {
         __v: number
     }
     depotHasRated: boolean
-    depotRating: null | string
+    depotRating: DepotRating
     id: string
     jobListing: JobListing
     lastSeenLocationCoordinates: null
@@ -198,11 +196,24 @@ export interface Result {
         twoFa_type: string
         updatedAt: Date
         __v: number
-        
     }
     operativeRating: null
     shiftEnded: boolean
     shiftReminderSent: boolean
+    updatedAt: Date
+    __v: number
+    _id: string
+}
+
+interface DepotRating {
+    averageScore: number
+    createdAt: Date
+    depot: string
+    helpfulnessScore: number
+    organizationScore: number
+    professionalismScore: number
+    rater: string
+    schedule: string
     updatedAt: Date
     __v: number
     _id: string

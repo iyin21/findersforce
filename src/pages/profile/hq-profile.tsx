@@ -3,7 +3,7 @@ import { Form, Formik, FormikConfig, FormikValues } from "formik"
 import React, { ReactNode, useEffect, useState } from "react"
 import { useNavigate, useSearchParams } from "react-router-dom"
 import LandingPageText from "../../components/Layout/landing-page-txt"
-import Header from "./components/header"
+import Header from "../../components/Header/header"
 import { HqProfileInitialValue } from "./utils/hq-initialvalues"
 import ProfileFormFields from "./utils/profile-form-fields"
 import { Alert } from "@mantine/core"
@@ -28,7 +28,7 @@ const HQProfile = () => {
     }, [data, isError])
 
     return (
-        <div className="grid grid-cols-1 lg:grid-cols-2 text-white h-screen lg:bg-[black]">
+        <div className="grid grid-cols-1 lg:grid-cols-2 text-white h-fit lg:bg-[black]">
             {openSuccessModal && (
                 <SuccessfulLogin
                     opened={openSuccessModal}
@@ -39,7 +39,7 @@ const HQProfile = () => {
                 {" "}
                 <LandingPageText />
             </div>
-            <div className="my-4 md:my-8 lg:mr-8 bg-white-100 pt-12 px-6 md:px-16 flex flex-col rounded-[10px]">
+            <div className="my-4 md:my-8 lg:mr-8 bg-white-100 pt-12 pb-10 px-6 md:px-16 flex flex-col rounded-[10px]">
                 <FormikStepper
                     // this is the initial values for the formik form
                     initialValues={HqProfileInitialValue}
@@ -128,12 +128,13 @@ export function FormikStepper({ ...props }: TWizardProps) {
             password: values.password,
             inviteCode: searchParams.get("code"),
             courseLink: values.courseLink,
+            subscriptionPlan: values.subscriptionPlan
         })
     }
 
     return (
         <div>
-            <Header step={props.step} />
+            <Header step={props.step} title="Set up your Profile" />
             <Formik
                 {...props}
                 validationSchema={currentChild.props.validationSchema}

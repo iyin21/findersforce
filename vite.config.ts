@@ -1,6 +1,7 @@
+/* eslint-disable new-cap */
 import react from "@vitejs/plugin-react"
 import { configDefaults } from "vitest/config"
-
+import { NodeGlobalsPolyfillPlugin } from "@esbuild-plugins/node-globals-polyfill"
 import { defineConfig } from "vite"
 import path from "path"
 
@@ -10,6 +11,8 @@ export default defineConfig({
     resolve: {
         alias: {
             "@": path.resolve(__dirname, "./src"),
+	    process: "process/browser",
+	    util: "util",
         },
     },
     test: {
@@ -21,5 +24,19 @@ export default defineConfig({
     },
     server: {
         port: 3000,
+    },
+    optimizeDeps: {
+        esbuildOptions: {
+            // Node.js global to browser globalThis
+            define: {
+                global: "globalThis",
+            },
+            // Enable esbuild polyfill plugins
+            plugins: [
+                NodeGlobalsPolyfillPlugin({
+                    buffer: true,
+                }),
+            ],
+        },
     },
 })

@@ -1,7 +1,7 @@
 import { Checkbox, Table } from "@mantine/core"
 import { IoIosArrowForward } from "react-icons/io"
 import { BiUpArrowAlt } from "react-icons/bi"
-import MobileLocationShiftTable from "./mobile-tables/mobileLocationShiftTable"
+import MobileLocationShiftTable from "../mobile-tables/mobileLocationShiftTable"
 
 const ShiftBoard = () => {
     const elements: any[] = [
@@ -47,12 +47,6 @@ const ShiftBoard = () => {
                         value={element?.id}
                         data-testid="checkbox"
                     />
-                    <label
-                        htmlFor={element?.jobListing?.jobType?.name}
-                        className="capitalize"
-                    >
-                        {element?.jobListing?.jobType?.name}
-                    </label>
                 </div>
             </td>
             <td>2-Way</td>

@@ -103,7 +103,13 @@ const ApplicationTable = ({ elements, setPhase, setActiveId }: Prop) => {
     return (
         <>
             <div className="hidden lg:block ">
-                <Table verticalSpacing="md">
+                <Table
+                    verticalSpacing="md"
+                    style={{
+                        backgroundColor: "#FFFFFF",
+                        fontFamily: "CreatoDisplay",
+                    }}
+                >
                     <thead>
                         <tr>
                             {tableHead.map((item, index) =>

@@ -1,11 +1,33 @@
-export interface InviteShiftMangerInterface {
+export interface InviteUserInterface {
     email: string[]
     invitedRole: string
-    regionAddress: string | undefined
+    regionAddress?: string | undefined
     companyId?: string | undefined
     companyName?: string | null
+    phoneNumber?: string | null
+    address?: string | null
+    logo?: string | null
     jwt?: string
+    subscription_plan?: string
+    num_of_locations?: string
+    trial_period?: boolean
 }
+export interface InviteDepotInterface {
+    email: string
+    invitedRole: string
+    regionAddress?: string | undefined
+    companyId?: string | undefined
+    companyName?: string | null
+    phoneNumber?: string | null
+    address?: string | null
+    logo?: string | null
+    jwt?: string
+    subscription_plan?: string
+    num_of_locations?: string
+    personal_email?: string
+    trial_period?: boolean
+}
+;[]
 
 export interface RolesRequest {
     status: "accepted" | "pending" | "REGIONAL-MANAGER"

@@ -103,15 +103,15 @@ const Messaging = () => {
                 // Checks if it's a private message (from user or bot)
                 if (event.isPrivate && id) {
                     // prints sender id
-                    console.log("gcc", message)
-                    console.log("ggg", event)
-                    console.log("inputChat", await message.getChat())
-                    if (sender) {
-                        console.log("gigi", sender)
-                    }
-                    if (sender2) {
-                        console.log("yfytd", sender2)
-                    }
+                    // console.log("gcc", message)
+                    // console.log("ggg", event)
+                    // console.log("inputChat", await message.getChat())
+                    // if (sender) {
+                    //     console.log("gigi", sender)
+                    // }
+                    // if (sender2) {
+                    //     console.log("yfytd", sender2)
+                    // }
                 
                    // console.log(getChat?.firstName + " " + getChat?.lastName)
                     //@ts-expect-error

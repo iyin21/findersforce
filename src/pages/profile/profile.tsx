@@ -1,5 +1,5 @@
 import React, { MutableRefObject } from "react"
-import { TextInput, Alert, PasswordInput } from "@mantine/core"
+import { TextInput, Alert, PasswordInput, Select } from "@mantine/core"
 import { useForm } from "@mantine/form"
 import LandingPageText from "../../components/Layout/landing-page-txt"
 import Button from "../../components/Core/Buttons/Button"
@@ -15,6 +15,7 @@ import {
     requirements,
 } from "./utils/passwordRequirement"
 import HQProfile from "./hq-profile"
+import { selectData } from "./utils/subscriptionSelectData"
 
 const Profile = () => {
     const [searchParams] = useSearchParams()
@@ -34,6 +35,7 @@ export default Profile
 
 const RMProfile = () => {
     const [opened, setOpened] = React.useState(false)
+    const [selectValue, setSelectValue] = React.useState<string | null>("");
     const [isSubmitting, setIsSubmitting] = React.useState(false)
     const [errorText, showErrorText] = React.useState(false)
     const [errorMsg, setErrorMsg] = React.useState("")
@@ -48,7 +50,7 @@ const RMProfile = () => {
             password: "",
             confirmPassword: "",
             lastName: "",
-            courseLink: ""
+            courseLink: "",
         },
 
         validate: {
@@ -82,7 +84,7 @@ const RMProfile = () => {
         confirmPassword,
         firstName,
         lastName,
-        courseLink
+        courseLink,
     }: {
         password: string
         confirmPassword: string
@@ -101,6 +103,7 @@ const RMProfile = () => {
                 firstName,
                 lastName,
                 accountType,
+                selectValue,
                 setIsSubmitting,
                 setErrorMsg,
                 showError,
@@ -193,7 +196,14 @@ const RMProfile = () => {
                             styles={() => emailInputStyle}
                         />
                     )}
-
+                    <Select
+                        label="Choose subscription plan"
+                        placeholder="Pick one"
+                        value={selectValue} onChange={setSelectValue}
+                        required
+                        data={selectData}
+                        styles={() => emailInputStyle}
+                    />
                     <div
                         onFocusCapture={() => {
                             showErrorText(false)

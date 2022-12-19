@@ -23,6 +23,11 @@ export interface JobBoardResponse {
             page: number
             limit: number
         }
+        currentPage: number
+        nextPage: number
+        prevPage: number
+        totalRecords: number
+        totalPages: number
     }
     data: JobBoardResponseInterface[]
 }
@@ -36,6 +41,7 @@ export interface JobBoardResponseInterface {
     isPublished: boolean
     jobAccessibleTo: string
     createdAt: string
+    listingId: string
     jobLocation: {
         formattedAddress: string
         street: string
@@ -62,6 +68,12 @@ export interface JobBoardResponseInterface {
         lastName: string
         averageRating: number
     }
+    jobListing: {
+        jobQualification: {
+            _id: string
+            name: string
+        }
+    }
     additionalInfoImageUrls: string[]
     numberOfOpsRequired: number
     shiftStartTime: string
@@ -76,6 +88,7 @@ export interface JobBoardResponseInterface {
 export interface JobBoardByIdResponse {
     _id: string
     name: string
+    jobQualificationCategoryId: string
 }
 
 export interface CreateJobListRequestInterface {
@@ -106,6 +119,7 @@ export interface JobInformationInterface {
     shiftEndTime: string | undefined
     jobType: string | undefined
     createdAt: string | undefined
+    additionalInfoImageUrls: string[] | undefined
 }
 
 export interface BulkDeleteJobRequest {

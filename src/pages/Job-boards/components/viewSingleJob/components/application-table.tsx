@@ -5,8 +5,9 @@ import { BsFillStarFill } from "react-icons/bs"
 import { IoIosArrowForward } from "react-icons/io"
 import { useNavigate } from "react-router-dom"
 import { JobBoardResponseInterface } from "../../../../../types/job-board/interface"
+import MobileApplicationTable from "./mobile-application-table"
 
-interface ApplicationJobInterface {
+export interface ApplicationJobInterface {
     elements?: JobBoardResponseInterface[]
 }
 
@@ -25,7 +26,7 @@ const ApplicationJobTable = ({ elements }: ApplicationJobInterface) => {
                         REJECTED
                     </span>
                 )
-            case "ACCEPTED":
+            case "WON":
                 return (
                     <span className="bg-green-100 rounded-2xl text-white-100 px-3 py-2 font-semibold">
                         ACCEPTED
@@ -46,8 +47,8 @@ const ApplicationJobTable = ({ elements }: ApplicationJobInterface) => {
             <td>
                 {element?.user?.firstName} {element?.user?.lastName}
             </td>
-            <td>{element?.jobQualification?.name}</td>
-            <td className="text-green-100">{element?.jobMatchPercentage}</td>
+            <td>{element?.jobListing?.jobQualification?.name}</td>
+            <td className="text-green-100">{element?.jobMatchPercentage}%</td>
             <td>
                 <p className="flex items-center gap-2">
                     {" "}
@@ -55,15 +56,15 @@ const ApplicationJobTable = ({ elements }: ApplicationJobInterface) => {
                     {element?.user?.averageRating}
                 </p>
             </td>
-            <td>{dayjs(element?.jobDate).format("mmmm dddd yyyy")}</td>
-            <td>{dayjs(element?.jobDate).format("hh:mm a")}</td>
+            <td>
+                {dayjs(element?.jobDate).format("MMM D, YYYY")}{" "}
+                <span className="mx-1 text-black-30">|</span>
+                {dayjs(element?.jobDate).format("hh:mm A")}
+            </td>
             <td> {renderStatus(element?.status)}</td>
             <td
                 role="gridcell"
                 className="cursor-pointer h-[60px] border-b border-neutral-5"
-                // onClick={() => {
-                //     setActiveId(element._id)
-                // }}
             >
                 <IoIosArrowForward size={30} style={{ color: "#889088" }} />
             </td>
@@ -77,7 +78,6 @@ const ApplicationJobTable = ({ elements }: ApplicationJobInterface) => {
         { list: "MATCH" },
         { list: "RATING", icon: <AiOutlineArrowUp /> },
         { list: "DATE APPLIED", icon: <AiOutlineArrowUp /> },
-        { list: "TIME APPLIED", icon: <AiOutlineArrowUp /> },
         { list: "STATUS" },
     ]
 
@@ -113,6 +113,10 @@ const ApplicationJobTable = ({ elements }: ApplicationJobInterface) => {
                     </thead>
                     <tbody>{rows}</tbody>
                 </Table>
+            </div>
+
+            <div className="block lg:hidden">
+                <MobileApplicationTable elements={elements} />
             </div>
         </>
     )

@@ -80,7 +80,7 @@ const Applications = () => {
                                     >
                                         Pending
                                         <span className="bg-red-100 rounded ml-2 py-0.5 px-1 text-white-100 text-sm">
-                                            {pendingData?.data.length}
+                                            {pendingData?.data?.length || 0}
                                         </span>
                                     </Tabs.Tab>
 
@@ -94,7 +94,7 @@ const Applications = () => {
                                     >
                                         Accepted
                                         <span className="bg-red-100 rounded ml-2 py-0.5 px-1 text-white-100 text-sm">
-                                            {acceptedData?.data.length}
+                                            {acceptedData?.data?.length ?? 0}
                                         </span>
                                     </Tabs.Tab>
                                     <Tabs.Tab
@@ -107,7 +107,7 @@ const Applications = () => {
                                     >
                                         Rejected
                                         <span className="bg-red-100 rounded ml-2 py-0.5 px-1 text-white-100 text-sm">
-                                            {rejectedData?.data.length}
+                                            {rejectedData?.data?.length || 0}
                                         </span>
                                     </Tabs.Tab>
                                 </Tabs.List>

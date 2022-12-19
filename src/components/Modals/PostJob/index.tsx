@@ -106,7 +106,8 @@ const PostJob = ({
                     jobTypeId: singleDraftData?.jobType?.name || "",
                     jobAddress:
                         singleDraftData?.jobLocation?.formattedAddress || "",
-                    jobMeetingPoint: singleDraftData?.jobMeetingPoint || "",
+                    jobMeetingPoint:
+                        singleDraftData?.jobMeetingPoint || "" || "SITE",
                     jobDate: singleDraftData?.jobDate || "",
                     shiftStartTime: singleDraftData?.shiftStartTime || "",
                     shiftDurationInHours:
