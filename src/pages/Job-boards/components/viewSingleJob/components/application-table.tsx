@@ -46,8 +46,8 @@ const ApplicationJobTable = ({ elements }: ApplicationJobInterface) => {
             <td>
                 {element?.user?.firstName} {element?.user?.lastName}
             </td>
-            <td>{element?.jobQualification?.name}</td>
-            <td className="text-green-100">{element?.jobMatchPercentage}</td>
+            <td>{element?.jobListing?.jobQualification?.name}</td>
+            <td className="text-green-100">{element?.jobMatchPercentage}%</td>
             <td>
                 <p className="flex items-center gap-2">
                     {" "}
@@ -55,8 +55,8 @@ const ApplicationJobTable = ({ elements }: ApplicationJobInterface) => {
                     {element?.user?.averageRating}
                 </p>
             </td>
-            <td>{dayjs(element?.jobDate).format("mmmm dddd yyyy")}</td>
-            <td>{dayjs(element?.jobDate).format("hh:mm a")}</td>
+            <td>{dayjs(element?.jobDate).format("MMM D, YYYY")}</td>
+            {/* <td>{dayjs(element?.jobDate).format("hh:mm a")}</td> */}
             <td> {renderStatus(element?.status)}</td>
             <td
                 role="gridcell"
@@ -77,7 +77,7 @@ const ApplicationJobTable = ({ elements }: ApplicationJobInterface) => {
         { list: "MATCH" },
         { list: "RATING", icon: <AiOutlineArrowUp /> },
         { list: "DATE APPLIED", icon: <AiOutlineArrowUp /> },
-        { list: "TIME APPLIED", icon: <AiOutlineArrowUp /> },
+        // { list: "TIME APPLIED", icon: <AiOutlineArrowUp /> },
         { list: "STATUS" },
     ]
 

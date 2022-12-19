@@ -63,6 +63,12 @@ export interface JobBoardResponseInterface {
         lastName: string
         averageRating: number
     }
+    jobListing: {
+        jobQualification: {
+            _id: string
+            name: string
+        }
+    }
     additionalInfoImageUrls: string[]
     numberOfOpsRequired: number
     shiftStartTime: string

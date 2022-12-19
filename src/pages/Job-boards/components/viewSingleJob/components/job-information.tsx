@@ -25,9 +25,16 @@ const JobInformation = ({
 
                     <div className="mt-6">
                         <h6 className="text-black-40 text-2md mb-4">IMAGES</h6>
-                        {/* {   
-                            additionalInfoImageUrls?.length > 0 ? () : ()
-                        } */}
+                        {additionalInfoImageUrls &&
+                            additionalInfoImageUrls.map((image, index) => (
+                                <div key={index}>
+                                    <img
+                                        src={image}
+                                        alt={image}
+                                        className="w-[30%] rounded"
+                                    />
+                                </div>
+                            ))}
                     </div>
                 </div>
             </div>
