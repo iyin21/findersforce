@@ -8,6 +8,7 @@ const setProfile = (
     firstName: string,
     lastName: string,
     accountType: string,
+    subscriptionPlan: string | null,
     setIsSubmitting: (val: boolean) => void,
     setErrorMsg: (msg: string) => void,
     showError: (val: boolean) => void,
@@ -20,7 +21,8 @@ const setProfile = (
         password: password,
         passwordConfirm: confirmPassword,
         inviteCode: inviteCode,
-        courseLink: courseLink
+        courseLink: courseLink,
+        subscriptionPlan: subscriptionPlan
     }
     accountType === "SHIFT-MANAGER" ? delete requestBody.courseLink : null
     axiosInstance

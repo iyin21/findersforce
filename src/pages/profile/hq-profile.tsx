@@ -28,7 +28,7 @@ const HQProfile = () => {
     }, [data, isError])
 
     return (
-        <div className="grid grid-cols-1 lg:grid-cols-2 text-white h-screen lg:bg-[black]">
+        <div className="grid grid-cols-1 lg:grid-cols-2 text-white h-fit lg:bg-[black]">
             {openSuccessModal && (
                 <SuccessfulLogin
                     opened={openSuccessModal}
@@ -39,7 +39,7 @@ const HQProfile = () => {
                 {" "}
                 <LandingPageText />
             </div>
-            <div className="my-4 md:my-8 lg:mr-8 bg-white-100 pt-12 px-6 md:px-16 flex flex-col rounded-[10px]">
+            <div className="my-4 md:my-8 lg:mr-8 bg-white-100 pt-12 pb-10 px-6 md:px-16 flex flex-col rounded-[10px]">
                 <FormikStepper
                     // this is the initial values for the formik form
                     initialValues={HqProfileInitialValue}
@@ -128,6 +128,7 @@ export function FormikStepper({ ...props }: TWizardProps) {
             password: values.password,
             inviteCode: searchParams.get("code"),
             courseLink: values.courseLink,
+            subscriptionPlan: values.subscriptionPlan
         })
     }
 

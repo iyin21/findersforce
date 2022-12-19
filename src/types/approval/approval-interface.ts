@@ -1,31 +1,94 @@
-export interface ApplicationResponse {
-    status: true
-    count: number
-    pagination: {
-        next: Pagination
-        prev: Pagination
-    }
-    data: Data[]
-}
-export interface ApplicationDetailsResponse {
+export interface AllUsersResponse {
     status: string
     message: string
-    data: Data
+    data: {
+        currentPage: number
+        nextPage: number | null
+        prevpage: number | null
+        totalRecords: number
+        totalPages: number
+        results: Data[]
+    }
 }
 
 export interface Data {
     _id: string
-    status: string
-    jobListing: JobListing
-    user: User
-    experience: number
+    accountActivated: boolean
+    averageRating: number
+    bio: string
+    dateOfBirth: Date
+    doc: docInterface
+    completedShifts: number
+    username: string
+    firstName: string
+    lastName: string
+    email: string
+    emailVerified: true
+    gender: string
+    location: Location
+    modeOfTransport: string
+    nokAddress: string
+    nokName: string
+    nokPhoneNumber: string
+    nokRelationship: string
+    operativeAccountType: string
+    phoneNumber: string
+    profileImageUrl: string
+    resumeUrl: string
+    roadworkCardUrl: string
+    accountType: string
+    password: string
+    verified: boolean
+    banned: boolean
     createdAt: Date
     updatedAt: Date
-    depot: string
-    __v: number
-    completedShfts: number
     certificates: Certificates[]
-    jobMatchPercentage: number
+    __v: number
+    twoFa_enabled: boolean
+    twoFa_type: string
+    skillset: skill[]
+    qualification: qualification[]
+}
+interface qualification {
+    createdAt: Date
+    description: string
+    jobQualificationCategoryId: string
+    name: string
+    updatedAt: Date
+    __v: number
+    _id: Date
+}
+interface skill {
+    createdAt: Date
+    description: string
+    jobTypeCategoryId: string
+    name: string
+    updatedAt: Date
+    __v: number
+    _id: Date
+}
+interface Location {
+    city: string
+    coordinate: number[]
+    country: string
+    formattedAddress: string
+    state: string
+    street: string
+    type: string
+    zipcode: string
+    _id: string
+}
+
+export interface docInterface {
+    docType: string
+    link: string
+    moreInformation: null | string
+    nationality: string
+    number: string
+    rejectReason: null | string
+    status: string
+    _id: string
+    updatedAt: Date
 }
 export interface Certificates {
     _id: string
@@ -168,7 +231,7 @@ export interface Result {
         __v: number
     }
     depotHasRated: boolean
-    depotRating: DepotRating
+    depotRating: null | string
     id: string
     jobListing: JobListing
     lastSeenLocationCoordinates: null
@@ -200,20 +263,6 @@ export interface Result {
     operativeRating: null
     shiftEnded: boolean
     shiftReminderSent: boolean
-    updatedAt: Date
-    __v: number
-    _id: string
-}
-
-interface DepotRating {
-    averageScore: number
-    createdAt: Date
-    depot: string
-    helpfulnessScore: number
-    organizationScore: number
-    professionalismScore: number
-    rater: string
-    schedule: string
     updatedAt: Date
     __v: number
     _id: string

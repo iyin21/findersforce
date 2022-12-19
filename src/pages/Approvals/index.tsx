@@ -1,50 +1,61 @@
 import { Tabs } from "@mantine/core"
-import ApplicationTable from "./components/application-table"
 import { useState } from "react"
-import { useGetApplications } from "./hooks/application.hook"
 import { CgSpinner } from "react-icons/cg"
 import { IoFilterSharp } from "react-icons/io5"
-import ApplicationDetails from "./sub-navigations/ApplicationDetails"
-import ShiftDetails from "./sub-navigations/ShiftDetails"
+import ApplicationDetails from "./sub-navigations/application-details"
+import ShiftDetails from "./sub-navigations/ShiftHistory/index"
 import Layout from "../../components/Layout/index"
-import EmptyState from "../../components/EmptyStates/index"
-import { useNavigate } from "react-router-dom"
+import EmptyState from "./components/EmptyState"
+import Pagination from "../../components/Pagination/pagination"
+import PendingTable from "./components/Tables/pending-table"
+import AcceptedTable from "./components/Tables/accepted-table"
+import RejectedTable from "./components/Tables/rejected-table"
+import { useGetAllOperativeUsers } from "../../hooks/approval-hooks/approval.hook"
 
-const Applications = () => {
+const Approvals = () => {
     const [activeTab, setActiveTab] = useState<string | null>("pending")
+    const [activePendingPage, setPendingPage] = useState(1)
+    const [activeAcceptedPage, setAcceptedPage] = useState(1)
+    const [activeRejectedPage, setRejectedPage] = useState(1)
+
+    const handlePendingPage = (pageNumber: number) => {
+        setPendingPage(pageNumber)
+    }
+    const handleAcceptedPage = (pageNumber: number) => {
+        setAcceptedPage(pageNumber)
+    }
+    const handleRejectedPage = (pageNumber: number) => {
+        setRejectedPage(pageNumber)
+    }
+
     const { data: pendingData, isLoading: isLoadingPendingData } =
-        useGetApplications({
-            status: "PENDING",
-            // page: 1,
+        useGetAllOperativeUsers({
+            docStatus: "pending",
         })
+
     const { data: acceptedData, isLoading: isLoadingAcceptedData } =
-        useGetApplications({
-            status: "WON",
-            page: 1,
+        useGetAllOperativeUsers({
+            docStatus: "accepted",
         })
+
     const { data: rejectedData, isLoading: isLoadingRejectedData } =
-        useGetApplications({
-            status: "LOST",
-            page: 1,
+        useGetAllOperativeUsers({
+            docStatus: "rejected",
         })
 
     const [phase, setPhase] = useState(1)
     const [activeId, setActiveId] = useState("")
     const [shiftId, setShiftId] = useState("")
 
-    const navigate = useNavigate()
-    const handleNavigate = () => {
-        navigate("/job-boards")
-    }
     return (
         <Layout pageTitle={"Pending"}>
             {phase === 1 ? (
                 <div className="md:p-6 p-6 mt-4 md:mt-14">
                     <h5 className="font-bold lg:text-3xl text-2xl mb-2">
-                        Applications
+                        Approvals
                     </h5>
                     <p className="text-black-60 mb-2">
-                        Operatives who apply for shifts appear here
+                        Operatives who apply to Finders force appear here
                     </p>
 
                     {isLoadingPendingData ||
@@ -80,7 +91,8 @@ const Applications = () => {
                                     >
                                         Pending
                                         <span className="bg-red-100 rounded ml-2 py-0.5 px-1 text-white-100 text-sm">
-                                            {pendingData?.data?.length || 0}
+                                            {pendingData?.data?.results
+                                                ?.length ?? 0}
                                         </span>
                                     </Tabs.Tab>
 
@@ -88,13 +100,14 @@ const Applications = () => {
                                         value="accepted"
                                         className={`body-regular mr-6 ${
                                             activeTab === "accepted"
-                                                ? "text-yellow-100 font-bold active"
+                                                ? "text-green-100 font-bold active"
                                                 : "text-black-60 inactive"
                                         }`}
                                     >
                                         Accepted
                                         <span className="bg-red-100 rounded ml-2 py-0.5 px-1 text-white-100 text-sm">
-                                            {acceptedData?.data?.length ?? 0}
+                                            {acceptedData?.data?.results
+                                                ?.length || 0}
                                         </span>
                                     </Tabs.Tab>
                                     <Tabs.Tab
@@ -107,63 +120,90 @@ const Applications = () => {
                                     >
                                         Rejected
                                         <span className="bg-red-100 rounded ml-2 py-0.5 px-1 text-white-100 text-sm">
-                                            {rejectedData?.data?.length || 0}
+                                            {rejectedData?.data?.results
+                                                ?.length || 0}
                                         </span>
                                     </Tabs.Tab>
                                 </Tabs.List>
                                 <Tabs.Panel value="pending">
-                                    {pendingData?.data &&
-                                    pendingData?.data.length > 0 ? (
-                                        <ApplicationTable
-                                            elements={pendingData?.data || []}
+                                    {pendingData?.data?.results &&
+                                    pendingData?.data?.results?.length > 0 ? (
+                                        <PendingTable
+                                            elements={
+                                                pendingData?.data?.results || []
+                                            }
                                             setPhase={setPhase}
                                             setActiveId={setActiveId}
                                         />
                                     ) : (
-                                        <EmptyState 
-                                            description="Applications you send will show here until the depot makes a decision"
-                                            buttonText="Add new application"
-                                            handleButtonClick={
-                                                () => handleNavigate()
-                                            }
-                                        />
+                                        <EmptyState description="Documents uploaded by users will show here until an admin makes a decision" />
                                     )}
+                                    <Pagination
+                                        page={activePendingPage}
+                                        total={activePendingPage}
+                                        onChange={handlePendingPage}
+                                        boundaries={1}
+                                        recordPerpage={
+                                            pendingData?.data?.results
+                                                ? pendingData?.data?.results
+                                                      .length
+                                                : 1
+                                        }
+                                    />
                                 </Tabs.Panel>
                                 <Tabs.Panel value="accepted">
-                                    {acceptedData?.data &&
-                                    acceptedData?.data.length > 0 ? (
-                                        <ApplicationTable
-                                            elements={acceptedData?.data || []}
+                                    {acceptedData?.data?.results &&
+                                    acceptedData?.data?.results?.length > 0 ? (
+                                        <AcceptedTable
+                                            elements={
+                                                acceptedData?.data?.results ||
+                                                []
+                                            }
                                             setPhase={setPhase}
                                             setActiveId={setActiveId}
                                         />
                                     ) : (
-                                        <EmptyState 
-                                            description="Accepted applications will show here."
-                                            buttonText="Add new application"
-                                            handleButtonClick={
-                                                () => handleNavigate()
-                                            }
-                                        />
+                                        <EmptyState description="Accepted users will show here." />
                                     )}
+                                    <Pagination
+                                        page={activeAcceptedPage}
+                                        total={activeAcceptedPage}
+                                        onChange={handleAcceptedPage}
+                                        boundaries={1}
+                                        recordPerpage={
+                                            acceptedData?.data?.results
+                                                ? acceptedData?.data?.results
+                                                      .length
+                                                : 1
+                                        }
+                                    />
                                 </Tabs.Panel>
                                 <Tabs.Panel value="rejected">
-                                    {rejectedData?.data &&
-                                    rejectedData?.data.length > 0 ? (
-                                        <ApplicationTable
-                                            elements={rejectedData?.data || []}
+                                    {rejectedData?.data?.results &&
+                                    rejectedData?.data?.results?.length > 0 ? (
+                                        <RejectedTable
+                                            elements={
+                                                rejectedData?.data?.results ||
+                                                []
+                                            }
                                             setPhase={setPhase}
                                             setActiveId={setActiveId}
                                         />
                                     ) : (
-                                        <EmptyState 
-                                            description="Rejected applications will show here"
-                                            buttonText="Add new application"
-                                            handleButtonClick={
-                                                () => handleNavigate()
-                                            }
-                                        />
+                                        <EmptyState description="Rejected user documents will show here" />
                                     )}
+                                    <Pagination
+                                        page={activeRejectedPage}
+                                        total={activeRejectedPage}
+                                        onChange={handleRejectedPage}
+                                        boundaries={1}
+                                        recordPerpage={
+                                            rejectedData?.data?.results
+                                                ? rejectedData?.data?.results
+                                                      .length
+                                                : 1
+                                        }
+                                    />
                                 </Tabs.Panel>
                             </Tabs>
                         </div>
@@ -182,4 +222,4 @@ const Applications = () => {
     )
 }
 
-export default Applications
+export default Approvals
