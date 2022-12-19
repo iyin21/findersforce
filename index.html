@@ -13,9 +13,16 @@
     <body>
         <div id="root"></div>
         <script type="module" src="/src/main.tsx"></script>
+        <script>
+            window.global = window
+        </script>
         <script type="module">
+            import process from "process"
+            import EventEmitter from "events"
             import { Buffer } from "buffer"
             window.Buffer = Buffer
+            window.process = process
+            window.EventEmitter = EventEmitter
         </script>
         <script
             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyChBkPBpluPcMVW0154FwBeVUdkqwMGB0k&v=weekly&libraries=places"
