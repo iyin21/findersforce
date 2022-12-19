@@ -1,3 +1,4 @@
+/* eslint-disable new-cap */
 import react from "@vitejs/plugin-react"
 import { configDefaults } from "vitest/config"
 import { NodeGlobalsPolyfillPlugin } from "@esbuild-plugins/node-globals-polyfill"
@@ -32,7 +33,6 @@ export default defineConfig({
             },
             // Enable esbuild polyfill plugins
             plugins: [
-                // eslint-disable-next-line new-cap
                 NodeGlobalsPolyfillPlugin({
                     buffer: true,
                 }),
