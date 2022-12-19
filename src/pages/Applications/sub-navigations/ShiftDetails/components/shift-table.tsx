@@ -8,9 +8,8 @@ interface Prop {
     elements: Result[]
 }
 const ShiftTable = ({ elements }: Prop) => {
-
     const rows = elements.map((item, index) => (
-        <tr key={index}>
+        <tr key={index} className="font-creato">
             <td>{dayjs(item?.createdAt).format("MMM D, YYYY")}</td>
             <td>{item?.jobListing.jobLocation.formattedAddress}</td>
             <td>{dayjs(item.jobListing.shiftStartTime).format("h:mm A")}</td>
@@ -25,7 +24,9 @@ const ShiftTable = ({ elements }: Prop) => {
             <td>
                 <p className="flex">
                     <img src={Star} alt="" />
-                    <span className="pl-1">{item?.depotRating.averageScore || 0}</span>
+                    <span className="pl-1">
+                        {item?.depotRating.averageScore || 0}
+                    </span>
                 </p>
             </td>
             <td>
@@ -49,7 +50,13 @@ const ShiftTable = ({ elements }: Prop) => {
     return (
         <>
             <div className="hidden lg:block ">
-                <Table verticalSpacing="md">
+                <Table
+                    verticalSpacing="md"
+                    style={{
+                        backgroundColor: "#FFFFFF",
+                        fontFamily: "CreatoDisplay",
+                    }}
+                >
                     <thead>
                         <tr>
                             {tableHead.map((item, index) => (
@@ -74,7 +81,7 @@ const ShiftTable = ({ elements }: Prop) => {
             <div className="block lg:hidden mt-4">
                 {elements.map((item, index) => (
                     <div
-                        className="rounded bg-black-5 mb-4 pb-4 cursor-pointer"
+                        className="rounded bg-black-5 mb-4 pb-4 cursor-pointer font-creato"
                         key={index}
                     >
                         <div className="flex justify-between border-b border-black-20 p-4">
@@ -149,7 +156,8 @@ const ShiftTable = ({ elements }: Prop) => {
                                     <p className="flex text-2md mt-1">
                                         <img src={Star} alt="" />
                                         <span className="pl-1">
-                                            {item?.depotRating.averageScore || 0}
+                                            {item?.depotRating.averageScore ||
+                                                0}
                                         </span>
                                     </p>
                                 </div>
@@ -159,10 +167,9 @@ const ShiftTable = ({ elements }: Prop) => {
                                     </h6>
 
                                     <p className="text-2md mt-1">
-                                    
-                                        
-                                        {dayjs(item?.createdAt).format("MMM D, YYYY")}
-                                    
+                                        {dayjs(item?.createdAt).format(
+                                            "MMM D, YYYY"
+                                        )}
                                     </p>
                                 </div>
                             </div>

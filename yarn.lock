@@ -2009,15 +2009,15 @@
   resolved "https://registry.yarnpkg.com/@mantine/utils/-/utils-5.6.3.tgz#2634b91a5b033010e29657648dce31c9c6709567"
   integrity sha512-GrDvXJG7inJaQHjsfg8pOYFE/vNpHMKScQM0M4hKlDoVjXsQUPxw8Lx4A7jhmVf2eNJUqvOQ9A1jbO7W7bedcA==
 
-"@mantine/utils@5.9.5":
-  version "5.9.5"
-  resolved "https://registry.yarnpkg.com/@mantine/utils/-/utils-5.9.5.tgz#9b56c899e479c90abecc096eb8543b93bdc52938"
-  integrity sha512-OtMOvXMyqpZ+Tz25DYRwRkvERvmF4L0RJiq+JnXk+1yKDvG+JZQuMMLnt0nZ81T6q7uzDSA29cJ45syHL2BXmQ==
-
 "@mantine/utils@5.9.4":
   version "5.9.4"
   resolved "https://registry.yarnpkg.com/@mantine/utils/-/utils-5.9.4.tgz#3d3b7646eabaffe6cb4b02083317cc8f9565d03e"
   integrity sha512-NZAn30jjF52X+MFnkO3oaVgo2LPx3o/QxYlcuMkRBUTZALEXvQgrD0OyGDRgEXnfMdmkBP6rk3Pol6yXXEwU6w==
+
+"@mantine/utils@5.9.5":
+  version "5.9.5"
+  resolved "https://registry.yarnpkg.com/@mantine/utils/-/utils-5.9.5.tgz#9b56c899e479c90abecc096eb8543b93bdc52938"
+  integrity sha512-OtMOvXMyqpZ+Tz25DYRwRkvERvmF4L0RJiq+JnXk+1yKDvG+JZQuMMLnt0nZ81T6q7uzDSA29cJ45syHL2BXmQ==
 
 "@mdx-js/mdx@^1.6.22":
   version "1.6.22"
@@ -14596,7 +14596,7 @@ util@^0.11.0:
   dependencies:
     inherits "2.0.3"
 
-util@^0.12.3:
+util@^0.12.3, util@^0.12.5:
   version "0.12.5"
   resolved "https://registry.yarnpkg.com/util/-/util-0.12.5.tgz#5f17a6059b73db61a875668781a1c2b136bd6fbc"
   integrity sha512-kZf/K6hEIrWHI6XqOFUiiMa+79wE/D8Q+NCNAWclkyg3b4d2k7s0QGepNjiABc+aR3N1PAyHL7p6UcLY6LmrnA==
