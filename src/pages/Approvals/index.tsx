@@ -85,7 +85,7 @@ const Approvals = () => {
                                         value="pending"
                                         className={`body-regular mr-6 rounded ${
                                             activeTab === "pending"
-                                                ? "text-green-100 font-bold active bg-black-100 lg:bg-white-100"
+                                                ? "text-yellow-100 font-bold active bg-black-100 lg:bg-white-100"
                                                 : "text-black-60 inactive bg-black-5 lg:bg-white-100"
                                         }`}
                                     >
