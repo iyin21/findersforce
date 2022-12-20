@@ -51,13 +51,19 @@ export interface DashboardResponse {
      shiftsCancelled: shiftsCancelled,
      genderDistribution: genderDistribution,
      rating: rating,
-     shiftsCompletedPerDayOfMonth: shiftsCompletedPerDayOfMonth[]
+     shiftsCompletedPerDayOfMonth: shiftsCompletedPerDayOfMonth[],
+     jobTypeDistribution: jobTypeDistribution[]
  }
 
  export interface shiftsCompletedPerDayOfMonth {
     dayOfMonth: string
     count: string
     date: Date
+ }
+
+ export interface jobTypeDistribution {
+    jobType: string,
+    count: number
  }
  export interface rating {
     averageScore: number | undefined,
@@ -120,3 +126,5 @@ export interface DashboardResponse {
     country: string;
     _id: string
  }
+
+ 

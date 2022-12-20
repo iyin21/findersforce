@@ -1,265 +1,545 @@
-import { Checkbox, Modal, Progress } from "@mantine/core"
 import dayjs from "dayjs"
-import { AiFillStar } from "react-icons/ai"
-import { IoIosArrowForward } from "react-icons/io"
-import {  useGetOperativeRatingSummary, useGetShiftHistoryByJobListingId, useGetSingleSchedule } from "../../../hooks/planner/usePlanner.hooks";
+import {
+    useGetOperativeRatingSummary,
+    useGetShiftHistoryByJobListingId,
+    useGetSingleSchedule,
+} from "../../../hooks/planner/usePlanner.hooks"
 import { useLocation, useParams } from "react-router-dom"
-import { FaTimes } from "react-icons/fa";
-import { useState } from "react";
-import Message  from "../../../assets/Messaging.svg";
-import { TfiLocationPin } from "react-icons/tfi";
+import { useState } from "react"
+import OperativeProfile from "../../../components/Modals/Planner/OperativeProfile"
+import ProfileImage from "../../../assets/ProfileImage.svg"
+import { BiDotsVerticalRounded } from "react-icons/bi"
+import Menu from "../../../components/Modals/Planner/Menu"
+import { Checkbox, Tabs } from "@mantine/core"
 
 const MobileShiftsDetailsTable = () => {
     const { jobListingId } = useParams<string>()
-  
+
     const location = useLocation()
 
     const queryStatus = location?.state?.status
 
-    const {
-        data:shiftsData,
-      } = useGetShiftHistoryByJobListingId({
-        jobListingId ,
-        queryStatus
-      })
+    const [openProfile, setOpenProfile] = useState(false)
+    const [operativeId, setOperativeId] = useState("")
+    const [openMenu, setOpenMenu] = useState(false)
+    const [activeTab, setActiveTab] = useState<string | null>("unpaid")
+    const [checkedShift, setCheckedShift] = useState<string[]>([])
 
-    const {
-        data: singleShift
-      } = useGetSingleSchedule({
-        jobListingId: jobListingId
-      })
+    const { data: shiftsData } = useGetShiftHistoryByJobListingId({
+        jobListingId,
+        queryStatus,
+    })
 
-    
+    const { data: singleShift } = useGetSingleSchedule({
+        jobListingId: jobListingId,
+    })
 
-    
-    const singleElement = singleShift?.results?.find((item) => item?.jobListing?._id === jobListingId);
-    
-    const { data: operativeData} = useGetOperativeRatingSummary({id: singleElement?.operative?._id});
-    
-    const [opened, setOpened] = useState(false)
+    const handleOpenMenu = (id: string) => {
+        setOperativeId(id)
+        setOpenMenu(!openMenu)
+    }
+    const handleCheckedShift = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { value } = e.target
+        const isChecked = e.target.checked
+        if (isChecked) {
+            setCheckedShift([...checkedShift, value])
+        } else {
+            setCheckedShift(checkedShift.filter((item) => item !== value))
+        }
+    }
+
+    const singleElement = singleShift?.results?.find(
+        (item) => item?.jobListing?._id === jobListingId
+    )
+
+    const { data: operativeData } = useGetOperativeRatingSummary({
+        id: singleElement?.operative?._id,
+    })
+
+    const paidShifts = singleShift?.results?.filter(
+        (shift) => shift?.jobListing?.fullyPaidByDepot === true
+    )
+    const unPaidShifts = singleShift?.results?.filter(
+        (shift) => shift?.jobListing?.fullyPaidByDepot === false
+    )
 
     return (
         <>
-            <div className="mt-4 cursor-pointer" onClick={()=>setOpened(!opened)}>
-                {shiftsData?.results?.map((element, index) => (
-                    <div className="rounded bg-black-5 mb-4" key={index}>
-                        <div className="flex justify-between border-b border-black-20 p-4">
-                            <div
-                                className="flex items-center gap-2"
-                            >
-                                <Checkbox
-                                    id={element?._id}
-                                    className="rounded-lg"
-                                    name={element?.jobListing?.jobType?.name}
-                                    // onChange={handleCheckedProduct}
-                                    // checked={checkedProduct.includes(element?._id)}
-                                    value={element?.id}
-                                    data-testid="checkbox"
-                                />
-                                <label htmlFor={element?.jobListing?.jobType?.name} className="capitalize">
-                                    {element?.jobListing?.jobType?.name}
-                                </label>
-                            </div>
-
-                            <div className="flex items-center gap-2">
+            {queryStatus !== "completed" ? (
+                <div className="mt-4">
+                    {shiftsData?.results?.map((element, index) => (
+                        <div className="rounded bg-black-5 mb-4" key={index}>
+                            <div className="flex justify-between border-b border-black-20 p-4">
+                                <div className="flex items-center gap-2">
+                                    <p className="text-2md mt-1 font-creato">
+                                        {element?.jobListing?.listingId}
+                                    </p>
+                                </div>
+                                <div className="flex items-center gap-2">
                                     <p className="text-black-100 bg-yellow-100 rounded-3xl text-center font-bold p-1 w-fit px-3 py-1 text-3sm font-creatoBlack">
                                         {element?.jobListing?.jobMeetingPoint}
                                     </p>
-                                <div className="cursor-pointer">
-                                    <IoIosArrowForward
-                                        size={20}
-                                        style={{ color: "#889088" }}
-                                        
-                                    />
+                                    <div className="cursor-pointer">
+                                        <BiDotsVerticalRounded
+                                            size={20}
+                                            onClick={() =>
+                                                handleOpenMenu(
+                                                    element?.operative?._id
+                                                )
+                                            }
+                                        />
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div className="p-4">
-                            <div className="flex justify-between mt-3">
-                                <div>
+                            <div className="p-4">
+                                <div className="flex justify-between mt-3">
+                                    <div>
                                         <h6 className="text-black-50 text-3sm">
                                             NAME
                                         </h6>
-                                        <p className="text-2md mt-1">
-                                        {element?.operative?.firstName} {element?.operative?.lastName}
-                                        </p>
-                                </div>
-                                <div>
+                                        <div className="flex items-center">
+                                            <img
+                                                src={ProfileImage}
+                                                alt="profile_image"
+                                            />
+                                            <p className="text-2md mt-1">
+                                                {element?.operative?.firstName}{" "}
+                                                {element?.operative?.lastName}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div>
                                         <h6 className="text-black-50 text-3sm">
-                                            DURATION
+                                            TASK TYPE
                                         </h6>
                                         <p className="text-2md mt-1">
-                                            {element?.jobListing?.shiftDurationInHours}hour(s)
-                                        </p>
-                                </div>
-                            </div>
-                            
-                            <div className="flex justify-between mt-3">
-                                
-                                <div>
-                                    <h6 className="text-black-50 text-3sm">TIME IN</h6>
-                                    {element?.clockInTime === null ? (<p className="text-2md mt-1">N/A</p>) : (<p className="text-2md mt-1">
-                                        {dayjs(element?.clockInTime).format("h:mm A")}
-                                    </p>)}
-                                </div>
-                                <div>
-                                    <h6 className="text-black-50 text-3sm">TIME OUT</h6>
-                                    {element?.clockOutTime === null ? (<p className="text-2md mt-1">N/A</p>) : (<p className="text-2md mt-1">
-                                        {dayjs(element?.clockOutTime).format("h:mm A")}
-                                    </p>)}
-                                </div>
-                            </div>
-                            <div className="flex justify-between mt-3">
-                                <div>
-                                    <h6 className="text-black-50 text-3sm">
-                                        AMOUNT
-                                    </h6>
-                                    <p className="text-2md mt-1">
-                                        {element?.jobListing?.numberOfOpsRequired}
-                                    </p>
-                                </div>
-                                <div>
-                                    <h6 className="text-black-50 text-3sm">
-                                        RATING
-                                    </h6>
-                                    <div  className="flex items-center gap-1">
-                                        <AiFillStar size={20} style={{color: "#FED70A"}}/>
-                                        <p className="text-2md mt-1">
-                                            {element?.operativeRating}
+                                            {element?.jobListing?.jobType?.name}
                                         </p>
                                     </div>
-                                            
                                 </div>
-                            </div>
-                            {element?.cancelStatus === false ? 
-                                (<div>
-                                    <h6 className="text-black-50 text-3sm">
-                                        STATUS
-                                    </h6>
-                                    <div>
-                                        <p className="text-white-100 bg-green-100 rounded-3xl text-center font-bold p-1 w-fit px-3 py-1 text-3sm font-creatoBlack">
-                                            completed
-                                        </p>
-                                    </div>
-                                            
-                                </div>)
-                            :
-                                (<div>
-                                    <h6 className="text-black-50 text-3sm">
-                                        STATUS
-                                    </h6>
-                                    <div>
-                                        <p className="text-white-100 bg-red-100 rounded-3xl text-center font-bold p-1 w-fit px-3 py-1 text-3sm font-creatoBlack">
-                                            cancelled
-                                        </p>
-                                    </div>
-                                            
-                                </div>)}
-                        </div>
-                    </div>
-                ))}
-            </div>
 
-            {opened && 
-          <Modal 
-          centered
-          opened={opened}
-          onClose={() => setOpened(false)}
-          withCloseButton={false}
-          overlayOpacity={0.55}
-          overlayBlur={3}
-          padding={0}
-          transition="fade"
-          transitionDuration={600}
-          transitionTimingFunction="ease"
-          styles={() => ({
-            modal: {
-                width: "580px",
-            },
-        })}
-        >
-              <header className="bg-black-100 text-white-100 flex justify-between p-4">
-                <div className="flex gap-4 place-items-center">
-                  <div>
-                    <p className="font-bold text-2xl">Shift Details</p>
-                  </div>
+                                <div className="flex justify-between mt-3">
+                                    <div>
+                                        <h6 className="text-black-50 text-3sm">
+                                            LOCATION
+                                        </h6>
+                                        <p>
+                                            {
+                                                element?.jobListing?.jobLocation
+                                                    ?.formattedAddress
+                                            }
+                                        </p>
+                                    </div>
+                                    <div>
+                                        <h6 className="text-black-50 text-3sm">
+                                            SCHEDULE
+                                        </h6>
+                                        <p>
+                                            {dayjs(
+                                                element?.jobListing
+                                                    ?.shiftStartTime
+                                            ).format("h")}{" "}
+                                            -{" "}
+                                            {dayjs(
+                                                element?.jobListing.shiftEndTime
+                                            ).format("h A")}
+                                        </p>
+                                    </div>
+                                </div>
+                                <div className="flex justify-between mt-3">
+                                    <div>
+                                        <h6 className="text-black-50 text-3sm">
+                                            RATE
+                                        </h6>
+                                        <p className="text-2md mt-1">
+                                            {
+                                                element?.jobListing?.jobRate
+                                                    ?.currency
+                                            }
+                                            {
+                                                element?.jobListing?.jobRate
+                                                    ?.jobRatePerHourDisplayedToDepot
+                                            }
+                                            /hr
+                                        </p>
+                                    </div>
+                                    <div>
+                                        <h6 className="text-black-50 text-3sm">
+                                            CLOCK-IN TIME
+                                        </h6>
+                                        <div className="flex items-center gap-1">
+                                            <p className="text-2md mt-1">
+                                                {dayjs(
+                                                    element?.clockInTime
+                                                ).format("h:mm A")}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    ))}
                 </div>
-                <div className="p-3 ">
-                  <FaTimes size={20} onClick={()=> setOpened(!opened)}/>
-                </div>
-              </header>
-              <div className="flex justify-between bg-yellow-20 p-5 mt-8 w-[90%] mx-auto rounded-lg">
-                <div className="flex gap-5">
-                  <img src={singleElement?.operative?.profileImageUrl} alt="profile" className="mt-3 w-10 h-10 rounded-[100%]" />
-                  <div>
-                    <p className="text-sm">OPERATIVE</p>
-                    <p className="font-extrabold text-xl">{singleElement?.operative?.firstName} {singleElement?.operative?.lastName}</p>
-                    <p className="text-sm">Joined {dayjs(singleElement?.operative?.createdAt).format("YYYY")} years ago |<span className="text-green-100"> {singleElement?.jobListing?.jobMatchPercentage}% Match</span></p>
-                  </div>
-                </div>
-                <div>
-                  <img src={Message} alt="message icon" className="inline" />
-                  <p className="inline p-2 font-bold">Message {singleElement?.operative?.firstName}</p>
-                </div>
-              </div>
-              <div className="flex justify-between bg-yellow-10 p-5 mt-8 w-[90%] mx-auto rounded-lg">
-                <div className="flex gap-5 w-[40%]">
-                  <div>
-                    <p className="text-2md">Rating</p>
-                    <p>{singleElement?.operativeRating} <AiFillStar size={20} style={{color: "#FED70A"}}/></p>
-                  </div>
-                </div>
-                <div className="w-[50%]">
-                <div className="flex justify-between place-items-center">
-                    <p className=" text-[md] font-medium">Professionalism</p>
-                    {Number(operativeData?.avgProfessionalismScore) <= 2 ? (<Progress value={Number(operativeData?.avgProfessionalismScore)/5 * 100} color="#F44336" className="w-[50%]"/>) 
-                      :
-                      (<Progress value={Number(operativeData?.avgProfessionalismScore)/5 * 100} color="#4DB25D" className="w-[50%]"/>)
-                    }
-                  </div>
-                  <div className="flex justify-between place-items-center">
-                    <p className=" text-[md] font-medium">Punctuality</p>
-                    {Number(operativeData?.avgHelpfulnessScore) <= 2 ? (<Progress value={Number(operativeData?.avgHelpfulnessScore)/5 * 100} color="#F44336" className="w-[50%]"/>) 
-                    :
-                    (<Progress value={Number(operativeData?.avgHelpfulnessScore)/5 * 100} color="#4DB25D" className="w-[50%]"/>)
-                    }
-                  </div>
-                  <div className="flex justify-between place-items-center">
-                    <p className=" text-[md] font-medium">Helpfulness</p>
-                    {Number(operativeData?.avgOrganizationScore) <= 2 ? (<Progress value={Number(operativeData?.avgOrganizationScore)/5 * 100} color="#F44336" className="w-[50%]"/>) 
-                    :
-                    (<Progress value={Number(operativeData?.avgOrganizationScore)/5 * 100} color="#4DB25D" className="w-[50%]"/>)
-                    }
-                  </div>
-                </div>
-              </div>
-              <p className=" px-8 pt-6 text-2md text-black-60">LOCATION</p>
-              <p className="text-2md px-8 font-medium"><TfiLocationPin size={20} style={{color: "#E94444"}} className="inline"/> {singleElement?.jobListing?.jobLocation?.formattedAddress}</p>
-              <section className="grid grid-cols-2 pb-4">
-                <div>
-                  <p className=" px-8 pt-6 text-2md text-black-60">SHIFT TYPE</p>
-                  <p className="text-2md px-8 font-medium">{singleElement?.jobListing?.jobType?.name}</p>
-                </div>
-                <div>
-                  <p className=" px-8 pt-6 text-2md text-black-60">SHIFT METHOD</p>
-                  <p className="text-2md ml-4 px-8 font-medium bg-yellow-100 rounded-3xl w-fit">{singleElement?.jobListing?.jobMeetingPoint}</p>
-                </div>
-                <div>
-                  <p className=" px-8 pt-6 text-2md text-black-60">CERTIFICATION</p>
-                  <p className="text-2md px-8 font-medium">{singleElement?.jobListing?.jobQualification?.name}</p>
-                </div>
-                <div>
-                  <p className=" px-8 pt-6 text-2md text-black-60">SHIFT DATE</p>
-                  <p className="text-2md px-8 font-medium">{dayjs(singleElement?.jobListing?.jobDate).format("MMMM D, YYYY")}</p>
-                </div>
-                <div>
-                  <p className=" px-8 pt-6 text-2md text-black-60">SHIFT DURATION</p>
-                  <p className="text-2md px-8 font-medium">{singleElement?.jobListing?.shiftDurationInHours} Hour(s) 
-                  ({dayjs(singleElement?.jobListing?.shiftStartTime).format("h:mm A")} - {dayjs(singleElement?.jobListing?.shiftEndTime).format("h:mm A")} )</p>
-                </div>
-              </section>
-          </Modal>
-      }
+            ) : (
+                <Tabs
+                    value={activeTab}
+                    onTabChange={setActiveTab}
+                    color="yellow"
+                    keepMounted={false}
+                    data-testid="planner_completed_tabs"
+                >
+                    <Tabs.List>
+                        <Tabs.Tab value="unpaid">
+                            <p
+                                className={
+                                    activeTab === "unpaid"
+                                        ? "text-black-100 text-lg font-creatoMedium active"
+                                        : `font-creatoMedium text-black-40 text-lg inactive`
+                                }
+                            >
+                                Unpaid Operatives
+                                <span
+                                    className={`{" ml-2 py-1 px-2 rounded text-white-100 "} ${
+                                        activeTab === "unpaid"
+                                            ? "bg-white lg:text-white-100 text-dark-green-500  lg:bg-red-100 text-3sm "
+                                            : "bg-gray-100 text-white-100 text-3sm"
+                                    }`}
+                                >
+                                    {unPaidShifts?.length}
+                                </span>
+                            </p>
+                        </Tabs.Tab>
+                        <Tabs.Tab value="paid">
+                            <p
+                                className={
+                                    activeTab === "paid"
+                                        ? "text-black-100 text-lg font-creatoMedium active"
+                                        : `font-creatoMedium text-black-40 text-lg inactive`
+                                }
+                            >
+                                Paid Shifts
+                                <span
+                                    className={`{" ml-2 py-1 px-2 rounded text-white-100 "} ${
+                                        activeTab === "paid"
+                                            ? "bg-white lg:text-white-100 text-dark-green-500  lg:bg-red-100 text-3sm "
+                                            : "bg-gray-100 text-white-100 text-3sm"
+                                    }`}
+                                >
+                                    {paidShifts?.length}
+                                </span>
+                            </p>
+                        </Tabs.Tab>
+                    </Tabs.List>
+                    <Tabs.Panel value={"unpaid"}>
+                    <div className="mt-4">
+                            {unPaidShifts?.map((element, index) => (
+                                <div
+                                    className="rounded bg-black-5 mb-4"
+                                    key={index}
+                                >
+                                    <div className="flex justify-between border-b border-black-20 p-4">
+                                        <div className="flex items-center gap-2">
+                                            <Checkbox
+                                                id={element?.jobListing?._id}
+                                                className="rounded-lg"
+                                                onChange={handleCheckedShift}
+                                                checked={checkedShift.includes(
+                                                    (
+                                                        element?.jobListing
+                                                            ?.jobRate
+                                                            ?.jobRatePerHourDisplayedToDepot *
+                                                        element?.jobListing
+                                                            ?.shiftDurationInHours
+                                                    ).toString()
+                                                )}
+                                                value={(
+                                                    element?.jobListing?.jobRate
+                                                        ?.jobRatePerHourDisplayedToDepot *
+                                                    element?.jobListing
+                                                        ?.shiftDurationInHours
+                                                ).toString()}
+                                                data-testid="checkbox"
+                                            />
+                                            <p className="text-2md mt-1 font-creato">
+                                                {element?.jobListing?.listingId}
+                                            </p>
+                                        </div>
+                                        <div className="flex items-center gap-2">
+                                            <p className="text-black-100 bg-yellow-100 rounded-3xl text-center font-bold p-1 w-fit px-3 py-1 text-3sm font-creatoBlack">
+                                                {
+                                                    element?.jobListing
+                                                        ?.jobMeetingPoint
+                                                }
+                                            </p>
+                                            <div className="cursor-pointer">
+                                                <BiDotsVerticalRounded
+                                                    size={20}
+                                                    onClick={() =>
+                                                        handleOpenMenu(
+                                                            element?.operative
+                                                                ?._id
+                                                        )
+                                                    }
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="p-4">
+                                    <div className="flex justify-between mt-3">
+                                    <div>
+                                        <h6 className="text-black-50 text-3sm">
+                                            NAME
+                                        </h6>
+                                        <div className="flex items-center">
+                                            <img
+                                                src={ProfileImage}
+                                                alt="profile_image"
+                                            />
+                                            <p className="text-2md mt-1">
+                                                {element?.operative?.firstName}{" "}
+                                                {element?.operative?.lastName}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h6 className="text-black-50 text-3sm">
+                                            TASK TYPE
+                                        </h6>
+                                        <p className="text-2md mt-1">
+                                            {element?.jobListing?.jobType?.name}
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div className="flex justify-between mt-3">
+                                    <div>
+                                        <h6 className="text-black-50 text-3sm">
+                                            LOCATION
+                                        </h6>
+                                        <p>
+                                            {
+                                                element?.jobListing?.jobLocation
+                                                    ?.formattedAddress
+                                            }
+                                        </p>
+                                    </div>
+                                    <div>
+                                        <h6 className="text-black-50 text-3sm">
+                                            SCHEDULE
+                                        </h6>
+                                        <p>
+                                            {dayjs(
+                                                element?.jobListing
+                                                    ?.shiftStartTime
+                                            ).format("h")}{" "}
+                                            -{" "}
+                                            {dayjs(
+                                                element?.jobListing.shiftEndTime
+                                            ).format("h A")}
+                                        </p>
+                                    </div>
+                                </div>
+                                <div className="flex justify-between mt-3">
+                                    <div>
+                                        <h6 className="text-black-50 text-3sm">
+                                            RATE
+                                        </h6>
+                                        <p className="text-2md mt-1">
+                                            {
+                                                element?.jobListing?.jobRate
+                                                    ?.currency
+                                            }
+                                            {
+                                                element?.jobListing?.jobRate
+                                                    ?.jobRatePerHourDisplayedToDepot
+                                            }
+                                            /hr
+                                        </p>
+                                    </div>
+                                    <div>
+                                        <h6 className="text-black-50 text-3sm">
+                                            CLOCK-IN TIME
+                                        </h6>
+                                        <div className="flex items-center gap-1">
+                                            <p className="text-2md mt-1">
+                                                {dayjs(
+                                                    element?.clockInTime
+                                                ).format("h:mm A")}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </Tabs.Panel>
+                    <Tabs.Panel value={"paid"}>
+                    <div className="mt-4">
+                            {paidShifts?.map((element, index) => (
+                                <div
+                                    className="rounded bg-black-5 mb-4"
+                                    key={index}
+                                >
+                                    <div className="flex justify-between border-b border-black-20 p-4">
+                                        <div className="flex items-center gap-2">
+                                            <Checkbox
+                                                id={element?.jobListing?._id}
+                                                className="rounded-lg"
+                                                onChange={handleCheckedShift}
+                                                checked={checkedShift.includes(
+                                                    (
+                                                        element?.jobListing
+                                                            ?.jobRate
+                                                            ?.jobRatePerHourDisplayedToDepot *
+                                                        element?.jobListing
+                                                            ?.shiftDurationInHours
+                                                    ).toString()
+                                                )}
+                                                value={(
+                                                    element?.jobListing?.jobRate
+                                                        ?.jobRatePerHourDisplayedToDepot *
+                                                    element?.jobListing
+                                                        ?.shiftDurationInHours
+                                                ).toString()}
+                                                data-testid="checkbox"
+                                            />
+                                            <p className="text-2md mt-1 font-creato">
+                                                {element?.jobListing?.listingId}
+                                            </p>
+                                        </div>
+                                        <div className="flex items-center gap-2">
+                                            <p className="text-black-100 bg-yellow-100 rounded-3xl text-center font-bold p-1 w-fit px-3 py-1 text-3sm font-creatoBlack">
+                                                {
+                                                    element?.jobListing
+                                                        ?.jobMeetingPoint
+                                                }
+                                            </p>
+                                            <div className="cursor-pointer">
+                                                <BiDotsVerticalRounded
+                                                    size={20}
+                                                    onClick={() =>
+                                                        handleOpenMenu(
+                                                            element?.operative
+                                                                ?._id
+                                                        )
+                                                    }
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="p-4">
+                                    <div className="flex justify-between mt-3">
+                                    <div>
+                                        <h6 className="text-black-50 text-3sm">
+                                            NAME
+                                        </h6>
+                                        <div className="flex items-center">
+                                            <img
+                                                src={ProfileImage}
+                                                alt="profile_image"
+                                            />
+                                            <p className="text-2md mt-1">
+                                                {element?.operative?.firstName}{" "}
+                                                {element?.operative?.lastName}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h6 className="text-black-50 text-3sm">
+                                            TASK TYPE
+                                        </h6>
+                                        <p className="text-2md mt-1">
+                                            {element?.jobListing?.jobType?.name}
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div className="flex justify-between mt-3">
+                                    <div>
+                                        <h6 className="text-black-50 text-3sm">
+                                            LOCATION
+                                        </h6>
+                                        <p>
+                                            {
+                                                element?.jobListing?.jobLocation
+                                                    ?.formattedAddress
+                                            }
+                                        </p>
+                                    </div>
+                                    <div>
+                                        <h6 className="text-black-50 text-3sm">
+                                            SCHEDULE
+                                        </h6>
+                                        <p>
+                                            {dayjs(
+                                                element?.jobListing
+                                                    ?.shiftStartTime
+                                            ).format("h")}{" "}
+                                            -{" "}
+                                            {dayjs(
+                                                element?.jobListing.shiftEndTime
+                                            ).format("h A")}
+                                        </p>
+                                    </div>
+                                </div>
+                                <div className="flex justify-between mt-3">
+                                    <div>
+                                        <h6 className="text-black-50 text-3sm">
+                                            RATE
+                                        </h6>
+                                        <p className="text-2md mt-1">
+                                            {
+                                                element?.jobListing?.jobRate
+                                                    ?.currency
+                                            }
+                                            {
+                                                element?.jobListing?.jobRate
+                                                    ?.jobRatePerHourDisplayedToDepot
+                                            }
+                                            /hr
+                                        </p>
+                                    </div>
+                                    <div>
+                                        <h6 className="text-black-50 text-3sm">
+                                            CLOCK-IN TIME
+                                        </h6>
+                                        <div className="flex items-center gap-1">
+                                            <p className="text-2md mt-1">
+                                                {dayjs(
+                                                    element?.clockInTime
+                                                ).format("h:mm A")}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </Tabs.Panel>
+                </Tabs>
+            )}
+
+            {openProfile && (
+                <OperativeProfile
+                    openProfile={openProfile}
+                    setOpenProfile={setOpenProfile}
+                    // singleElement={singleElement}
+                    operativeData={operativeData}
+                    operativeId={operativeId}
+                    jobListingId={jobListingId}
+                />
+            )}
+            {openMenu && (
+                <Menu
+                    openProfile={openProfile}
+                    setOpenProfile={setOpenProfile}
+                    queryStatus={queryStatus}
+                    openMenu={openMenu}
+                    setOpenMenu={setOpenMenu}
+                />
+            )}
         </>
     )
 }

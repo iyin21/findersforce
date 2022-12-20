@@ -109,7 +109,9 @@ const ShiftsTable = ({ elements, status }: ShiftsTableInterface) => {
                     size={30}
                     style={{ color: "#889088" }}
                     onClick={() =>
-                        navigate(`/planner/${element?.jobListing?._id}`, {state:{status: status, scheduleId: element?._id}})
+                        navigate(`/planner/${element?.jobListing?._id}`, {
+                            state: { status: status, scheduleId: element?._id },
+                        })
                     }
                 />
             </td>
