@@ -11086,13 +11086,6 @@ node-libs-browser@^2.2.1:
     util "^0.11.0"
     vm-browserify "^1.0.1"
 
-node-localstorage@^2.2.1:
-  version "2.2.1"
-  resolved "https://registry.yarnpkg.com/node-localstorage/-/node-localstorage-2.2.1.tgz#869723550a4883e426cb391d2df0b563a51c7c1c"
-  integrity sha512-vv8fJuOUCCvSPjDjBLlMqYMHob4aGjkmrkaE42/mZr0VT+ZAU10jRF8oTnX9+pgU9/vYJ8P7YT3Vd6ajkmzSCw==
-  dependencies:
-    write-file-atomic "^1.1.4"
-
 node-releases@^2.0.6:
   version "2.0.8"
   resolved "https://registry.yarnpkg.com/node-releases/-/node-releases-2.0.8.tgz#0f349cdc8fcfa39a92ac0be9bc48b7706292b9ae"
@@ -13245,16 +13238,6 @@ slice-ansi@^5.0.0:
     ansi-styles "^6.0.0"
     is-fullwidth-code-point "^4.0.0"
 
-slide@^1.1.5:
-  version "1.1.6"
-  resolved "https://registry.yarnpkg.com/slide/-/slide-1.1.6.tgz#56eb027d65b4d2dce6cb2e2d32c4d4afc9e1d707"
-  integrity sha512-NwrtjCg+lZoqhFU8fOwl4ay2ei8PaqCBOUV3/ektPY9trO1yQ1oXEfmHAhKArUVUr/hOHvy5f6AdP17dCM0zMw==
-
-smart-buffer@^4.2.0:
-  version "4.2.0"
-  resolved "https://registry.yarnpkg.com/smart-buffer/-/smart-buffer-4.2.0.tgz#6e1d71fa4f18c05f7d0ff216dd16a481d0e8d9ae"
-  integrity sha512-94hK0Hh8rPqQl2xXc3HsaBoOXKV20MToPkcXvwbISWLEs+64sBq5kFgn2kJDHb1Pry9yrP0dxrCI9RRci7RXKg==
-
 snapdragon-node@^2.0.1:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/snapdragon-node/-/snapdragon-node-2.1.1.tgz#6c175f86ff14bdb0724563e8f3c1b021a286853b"
@@ -13284,14 +13267,6 @@ snapdragon@^0.8.1:
     source-map "^0.5.6"
     source-map-resolve "^0.5.0"
     use "^3.1.0"
-
-socks@^2.6.2:
-  version "2.7.1"
-  resolved "https://registry.yarnpkg.com/socks/-/socks-2.7.1.tgz#d8e651247178fde79c0663043e07240196857d55"
-  integrity sha512-7maUZy1N7uo6+WVEX6psASxtNlKaNVMlGQKkG/63nEDdLOWNbiUMoLK7X4uYoLhQstau72mLgfEWcXcwsaHbYQ==
-  dependencies:
-    ip "^2.0.0"
-    smart-buffer "^4.2.0"
 
 source-list-map@^2.0.0:
   version "2.0.1"
@@ -13845,10 +13820,10 @@ tdweb@^1.8.0:
     localforage "^1.7.3"
     uuid "^3.3.2"
 
-telegram@^2.14.8:
-  version "2.15.2"
-  resolved "https://registry.yarnpkg.com/telegram/-/telegram-2.15.2.tgz#e716af7a23f0acd203c03e00c7d8051df642b4f2"
-  integrity sha512-+/vmEImjDtkOEiiPyGThIyzBVgpCfDNz2suwXtl5z/b0xK6SWqV4edX3c1BZgK4/JrIyydrCAxLQpKlG61/uzw==
+telegram@^2.15.1:
+  version "2.15.1"
+  resolved "https://registry.yarnpkg.com/telegram/-/telegram-2.15.1.tgz#058fc625ce4ab3a0a9a8364c1a619a20aceb2102"
+  integrity sha512-vvZpc8GPKRH1P6I0vPc2e5agWIoEJkmG5XTXRTskY8leuFpA7J4DBqpvJ0mmLsFcMXUfN39AXNqGimWCPKZvsQ==
   dependencies:
     "@cryptography/aes" "^0.1.1"
     async-mutex "^0.3.0"
@@ -13856,11 +13831,9 @@ telegram@^2.14.8:
     buffer "^6.0.3"
     htmlparser2 "^6.1.0"
     mime "^3.0.0"
-    node-localstorage "^2.2.1"
     pako "^2.0.3"
     path-browserify "^1.0.1"
     real-cancellable-promise "^1.1.1"
-    socks "^2.6.2"
     store2 "^2.13.0"
     ts-custom-error "^3.2.0"
     websocket "^1.0.34"
@@ -15086,15 +15059,6 @@ wrappy@1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/wrappy/-/wrappy-1.0.2.tgz#b5243d8f3ec1aa35f1364605bc0d1036e30ab69f"
   integrity sha512-l4Sp/DRseor9wL6EvV2+TuQn63dMkPjZ/sp9XkghTEbV9KlPS1xUsZ3u7/IQO4wxtcFB4bgpQPRcR3QCvezPcQ==
-
-write-file-atomic@^1.1.4:
-  version "1.3.4"
-  resolved "https://registry.yarnpkg.com/write-file-atomic/-/write-file-atomic-1.3.4.tgz#f807a4f0b1d9e913ae7a48112e6cc3af1991b45f"
-  integrity sha512-SdrHoC/yVBPpV0Xq/mUZQIpW2sWXAShb/V4pomcJXh92RuaO+f3UTWItiR3Px+pLnV2PvC2/bfn5cwr5X6Vfxw==
-  dependencies:
-    graceful-fs "^4.1.11"
-    imurmurhash "^0.1.4"
-    slide "^1.1.5"
 
 write-file-atomic@^3.0.0:
   version "3.0.3"
