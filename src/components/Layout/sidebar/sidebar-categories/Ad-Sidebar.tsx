@@ -21,16 +21,16 @@ const AdminSidebar = () => {
                 <img src={FindersForceLogo} alt="" />
             </div>
 
-            <section className="flex p-3 rounded-lg ml-1 mb-4 mr-1 bg-ash-10">
+            <section className="flex items-center p-3 rounded-lg ml-1 mb-4 mr-1 bg-ash-10">
                 {data?.profileImageUrl === null ? (
                     <img
-                        className="inline rounded-full p-2"
+                        className="inline rounded-full p-2 "
                         src={ProfileImage}
                         alt="profileImage"
                     />
                 ) : (
                     <img
-                        className="inline rounded-full p-2"
+                        className="inline rounded-full p-2 w-[50px] h-[50px]"
                         src={data?.profileImageUrl}
                         alt="profileImage"
                     />

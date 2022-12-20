@@ -1,9 +1,9 @@
 import React, { MutableRefObject } from "react"
-import { TextInput, Alert, PasswordInput } from "@mantine/core"
+import { TextInput, Alert, PasswordInput, Select } from "@mantine/core"
 import { useForm } from "@mantine/form"
 import LandingPageText from "../../components/Layout/landing-page-txt"
 import Button from "../../components/Core/Buttons/Button"
-import { useLocation, useSearchParams } from "react-router-dom"
+import { useSearchParams } from "react-router-dom"
 import { emailInputStyle, passwordInputStyle } from "../auth/utils"
 import logo from "../../assets/FF-logo.svg"
 import setProfile from "../../hooks/profile/set-profile"
@@ -15,6 +15,7 @@ import {
     requirements,
 } from "./utils/passwordRequirement"
 import HQProfile from "./hq-profile"
+import { selectData } from "./utils/subscriptionSelectData"
 
 const Profile = () => {
     const [searchParams] = useSearchParams()
@@ -34,6 +35,7 @@ export default Profile
 
 const RMProfile = () => {
     const [opened, setOpened] = React.useState(false)
+    const [selectValue, setSelectValue] = React.useState<string | null>("");
     const [isSubmitting, setIsSubmitting] = React.useState(false)
     const [errorText, showErrorText] = React.useState(false)
     const [errorMsg, setErrorMsg] = React.useState("")
@@ -48,6 +50,7 @@ const RMProfile = () => {
             password: "",
             confirmPassword: "",
             lastName: "",
+            courseLink: "",
         },
 
         validate: {
@@ -70,26 +73,24 @@ const RMProfile = () => {
 
     const strength = getStrength(password)
 
-    const location = useLocation()
+    const [searchParams] = useSearchParams()
 
-    const inviteCode =
-        location.search?.split("?")[1]?.split("=")[1].split("&")[0] ?? " "
-    const address =
-        location.search?.split("?")[1]?.split("&")[1]?.split("=")[1] ?? " "
-
-    const re = /%20/g
-    const formattedAddress = address.replace(re, " ")
+    const inviteCode = searchParams.get("code") ?? " "
+    const address = searchParams.get("address") ?? " "
+    const accountType = searchParams.get("accountType") ?? " "
 
     const handleProfileSetUp = ({
         password,
         confirmPassword,
         firstName,
         lastName,
+        courseLink,
     }: {
         password: string
         confirmPassword: string
         firstName: string
         lastName: string
+        courseLink: string
     }) => {
         if (strength === 100) {
             showErrorText(false)
@@ -101,10 +102,13 @@ const RMProfile = () => {
                 opened,
                 firstName,
                 lastName,
+                accountType,
+                selectValue,
                 setIsSubmitting,
                 setErrorMsg,
                 showError,
-                setOpened
+                setOpened,
+                courseLink
             )
         } else showErrorText(true)
     }
@@ -132,7 +136,7 @@ const RMProfile = () => {
                         className="w-7 h-7"
                     />
                     <span className="pl-2.5 text-black-60 text-lg">
-                        {formattedAddress}
+                        {address}
                     </span>
                 </div>
 
@@ -150,6 +154,10 @@ const RMProfile = () => {
                             withAsterisk
                             required
                             size="md"
+                            onFocusCapture={() => {
+                                showErrorText(false)
+                                showError(false)
+                            }}
                             ref={userRef}
                             {...profileForm.getInputProps("firstName")}
                             styles={() => emailInputStyle}
@@ -161,10 +169,41 @@ const RMProfile = () => {
                             required
                             withAsterisk
                             size="md"
+                            onFocusCapture={() => {
+                                showErrorText(false)
+                                showError(false)
+                            }}
                             {...profileForm.getInputProps("lastName")}
                             styles={() => emailInputStyle}
                         />
                     </div>
+                    {accountType === "REGIONAL-MANAGER" && (
+                        <TextInput
+                            placeholder="Provide your video link"
+                            label="Depot Video Link"
+                            aria-label="Depot Video Link"
+                            id="courseLink"
+                            type="text"
+                            withAsterisk
+                            required
+                            size="md"
+                            ref={userRef}
+                            onFocusCapture={() => {
+                                showErrorText(false)
+                                showError(false)
+                            }}
+                            {...profileForm.getInputProps("courseLink")}
+                            styles={() => emailInputStyle}
+                        />
+                    )}
+                    <Select
+                        label="Choose subscription plan"
+                        placeholder="Pick one"
+                        value={selectValue} onChange={setSelectValue}
+                        required
+                        data={selectData}
+                        styles={() => emailInputStyle}
+                    />
                     <div
                         onFocusCapture={() => {
                             showErrorText(false)

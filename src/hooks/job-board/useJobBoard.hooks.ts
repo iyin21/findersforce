@@ -135,7 +135,7 @@ function useGetJobQualification() {
     const { state } = useAuthContext()
 
     /** API methods */
-    const getJobType = async () => {
+    const getJobQualification = async () => {
         const { data } = await axiosInstance.get(
             "/job-listing/job-qualification",
             {
@@ -149,7 +149,39 @@ function useGetJobQualification() {
 
     return useQuery<string, AxiosError, JobBoardByIdResponse[]>(
         ["jobQualification"],
-        ({ signal }) => getJobType(),
+        ({ signal }) => getJobQualification(),
+        {
+            onError: (err) => {
+                showNotification({
+                    title: "Error",
+                    // @ts-ignore
+                    message: err.message || err?.response?.data?.error,
+                })
+            },
+        }
+    )
+}
+
+// get job qualification by category
+function useGetJobQualificationCategory() {
+    const { state } = useAuthContext()
+
+    /** API methods */
+    const getJobQualificationCategory = async () => {
+        const { data } = await axiosInstance.get(
+            "/job-listing/job-qualification-category",
+            {
+                headers: {
+                    Authorization: `${state?.jwt?.token}`,
+                },
+            }
+        )
+        return data.data.results
+    }
+
+    return useQuery<string, AxiosError, JobBoardByIdResponse[]>(
+        ["jobQualificationCategory"],
+        ({ signal }) => getJobQualificationCategory(),
         {
             onError: (err) => {
                 showNotification({
@@ -266,7 +298,7 @@ function useCreateJobList() {
                 newFormData.append(key, values[key])
                 // this deletes the operative ids that is not array from the newFormData
                 newFormData.delete("operativeIds")
-                // this appends the operative id that is an array to the newFormData that will be sent to the backend. This will only work on posting to selected operatives
+                // this appends the operative id that is an array to the newFormData that will be sent to the backend. This will only work on posting to HQ selected operatives
                 values.operativeIds?.map((item: string) =>
                     newFormData.append("operativeIds", item)
                 )
@@ -399,4 +431,5 @@ export {
     useUpdateJobList,
     useBulkDeleteJobList,
     useSearchOperatives,
+    useGetJobQualificationCategory,
 }

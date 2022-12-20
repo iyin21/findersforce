@@ -1,26 +1,29 @@
 import Avatar from "../../assets/avatar.png"
 import { HiArrowLeft } from "react-icons/hi"
-import { useNavigate } from "react-router-dom"
 import Message from "../../assets/message.svg"
 import ShiftTable from "./components/shift-table"
-import { useParams } from "react-router-dom"
+// import { useParams } from "react-router-dom"
 import { useGetShiftHistory } from "../../hooks/application.hook"
-import { CgSpinner } from "react-icons/cg";
-//import Layout from "../../components/layout/Layout"
-import relativeTime from "dayjs/plugin/relativeTime";
+import { CgSpinner } from "react-icons/cg"
+// import Layout from "../../components/layout/Layout"
+import relativeTime from "dayjs/plugin/relativeTime"
 import dayjs from "dayjs"
-dayjs.extend(relativeTime);
+dayjs.extend(relativeTime)
 
-const ShiftDetails = ({shiftId, setPhase}:{shiftId:string, setPhase: (val: number) => void}) => {
-    //const { shiftId } = useParams<{ shiftId: string }>()
-    const navigate = useNavigate()
+const ShiftDetails = ({
+    shiftId,
+    setPhase,
+}: {
+    shiftId: string
+    setPhase: (val: number) => void
+}) => {
+    // const { shiftId } = useParams<{ shiftId: string }>()
 
     const { data, isLoading } = useGetShiftHistory({
-        operativeId: shiftId||"",
-        //completed:true
+        operativeId: shiftId || "",
     })
-    
-    const item = data?.results.find((item) => item.operative._id === shiftId);
+
+    const item = data?.results.find((item) => item.operative._id === shiftId)
     return (
         <>
             {isLoading ? (
@@ -31,7 +34,6 @@ const ShiftDetails = ({shiftId, setPhase}:{shiftId:string, setPhase: (val: numbe
                 <div className="pt-4 px-6">
                     <span
                         onClick={() => setPhase(2)}
-                        
                         className="p-3 rounded inline-flex items-center justify-center bg-black-10 cursor-pointer"
                         aria-hidden="true"
                     >
@@ -44,14 +46,21 @@ const ShiftDetails = ({shiftId, setPhase}:{shiftId:string, setPhase: (val: numbe
                             </div>
 
                             <div className="pl-4 ">
-                                <h5 className="font-bold"> {item?.operative.firstName+" "+item?.operative.lastName}</h5>
+                                <h5 className="font-bold">
+                                    {" "}
+                                    {item?.operative.firstName +
+                                        " " +
+                                        item?.operative.lastName}
+                                </h5>
                                 <p className="text-black-70">
-                                    Joined {dayjs(item?.operative.createdAt).fromNow()}
+                                    Joined{" "}
+                                    {dayjs(item?.operative.createdAt).fromNow()}
                                     <span className="text-black-10 pl-1">
                                         |
                                     </span>
                                     <span className="text-green-100 pl-1 font-bold">
-                                         {item?.jobListing.jobMatchPercentage}% Match
+                                        {item?.jobListing.jobMatchPercentage}%
+                                        Match
                                     </span>
                                 </p>
                             </div>
@@ -61,10 +70,7 @@ const ShiftDetails = ({shiftId, setPhase}:{shiftId:string, setPhase: (val: numbe
                             Message {item?.operative.firstName}
                         </button>
                     </div>
-                    <ShiftTable
-                        elements={data?.results || []}
-                        
-                    />
+                    <ShiftTable elements={data?.results || []} />
                 </div>
             )}
         </>

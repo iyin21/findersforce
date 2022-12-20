@@ -102,11 +102,12 @@ function TextAreaProp(props: IinputProps) {
                                 disabled ? "bg-black-20 cursor-not-allowed" : ""
                             } `}
                             // type={type}
+                            // eslint-disable-next-line react/no-unknown-property
                             error={
                                 form.touched[name as string] &&
                                 form.errors[name as string]
                             }
-                            rows={4}
+                            rows={5}
                         />
                     </div>
                     {meta.touched && meta.error && (
