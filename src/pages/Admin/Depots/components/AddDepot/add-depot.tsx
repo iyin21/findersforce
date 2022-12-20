@@ -120,16 +120,14 @@ export function FormikStepper({ ...props }: TWizardProps) {
 
     const handleCreateProfile = (values: FormikValues) => {
         props.mutateDepot({
-            email: values.email,
+            email: values.email[0],
             invitedRole: "HQ-MANAGER",
             address: values.address,
             logo: values.logo,
             companyName: values.companyName,
             phoneNumber: values.phoneNumber,
-            subscription_plan: values.subscription_plan,
             num_of_locations: values.num_of_locations,
-            trial_period: values.trial_period,
-            personal_email: values.personal_email,
+            companyEmail: values.companyEmail,
         })
     }
     return (

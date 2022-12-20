@@ -13,8 +13,21 @@ export const useInviteDepot = () => {
 
         Object.keys(requestBody).forEach((key) => {
             // @ts-ignore
-            newFormData.append(key, requestBody[key])
+            if (key === "email") {
+                // @ts-ignore
+                requestBody[key].forEach((email: any) => {
+                    newFormData.append(`email[]`, email)
+                })
+                // values[key].forEach((image: any) => {
+                //     newFormData.append(`additionalInfoImageUrls`, image)
+                // })
+            } else {
+                // @ts-ignore
+                newFormData.append(key, requestBody[key])
+            }
         })
+
+        // requestBody.email.map((item) => newFormData.append("email[]", item))
 
         const { data } = await axiosInstance.post("/invitation", newFormData, {
             headers: {

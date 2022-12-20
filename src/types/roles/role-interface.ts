@@ -13,7 +13,7 @@ export interface InviteUserInterface {
     trial_period?: boolean
 }
 export interface InviteDepotInterface {
-    email: string
+    email: string[]
     invitedRole: string
     regionAddress?: string | undefined
     companyId?: string | undefined
@@ -21,11 +21,8 @@ export interface InviteDepotInterface {
     phoneNumber?: string | null
     address?: string | null
     logo?: string | null
-    jwt?: string
-    subscription_plan?: string
     num_of_locations?: string
-    personal_email?: string
-    trial_period?: boolean
+    companyEmail?: string
 }
 ;[]
 

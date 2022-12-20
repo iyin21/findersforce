@@ -3,7 +3,7 @@ import { object, string } from "yup"
 const PersonalDetailsSchema = object().shape({
     phoneNumber: string().required("Required"),
     email: string().required("Required"),
-    personal_email: string().required("Required"),
+    companyEmail: string().required("Required"),
     companyName: string().required("Required"),
     logo: string().required("Required"),
     address: string().required("Required"),

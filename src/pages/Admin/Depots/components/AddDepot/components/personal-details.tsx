@@ -1,10 +1,10 @@
 import { GoogleAutoComplete } from "../../../../../../components"
 import { useFormikContext } from "formik"
 import FormikControls from "../../../../../../components/Form/FormControls/form-controls"
-// import { Switch } from "@mantine/core"
 import { useEffect, useRef, useState } from "react"
 import AvatarIcon from "../../../../../../assets/ProfileImage.svg"
 import AvatarUploadIcon from "../../../../../../assets/upload.svg"
+import { ReactMultiEmail } from "react-multi-email"
 
 const PersonalDetails = () => {
     const { setFieldValue, values } = useFormikContext<{
@@ -14,6 +14,7 @@ const PersonalDetails = () => {
     // const [checked, setChecked] = useState(false)
     const ref = useRef<HTMLInputElement | null>(null)
     const [file, setFile] = useState<string>("")
+    const [emails, setEmails] = useState<string[]>([])
 
     // const subscriptionPlan = ["Entry", "Pro", "Elite", "Enterprice"]
 
@@ -68,16 +69,43 @@ const PersonalDetails = () => {
                     <label className="text-3md font-semibold text-neutral-80 block mb-2">
                         Email
                     </label>
-                    <FormikControls
+
+                    <ReactMultiEmail
+                        placeholder="Input your email"
+                        emails={emails}
+                        onChange={(_emails: string[]) => {
+                            setEmails(_emails)
+                            setFieldValue("email", _emails)
+                        }}
+                        // validateEmail={(email: string) => {
+                        //     return email.split("@").length === 1
+                        // }}
+                        // onDisabled={emails.length >= 1}
+                        getLabel={(email, index, removeEmail) => {
+                            return (
+                                <div data-tag key={index}>
+                                    <div data-tag-item>{email}</div>
+                                    <span
+                                        data-tag-handle
+                                        onClick={() => removeEmail(index)}
+                                    >
+                                        ×
+                                    </span>
+                                </div>
+                            )
+                        }}
+                    />
+
+                    {/* <FormikControls
                         type="text"
-                        name="personal_email"
+                        name="companyEmail"
                         control="input"
                         placeholder="Email"
                         aria-label="Email"
                         required
                         className="rounded"
-                        data-testid="personal_email"
-                    />
+                        data-testid="companyEmail"
+                    /> */}
                 </div>
                 <div className="py-5">
                     <h6 className="font-creatoLight text-lg text-black-60">
@@ -137,13 +165,13 @@ const PersonalDetails = () => {
                         </label>
                         <FormikControls
                             type="text"
-                            name="email"
+                            name="companyEmail"
                             control="input"
                             placeholder="Depot email"
                             aria-label="Depot email"
                             required
                             className="rounded"
-                            data-testid="email"
+                            data-testid="companyEmail"
                         />
                     </div>
                     <div className="mt-4">

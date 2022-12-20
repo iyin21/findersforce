@@ -1,7 +1,7 @@
 export const DepotInitialValue = {
     phoneNumber: "",
-    email: "",
-    personal_email: "",
+    email: [],
+    companyEmail: "",
     companyName: "",
     logo: "",
     address: "",
