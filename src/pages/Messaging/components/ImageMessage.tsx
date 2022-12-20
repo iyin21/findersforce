@@ -23,7 +23,7 @@ export default function ImageMessage({
     const [thumbnailImg, setThumbnailImg] = useState("")
     const [image, setImage] = useState("")
     const [openImageModal, setOpenImageModal] = useState(false)
-    const [document, setDocument] = useState<Buffer | string>("")
+    const [document, setDocument] = useState<string | Buffer>("")
     // const [webPage, setWebpage]= useState<Buffer | string>("")
 
     useEffect(() => {
@@ -54,7 +54,7 @@ export default function ImageMessage({
         try {
             const buffer = await client.downloadMedia(data, {})
             if (buffer) {
-                // @ts-expect-error
+                // @ts-ignore
                 setDocument(buffer)
             }
         } catch (err) {
