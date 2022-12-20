@@ -142,7 +142,9 @@ const ApprovalTable = ({ elements, setPhase, setActiveId }: Prop) => {
                                         QUALIFICATION
                                     </h6>
                                     <p className="text-2md mt-1">
-                                        {item.qualification[0].name}
+                                        {qualificationName[index]
+                                            .join(", ")
+                                            .substring(0, 10) + "..."}
                                     </p>
                                 </div>
 

@@ -1,11 +1,6 @@
 import { axiosInstance } from "../../services/api.service"
 import { showNotification } from "@mantine/notifications"
 import { AxiosError, AxiosRequestConfig } from "axios"
-// import { useQuery, useMutation } from "react-query"
-// import {
-//     ShiftResponse,
-//     ApplicationDetailsResponse,
-// } from "../interface";
 import { AllUsersResponse } from "../../types/approval/approval-interface";
 import useAuthContext from "../auth-hooks/useAuth"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
@@ -117,43 +112,9 @@ function useUpdateOperative({ id }: { id: string }) {
         }
     )
 }
-// function useGetShiftHistory({
-//     operativeId,
-//     completed,
-// }: {
-//     operativeId: string
-//     completed?: boolean
-// }) {
-//     const { state } = useAuthContext()
-//     const getShiftHistory = async () => {
-//         const { data } = await axiosInstance.get(`/schedule`, {
-//             params: { operativeId, completed },
-//             headers: {
-//                 Authorization: `Bearer ${state?.jwt?.token}`,
-//             },
-//         })
-//         return data.data
-//     }
 
-//     return useQuery<unknown, AxiosError, ShiftResponse["data"]>(
-//         ["shiftHistory", { operativeId, completed }],
-//         getShiftHistory,
-
-//         {
-//             // initialData:{page, status, commodity},
-//             onError: (err) => {
-//                 showNotification({
-//                     title: "Error",
-//                     message: err.message,
-//                     color: "red",
-//                 })
-//             },
-//         }
-//     )
-// }
 export {
     useGetAllOperativeUsers,
     useGetOperativeDetails,
-//    useGetShiftHistory,
     useUpdateOperative,
 }

@@ -24,10 +24,12 @@ const ShiftTable = ({ elements }: Prop) => {
             <td>
                 <p className="flex">
                     <img src={Star} alt="" />
-                    <span className="pl-1">{item?.depotRating?.averageScore || 0}</span>
+                    <span className="pl-1">
+                        {item?.depotRating?.averageScore || 0}
+                    </span>
                 </p>
             </td>
-             <td>
+            <td>
                 {item.cancelStatus === true ? (
                     <p className="text-white-100 bg-green-100 pl-1.5 py-1 rounded-full w-20">
                         completed
@@ -95,12 +97,15 @@ const ShiftTable = ({ elements }: Prop) => {
                                     }
                                 </p>
                             </div>
-
-                            <div>
-                                <p className="text-2md bg-green-100 p-2 rounded-full">
+                            {item.cancelStatus === true ? (
+                                <p className="text-2md text-white-100 bg-green-100 pl-1.5 py-1 rounded-full w-20">
                                     completed
                                 </p>
-                            </div>
+                            ) : (
+                                <p className="text-2md text-center text-white-100 bg-red-100 px-2.5 py-1 rounded-full w-fit">
+                                    cancelled
+                                </p>
+                            )}
                         </div>
                         <div className="flex justify-between w-full px-4">
                             <div>
@@ -109,7 +114,9 @@ const ShiftTable = ({ elements }: Prop) => {
                                         TIME IN
                                     </h6>
                                     <p className="text-2md mt-1">
-                                        {item.jobListing.shiftStartTime}
+                                        {dayjs(
+                                            item.jobListing.shiftStartTime
+                                        ).format("h:mm A")}
                                     </p>
                                 </div>
 
@@ -155,7 +162,8 @@ const ShiftTable = ({ elements }: Prop) => {
                                     <p className="flex text-2md mt-1">
                                         <img src={Star} alt="" />
                                         <span className="pl-1">
-                                            {item?.depotRating?.averageScore || 0}
+                                            {item?.depotRating?.averageScore ||
+                                                0}
                                         </span>
                                     </p>
                                 </div>

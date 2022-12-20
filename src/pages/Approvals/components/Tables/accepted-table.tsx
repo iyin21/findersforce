@@ -152,7 +152,7 @@ const AcceptedTable = ({ elements, setPhase, setActiveId }: Prop) => {
                                     <h6 className="text-black-50 text-3sm">
                                         GENDER
                                     </h6>
-                                    <p className="text-2md mt-1">{"unset"}</p>
+                                    <p className="text-2md mt-1">{item.gender}</p>
                                 </div>
                                 <div className="mt-4">
                                     <h6 className="text-black-50 text-3sm">
@@ -174,14 +174,20 @@ const AcceptedTable = ({ elements, setPhase, setActiveId }: Prop) => {
                                     <h6 className="text-black-50 text-3sm">
                                         QUALIFICATION
                                     </h6>
-                                    <p className="text-2md mt-1">{"unset"}</p>
+                                    <p className="text-2md mt-1">
+                                        {qualificationName[index]
+                                            .join(", ")
+                                            .substring(0, 10) + "..."}
+                                    </p>
                                 </div>
 
                                 <div className="mt-4">
                                     <h6 className="text-black-50 text-3sm">
-                                        ID TYPE
+                                        SHIFT COMPLETED
                                     </h6>
-                                    <p className="text-2md mt-1">{"unset"}</p>
+                                    <p className="text-2md mt-1">
+                                        {item.completedShifts}
+                                    </p>
                                 </div>
                             </div>
                         </div>

@@ -48,12 +48,9 @@ const RejectedTable = ({ elements, setPhase, setActiveId }: Prop) => {
             <td
                 className="cursor-pointer"
                 data-testid="view_application"
-                onClick={
-                    () => {
-                        handleModalOpen(item._id)
-                    }
-                    // navigate(`/applications/${item._id}`)
-                }
+                onClick={() => {
+                    handleModalOpen(item._id)
+                }}
             >
                 <HiChevronRight size={30} style={{ color: "#889088" }} />
             </td>
@@ -145,14 +142,14 @@ const RejectedTable = ({ elements, setPhase, setActiveId }: Prop) => {
                                 </div>
                                 <div className="mt-4">
                                     <h6 className="text-black-50 text-3sm">
-                                        DATE APPLIED
+                                        DATE REJECTED
                                     </h6>
                                     <p className="text-2md mt-1">
-                                        {dayjs(item.createdAt).format(
+                                        {dayjs(item.doc.updatedAt).format(
                                             "MMM D, YYYY"
                                         ) +
                                             ", " +
-                                            dayjs(item.createdAt).format(
+                                            dayjs(item.doc.updatedAt).format(
                                                 "h:mm A"
                                             )}
                                     </p>
@@ -163,15 +160,18 @@ const RejectedTable = ({ elements, setPhase, setActiveId }: Prop) => {
                                     <h6 className="text-black-50 text-3sm">
                                         QUALIFICATION
                                     </h6>
-                                    <p className="text-2md mt-1">{"unset"}</p>
+                                    <p className="text-2md mt-1">
+                                        {qualificationName[index].join(", ") +
+                                            "..."}
+                                    </p>
                                 </div>
 
                                 <div className="mt-4">
                                     <h6 className="text-black-50 text-3sm">
-                                        ID TYPE
+                                        REASONS
                                     </h6>
                                     <p className="text-2md mt-1">
-                                        {item.doc.docType}
+                                        {item.doc.rejectReason}
                                     </p>
                                 </div>
                             </div>
