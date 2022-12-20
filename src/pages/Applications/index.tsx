@@ -140,11 +140,7 @@ const Applications = () => {
                                     >
                                         Pending
                                         <span className="bg-red-100 rounded ml-2 py-0.5 px-1 text-white-100 text-sm">
-<<<<<<< HEAD
-                                            {pendingData?.data?.length || "0"}
-=======
                                             {pendingData?.data?.length || 0}
->>>>>>> 92b62971cb1a64633407edab69452d59479b8311
                                         </span>
                                     </Tabs.Tab>
 
@@ -158,11 +154,7 @@ const Applications = () => {
                                     >
                                         Accepted
                                         <span className="bg-red-100 rounded ml-2 py-0.5 px-1 text-white-100 text-sm">
-<<<<<<< HEAD
-                                            {acceptedData?.data?.length || "0"}
-=======
                                             {acceptedData?.data?.length ?? 0}
->>>>>>> 92b62971cb1a64633407edab69452d59479b8311
                                         </span>
                                     </Tabs.Tab>
                                     <Tabs.Tab
@@ -175,11 +167,7 @@ const Applications = () => {
                                     >
                                         Rejected
                                         <span className="bg-red-100 rounded ml-2 py-0.5 px-1 text-white-100 text-sm">
-<<<<<<< HEAD
-                                            {rejectedData?.data?.length || "0"}
-=======
                                             {rejectedData?.data?.length || 0}
->>>>>>> 92b62971cb1a64633407edab69452d59479b8311
                                         </span>
                                     </Tabs.Tab>
                                 </Tabs.List>
