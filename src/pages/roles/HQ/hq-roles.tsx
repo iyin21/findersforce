@@ -221,6 +221,10 @@ const HQRoles = () => {
                         handleBack={() => {
                             setOpenSuccessModal(false)
                         }}
+                        title="Invite sent"
+                        description="This gives them administrative access to your depot
+                    account"
+                        buttonText="Back"
                     />
                 )}
                 <div className="flex flex-col-reverse md:flex-row md:justify-between md:items-center">

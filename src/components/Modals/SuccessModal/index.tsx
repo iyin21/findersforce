@@ -7,9 +7,19 @@ export interface SuccessInterface {
     opened: boolean
     setOpened: Dispatch<SetStateAction<boolean>>
     handleBack: () => void
+    title: string
+    description: string
+    buttonText: string
 }
 
-const SuccessModal = ({ opened, setOpened, handleBack }: SuccessInterface) => {
+const SuccessModal = ({
+    opened,
+    setOpened,
+    handleBack,
+    title,
+    description,
+    buttonText,
+}: SuccessInterface) => {
     return (
         <div>
             <Modal
@@ -28,11 +38,10 @@ const SuccessModal = ({ opened, setOpened, handleBack }: SuccessInterface) => {
 
                 <div className="px-3 py-5">
                     <h3 className="text-3xl font-bold text-center mb-3">
-                        Invite sent
+                        {title}
                     </h3>
                     <p className="text-black-90 text-lg md:mx-auto md:w-4/5 px-3 md:px-0">
-                        This gives them administrative access to your depot
-                        account
+                        {description}
                     </p>
                 </div>
 
@@ -44,7 +53,7 @@ const SuccessModal = ({ opened, setOpened, handleBack }: SuccessInterface) => {
                             handleBack()
                         }}
                     >
-                        Back
+                        {buttonText}
                     </Button>
                 </div>
             </Modal>

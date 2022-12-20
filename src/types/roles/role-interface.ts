@@ -12,8 +12,8 @@ export interface InviteUserInterface {
     num_of_locations?: string
     trial_period?: boolean
 }
-export interface InviteDepotInterface {
-    email: string
+export interface InviteDepotInterfaceRequest {
+    email: string[]
     invitedRole: string
     regionAddress?: string | undefined
     companyId?: string | undefined
@@ -21,13 +21,26 @@ export interface InviteDepotInterface {
     phoneNumber?: string | null
     address?: string | null
     logo?: string | null
-    jwt?: string
-    subscription_plan?: string
-    num_of_locations?: string
-    personal_email?: string
-    trial_period?: boolean
+    regionLimit?: string
+    companyEmail?: string
 }
 ;[]
+
+export interface MultipleRateRequest {
+    companyId: string | undefined
+    jobRates: {
+        jobQualificationId: string
+        jobRateDepotFirstDisplayedToDepot: string
+        jobRateDepotFirstDisplayedToOp: string
+        jobRateMeetOnsiteDisplayedToDepot: string
+        jobRateMeetOnsiteDisplayedToOp: string
+    }[]
+}
+
+export interface InviteDepotInterfaceResponse {
+    message: string
+    companyId: string
+}
 
 export interface RolesRequest {
     status: "accepted" | "pending" | "REGIONAL-MANAGER"

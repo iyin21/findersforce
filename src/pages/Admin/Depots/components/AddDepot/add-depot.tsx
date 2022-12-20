@@ -1,20 +1,25 @@
 import { Alert } from "@mantine/core"
-import { Button } from "../../../../../components"
+import { Button, SuccessModal } from "../../../../../components"
 import { Form, Formik, FormikConfig, FormikValues } from "formik"
 import React, { ReactNode, useEffect, useState } from "react"
 import { BiArrowBack } from "react-icons/bi"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import Layout from "../../../../../components/Layout"
 import DepotFormField from "./utils/depot-form-field"
 import { DepotInitialValue } from "./utils/depot-initialvalues"
 import Header from "./components/header"
-import { useInviteDepot } from "../../../../../hooks/depots/use-depot"
+import {
+    useCreateMultipleRates,
+    useInviteDepot,
+} from "../../../../../hooks/depots/use-depot"
 import { UseMutateFunction } from "react-query"
 import { AxiosError } from "axios"
-import { InviteDepotInterface } from "../../../../../types/roles/role-interface"
+import { InviteDepotInterfaceRequest } from "../../../../../types/roles/role-interface"
 import { showNotification } from "@mantine/notifications"
 
 const AddDepot = () => {
+    const [openSuccessModal, setOpenSuccessModal] = useState(false)
+    const navigate = useNavigate()
     const {
         mutate: mutateDepot,
         isError,
@@ -22,7 +27,30 @@ const AddDepot = () => {
         data: InviteDepotData,
     } = useInviteDepot()
 
+    const {
+        mutate: mutateMultipleRates,
+        data: MultipleRatesData,
+        isSuccess,
+    } = useCreateMultipleRates()
+
+    const wageArray: any = window.sessionStorage.getItem("wageArray")
+    const wageArrayData = JSON.parse(wageArray)
+
+    const handleMultipleRates = () => {
+        mutateMultipleRates({
+            companyId: InviteDepotData?.companyId,
+            jobRates: wageArrayData,
+        })
+    }
     useEffect(() => {
+        if (isSuccess) {
+            setOpenSuccessModal(true)
+            setTimeout(() => {
+                setOpenSuccessModal(false)
+                navigate("/depots")
+                window.sessionStorage.removeItem("wageArray")
+            }, 5000)
+        }
         if (isError) {
             showNotification({
                 message:
@@ -32,10 +60,23 @@ const AddDepot = () => {
                 color: "red",
             })
         }
-    }, [InviteDepotData, isError])
+    }, [InviteDepotData, isError, MultipleRatesData, wageArray])
 
     return (
         <Layout>
+            {openSuccessModal && (
+                <SuccessModal
+                    opened={openSuccessModal}
+                    setOpened={setOpenSuccessModal}
+                    handleBack={() => {
+                        setOpenSuccessModal(false)
+                    }}
+                    title="Depot account created successfully "
+                    description="An invite has been sent to the email address you provided.
+                    You’ll be notified once they activate their account."
+                    buttonText="Continue"
+                />
+            )}
             <div className="bg-black-10 p-2 w-fit mx-4 rounded-lg relative z-20 hidden md:block">
                 <Link to={"/depots"}>
                     {" "}
@@ -46,19 +87,12 @@ const AddDepot = () => {
                 <FormikStepper
                     // this is the initial values for the formik form
                     initialValues={DepotInitialValue}
-                    data-testid="post_job_form"
-                    onSubmit={() => {
-                        // mutateUser({
-                        //     email: values.email,
-                        //     invitedRole: values.accountType,
-                        //     regionAddress: values.regionAddress,
-                        //     jwt: profileData?.jwt.token,
-                        //     companyId: profileData?.user?.depotCompany?._id,
-                        // })
-                    }}
+                    data-testid="rates_form"
+                    onSubmit={() => {}}
                     mutateDepot={mutateDepot}
                     isLoading={false}
                     isError={isError}
+                    handleMultipleRates={handleMultipleRates}
                 >
                     {DepotFormField.map(
                         ({ validationSchema, Component, name }) => (
@@ -86,9 +120,10 @@ interface TWizardProps extends FormikConfig<FormikValues> {
     mutateDepot: UseMutateFunction<
         any,
         AxiosError<unknown, any>,
-        InviteDepotInterface,
+        InviteDepotInterfaceRequest,
         unknown
     >
+    handleMultipleRates: () => void
 }
 
 export interface FormikStepProps
@@ -126,15 +161,18 @@ export function FormikStepper({ ...props }: TWizardProps) {
             logo: values.logo,
             companyName: values.companyName,
             phoneNumber: values.phoneNumber,
-            subscription_plan: values.subscription_plan,
-            num_of_locations: values.num_of_locations,
-            trial_period: values.trial_period,
-            personal_email: values.personal_email,
+            regionLimit: values.regionLimit,
+            companyEmail: values.companyEmail,
         })
     }
+
     return (
         <div>
-            <Header step={step} title="Depots" />
+            <Header
+                step={step}
+                title="Depots"
+                handleMultipleRates={props.handleMultipleRates}
+            />
             <Formik
                 {...props}
                 validationSchema={currentChild.props.validationSchema}

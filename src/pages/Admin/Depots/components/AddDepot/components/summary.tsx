@@ -1,20 +1,19 @@
 import { useFormikContext } from "formik"
-import { useGetJobQualificationCategory } from "../../../../../../hooks/job-board/useJobBoard.hooks"
+import { useGetJobQualification } from "../../../../../../hooks/job-board/useJobBoard.hooks"
 
 const Summary = () => {
     const { values } = useFormikContext<{
         phoneNumber: string
         email: string
-        personal_email: string
+        companyEmail: string
         companyName: string
         address: string
-        subscription_plan: string
-        num_of_locations: string
+        regionLimit: string
         qualification_category: string
         findersforce_depot_amount: string
         findersforce_meet_amount: string
     }>()
-    const { data: categoryData } = useGetJobQualificationCategory()
+    const { data: qualificationData } = useGetJobQualification()
 
     const wageArray = window.sessionStorage.getItem("wageArray")
     // @ts-ignore
@@ -29,7 +28,7 @@ const Summary = () => {
 
             <div className="grid lg:grid-cols-2 mt-5 mr-4 lg:mr-0">
                 <div className="">
-                    <h3 className="font-creato text-xl text-black-60">
+                    <h3 className="font-creato text-xl text-black-60 mb-6">
                         Business Information
                     </h3>
                     <div className="grid grid-cols-2 mt-3 gap-3">
@@ -47,16 +46,12 @@ const Summary = () => {
                         </p>
                         <h6 className="font-creatoLight">Location</h6>
                         <p className="font-creatoMedium font-semibold">
-                            {values.num_of_locations}
-                        </p>
-                        <h6 className="font-creatoLight">Subscription Plan</h6>
-                        <p className="font-creatoMedium font-semibold">
-                            {values.subscription_plan}
+                            {values.regionLimit}
                         </p>
                     </div>
                 </div>
                 <div>
-                    <h3 className="font-creato text-xl text-black-60 mt-4 lg:mt-0">
+                    <h3 className="font-creato text-xl text-black-60 mt-4 lg:mt-0 mb-6">
                         Personal Information
                     </h3>
                     <div className="grid grid-cols-2 mt-3 gap-2">
@@ -67,7 +62,7 @@ const Summary = () => {
                         </p>{" "}
                         <h6 className="font-creatoLight"> Email</h6>
                         <p className="font-creatoMedium font-semibold">
-                            {values.personal_email}
+                            {values.companyEmail}
                         </p>
                     </div>
                 </div>
@@ -76,46 +71,61 @@ const Summary = () => {
             <div className="border-b border-black-20 my-6"></div>
             <h3 className="font-creato text-xl">Wage breakdown</h3>
 
-            <div className="bg-black-5 p-4 rounded-lg mt-5">
-                <div className="grid lg:grid-cols-2 gap-2">
+            <div className=" mt-5">
+                <div className="grid lg:grid-cols-1 gap-2">
                     {wageArrayData?.map((item: any, index: number) => (
-                        <div className="grid grid-cols-2 gap-6" key={index}>
-                            <h6 className="font-creatoMedium">
-                                Qualification category
-                            </h6>
-                            <p className="font-creatoMedium font-semibold text-green-100">
+                        <div
+                            className="bg-black-5 p-4 rounded-lg  grid  "
+                            key={index}
+                        >
+                            <h6 className="font-creatoMedium border-b border-black-10">
                                 {
-                                    categoryData?.filter(
+                                    qualificationData?.filter(
                                         (list) =>
                                             list?._id ===
-                                            item?.qualification_category
+                                            item?.jobQualificationId
                                     )[0]?.name
                                 }
-                            </p>
-                            <h6 className="font-creatoLight">
-                                Finders force amount (Depot first)
                             </h6>
-                            <p className="font-creatoMedium font-semibold">
-                                {item?.findersforce_depot_amount}
-                            </p>
-                            <h6 className="font-creatoLight">
-                                Operative amount (Depot first per/hr)
-                            </h6>
-                            <p className="font-creatoMedium font-semibold">
-                                {item?.operative_depot_amount || 0}
-                            </p>
-                            <h6 className="font-creatoLight">
-                                Finders force amount (Meet on site)
-                            </h6>
-                            <p className="font-creatoMedium font-semibold">
-                                {item?.findersforce_meet_amount}
-                            </p>
-                            <h6 className="font-creatoLight">
-                                Operative amount (Meet on site per/hr)
-                            </h6>
-                            <p className="font-creatoMedium font-semibold">
-                                {item?.operative_meet_amount}
-                            </p>
+
+                            <div className="grid grid-cols-4 mt-4">
+                                <div>
+                                    <h6 className="font-creatoMedium text-2md">
+                                        MOS Depot pays
+                                    </h6>
+                                    <p className="font-creatoMedium font-semibold text-green-100 mt-2">
+                                        {
+                                            item?.jobRateMeetOnsiteDisplayedToDepot
+                                        }
+                                    </p>
+                                </div>
+                                <div>
+                                    <h6 className="font-creatoMedium text-2md">
+                                        MOS OP Receives
+                                    </h6>
+                                    <p className="font-creatoMedium font-semibold text-green-100 mt-2">
+                                        {item?.jobRateMeetOnsiteDisplayedToOp}
+                                    </p>
+                                </div>
+                                <div>
+                                    <h6 className="font-creatoMedium text-2md">
+                                        DPF: Depot pays
+                                    </h6>
+                                    <p className="font-creatoMedium font-semibold text-green-100 mt-2">
+                                        {
+                                            item?.jobRateDepotFirstDisplayedToDepot
+                                        }
+                                    </p>
+                                </div>
+                                <div>
+                                    <h6 className="font-creatoMedium text-2md">
+                                        DPF OP receives
+                                    </h6>
+                                    <p className="font-creatoMedium font-semibold text-green-100 mt-2">
+                                        {item?.jobRateDepotFirstDisplayedToOp}
+                                    </p>
+                                </div>
+                            </div>
                         </div>
                     ))}
                 </div>
