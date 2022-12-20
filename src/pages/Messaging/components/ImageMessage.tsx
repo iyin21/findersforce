@@ -24,13 +24,12 @@ export default function ImageMessage({
     const [image, setImage] = useState("")
     const [openImageModal, setOpenImageModal] = useState(false)
     const [document, setDocument] = useState<Buffer | string>("")
-    const [webPage, setWebpage]= useState<Buffer | string>("")
+    // const [webPage, setWebpage]= useState<Buffer | string>("")
 
     useEffect(() => {
         if (data.photo) {
             handleImageContent()
-        }  else {
-            
+        } else {
             handleDocumentContent()
         }
     }, [])
@@ -55,14 +54,14 @@ export default function ImageMessage({
         try {
             const buffer = await client.downloadMedia(data, {})
             if (buffer) {
-                //@ts-expect-error
+                // @ts-expect-error
                 setDocument(buffer)
             }
         } catch (err) {
             console.log("error", err)
         }
     }
-    
+
     const handleClick = async () => {
         setIsDownloading(true)
         await client.connect()
@@ -85,7 +84,7 @@ export default function ImageMessage({
         }
     }
 
-    //@ts-expect-erro
+    // @ts-expect-erro
     // console.log("file", item.file?.size?.value)
     return (
         <>
@@ -104,8 +103,9 @@ export default function ImageMessage({
                         })
                     )}
                     target="_blank"
-                    //rel="noreferrer"
+                    // rel="noreferrer"
                     download={item.file.name}
+                    rel="noreferrer"
                 >
                     <div className="rounded-full bg-blue-100 p-3">
                         <AiFillFile color="white" size="20px" />
@@ -115,7 +115,7 @@ export default function ImageMessage({
                         {/* <p>{item.file?.size}</p> */}
                     </div>
                 </a>
-            ) : data.className === "MessageMediaWebPage" &&item.file ? (
+            ) : data.className === "MessageMediaWebPage" && item.file ? (
                 <div>
                     <iframe
                         src={data.webpage.embedUrl}
@@ -123,9 +123,8 @@ export default function ImageMessage({
                         height="300"
                         width="300"
                         allow="fullscreen"
+                        title="webpage"
                     ></iframe>
-
-                   
                 </div>
             ) : (
                 <div
@@ -139,6 +138,7 @@ export default function ImageMessage({
                             src={`data:image/jpeg;base64,${image}`}
                             height={200}
                             width={200}
+                            alt=""
                         />
                     ) : (
                         <div className="relative rounded">
@@ -156,6 +156,7 @@ export default function ImageMessage({
                                 src={`data:image/png;base64,${thumbnailImg}`}
                                 height={100}
                                 width={300}
+                                alt=""
                             />
                         </div>
                     )}
