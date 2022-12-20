@@ -20,7 +20,10 @@
             import process from "process"
             import EventEmitter from "events"
             import { Buffer } from "buffer"
-            window.Buffer = Buffer
+
+            window.global = window
+            // window.Buffer = Buffer
+            window.Buffer = require("buffer/").Buffer
             window.process = process
             window.EventEmitter = EventEmitter
         </script>
