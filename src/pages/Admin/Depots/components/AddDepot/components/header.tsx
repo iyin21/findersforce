@@ -5,9 +5,10 @@ import logo from "../../../../../../assets/FF-logo.svg"
 interface IHeadProps {
     step: number
     title: string
+    handleMultipleRates?: (e: any) => void
 }
 
-const Header = ({ step, title }: IHeadProps) => {
+const Header = ({ step, title, handleMultipleRates }: IHeadProps) => {
     return (
         <div className="flex flex-col lg:flex-row justify-between lg:items-center mb-4">
             <div>
@@ -29,6 +30,7 @@ const Header = ({ step, title }: IHeadProps) => {
                     style={{
                         backgroundColor: "rgba(254, 215, 10, 1)",
                     }}
+                    onClick={handleMultipleRates}
                 >
                     Set up account
                 </Button>
