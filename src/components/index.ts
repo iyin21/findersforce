@@ -17,7 +17,10 @@ export { default as PostJob } from "./Modals/PostJob"
 export { default as ConfirmDelete } from "./Modals/ConfirmDelete"
 export { default as ConfirmPost } from "./Modals/ConfirmPost"
 export { default as SuccessModal } from "./Modals/SuccessModal"
+export { default as DeactivateUser } from "./Modals/DeactivateUser"
 export { default as SuccessfulLogin } from "./Modals/SuccessLogin"
+export { default as EditWage } from "./Modals/EditWage"
+export { default as AddNewWageModal } from "./Modals/AddNewWage"
 
 // google autocomplete
 export { default as GoogleAutoComplete } from "./GoogleAutoComplete/index"

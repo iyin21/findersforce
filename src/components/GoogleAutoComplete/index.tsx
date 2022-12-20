@@ -7,9 +7,11 @@ import { MdLocationOn } from "react-icons/md"
 const GoogleAutoComplete = ({
     isOpen = true,
     fieldName = "formattedAddress",
+    title,
 }: {
     isOpen?: boolean
     fieldName: string
+    title?: string
 }) => {
     const inputRef = useRef<HTMLInputElement>(null)
     const [sessionToken] = useState<string | null>(useId())
@@ -74,7 +76,7 @@ const GoogleAutoComplete = ({
     return (
         <>
             <p className="text-3md font-semibold mb-3  text-neutral-80 block">
-                Location
+                {title || "Location"}
             </p>
             <div
                 className={`w-full outline-none border border-black-20 p-4 mt-1 rounded-xl text-lg flex ${

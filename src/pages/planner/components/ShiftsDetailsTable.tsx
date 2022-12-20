@@ -15,8 +15,6 @@ import ProfileImage from "../../../assets/ProfileImage.svg"
 import { useLocation, useNavigate, useParams } from "react-router-dom"
 import { CgSpinner } from "react-icons/cg"
 import Pagination from "../../../components/Pagination/pagination"
-// import Filter from "../../../components/Filter/index"
-// import { FilterRequest } from "../../../types/filter/filter"
 import MobileShiftsDetailsTable from "./MobileShiftsDetailsTable"
 import { Button, Checkbox } from "../../../components"
 import { FiPlus } from "react-icons/fi"
@@ -65,16 +63,12 @@ const ShiftsDetailTable = () => {
         setButtonState(!buttonState)
     }
 
-    // const applyFilter = (filter: FilterRequest) => {}
 
     const handleActivePage = (pageNumber: number) => {
         setActivePage(pageNumber)
     }
     useEffect(() => {
         if (data && data.status === "success") {
-            // setShowModal((prev) => ({ ...prev, status: false }));
-            // setShowSuccessDocUploadModal(true);
-            // console.log("successfully uploaded doc")
             setButtonState(true)
         }
 
@@ -94,15 +88,12 @@ const ShiftsDetailTable = () => {
             setCheckedOperative("")
         }
     }
-    // console.log(checkedShift)
-    // console.log(checkedOperative)
 
     const { data: checkedData } = useGetSingleSchedule({
         jobListingId: jobListingId,
         operativeId: checkedOperative
     })
 
-    // console.log(checkedData)
 
 
     const amount:any = checkedData?.results?.map((item) => {
@@ -430,14 +421,7 @@ const ShiftsDetailTable = () => {
                                     </div>
                                 )}
                             </div>
-                            {/* {queryStatus === "completed" && (
-                                <div className="relative lg:pb-4 bottom-0 lg:bottom-0">
-                                    <div className="absolute right-0 ">
-                                        {" "}
-                                        <Filter applyFilter={applyFilter} />
-                                    </div>
-                                </div>
-                            )} */}
+                            
                         </div>
                         <div className="hidden lg:block " data-testid="planner">
                             {queryStatus !== "completed" ? (
@@ -628,7 +612,6 @@ const ShiftsDetailTable = () => {
                     <OperativeProfile
                         openProfile={openProfile}
                         setOpenProfile={setOpenProfile}
-                        // singleElement={singleElement}
                         operativeData={operativeData}
                         operativeId={operativeId}
                         jobListingId={jobListingId}

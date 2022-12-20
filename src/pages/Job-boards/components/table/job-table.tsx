@@ -54,17 +54,14 @@ const JobBoardTable = ({
                     <Checkbox
                         id={element?._id}
                         className="rounded-lg"
-                        name={element?.jobType?.name}
+                        name={element?.listingId}
                         onChange={handleCheckedJob}
                         checked={checkedJob.includes(element?._id)}
                         value={element?._id}
                         data-testid="checkbox"
                     />
-                    <label
-                        htmlFor={element?.jobType?.name}
-                        className="capitalize"
-                    >
-                        {element?.jobType?.name}
+                    <label htmlFor={element?.listingId} className="capitalize">
+                        {element?.listingId}
                     </label>
                 </div>
             </td>

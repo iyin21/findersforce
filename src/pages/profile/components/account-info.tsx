@@ -1,16 +1,22 @@
-import { Alert, PasswordInput } from "@mantine/core"
+import { Alert, PasswordInput, Select } from "@mantine/core"
 import { emailInputStyle, passwordInputStyle } from "../../auth/utils"
 import { useState } from "react"
 import FormikControls from "../../../components/Form/FormControls/form-controls"
 import { PasswordRequirement, requirements } from "../utils/passwordRequirement"
 import { useFormikContext } from "formik"
+import { selectData } from "../utils/subscriptionSelectData"
 
 const AccountInfo = () => {
     const { setFieldValue, values, errors } = useFormikContext<{
-        password: string
+        password: string,
+        subscriptionPlan: string
     }>()
+    // const { setFieldValue, values} = useFormikContext<{
+    //     subscriptionPlan: string
+    // }>()
     const [errorText, showErrorText] = useState(false)
     const [error, showError] = useState(false)
+    // const [selectValue, setSelectValue] = useState<string | null>("");
 
     const checks = requirements.map((requirement, index) => (
         <PasswordRequirement
@@ -68,6 +74,15 @@ const AccountInfo = () => {
                     data-testid="courseLink"
                 />
             </div>
+            <div className="mt-3">{" "}</div>
+            <Select
+                label="Choose subscription plan"
+                placeholder="Pick one"
+                onChange={(e) => setFieldValue("subscriptionPlan", e)}
+                required
+                data={selectData}
+                styles={() => emailInputStyle}
+            />
             <div
                 onFocusCapture={() => {
                     showErrorText(false)

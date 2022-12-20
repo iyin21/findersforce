@@ -18,12 +18,21 @@ import Messaging from "./pages/Messaging"
 import Settings from "./pages/Settings/index"
 import Location from "./pages/Location"
 import LocationBasedData from "./pages/Location/components/locationBasedData"
-import AdminAnalytics from "./pages/Admin/Analytics"
+import AdminAnalytics from "./pages/Admin/Analytics/Analytics"
 import SupportMedium from "./pages/Support/support-medium"
 import Subscription from "./pages/subscriptions/Subscription"
 import SubscriptionDetails from "./pages/subscriptions/components/SubscriptionDetails"
+import Approvals from "./pages/Approvals"
+import AdminDepot from "./pages/Admin/Depots"
+import AddDepot from "./pages/Admin/Depots/components/AddDepot/add-depot"
+import SingleDepot from "./pages/Admin/Depots/components/ViewSingleDepot"
+// eslint-disable-next-line no-unused-vars
+import { Buffer } from "buffer/"
 
 function App() {
+    ;(window as any).global = window
+    window.Buffer = window.Buffer || require("buffer/").Buffer
+    // window.Buffer = Buffer
     return (
         <Routes>
             {/* public routes */}
@@ -59,9 +68,17 @@ function App() {
                         path="/subscription/id"
                         element={<SubscriptionDetails />}
                     />
+                    <Route path="/subscriptions" element={<Subscription />} />
                     <Route path="/locations" element={<Location />} />
-                    <Route path="/locations/:locationId" element={<LocationBasedData />} />
+                    <Route
+                        path="/locations/:locationId"
+                        element={<LocationBasedData />}
+                    />
                     <Route path="/analytics" element={<AdminAnalytics />} />
+                    <Route path="/approvals" element={<Approvals />} />
+                    <Route path="/depots" element={<AdminDepot />} />
+                    <Route path="/add-depots" element={<AddDepot />} />
+                    <Route path="/depots/:depotId" element={<SingleDepot />} />
                 </Route>
             </Route>
         </Routes>

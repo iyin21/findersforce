@@ -210,6 +210,10 @@ const RMRoles = () => {
                     handleBack={() => {
                         setOpenSuccessModal(false)
                     }}
+                    title="Invite sent"
+                    description="This gives them administrative access to your depot
+                    account"
+                    buttonText="Back"
                 />
             )}
             <div className="p-6 mt-4 md:mt-14">

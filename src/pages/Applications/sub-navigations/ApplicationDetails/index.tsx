@@ -1,7 +1,10 @@
 import { HiArrowLeft } from "react-icons/hi"
 import { HiChevronRight } from "react-icons/hi"
 import Avatar from "../../assets/avatar.png"
+<<<<<<< HEAD
 // import { useNavigate } from "react-router-dom"
+=======
+>>>>>>> 92b62971cb1a64633407edab69452d59479b8311
 import Resume from "../../assets/resume.svg"
 // import Google from "../../assets/google.svg"
 import { BsCheck, BsX } from "react-icons/bs"
@@ -30,7 +33,10 @@ interface Prop {
 }
 const ApplicationDetails = ({ setPhase, activeId, setShiftId }: Prop) => {
     // const { applicationId } = useParams<{ applicationId: string }>()
+<<<<<<< HEAD
     // const navigate = useNavigate()
+=======
+>>>>>>> 92b62971cb1a64633407edab69452d59479b8311
 
     const { data, isLoading } = useGetApplicationDetails({
         id: activeId || "",
@@ -45,7 +51,10 @@ const ApplicationDetails = ({ setPhase, activeId, setShiftId }: Prop) => {
         isLoading: isLoadingRejectedData,
         mutate: rejectMutate,
     } = useUpdateApplication({ id: activeId || "" })
+<<<<<<< HEAD
     
+=======
+>>>>>>> 92b62971cb1a64633407edab69452d59479b8311
     const handleAccept = () => {
         acceptMutate({ status: "WON" })
     }
@@ -163,7 +172,6 @@ const ApplicationDetails = ({ setPhase, activeId, setShiftId }: Prop) => {
                                         : "Approve"}
                                 </button>
                             </div>
-                        
                         )}
                         {data?.status === "PENDING" ? (
                             <div className=" hidden lg:flex">
@@ -337,7 +345,12 @@ const ApplicationDetails = ({ setPhase, activeId, setShiftId }: Prop) => {
                                             data?.user.firstName +
                                             "-" +
                                             data?.user.lastName
+<<<<<<< HEAD
                                         }.pdf`} rel="noreferrer"
+=======
+                                        }.pdf`}
+                                        rel="noreferrer"
+>>>>>>> 92b62971cb1a64633407edab69452d59479b8311
                                     >
                                         View
                                     </a>
@@ -368,7 +381,7 @@ const ApplicationDetails = ({ setPhase, activeId, setShiftId }: Prop) => {
                                         </p>
                                     </div>
                                 </div>
-                                <p className="mt-6 text-black-50 font-medium body-mediumn mb-2">
+                                <p className="mt-6 text-black-50 font-medium body-medium mb-2">
                                     PROFESSIONAL SUMMARY
                                 </p>
                                 <p>{data?.user.bio}</p>
@@ -383,9 +396,7 @@ const ApplicationDetails = ({ setPhase, activeId, setShiftId }: Prop) => {
                                         className="flex items-start mb-4 justify-between"
                                     >
                                         {/* <img src={Google} alt="" /> */}
-                                        
-                                            
-                                        
+
                                         <div className="">
                                             <p className="font-bold body-normal">
                                                 {item.name}
@@ -403,17 +414,22 @@ const ApplicationDetails = ({ setPhase, activeId, setShiftId }: Prop) => {
                                                 Credential {item.credentialId}
                                             </p>
                                         </div>
-                                        {item.status==="accepted" ?(
-                                                <div className="flex bg-green-10 rounded-full p-2">
-                                                    <img src={CheckedIcon} alt="" />
-                                                    <p className="pl-2">Verified</p>
-                                                </div> 
-                                            ):(
-                                                <div className="flex bg-red-10 rounded-full p-2">
-                                                    <img src={UnverifiedIcon} alt="" />
-                                                    <p className="pl-2">Unverified</p>
-                                                </div> 
-                                            )}
+                                        {item.status === "accepted" ? (
+                                            <div className="flex bg-green-10 rounded-full p-2">
+                                                <img src={CheckedIcon} alt="" />
+                                                <p className="pl-2">Verified</p>
+                                            </div>
+                                        ) : (
+                                            <div className="flex bg-red-10 rounded-full p-2">
+                                                <img
+                                                    src={UnverifiedIcon}
+                                                    alt=""
+                                                />
+                                                <p className="pl-2">
+                                                    Unverified
+                                                </p>
+                                            </div>
+                                        )}
                                     </div>
                                 ))}
                             </div>

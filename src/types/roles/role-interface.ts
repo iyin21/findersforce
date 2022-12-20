@@ -1,10 +1,45 @@
-export interface InviteShiftMangerInterface {
+export interface InviteUserInterface {
     email: string[]
     invitedRole: string
-    regionAddress: string | undefined
+    regionAddress?: string | undefined
     companyId?: string | undefined
     companyName?: string | null
+    phoneNumber?: string | null
+    address?: string | null
+    logo?: string | null
     jwt?: string
+    subscription_plan?: string
+    num_of_locations?: string
+    trial_period?: boolean
+}
+export interface InviteDepotInterfaceRequest {
+    email: string[]
+    invitedRole: string
+    regionAddress?: string | undefined
+    companyId?: string | undefined
+    companyName?: string | null
+    phoneNumber?: string | null
+    address?: string | null
+    logo?: string | null
+    regionLimit?: string
+    companyEmail?: string
+}
+;[]
+
+export interface MultipleRateRequest {
+    companyId: string | undefined
+    jobRates: {
+        jobQualificationId: string
+        jobRateDepotFirstDisplayedToDepot: string
+        jobRateDepotFirstDisplayedToOp: string
+        jobRateMeetOnsiteDisplayedToDepot: string
+        jobRateMeetOnsiteDisplayedToOp: string
+    }[]
+}
+
+export interface InviteDepotInterfaceResponse {
+    message: string
+    companyId: string
 }
 
 export interface RolesRequest {
