@@ -1,23 +1,20 @@
 import { useFormikContext } from "formik"
-import {
-    useGetJobQualification,
-    useGetJobQualificationCategory,
-} from "../../../../../../hooks/job-board/useJobBoard.hooks"
+import { useGetJobQualification } from "../../../../../../hooks/job-board/useJobBoard.hooks"
 import FormikControls from "../../../../../../components/Form/FormControls/form-controls"
 import { FiPlus } from "react-icons/fi"
 import { useEffect } from "react"
+import { Table } from "@mantine/core"
 
 const Qualifications = () => {
     const { values } = useFormikContext<{
-        qualification_category: string
-        findersforce_depot_amount: string
-        findersforce_meet_amount: string
-        operative_depot_amount: string
-        operative_meet_amount: string
+        jobQualificationId: string
+        jobRateDepotFirstDisplayedToDepot: string
+        jobRateDepotFirstDisplayedToOp: string
+        jobRateMeetOnsiteDisplayedToDepot: string
+        jobRateMeetOnsiteDisplayedToOp: string
     }>()
 
     const { data: qualificationData } = useGetJobQualification()
-    const { data: category } = useGetJobQualificationCategory()
 
     const handleAddQualification = () => {
         const wageArray: any = window.sessionStorage.getItem("wageArray")
@@ -25,11 +22,15 @@ const Qualifications = () => {
         if (wageArray === null || wageArray === 0) {
             const newWage = [
                 {
-                    qualification_category: values.qualification_category,
-                    findersforce_depot_amount: values.findersforce_depot_amount,
-                    findersforce_meet_amount: values.findersforce_meet_amount,
-                    operative_depot_amount: values.operative_depot_amount,
-                    operative_meet_amount: values.operative_meet_amount,
+                    jobQualificationId: values.jobQualificationId,
+                    jobRateDepotFirstDisplayedToDepot:
+                        values.jobRateDepotFirstDisplayedToDepot,
+                    jobRateDepotFirstDisplayedToOp:
+                        values.jobRateDepotFirstDisplayedToOp,
+                    jobRateMeetOnsiteDisplayedToDepot:
+                        values.jobRateMeetOnsiteDisplayedToDepot,
+                    jobRateMeetOnsiteDisplayedToOp:
+                        values.jobRateMeetOnsiteDisplayedToOp,
                 },
             ]
             window.sessionStorage.setItem("wageArray", JSON.stringify(newWage))
@@ -40,13 +41,15 @@ const Qualifications = () => {
                 JSON.stringify([
                     ...newWageArray,
                     {
-                        qualification_category: values.qualification_category,
-                        findersforce_depot_amount:
-                            values.findersforce_depot_amount,
-                        findersforce_meet_amount:
-                            values.findersforce_meet_amount,
-                        operative_depot_amount: values.operative_depot_amount,
-                        operative_meet_amount: values.operative_meet_amount,
+                        jobQualificationId: values.jobQualificationId,
+                        jobRateDepotFirstDisplayedToDepot:
+                            values.jobRateDepotFirstDisplayedToDepot,
+                        jobRateDepotFirstDisplayedToOp:
+                            values.jobRateDepotFirstDisplayedToOp,
+                        jobRateMeetOnsiteDisplayedToDepot:
+                            values.jobRateMeetOnsiteDisplayedToDepot,
+                        jobRateMeetOnsiteDisplayedToOp:
+                            values.jobRateMeetOnsiteDisplayedToOp,
                     },
                 ])
             )
@@ -55,32 +58,42 @@ const Qualifications = () => {
     }
 
     const reset = () => {
-        values.findersforce_depot_amount = ""
-        values.findersforce_meet_amount = ""
-        values.operative_depot_amount = ""
-        values.operative_meet_amount = ""
-        values.qualification_category = ""
+        values.jobRateDepotFirstDisplayedToDepot = ""
+        values.jobRateDepotFirstDisplayedToOp = ""
+        values.jobRateMeetOnsiteDisplayedToDepot = ""
+        values.jobRateMeetOnsiteDisplayedToOp = ""
+        values.jobQualificationId = ""
     }
 
-    useEffect(() => {}, [values])
+    const wageArray: any = window.sessionStorage.getItem("wageArray")
+
+    useEffect(() => {}, [
+        values,
+        values.jobRateDepotFirstDisplayedToDepot,
+        values.jobRateDepotFirstDisplayedToOp,
+        values.jobRateMeetOnsiteDisplayedToDepot,
+        values.jobRateMeetOnsiteDisplayedToOp,
+        values.jobQualificationId,
+        wageArray,
+    ])
 
     return (
-        <div className="py-3 lg:w-[55%]">
+        <div className="py-3 font-creato">
             <div className="mt-4">
                 <label className="text-3md font-semibold text-black-100 block mb-2">
                     Qualification category
                 </label>
                 <FormikControls
                     control="select"
-                    name="qualification_category"
-                    aria-label="Shift type"
+                    name="jobQualificationId"
+                    aria-label="Qualification"
                     type="select"
-                    className="rounded text-black-50"
-                    data-testid="qualification_category"
-                    defaultValue={values?.qualification_category}
+                    className="rounded text-black-50 w-[70%]"
+                    data-testid="jobQualificationId"
+                    defaultValue={values?.jobQualificationId}
                 >
                     <option>Select an option---</option>
-                    {category?.map((item) => (
+                    {qualificationData?.map((item) => (
                         <option key={item._id} value={item._id}>
                             {" "}
                             {item.name}{" "}
@@ -89,83 +102,65 @@ const Qualifications = () => {
                 </FormikControls>
             </div>
 
-            <div className="mt-4">
-                <label className="text-3md font-semibold text-black-100 block mb-2">
-                    Qualification
-                </label>
-
-                <div className="border border-black-10 p-6 rounded-lg flex gap-2">
-                    <p className="bg-black-5 p-2 w-fit">
-                        {
-                            qualificationData?.filter(
-                                (item) =>
-                                    item?.jobQualificationCategoryId ===
-                                    values.qualification_category
-                            )[0]?.name
-                        }
-                    </p>
-                </div>
-            </div>
-
-            <div className="grid grid-cols-2 gap-6 mt-3">
+            <div className="grid grid-cols-4 gap-6 mt-3 ">
                 <div className="mt-4">
                     <label className="text-3md font-semibold text-black-100 block mb-2">
-                        Finders force amount (Depot first)
+                        Meet on site: Depot pays
                     </label>
                     <FormikControls
                         type="text"
-                        name="findersforce_depot_amount"
+                        name="jobRateMeetOnsiteDisplayedToDepot"
                         control="input"
                         placeholder="0"
-                        aria-label="Finders force amount (Depot first)"
+                        aria-label="Meet on site: Depot pays"
                         required
                         className="rounded"
-                        data-testid="findersforce_depot_amount"
+                        data-testid="jobRateMeetOnsiteDisplayedToDepot"
                     />
                 </div>
                 <div className="mt-4">
                     <label className="text-3md font-semibold text-black-100 block mb-2">
-                        Operative amount (Depot first per/hr)
+                        Meet on site: Op pays
                     </label>
                     <FormikControls
                         type="text"
-                        name="operative_depot_amount"
+                        name="jobRateMeetOnsiteDisplayedToOp"
                         control="input"
                         placeholder="0"
-                        aria-label="Operative amount (Depot first per/hr)"
+                        aria-label=" Meet on site: Op pays"
                         required
                         className="rounded"
-                        data-testid="operative_depot_amount"
+                        data-testid="jobRateMeetOnsiteDisplayedToOp"
                     />
                 </div>
-                <div className="">
+                <div className="mt-4">
                     <label className="text-3md font-semibold text-black-100 block mb-2">
-                        Finders force amount (Meet on site)
+                        Depot First: Depot pays
                     </label>
                     <FormikControls
                         type="text"
-                        name="findersforce_meet_amount"
+                        name="jobRateDepotFirstDisplayedToDepot"
                         control="input"
                         placeholder="0"
-                        aria-label="Finders force amount (Meet on site)"
+                        aria-label=" Depot First: Depot pays"
                         required
                         className="rounded"
-                        data-testid="findersforce_meet_amount"
+                        data-testid="jobRateDepotFirstDisplayedToDepot"
                     />
                 </div>
-                <div className="">
+                <div className="mt-4">
                     <label className="text-3md font-semibold text-black-100 block mb-2">
-                        Operative amount (Meet on site per/hr)
+                        Depot First: Op Receives
                     </label>
                     <FormikControls
                         type="text"
-                        name="operative_meet_amount"
+                        name="jobRateDepotFirstDisplayedToOp"
                         control="input"
                         placeholder="0"
-                        aria-label="Operative amount (Meet on site per/hr)"
+                        aria-label="Depot First: Op Receives"
                         required
                         className="rounded"
-                        data-testid="operative_meet_amount"
+                        data-testid="jobRateDepotFirstDisplayedToOp"
                     />
                 </div>
             </div>
@@ -174,10 +169,89 @@ const Qualifications = () => {
                 className="bg-black-100 p-2 flex items-center gap-2 w-fit text-white-100 rounded mt-6"
                 onClick={() => {
                     handleAddQualification()
+                    reset()
                 }}
             >
                 <FiPlus size={20} /> Add New
             </p>
+
+            <div className="mt-16">
+                <Table
+                    style={{
+                        backgroundColor: "#0F0D000D",
+                        fontFamily: "CreatoDisplay",
+                    }}
+                >
+                    <thead>
+                        <tr>
+                            <th>Qualification</th>
+                            <th>
+                                <p className="bg-black-100 text-yellow-100 px-3 py-1 rounded-lg w-fit">
+                                    MOS Depot pays
+                                </p>
+                            </th>
+                            <th>
+                                <p className="bg-black-100 text-yellow-100 px-3 py-1 rounded-lg w-fit">
+                                    MOS OP Receives
+                                </p>
+                            </th>
+                            <th>
+                                <p className="bg-black-100 text-white-100 px-3 py-1 rounded-lg w-fit">
+                                    DPF Depot pays
+                                </p>
+                            </th>
+                            <th>
+                                <p className="bg-black-100 text-white-100 px-3 py-1 rounded-lg w-fit">
+                                    DPF OP Receives
+                                </p>
+                            </th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {wageArray &&
+                            JSON.parse(wageArray).map(
+                                (item: any, index: number) => (
+                                    <tr key={index}>
+                                        <td>
+                                            {
+                                                qualificationData?.filter(
+                                                    (item2) =>
+                                                        item2._id ===
+                                                        item?.jobQualificationId
+                                                )[0]?.name
+                                            }
+                                        </td>
+                                        <td>
+                                            £
+                                            {
+                                                item?.jobRateMeetOnsiteDisplayedToDepot
+                                            }
+                                        </td>
+                                        <td>
+                                            £
+                                            {
+                                                item?.jobRateMeetOnsiteDisplayedToOp
+                                            }
+                                        </td>
+                                        <td>
+                                            £
+                                            {
+                                                item?.jobRateDepotFirstDisplayedToDepot
+                                            }
+                                        </td>
+                                        <td>
+                                            £
+                                            {
+                                                item?.jobRateDepotFirstDisplayedToOp
+                                            }
+                                        </td>
+                                    </tr>
+                                )
+                            )}
+                    </tbody>
+                </Table>
+            </div>
         </div>
     )
 }

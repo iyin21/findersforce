@@ -4,24 +4,17 @@ import FormikControls from "../../../../../../components/Form/FormControls/form-
 import { useEffect, useRef, useState } from "react"
 import AvatarIcon from "../../../../../../assets/ProfileImage.svg"
 import AvatarUploadIcon from "../../../../../../assets/upload.svg"
-import { ReactMultiEmail } from "react-multi-email"
 
 const PersonalDetails = () => {
-    const { setFieldValue, values } = useFormikContext<{
+    const { setFieldValue } = useFormikContext<{
         subscription_plan: string
         logo: string
     }>()
-    // const [checked, setChecked] = useState(false)
+
     const ref = useRef<HTMLInputElement | null>(null)
     const [file, setFile] = useState<string>("")
-    const [emails, setEmails] = useState<string[]>([])
+    const [image, setImage] = useState<string>("")
 
-    // const subscriptionPlan = ["Entry", "Pro", "Elite", "Enterprice"]
-
-    // const handleSwitch = () => {
-    //     setChecked(!checked)
-    //     setFieldValue("trial_period", checked ? "true" : "false")
-    // }
     function uploadSingleFile(e: any) {
         if (!e.target.files || e.target.files.length === 0) {
             setFile("")
@@ -38,7 +31,8 @@ const PersonalDetails = () => {
 
         // @ts-ignore
         const objectUrl = URL.createObjectURL(file)
-        setFieldValue("logo", objectUrl)
+        setImage(objectUrl)
+        setFieldValue("logo", file)
 
         // free memory when ever this component is unmounted
         return () => URL.revokeObjectURL(objectUrl)
@@ -70,42 +64,14 @@ const PersonalDetails = () => {
                         Email
                     </label>
 
-                    <ReactMultiEmail
-                        placeholder="Input your email"
-                        emails={emails}
-                        onChange={(_emails: string[]) => {
-                            setEmails(_emails)
-                            setFieldValue("email", _emails)
-                        }}
-                        // validateEmail={(email: string) => {
-                        //     return email.split("@").length === 1
-                        // }}
-                        // onDisabled={emails.length >= 1}
-                        getLabel={(email, index, removeEmail) => {
-                            return (
-                                <div data-tag key={index}>
-                                    <div data-tag-item>{email}</div>
-                                    <span
-                                        data-tag-handle
-                                        onClick={() => removeEmail(index)}
-                                    >
-                                        ×
-                                    </span>
-                                </div>
-                            )
+                    <input
+                        type="email"
+                        className="p-3 border border-black-5 w-full"
+                        name="email"
+                        onChange={(e) => {
+                            setFieldValue("email", [e.target.value])
                         }}
                     />
-
-                    {/* <FormikControls
-                        type="text"
-                        name="companyEmail"
-                        control="input"
-                        placeholder="Email"
-                        aria-label="Email"
-                        required
-                        className="rounded"
-                        data-testid="companyEmail"
-                    /> */}
                 </div>
                 <div className="py-5">
                     <h6 className="font-creatoLight text-lg text-black-60">
@@ -123,7 +89,7 @@ const PersonalDetails = () => {
                             }}
                         >
                             <img
-                                src={values?.logo || AvatarIcon}
+                                src={image || AvatarIcon}
                                 alt="logo"
                                 width={80}
                                 className="rounded-full min-h-[80px] min-w-[80px] object-cover"
@@ -145,12 +111,16 @@ const PersonalDetails = () => {
                     </div>
 
                     <div className="mt-4">
-                        <label className="text-3md font-semibold text-neutral-80 block mb-2">
+                        <label
+                            className="text-3md font-semibold text-neutral-80 block mb-2"
+                            htmlFor="companyName"
+                        >
                             Depot name
                         </label>
                         <FormikControls
                             type="text"
                             name="companyName"
+                            id="companyName"
                             control="input"
                             placeholder="Depot name"
                             aria-label="Depot name"
@@ -160,10 +130,14 @@ const PersonalDetails = () => {
                         />
                     </div>
                     <div className="mt-4">
-                        <label className="text-3md font-semibold text-neutral-80 block mb-2">
+                        <label
+                            className="text-3md font-semibold text-neutral-80 block mb-2"
+                            htmlFor="companyEmail"
+                        >
                             Depot email
                         </label>
                         <FormikControls
+                            id="companyEmail"
                             type="text"
                             name="companyEmail"
                             control="input"
@@ -181,18 +155,22 @@ const PersonalDetails = () => {
                         />
                     </div>
                     <div className="mt-4">
-                        <label className="text-3md font-semibold text-neutral-80 block mb-2">
+                        <label
+                            className="text-3md font-semibold text-neutral-80 block mb-2"
+                            htmlFor="regionLimit"
+                        >
                             How many locations do you have?
                         </label>
                         <FormikControls
-                            type="text"
-                            name="num_of_locations"
+                            type="number"
+                            id="regionLimit"
+                            name="regionLimit"
                             control="input"
                             placeholder=" How many locations do you have?"
                             aria-label=" How many locations do you have?"
                             required
                             className="rounded"
-                            data-testid="num_of_locations"
+                            data-testid="regionLimit"
                         />
                     </div>
                     {/* <div className="mt-4">
