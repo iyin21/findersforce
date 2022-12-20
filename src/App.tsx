@@ -25,8 +25,13 @@ import Approvals from "./pages/Approvals"
 import AdminDepot from "./pages/Admin/Depots"
 import AddDepot from "./pages/Admin/Depots/components/AddDepot/add-depot"
 import SingleDepot from "./pages/Admin/Depots/components/ViewSingleDepot"
+// eslint-disable-next-line no-unused-vars
+import { Buffer } from "buffer/"
 
 function App() {
+    ;(window as any).global = window
+    window.Buffer = window.Buffer || require("buffer/").Buffer
+    // window.Buffer = Buffer
     return (
         <Routes>
             {/* public routes */}
