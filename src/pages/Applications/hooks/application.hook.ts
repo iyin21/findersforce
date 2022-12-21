@@ -13,17 +13,20 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 interface ApplicationRequest {
     status: string
     page?: number
+    jobTypeId?: string
+    jobMatchPercentageMin?: string
+    jobMatchPercentageMax?: string
 }
 interface UpdateApplicationRequest {
     status: string
 }
-function useGetApplications({ status, page }: ApplicationRequest) {
+function useGetApplications({ status, page, jobTypeId, jobMatchPercentageMin, jobMatchPercentageMax }: ApplicationRequest) {
     // const { auth } =  useAuth()
     // console.log(auth)
     const { state } = useAuthContext()
     const getApplications = async () => {
         const { data } = await axiosInstance.get("/applications", {
-            params: { status, page },
+            params: { status, page, jobTypeId, jobMatchPercentageMin, jobMatchPercentageMax },
             headers: {
                 Authorization: `Bearer ${state?.jwt?.token}`,
             },
@@ -32,7 +35,7 @@ function useGetApplications({ status, page }: ApplicationRequest) {
     }
 
     return useQuery<ApplicationRequest, AxiosError, ApplicationResponse>(
-        ["applications", { status, page }],
+        ["applications", { status, page, jobTypeId, jobMatchPercentageMin, jobMatchPercentageMax }],
         getApplications,
 
         {
