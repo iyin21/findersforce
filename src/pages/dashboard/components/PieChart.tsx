@@ -1,7 +1,7 @@
 import { useGetDashboardAnalytics } from "../../../hooks/dashboard/useDashboard.hook";
 import { Chart } from "react-google-charts"
 
-const PieChart = ({value, selectValue}:{value: [Date | null, Date | null], selectValue:any}) => {
+const PieChart = ({value, selectValue}:{value: [Date | null, Date | null], selectValue?:any}) => {
   const {data:dashboardAnalytics} = useGetDashboardAnalytics({
     dateFrom: value[0] ,
     dateTo: value[1],

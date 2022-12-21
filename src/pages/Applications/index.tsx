@@ -13,6 +13,8 @@ import  {ApplicationFilterRequest}  from "../../types/filter/filter"
 import Filter  from "../../components/ApplicationFilter/index"
 
 const Applications = () => {
+    
+
     const [activeTab, setActiveTab] = useState<string | null>("pending")
 
     const [activePendingPage, setPendingPage] = useState(1)
