@@ -3,7 +3,7 @@ import { Dispatch, SetStateAction, useState } from "react"
 import { TelegramClient, Api } from "telegram"
 
 import { showNotification } from "@mantine/notifications"
-import { AiFillFile } from "react-icons/ai";
+import { AiFillFile } from "react-icons/ai"
 
 interface FileModalProps {
     opened: boolean
@@ -23,20 +23,15 @@ const FileModal = ({
 }: FileModalProps) => {
     const [caption, setCaption] = useState("")
     const [isSending, setIsSending] = useState(false)
-    
 
     const handleSendFile = async () => {
         setIsSending(true)
-        
+
         try {
             if (uploadedFile && client) {
-                
-
                 const result = await client.sendFile(chat, {
-                
                     file: uploadedFile,
 
-            
                     caption: caption,
                     ...(file?.type.includes("video")
                         ? { videoNote: true }
@@ -49,14 +44,14 @@ const FileModal = ({
                         : ""),
                 })
                 if (result) {
-                    console.log("result2", result)
+                    // console.log("result2", result)
                     setIsSending(false)
                     setOpened(false)
                     setCaption("")
                 }
             }
         } catch (err: any) {
-            console.log(err)
+            // console.log(err)
             showNotification({
                 title: "Error",
                 message:
@@ -79,16 +74,14 @@ const FileModal = ({
                     alt="findersforce"
                     className=" object-cover"
                 />
-            ):(
+            ) : (
                 <div className="flex items-center">
                     <div className="rounded-full bg-blue-100 p-3">
-                    
-                    <AiFillFile   color="white" size="20px"/>
+                        <AiFillFile color="white" size="20px" />
                     </div>
-                    
+
                     <p className="ml-2">{file?.name}</p>
-                    
-                </div>    
+                </div>
             )}
             <hr className="text-black-20 mt-2" />
             <div className="mt-2">

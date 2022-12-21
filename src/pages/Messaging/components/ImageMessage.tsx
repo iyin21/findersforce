@@ -37,7 +37,7 @@ export default function ImageMessage({
         // await client.connect()
         try {
             const thumbnailBuffer = await client.downloadMedia(data, {
-                progressCallback: console.log,
+                progressCallback: () => {}, // console.log,
                 thumb: 0,
                 // outputFile: "path/to/downloads_dir",
             })
@@ -58,7 +58,7 @@ export default function ImageMessage({
                 setDocument(buffer)
             }
         } catch (err) {
-            console.log("error", err)
+            // console.log("error", err)
         }
     }
 

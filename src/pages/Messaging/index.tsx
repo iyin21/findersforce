@@ -13,7 +13,7 @@ import { Drawer } from "@mantine/core"
 // import ReadIcon from "./assets/read.svg"
 import { MdGroup } from "react-icons/md"
 import AddGroup from "../../components/Modals/Messaging/addGroupModal"
-import { TelegramClient, Api, } from "telegram"
+import { TelegramClient, Api } from "telegram"
 import { StringSession } from "telegram/sessions"
 import { useEffect, useRef } from "react"
 // import { chats, message,  } from "telegram/client"
@@ -29,8 +29,7 @@ import FileModal from "./components/fileModal"
 import SignIn from "./components/signIn"
 import SendCode from "./components/sendCode"
 import { Dialog } from "telegram/tl/custom/dialog"
-import calendar from "dayjs/plugin/calendar";
-
+import calendar from "dayjs/plugin/calendar"
 
 dayjs.extend(calendar)
 
@@ -39,7 +38,7 @@ const Messaging = () => {
     const [phone, setPhone] = useState("")
     const [phoneCodeHash, setPhoneCodeHash] = useState("")
     const [newClient, setNewClient] = useState<TelegramClient>()
-    //const [session, setSession] = useState("")
+    // const [session, setSession] = useState("")
     const [dialog, setDialog] = useState<Dialog[]>([])
     const [activeChat, setActiveChat] = useState("")
     const [chatHistory, setChatHistory] = useState<Api.Message[]>([])
@@ -48,9 +47,8 @@ const Messaging = () => {
     const [isFetchingDialog, setIsFetchingDialog] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
     const [chatId, setChatId] = useState<bigInt.BigInteger>()
-    
 
-    //Telegram
+    // Telegram
 
     const apiId = import.meta.env.VITE_TELEGRAM_API_ID as number
 
@@ -60,9 +58,8 @@ const Messaging = () => {
     ) // fill this later with the value from session.save()
     const client = new TelegramClient(stringSession, apiId, apiHash, {
         connectionRetries: 10000,
-        //testServers: true,
+        // testServers: true,
     })
-
 
     useEffect(() => {
         const run = async () => {
@@ -96,9 +93,9 @@ const Messaging = () => {
 
             async function eventPrint(event: NewMessageEvent) {
                 const message = event.message
-                const sender = await message.getSender()
-                const sender2 = await message.getInputSender()
-                const getChat = await message.getChat()
+                // const sender = await message.getSender()
+                // const sender2 = await message.getInputSender()
+                // const getChat = await message.getChat()
                 const id = message.chat?.id
                 // Checks if it's a private message (from user or bot)
                 if (event.isPrivate && id) {
@@ -112,21 +109,16 @@ const Messaging = () => {
                     // if (sender2) {
                     //     console.log("yfytd", sender2)
                     // }
-                
-                   // console.log(getChat?.firstName + " " + getChat?.lastName)
-                    //@ts-expect-error
+
+                    // console.log(getChat?.firstName + " " + getChat?.lastName)
+                    // @ts-expect-error
                     if (chatId?.value === id.value) {
-                        setChatHistory((chat) => [
-                            ...chat,
-                            message,
-                           
-                        ])
-                    } 
+                        setChatHistory((chat) => [...chat, message])
+                    }
                     // else {
                     //     console.log("hjhj", dialog[0].message.chat?.id?.value)
-                        
+
                     // }
-                    
                 }
             }
             // adds an event handler for new messages
@@ -136,7 +128,7 @@ const Messaging = () => {
     useEffect(() => {
         const run = async () => {
             setIsLoading(true)
-            
+
             await client.connect()
 
             try {
@@ -153,8 +145,6 @@ const Messaging = () => {
             }
         }
         run()
-
-    
     }, [])
 
     const handleShowMessages = async (value: string) => {
@@ -168,9 +158,7 @@ const Messaging = () => {
                 reverse: true,
             })
             if (result) {
-                
-            
-                console.log("result", result)
+                // console.log("result", result)
                 setChatId(result[0].chat?.id)
 
                 setChatHistory(() => [
@@ -179,17 +167,14 @@ const Messaging = () => {
                         .filter(
                             (item: Api.Message) => item.message !== undefined
                         )
-                        .map(
-                            (item: Api.Message) => item
-                           
-                        ),
+                        .map((item: Api.Message) => item),
                 ])
             }
         } finally {
             setIsLoadingMessages(false)
         }
     }
-    
+
     const [openMenu, setOpenMenu] = useState(false)
     const [message, setMessage] = useState("")
     const [activeIndex, setActiveIndex] = useState<number | null>(null)
@@ -210,10 +195,11 @@ const Messaging = () => {
             if (result) {
                 setMessage("")
             }
-        } catch (err:any) {
+        } catch (err: any) {
             showNotification({
                 title: "Error",
-                message:err.errorMessage || "An error occured, pleease try again",
+                message:
+                    err.errorMessage || "An error occured, pleease try again",
                 color: "red",
             })
         } finally {
@@ -233,7 +219,7 @@ const Messaging = () => {
     useEffect(() => {
         scrollToBottom()
     }, [containerRef, chatHistory])
-    
+
     // this handles the ref that gets triggered when the user clicks on the attach icon
     const ref = useRef<HTMLInputElement | null>(null)
 
@@ -241,7 +227,6 @@ const Messaging = () => {
         const file = e.target.files?.[0]
 
         if (file) {
-            
             try {
                 const result = await newClient?.uploadFile({
                     file: file,
@@ -251,7 +236,6 @@ const Messaging = () => {
                     setFileUpload(e.target.files?.[0])
                     setUploadedFile(result)
                     setOpenFileModal(true)
-            
                 }
             } catch (err) {
                 showNotification({
@@ -272,7 +256,6 @@ const Messaging = () => {
                 file={fileUpload}
                 client={newClient}
                 chat={activeChat}
-        
                 uploadedFile={uploadedFile}
             />
             <div className="h-screen relative">
@@ -307,7 +290,7 @@ const Messaging = () => {
                             <Drawer
                                 opened={openMenu}
                                 onClose={() => setOpenMenu(false)}
-                                //size="75%"
+                                // size="75%"
                                 withCloseButton={false}
                                 overlayBlur={2}
                                 overlayColor="#132013"
@@ -374,7 +357,9 @@ const Messaging = () => {
                                             }`}
                                             onClick={() => {
                                                 setActiveIndex(index)
-                                                handleShowMessages(item?.title||"")
+                                                handleShowMessages(
+                                                    item?.title || ""
+                                                )
                                             }}
                                         >
                                             <img
@@ -394,11 +379,17 @@ const Messaging = () => {
                                                             <MdGroup className="mr-1" />
                                                         )}
                                                         <h5 className="text-3md font-bold items-center">
-                                                            {item.title?.slice(0, 25)}
+                                                            {item.title?.slice(
+                                                                0,
+                                                                25
+                                                            )}
                                                         </h5>
                                                     </div>
                                                     <p className="text-[10px]">
-                                                        {item?.message?.message?.slice(0, 40)||""}
+                                                        {item?.message?.message?.slice(
+                                                            0,
+                                                            40
+                                                        ) || ""}
                                                     </p>
                                                 </div>
                                                 <div className="text-[10px] mr-0">
@@ -408,18 +399,25 @@ const Messaging = () => {
                                                             alt=""
                                                         /> */}
                                                         <span className="pl-2">
-                                                        {dayjs(new Date(
+                                                            {dayjs(
+                                                                new Date(
                                                                     item.date *
                                                                         1000
-                                                                )).calendar(null, {
-                                                            sameDay: 'h:mm A', // The same day ( Today at 2:30 AM )
-                                                            nextDay: '[Tomorrow]', // The next day ( Tomorrow at 2:30 AM )
-                                                            nextWeek: 'dddd', // The next week ( Sunday at 2:30 AM )
-                                                            lastDay: '[Yesterday]', // The day before ( Yesterday at 2:30 AM )
-                                                            lastWeek: 'DD/MM/YYYY', // Last week ( Last Monday at 2:30 AM )
-                                                            sameElse: 'DD/MM/YYYY' // Everything else ( 7/10/2011 )
+                                                                )
+                                                            ).calendar(null, {
+                                                                sameDay:
+                                                                    "h:mm A", // The same day ( Today at 2:30 AM )
+                                                                nextDay:
+                                                                    "[Tomorrow]", // The next day ( Tomorrow at 2:30 AM )
+                                                                nextWeek:
+                                                                    "dddd", // The next week ( Sunday at 2:30 AM )
+                                                                lastDay:
+                                                                    "[Yesterday]", // The day before ( Yesterday at 2:30 AM )
+                                                                lastWeek:
+                                                                    "DD/MM/YYYY", // Last week ( Last Monday at 2:30 AM )
+                                                                sameElse:
+                                                                    "DD/MM/YYYY", // Everything else ( 7/10/2011 )
                                                             })}
-                                                            
                                                         </span>
                                                     </p>
                                                     {item.unreadCount > 0 && (
@@ -450,7 +448,6 @@ const Messaging = () => {
                                             <p className="text-neutral-100 body-extra-small pt-1 font-bold">
                                                 46 Members
                                             </p>
-                                            
                                         </div>
                                         <div className="flex gap-6 text-black-40 cursor-pointer">
                                             <MdCall size={30} />
@@ -491,7 +488,6 @@ const Messaging = () => {
                                                         <ImageMessage
                                                             data={item.media}
                                                             client={client}
-                                                            
                                                             item={item}
                                                         />
                                                         <div className="bg-black-5 ml-10 w-[300px] rounded-br-[20px] rounded-bl-[20px] p-4 ">
@@ -563,7 +559,7 @@ const Messaging = () => {
                                             <GrAttachment color="rgba(15, 13, 0, 0.5)" />
                                             <input
                                                 data-testid="file-upload"
-                                                //ref={fileInputRef}
+                                                // ref={fileInputRef}
                                                 type="file"
                                                 hidden
                                                 onChange={handleUpload}
@@ -589,7 +585,7 @@ const Messaging = () => {
                                             onClick={() =>
                                                 message && handleSendMessage()
                                             }
-                                            //disabled={isLoading}
+                                            // disabled={isLoading}
                                         >
                                             {isLoadingSendMessage ? (
                                                 <CgSpinner className="animate-spin text-primary-90 text-3xl" />

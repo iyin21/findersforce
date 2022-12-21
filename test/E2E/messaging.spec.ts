@@ -10,9 +10,7 @@ test("can sign in and view messaging", async ({ page }) => {
     await page.waitForNavigation()
     // Expect a title "to contain" a substring.
     await expect(page.locator("text=Members")).toBeVisible()
-    //await expect(page.locator("text=Search")).toBeVisible()
-    
-    
+    // await expect(page.locator("text=Search")).toBeVisible()
 })
 test("can open drawer", async ({ page }) => {
     await page.goto(URL)
@@ -25,6 +23,4 @@ test("can open drawer", async ({ page }) => {
     await expect(page.locator("text=Members")).toBeVisible()
     await page.locator('[data-testid="menu_btn"]').click()
     await page.waitForSelector("text=New Group")
-    
-    
 })
