@@ -16,17 +16,23 @@ import ShiftsDetailTable from "./pages/planner/components/ShiftsDetailsTable"
 import Roles from "./pages/roles"
 import Messaging from "./pages/Messaging"
 import Settings from "./pages/Settings/index"
-import Subscriptions from "./pages/subscriptions/Subscription"
 import Location from "./pages/Location"
 import LocationBasedData from "./pages/Location/components/locationBasedData"
 import AdminAnalytics from "./pages/Admin/Analytics/Analytics"
 import SupportMedium from "./pages/Support/support-medium"
+import Subscription from "./pages/subscriptions/Subscription"
+import SubscriptionDetails from "./pages/subscriptions/components/SubscriptionDetails"
 import Approvals from "./pages/Approvals"
 import AdminDepot from "./pages/Admin/Depots"
 import AddDepot from "./pages/Admin/Depots/components/AddDepot/add-depot"
 import SingleDepot from "./pages/Admin/Depots/components/ViewSingleDepot"
+// eslint-disable-next-line no-unused-vars
+import { Buffer } from "buffer/"
 
 function App() {
+    ;(window as any).global = window
+    window.Buffer = window.Buffer || require("buffer/").Buffer
+
     return (
         <Routes>
             {/* public routes */}
@@ -57,7 +63,12 @@ function App() {
                     <Route path="/support" element={<SupportMedium />} />
                     <Route path="/support/complaint" element={<Support />} />
                     <Route path="/messaging" element={<Messaging />} />
-                    <Route path="/subscriptions" element={<Subscriptions />} />
+                    <Route path="/subscription" element={<Subscription />} />
+                    <Route
+                        path="/subscription/id"
+                        element={<SubscriptionDetails />}
+                    />
+                    <Route path="/subscriptions" element={<Subscription />} />
                     <Route path="/locations" element={<Location />} />
                     <Route
                         path="/locations/:locationId"

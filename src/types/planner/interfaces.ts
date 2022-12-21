@@ -95,3 +95,20 @@ export interface ShiftResponse {
   _id: string
 }
             
+export interface PaymentEvidenceUpload {
+  status: string;
+  message: string;
+  data: {
+      _id: string;
+      depot: string;
+      createdAt: string;
+      updatedAt: string;
+      __v: number;
+      schedule: string[]
+      status: string
+      rejectReason: string
+      rejectedDate: Date
+      acceptedDate: Date
+      uploadDate: Date
+  }
+}

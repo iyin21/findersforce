@@ -53,7 +53,7 @@ export default function ImageMessage({
         // await client.connect()
         try {
             const thumbnailBuffer = await client.downloadMedia(data, {
-                progressCallback: console.log,
+                progressCallback: () => {}, // console.log,
                 thumb: 0,
                 // outputFile: "path/to/downloads_dir",
             })
@@ -70,7 +70,7 @@ export default function ImageMessage({
         try {
             const buffer = await client.downloadMedia(data, {})
             if (buffer) {
-                //@ts-expect-error
+                // @ts-ignore
                 setDocument(buffer)
             }
         } catch (_err) {
@@ -101,7 +101,7 @@ export default function ImageMessage({
         }
     }
 
-    //@ts-expect-erro
+    // @ts-expect-erro
     // console.log("file", item.file?.size?.value)
     return (
         <>
@@ -120,8 +120,9 @@ export default function ImageMessage({
                         })
                     )}
                     target="_blank"
-                    //rel="noreferrer"
+                    // rel="noreferrer"
                     download={item.file.name}
+                    rel="noreferrer"
                 >
                     <div className="rounded-full bg-blue-100 p-3">
                         <AiFillFile color="white" size="20px" />
@@ -139,6 +140,7 @@ export default function ImageMessage({
                         height="300"
                         width="300"
                         allow="fullscreen"
+                        title="webpage"
                     ></iframe>
                 </div>
             ) : (
@@ -170,6 +172,7 @@ export default function ImageMessage({
                                 src={`data:image/png;base64,${thumbnailImg}`}
                                 height={100}
                                 width={300}
+                                alt=""
                             />
                         </div>
                     )}

@@ -7,4 +7,6 @@ export interface Result {
                 contactPerson: string
                 paymentReference: string
                 monthPaid: string
+                depot: string
+                monthOf: string
 }

@@ -1,31 +1,35 @@
-import { Modal, Progress, Table } from "@mantine/core"
-import { useState } from "react"
+import { Table, Tabs } from "@mantine/core"
+import { ChangeEvent, useEffect, useState } from "react"
 import { BiDotsVerticalRounded } from "react-icons/bi"
-import { FaTimes } from "react-icons/fa"
+import { FaAngleRight } from "react-icons/fa"
 import Layout from "../../../components/Layout/index"
 import {
     useGetOperativeRatingSummary,
     useGetShiftHistoryByJobListingId,
     useGetSingleSchedule,
+    usePaymentEvidenceUpload,
 } from "../../../hooks/planner/usePlanner.hooks"
 import dayjs from "dayjs"
-import { AiFillStar, AiOutlineArrowLeft } from "react-icons/ai"
-import { TfiLocationPin } from "react-icons/tfi"
+import { AiOutlineArrowLeft } from "react-icons/ai"
 import ProfileImage from "../../../assets/ProfileImage.svg"
 import { useLocation, useNavigate, useParams } from "react-router-dom"
 import { CgSpinner } from "react-icons/cg"
 import Pagination from "../../../components/Pagination/pagination"
-import Filter from "../../../components/Filter/index"
-import { FilterRequest } from "../../../types/filter/filter"
 import MobileShiftsDetailsTable from "./MobileShiftsDetailsTable"
-import Message from "../../../assets/Messaging.svg"
+import { Button, Checkbox } from "../../../components"
+import { FiPlus } from "react-icons/fi"
+import TimeEstimate from "./TimeEstimate"
+import PaymentEvidenceUpload from "../../../components/Modals/Planner/PaymentEvidenceUpload"
+import OperativeProfile from "../../../components/Modals/Planner/OperativeProfile"
+import Menu from "../../../components/Modals/Planner/Menu"
 
 const ShiftsDetailTable = () => {
     const { jobListingId } = useParams<string>()
-
+    const navigate = useNavigate()
     const location = useLocation()
 
-    const queryStatus = location.state.status
+    const queryStatus = location?.state?.status
+    const scheduleId = location?.state?.scheduleId
 
     const { data: shiftsData, isLoading: isLoadingShiftsData } =
         useGetShiftHistoryByJobListingId({
@@ -37,19 +41,98 @@ const ShiftsDetailTable = () => {
         jobListingId: jobListingId,
     })
 
-    const navigate = useNavigate()
-    const [activePage, setActivePage] = useState(1)
+    const { data, isError, mutate } = usePaymentEvidenceUpload({
+        scheduleId: scheduleId,
+    })
 
-    const applyFilter = (filter: FilterRequest) => {}
+    const [activeTab, setActiveTab] = useState<string | null>("unpaid")
+    const [checkedShift, setCheckedShift] = useState<string[]>([])
+    const [buttonState, setButtonState] = useState(false)
+    const [activePage, setActivePage] = useState(1)
+    const [openProfile, setOpenProfile] = useState(false)
+    const [openMenu, setOpenMenu] = useState(false)
+    const [openPayment, setOpenPayment] = useState(false)
+    const [operativeId, setOperativeId] = useState("")
+    const [, setError] = useState("")
+    const [, setFileName] = useState("")
+    const [checkedOperative, setCheckedOperative] = useState("");
+    
+
+    function handleFinishPayment() {
+        setOpenPayment(!openPayment)
+        setButtonState(!buttonState)
+    }
+
 
     const handleActivePage = (pageNumber: number) => {
         setActivePage(pageNumber)
     }
+    useEffect(() => {
+        if (data && data.status === "success") {
+            setButtonState(true)
+        }
 
-    const [opened, setOpened] = useState(false)
+        if (isError) {
+            // console.log("error")
+        }
+    }, [data, isError])
+
+    const handleCheckedShift = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { value } = e.target
+        const isChecked = e.target.checked
+        if (isChecked) {
+            setCheckedShift([...checkedShift, value]);
+            setCheckedOperative(value)
+        } else {
+            setCheckedShift(checkedShift.filter((item) => item !== value))
+            setCheckedOperative("")
+        }
+    }
+
+    const { data: checkedData } = useGetSingleSchedule({
+        jobListingId: jobListingId,
+        operativeId: checkedOperative
+    })
+
+
+
+    const amount:any = checkedData?.results?.map((item) => {
+        return(Number(item?.jobListing?.jobRate?.jobRatePerHourDisplayedToDepot * item?.jobListing?.shiftDurationInHours * checkedShift?.length))
+    })
+    
+
+    
+
+    const handleDocumentUpload = (e: ChangeEvent<HTMLInputElement>) => {
+        const uploadedFile = e.target.files?.[0]
+        if (uploadedFile) {
+            setError("")
+            if (
+                !(
+                    uploadedFile.name.toLowerCase().endsWith(".pdf") ||
+                    uploadedFile.name.toLowerCase().endsWith(".jpg") ||
+                    uploadedFile.name.toLowerCase().endsWith(".jpeg") ||
+                    uploadedFile.name.toLowerCase().endsWith(".png")
+                )
+            ) {
+                return setError(
+                    "Invalid format. Accepted format is JPG, PNG or PDF"
+                )
+            }
+
+            setFileName(uploadedFile.name)
+            mutate({ file: uploadedFile })
+        }
+    }
+
+    const handleOpenMenu = (id: string) => {
+        setOperativeId(id)
+        setOpenMenu(!openMenu)
+    }
 
     const rows = shiftsData?.results?.map((element, index) => (
         <tr key={index}>
+            <td>{index + 1}</td>
             <td>
                 <div className="flex items-center gap-2">
                     <img src={ProfileImage} alt="profile_image" />
@@ -59,56 +142,201 @@ const ShiftsDetailTable = () => {
                     </p>
                 </div>
             </td>
-            {element?.clockInTime === null ? (
-                <td>N/A</td>
-            ) : (
-                <td>{dayjs(element?.clockInTime).format("h:mm A")}</td>
-            )}
-            {element?.clockOutTime === null ? (
-                <td>N/A</td>
-            ) : (
-                <td>{dayjs(element?.clockOutTime).format("h:mm A")}</td>
-            )}
-            <td>{element?.jobListing?.shiftDurationInHours}hour(s)</td>
+            <td>{element?.jobListing?.jobType?.name}</td>
+            <td>{element?.jobListing?.jobLocation?.formattedAddress}</td>
+            <td>
+                {dayjs(element?.jobListing?.shiftStartTime).format("h")} -{" "}
+                {dayjs(element?.jobListing.shiftEndTime).format("h A")}
+            </td>
             <td>
                 {element?.jobListing?.jobRate?.currency}
                 {element?.jobListing?.jobRate?.jobRatePerHourDisplayedToDepot}
                 /hr
             </td>
             <td>
-                <div className="flex items-center gap-1">
-                    <AiFillStar size={20} style={{ color: "#FED70A" }} />
-                    <p>{element?.operativeRating}</p>
-                </div>
+                {element?.jobListing?.jobMeetingPoint === "SITE" ? (
+                    <p className="text-black-100 bg-yellow-100 rounded-3xl text-center font-bold p-1 w-fit px-3 py-1 text-3sm font-creatoBlack">
+                        MEET ONSITE
+                    </p>
+                ) : (
+                    <p className="text-black-100 bg-white-10 rounded-3xl text-center font-bold p-1 border-2 border-black-100 text-3sm w-fit px-3 py-1">
+                        DEPOT FIRST
+                    </p>
+                )}
             </td>
-            {element?.cancelStatus === false ? (
-                <td>
-                    <p className="text-white-100 bg-green-100 rounded-3xl text-center font-bold p-1 w-fit px-3 py-1 text-3sm font-creatoBlack">
-                        COMPLETED
-                    </p>
-                </td>
-            ) : (
-                <td>
-                    <p className="text-white-100 bg-red-100 rounded-3xl text-center font-bold p-1 w-fit px-3 py-1 text-3sm font-creatoBlack">
-                        CANCELLED
-                    </p>
-                </td>
-            )}
+            <td>{dayjs(element?.clockInTime).format("h:mm A")}</td>
             <td>
-                <BiDotsVerticalRounded size={20} />
+                <BiDotsVerticalRounded
+                    size={20}
+                    onClick={() => handleOpenMenu(element?.operative?._id)}
+                />
             </td>
         </tr>
     ))
 
-    const tableHead = [
+    const paidShifts = singleShift?.results?.filter(
+        (shift) => shift?.jobListing?.fullyPaidByDepot === true
+    )
+    const unPaidShifts = singleShift?.results?.filter(
+        (shift) => shift?.jobListing?.fullyPaidByDepot === false
+    )
+
+    const paidRows = paidShifts?.map((element, index) => (
+        <tr key={index}>
+            <td>
+            <div
+                    className="flex items-center"
+                    onClick={(e) => {
+                        e.stopPropagation()
+                    }}
+                >
+                    <Checkbox
+                        id={element?.operative?._id}
+                        className="rounded-lg"
+                        onChange={handleCheckedShift}
+                        name={element?.operative?._id}
+                        checked={checkedShift.includes(
+                            (
+                                element?.jobListing?.jobRate
+                                    ?.jobRatePerHourDisplayedToDepot *
+                                element?.jobListing?.shiftDurationInHours
+                            ).toString()
+                        )}
+                        value={(
+                            element?.jobListing?.jobRate
+                                ?.jobRatePerHourDisplayedToDepot *
+                            element?.jobListing?.shiftDurationInHours
+                        ).toString()}
+                        data-testid="checkbox"
+                    />
+                    <label htmlFor={element?.operative?._id}>{index + 1}</label>
+                </div>
+            </td>
+            <td>
+                <div className="flex items-center gap-2">
+                    <img src={ProfileImage} alt="profile_image" />
+                    <p>
+                        {element?.operative?.firstName}{" "}
+                        {element?.operative?.lastName}
+                    </p>
+                </div>
+            </td>
+            <td>{element?.jobListing?.jobType?.name}</td>
+            <td>{element?.jobListing?.jobLocation?.formattedAddress}</td>
+            <td>
+                {dayjs(element?.jobListing?.shiftStartTime).format("h")} -{" "}
+                {dayjs(element?.jobListing.shiftEndTime).format("h A")}
+            </td>
+            <td>
+                {element?.jobListing?.jobRate?.currency}
+                {element?.jobListing?.jobRate?.jobRatePerHourDisplayedToDepot}
+                /hr
+            </td>
+            <td>
+                {element?.jobListing?.jobMeetingPoint === "SITE" ? (
+                    <p className="text-black-100 bg-yellow-100 rounded-3xl text-center font-bold p-1 w-fit px-3 py-1 text-3sm font-creatoBlack">
+                        MEET ONSITE
+                    </p>
+                ) : (
+                    <p className="text-black-100 bg-white-10 rounded-3xl text-center font-bold p-1 border-2 border-black-100 text-3sm w-fit px-3 py-1">
+                        DEPOT FIRST
+                    </p>
+                )}
+            </td>
+            <td>{dayjs(element?.clockInTime).format("h:mm A")}</td>
+            <td>
+                <BiDotsVerticalRounded
+                    size={20}
+                    onClick={() => handleOpenMenu(element?.operative?._id)}
+                />
+            </td>
+        </tr>
+    ))
+
+    const unPaidRows = unPaidShifts?.map((element, index) => (
+        <tr key={index}>
+            <td>
+                <div
+                    className="flex items-center"
+                    onClick={(e) => {
+                        e.stopPropagation()
+                    }}
+                >
+                    <Checkbox
+                        id={element?.operative?._id}
+                        className="rounded-lg"
+                        onChange={handleCheckedShift}
+                        name={element?.operative?._id}
+                        checked={checkedShift.includes(
+                            element?.operative?._id
+                        )}
+                        value={element?.operative?._id}
+                        data-testid="checkbox"
+                    />
+                    <label htmlFor={element?.operative?._id}>{index + 1}</label>
+                </div>
+            </td>
+            <td>
+                <div className="flex items-center gap-2">
+                    <img src={ProfileImage} alt="profile_image" />
+                    <p>
+                        {element?.operative?.firstName}{" "}
+                        {element?.operative?.lastName}
+                    </p>
+                </div>
+            </td>
+            <td>{element?.jobListing?.jobType?.name}</td>
+            <td>{element?.jobListing?.jobLocation?.formattedAddress}</td>
+            <td>
+                {dayjs(element?.jobListing?.shiftStartTime).format("h")} -{" "}
+                {dayjs(element?.jobListing.shiftEndTime).format("h A")}
+            </td>
+            <td>
+                {element?.jobListing?.jobRate?.currency}
+                {element?.jobListing?.jobRate?.jobRatePerHourDisplayedToDepot}
+                /hr
+            </td>
+            <td>
+                {element?.jobListing?.jobMeetingPoint === "SITE" ? (
+                    <p className="text-black-100 bg-yellow-100 rounded-3xl text-center font-bold p-1 w-fit px-3 py-1 text-3sm font-creatoBlack">
+                        MEET ONSITE
+                    </p>
+                ) : (
+                    <p className="text-black-100 bg-white-10 rounded-3xl text-center font-bold p-1 border-2 border-black-100 text-3sm w-fit px-3 py-1">
+                        DEPOT FIRST
+                    </p>
+                )}
+            </td>
+            <td>{dayjs(element?.clockInTime).format("h:mm A")}</td>
+            <td>
+                <BiDotsVerticalRounded
+                    size={20}
+                    onClick={() => handleOpenMenu(element?.operative?._id)}
+                />
+            </td>
+        </tr>
+    ))
+
+    const tableHeadActive = [
+        { list: "NO" },
         { list: "NAME" },
-        { list: "TIME IN" },
-        { list: "TIME OUT" },
-        { list: "DURATION" },
-        { list: "AMOUNT" },
-        { list: "RATING" },
-        { list: "STATUS" },
-        { list: "MORE" },
+        { list: "JOB TYPE" },
+        { list: "LOCATION" },
+        { list: "SCHEDULE" },
+        { list: "RATE" },
+        { list: "MODE" },
+        { list: "CLOCK-IN TIME" },
+    ]
+
+    const tableHeadCancelled = [
+        { list: "NO" },
+        { list: "NAME" },
+        { list: "JOB TYPE" },
+        { list: "LOCATION" },
+        { list: "SCHEDULE" },
+        { list: "RATE" },
+        { list: "MODE" },
+        { list: "CANCELLED TIME" },
     ]
     const element = shiftsData?.results?.find(
         (item) => item?.jobListing?._id === jobListingId
@@ -139,53 +367,210 @@ const ShiftsDetailTable = () => {
                             <div className="lg:flex justify-between">
                                 <div>
                                     <h1 className="text-xl md:text-3xl font-creatoBold text-black-100 font-bold">
-                                        {element?.jobListing?.jobType?.name}
+                                        {element?.jobListing?.listingId}
                                     </h1>
-                                    <p className="text-black-60 text-2md md:text-lg font-normal font-creato">
-                                        {
-                                            element?.jobListing?.jobLocation
-                                                ?.formattedAddress
-                                        }{" "}
-                                        | {element?.jobListing?.jobMeetingPoint}{" "}
-                                        |{" "}
+                                    <p className="text-black-60 text-2md font-normal font-creato">
                                         {dayjs(
                                             element?.jobListing?.jobDate
-                                        ).format("DD/MM/YYYY")}
+                                        ).format("MMMM DD, YYYY")}{" "}
+                                        |{" "}
+                                        {dayjs(
+                                            element?.jobListing?.shiftStartTime
+                                        ).format("h:mm A")}{" "}
+                                        -{" "}
+                                        {dayjs(
+                                            element?.jobListing.shiftEndTime
+                                        ).format("h:mm A")}
                                     </p>
                                 </div>
-                                <div className="relative lg:pb-4 bottom-0 lg:bottom-0">
-                                    <div className="absolute right-0 ">
-                                        {" "}
-                                        <Filter applyFilter={applyFilter} />
+                                {queryStatus === "completed" && (
+                                    <div>
+                                        <Button
+                                            variant="green"
+                                            className="py-3 font-semibold font-creatoMedium"
+                                            style={{ backgroundColor: "black" }}
+                                            iconLeft={<FiPlus size={20} />}
+                                            data-testid="make_payment_btn"
+                                            iconRight={
+                                                <FaAngleRight size={20} />
+                                            }
+                                            onClick={() =>
+                                                setOpenPayment(!openPayment)
+                                            }
+                                        >
+                                            Make Payments
+                                        </Button>
                                     </div>
-                                </div>
+                                )}
+                                {queryStatus === "ongoing" && (
+                                    <div className="px-4">
+                                        <TimeEstimate
+                                            initialDate={
+                                                new Date(
+                                                    element?.jobListing?.shiftEndTime
+                                                )
+                                            }
+                                        />
+                                    </div>
+                                )}
+                                {queryStatus === "cancelled" && (
+                                    <div className="flex items-center">
+                                        <p className="bg-red-100 rounded-xl px-3 text-white-100 font-creato">
+                                            SHIFTS CANCELLED
+                                        </p>
+                                    </div>
+                                )}
                             </div>
+                            
                         </div>
                         <div className="hidden lg:block " data-testid="planner">
-                            <Table
-                                style={{
-                                    backgroundColor: "#FFFFFF",
-                                    fontFamily: "CreatoDisplay",
-                                    cursor: "pointer",
-                                }}
-                                className={"table"}
-                                verticalSpacing="md"
-                                data-testid="table-data"
-                                role="grid"
-                            >
-                                <thead>
-                                    <tr>
-                                        {tableHead.map((item, index) => (
-                                            <th key={index}>{item?.list}</th>
-                                        ))}
-                                    </tr>
-                                </thead>
-                                <tbody onClick={() => setOpened(!opened)}>
-                                    {rows}
-                                </tbody>
-                            </Table>
+                            {queryStatus !== "completed" ? (
+                                <Table
+                                    style={{
+                                        backgroundColor: "#FFFFFF",
+                                        fontFamily: "CreatoDisplay",
+                                        cursor: "pointer",
+                                    }}
+                                    className={"table"}
+                                    verticalSpacing="md"
+                                    data-testid="table-data"
+                                    role="grid"
+                                >
+                                    <thead>
+                                        {queryStatus === "ongoing" && (
+                                            <tr>
+                                                {tableHeadActive.map(
+                                                    (item, index) => (
+                                                        <th key={index}>
+                                                            {item?.list}
+                                                        </th>
+                                                    )
+                                                )}
+                                            </tr>
+                                        )}
+                                        {queryStatus === "cancelled" && (
+                                            <tr>
+                                                {tableHeadCancelled.map(
+                                                    (item, index) => (
+                                                        <th key={index}>
+                                                            {item?.list}
+                                                        </th>
+                                                    )
+                                                )}
+                                            </tr>
+                                        )}
+                                    </thead>
+                                    <tbody>{rows}</tbody>
+                                </Table>
+                            ) : (
+                                <div>
+                                    <Tabs
+                                        value={activeTab}
+                                        onTabChange={setActiveTab}
+                                        color="yellow"
+                                        keepMounted={false}
+                                        data-testid="planner_completed_tabs"
+                                    >
+                                        <Tabs.List>
+                                            <Tabs.Tab value="unpaid">
+                                                <p
+                                                    className={
+                                                        activeTab === "unpaid"
+                                                            ? "text-red-100 text-lg font-creatoMedium active"
+                                                            : `font-creatoMedium text-black-40 text-lg inactive`
+                                                    }
+                                                >
+                                                    Unpaid Operatives
+                                                    <span
+                                                        className={`{" ml-2 py-1 px-2 rounded text-white-100 "} ${
+                                                            activeTab ===
+                                                            "unpaid"
+                                                                ? "bg-white lg:text-white-100 text-dark-green-500  lg:bg-red-100 text-3sm "
+                                                                : "bg-gray-100 text-white-100 text-3sm"
+                                                        }`}
+                                                    >
+                                                        {unPaidShifts?.length}
+                                                    </span>
+                                                </p>
+                                            </Tabs.Tab>
+                                            <Tabs.Tab value="paid">
+                                                <p
+                                                    className={
+                                                        activeTab === "paid"
+                                                            ? "text-green-100 text-lg font-creatoMedium active"
+                                                            : `font-creatoMedium text-black-40 text-lg inactive`
+                                                    }
+                                                >
+                                                    Paid Shifts
+                                                    <span
+                                                        className={`{" ml-2 py-1 px-2 rounded text-white-100 "} ${
+                                                            activeTab === "paid"
+                                                                ? "bg-white lg:text-white-100 text-dark-green-500  lg:bg-red-100 text-3sm "
+                                                                : "bg-gray-100 text-white-100 text-3sm"
+                                                        }`}
+                                                    >
+                                                        {paidShifts?.length}
+                                                    </span>
+                                                </p>
+                                            </Tabs.Tab>
+                                        </Tabs.List>
+                                        <Tabs.Panel value={"unpaid"}>
+                                            <Table
+                                                style={{
+                                                    backgroundColor: "#FFFFFF",
+                                                    fontFamily: "CreatoDisplay",
+                                                    cursor: "pointer",
+                                                }}
+                                                className={"table"}
+                                                verticalSpacing="md"
+                                                data-testid="table-data"
+                                                role="grid"
+                                            >
+                                                <thead>
+                                                    <tr>
+                                                        {tableHeadActive.map(
+                                                            (item, index) => (
+                                                                <th key={index}>
+                                                                    {item?.list}
+                                                                </th>
+                                                            )
+                                                        )}
+                                                    </tr>
+                                                </thead>
+                                                <tbody>{unPaidRows}</tbody>
+                                            </Table>
+                                        </Tabs.Panel>
+                                        <Tabs.Panel value={"paid"}>
+                                            <Table
+                                                style={{
+                                                    backgroundColor: "#FFFFFF",
+                                                    fontFamily: "CreatoDisplay",
+                                                    cursor: "pointer",
+                                                }}
+                                                className={"table"}
+                                                verticalSpacing="md"
+                                                data-testid="table-data"
+                                                role="grid"
+                                            >
+                                                <thead>
+                                                    <tr>
+                                                        {tableHeadActive.map(
+                                                            (item, index) => (
+                                                                <th key={index}>
+                                                                    {item?.list}
+                                                                </th>
+                                                            )
+                                                        )}
+                                                    </tr>
+                                                </thead>
+                                                <tbody>{paidRows}</tbody>
+                                            </Table>
+                                        </Tabs.Panel>
+                                    </Tabs>
+                                </div>
+                            )}
                         </div>
-                        <div className="block lg:hidden">
+                        <div className="block lg:hidden p-6 mt-4">
                             <MobileShiftsDetailsTable />
                         </div>
                         <Pagination
@@ -202,271 +587,35 @@ const ShiftsDetailTable = () => {
                     </>
                 )}
 
-                {opened && (
-                    <Modal
-                        centered
-                        opened={opened}
-                        onClose={() => setOpened(false)}
-                        withCloseButton={false}
-                        overlayOpacity={0.55}
-                        overlayBlur={3}
-                        padding={0}
-                        transition="fade"
-                        transitionDuration={600}
-                        transitionTimingFunction="ease"
-                        styles={() => ({
-                            modal: {
-                                width: "580px",
-                            },
-                        })}
-                    >
-                        <header className="bg-black-100 text-white-100 flex justify-between p-4">
-                            <div className="flex gap-4 place-items-center">
-                                <div>
-                                    <p className="font-bold text-2xl">
-                                        Shift Details
-                                    </p>
-                                </div>
-                            </div>
-                            <div className="p-3 ">
-                                <FaTimes
-                                    size={20}
-                                    onClick={() => setOpened(!opened)}
-                                />
-                            </div>
-                        </header>
-                        <div className="flex justify-between bg-yellow-20 p-5 mt-8 w-[90%] mx-auto rounded-lg">
-                            <div className="flex gap-5">
-                                <img
-                                    src={
-                                        singleElement?.operative
-                                            ?.profileImageUrl
-                                    }
-                                    alt="profile"
-                                    className="mt-3 w-10 h-10 rounded-[100%]"
-                                />
-                                <div>
-                                    <p className="text-sm">OPERATIVE</p>
-                                    <p className="font-extrabold text-xl">
-                                        {singleElement?.operative?.firstName}{" "}
-                                        {singleElement?.operative?.lastName}
-                                    </p>
-                                    <p className="text-sm">
-                                        Joined{" "}
-                                        {dayjs(
-                                            singleElement?.operative?.createdAt
-                                        ).format("YYYY")}{" "}
-                                        years ago |
-                                        <span className="text-green-100">
-                                            {" "}
-                                            {
-                                                singleElement?.jobListing
-                                                    ?.jobMatchPercentage
-                                            }
-                                            % Match
-                                        </span>
-                                    </p>
-                                </div>
-                            </div>
-                            <div>
-                                <img
-                                    src={Message}
-                                    alt="message icon"
-                                    className="inline"
-                                />
-                                <p className="inline p-2 font-bold">
-                                    Message{" "}
-                                    {singleElement?.operative?.firstName}
-                                </p>
-                            </div>
-                        </div>
-                        <div className="flex justify-between bg-yellow-10 p-5 mt-8 w-[90%] mx-auto rounded-lg">
-                            <div className="flex gap-5 w-[40%]">
-                                <div>
-                                    <p className="text-2md">Rating</p>
-                                    <p>
-                                        {operativeData?.avgAverageScore}{" "}
-                                        <AiFillStar
-                                            size={20}
-                                            style={{ color: "#FED70A" }}
-                                        />
-                                    </p>
-                                </div>
-                            </div>
-                            <div className="w-[50%]">
-                                <div className="flex justify-between place-items-center">
-                                    <p className=" text-[md] font-medium">
-                                        Professionalism
-                                    </p>
-                                    {Number(
-                                        operativeData?.avgProfessionalismScore
-                                    ) <= 2 ? (
-                                        <Progress
-                                            value={
-                                                (Number(
-                                                    operativeData?.avgProfessionalismScore
-                                                ) /
-                                                    5) *
-                                                100
-                                            }
-                                            color="#F44336"
-                                            className="w-[50%]"
-                                        />
-                                    ) : (
-                                        <Progress
-                                            value={
-                                                (Number(
-                                                    operativeData?.avgProfessionalismScore
-                                                ) /
-                                                    5) *
-                                                100
-                                            }
-                                            color="#4DB25D"
-                                            className="w-[50%]"
-                                        />
-                                    )}
-                                </div>
-                                <div className="flex justify-between place-items-center">
-                                    <p className=" text-[md] font-medium">
-                                        Punctuality
-                                    </p>
-                                    {Number(
-                                        operativeData?.avgHelpfulnessScore
-                                    ) <= 2 ? (
-                                        <Progress
-                                            value={
-                                                (Number(
-                                                    operativeData?.avgHelpfulnessScore
-                                                ) /
-                                                    5) *
-                                                100
-                                            }
-                                            color="#F44336"
-                                            className="w-[50%]"
-                                        />
-                                    ) : (
-                                        <Progress
-                                            value={
-                                                (Number(
-                                                    operativeData?.avgHelpfulnessScore
-                                                ) /
-                                                    5) *
-                                                100
-                                            }
-                                            color="#4DB25D"
-                                            className="w-[50%]"
-                                        />
-                                    )}
-                                </div>
-                                <div className="flex justify-between place-items-center">
-                                    <p className=" text-[md] font-medium">
-                                        Helpfulness
-                                    </p>
-                                    {Number(
-                                        operativeData?.avgOrganizationScore
-                                    ) <= 2 ? (
-                                        <Progress
-                                            value={
-                                                (Number(
-                                                    operativeData?.avgOrganizationScore
-                                                ) /
-                                                    5) *
-                                                100
-                                            }
-                                            color="#F44336"
-                                            className="w-[50%]"
-                                        />
-                                    ) : (
-                                        <Progress
-                                            value={
-                                                (Number(
-                                                    operativeData?.avgOrganizationScore
-                                                ) /
-                                                    5) *
-                                                100
-                                            }
-                                            color="#4DB25D"
-                                            className="w-[50%]"
-                                        />
-                                    )}
-                                </div>
-                            </div>
-                        </div>
-                        <p className=" px-8 pt-6 text-2md text-black-60">
-                            LOCATION
-                        </p>
-                        <p className="text-2md px-8 font-medium">
-                            <TfiLocationPin
-                                size={20}
-                                style={{ color: "#E94444" }}
-                                className="inline"
-                            />{" "}
-                            {
-                                singleElement?.jobListing?.jobLocation
-                                    ?.formattedAddress
-                            }
-                        </p>
-                        <section className="grid grid-cols-2 pb-4">
-                            <div>
-                                <p className=" px-8 pt-6 text-2md text-black-60">
-                                    SHIFT TYPE
-                                </p>
-                                <p className="text-2md px-8 font-medium">
-                                    {singleElement?.jobListing?.jobType?.name}
-                                </p>
-                            </div>
-                            <div>
-                                <p className=" px-8 pt-6 text-2md text-black-60">
-                                    SHIFT METHOD
-                                </p>
-                                <p className="text-2md ml-4 px-8 font-medium bg-yellow-100 rounded-3xl w-fit">
-                                    {singleElement?.jobListing?.jobMeetingPoint}
-                                </p>
-                            </div>
-                            <div>
-                                <p className=" px-8 pt-6 text-2md text-black-60">
-                                    CERTIFICATION
-                                </p>
-                                <p className="text-2md px-8 font-medium">
-                                    {
-                                        singleElement?.jobListing
-                                            ?.jobQualification?.name
-                                    }
-                                </p>
-                            </div>
-                            <div>
-                                <p className=" px-8 pt-6 text-2md text-black-60">
-                                    SHIFT DATE
-                                </p>
-                                <p className="text-2md px-8 font-medium">
-                                    {dayjs(
-                                        singleElement?.jobListing?.jobDate
-                                    ).format("MMMM D, YYYY")}
-                                </p>
-                            </div>
-                            <div>
-                                <p className=" px-8 pt-6 text-2md text-black-60">
-                                    SHIFT DURATION
-                                </p>
-                                <p className="text-2md px-8 font-medium">
-                                    {
-                                        singleElement?.jobListing
-                                            ?.shiftDurationInHours
-                                    }{" "}
-                                    Hour(s) (
-                                    {dayjs(
-                                        singleElement?.jobListing
-                                            ?.shiftStartTime
-                                    ).format("h:mm A")}{" "}
-                                    -{" "}
-                                    {dayjs(
-                                        singleElement?.jobListing?.shiftEndTime
-                                    ).format("h:mm A")}{" "}
-                                    )
-                                </p>
-                            </div>
-                        </section>
-                    </Modal>
+                {openMenu && (
+                    <Menu
+                        openProfile={openProfile}
+                        setOpenProfile={setOpenProfile}
+                        queryStatus={queryStatus}
+                        openMenu={openMenu}
+                        setOpenMenu={setOpenMenu}
+                    />
+                )}
+
+                {openPayment && (
+                    <PaymentEvidenceUpload
+                        openPayment={openPayment}
+                        setOpenPayment={setOpenPayment}
+                        totalAmount={amount}
+                        handleFinishPayment={handleFinishPayment}
+                        handleDocumentUpload={handleDocumentUpload}
+                        buttonState={buttonState}
+                    />
+                )}
+
+                {openProfile && (
+                    <OperativeProfile
+                        openProfile={openProfile}
+                        setOpenProfile={setOpenProfile}
+                        operativeData={operativeData}
+                        operativeId={operativeId}
+                        jobListingId={jobListingId}
+                    />
                 )}
             </Layout>
         </>

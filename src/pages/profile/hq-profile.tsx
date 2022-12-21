@@ -128,7 +128,7 @@ export function FormikStepper({ ...props }: TWizardProps) {
             password: values.password,
             inviteCode: searchParams.get("code"),
             courseLink: values.courseLink,
-            subscriptionPlan: values.subscriptionPlan
+            subscriptionPlan: values.subscriptionPlan,
         })
     }
 

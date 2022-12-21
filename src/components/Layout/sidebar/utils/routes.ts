@@ -57,7 +57,7 @@ export const depotHqRoute: SidebarRoutes[] = [
         route: "/roles&permission",
     },
     { icon: Locations, title: "Locations", route: "/locations" },
-    { icon: Subscriptions, title: "Subscriptions", route: "/subscriptions" },
+    { icon: Subscriptions, title: "Subscriptions", route: "/subscription" },
     { icon: Support, title: "Support", route: "/support" },
 ]
 
@@ -66,7 +66,7 @@ export const adminRoute: SidebarRoutes[] = [
     { icon: Depots, title: "Depots", route: "/depots" },
     { icon: Approval, title: "Approvals", route: "/approvals" },
     { icon: Payments, title: "Payment", route: "/payments" },
-    { icon: Subscription, title: "Subscription", route: "/admin-subscription" },
+    { icon: Subscription, title: "Subscription", route: "/subscription" },
     { icon: GeoTracking, title: "Geotracking", route: "/geotracking" },
     { icon: AdminSupport, title: "Support", route: "/admin-support" },
     { icon: AllUsers, title: "All users", route: "/all-users" },

@@ -69,7 +69,6 @@ const HQRoles = () => {
         data: revokedData,
         mutate: mutateRevoke,
         isSuccess: isSuccessfullyRevoked,
-        error: revokeError,
     } = useRevokeInvite({
         userId,
     })
@@ -160,13 +159,7 @@ const HQRoles = () => {
                 message: resendError.message,
             })
         }
-        if (revokeError) {
-            showNotification({
-                title: "error",
-                color: "red",
-                message: revokeError.message,
-            })
-        }
+
         if (DeleteError) {
             showNotification({
                 title: "Error",
@@ -221,6 +214,10 @@ const HQRoles = () => {
                         handleBack={() => {
                             setOpenSuccessModal(false)
                         }}
+                        title="Invite sent"
+                        description="This gives them administrative access to your depot
+                    account"
+                        buttonText="Back"
                     />
                 )}
                 <div className="flex flex-col-reverse md:flex-row md:justify-between md:items-center">

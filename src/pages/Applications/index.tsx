@@ -3,28 +3,84 @@ import ApplicationTable from "./components/application-table"
 import { useState } from "react"
 import { useGetApplications } from "./hooks/application.hook"
 import { CgSpinner } from "react-icons/cg"
-import { IoFilterSharp } from "react-icons/io5"
 import ApplicationDetails from "./sub-navigations/ApplicationDetails"
 import ShiftDetails from "./sub-navigations/ShiftDetails"
 import Layout from "../../components/Layout/index"
 import EmptyState from "../../components/EmptyStates/index"
 import { useNavigate } from "react-router-dom"
+import Pagination from "../../components/Pagination/pagination"
+import  {ApplicationFilterRequest}  from "../../types/filter/filter"
+import Filter  from "../../components/ApplicationFilter/index"
 
 const Applications = () => {
+    
+
     const [activeTab, setActiveTab] = useState<string | null>("pending")
+
+    const [activePendingPage, setPendingPage] = useState(1)
+    const [activeAcceptedPage, setAcceptedPage] = useState(1)
+    const [activeRejectedPage, setRejectedPage] = useState(1)
+
+    const handlePendingPage = (pageNumber: number) => {
+        setPendingPage(pageNumber)
+    }
+    const handleAcceptedPage = (pageNumber: number) => {
+        setAcceptedPage(pageNumber)
+    }
+    const handleRejectedPage = (pageNumber: number) => {
+        setRejectedPage(pageNumber)
+    }
+
+    const [pendingDataFilter, setPendingDataFilter] = useState<ApplicationFilterRequest>({
+        jobTypeId: "", 
+        jobMatchPercentageMin: "", 
+        jobMatchPercentageMax: ""
+    })
+    const [acceptedDataFilter, setAcceptedDataFilter] = useState<ApplicationFilterRequest>({
+        jobTypeId: "", 
+        jobMatchPercentageMin: "", 
+        jobMatchPercentageMax: ""
+    })
+    const [rejectedDataFilter, setRejectedDataFilter] = useState<ApplicationFilterRequest>({
+        jobTypeId: "", 
+        jobMatchPercentageMin: "", 
+        jobMatchPercentageMax: ""
+    })
+    const applyFilter = (filter: ApplicationFilterRequest) => {
+        if (activeTab === "pending") {
+            setPendingDataFilter(filter)
+            setPendingPage(1)
+        } else if ( activeTab === "accepted"){
+            setAcceptedDataFilter(filter)
+            setAcceptedPage(1)
+        } else {
+            setRejectedDataFilter(filter)
+            setRejectedPage(1)
+        }
+    }
+
     const { data: pendingData, isLoading: isLoadingPendingData } =
         useGetApplications({
             status: "PENDING",
+            jobTypeId: pendingDataFilter?.jobTypeId,
+            jobMatchPercentageMin: pendingDataFilter?.jobMatchPercentageMin,
+            jobMatchPercentageMax: pendingDataFilter?.jobMatchPercentageMax
             // page: 1,
         })
     const { data: acceptedData, isLoading: isLoadingAcceptedData } =
         useGetApplications({
             status: "WON",
+            jobTypeId: acceptedDataFilter?.jobTypeId,
+            jobMatchPercentageMin: acceptedDataFilter?.jobMatchPercentageMin,
+            jobMatchPercentageMax: acceptedDataFilter?.jobMatchPercentageMax,
             page: 1,
         })
     const { data: rejectedData, isLoading: isLoadingRejectedData } =
         useGetApplications({
             status: "LOST",
+            jobTypeId: rejectedDataFilter?.jobTypeId,
+            jobMatchPercentageMin: rejectedDataFilter?.jobMatchPercentageMin,
+            jobMatchPercentageMax: rejectedDataFilter?.jobMatchPercentageMax,
             page: 1,
         })
 
@@ -55,12 +111,18 @@ const Applications = () => {
                         </div>
                     ) : (
                         <div>
-                            <div className="relative">
-                                <div className="flex absolute right-10 items-center cursor-pointer">
-                                    <IoFilterSharp />
-                                    <p className="pl-2">Filter</p>
-                                </div>
-                            </div>
+                            <div className=" hidden lg:block relative lg:pb-4 bottom-0 lg:bottom-0">
+                              <div className="absolute right-0 w-fit ">
+                                  {" "}
+                                  <Filter applyFilter={applyFilter} className="" />
+                              </div>
+                          </div>
+                          <div className=" lg:hidden relative mb-16">
+                              <div className="absolute right-0 bottom-2">
+                                  {" "}
+                                  <Filter applyFilter={applyFilter} className="" />
+                              </div>
+                          </div>
                             <Tabs
                                 value={activeTab}
                                 // active={activeTab}
@@ -113,7 +175,7 @@ const Applications = () => {
                                 </Tabs.List>
                                 <Tabs.Panel value="pending">
                                     {pendingData?.data &&
-                                    pendingData?.data.length > 0 ? (
+                                    pendingData?.data?.length > 0 ? (
                                         <ApplicationTable
                                             elements={pendingData?.data || []}
                                             setPhase={setPhase}
@@ -128,10 +190,21 @@ const Applications = () => {
                                             }
                                         />
                                     )}
+                                    <Pagination
+                                                  page={activePendingPage}
+                                                  total={activePendingPage}
+                                                  onChange={handlePendingPage}
+                                                  boundaries={1}
+                                                  recordPerpage={
+                                                      pendingData?.data
+                                                          ? pendingData?.data.length
+                                                          : 1
+                                                  }
+                                              />
                                 </Tabs.Panel>
                                 <Tabs.Panel value="accepted">
                                     {acceptedData?.data &&
-                                    acceptedData?.data.length > 0 ? (
+                                    acceptedData?.data?.length > 0 ? (
                                         <ApplicationTable
                                             elements={acceptedData?.data || []}
                                             setPhase={setPhase}
@@ -146,10 +219,21 @@ const Applications = () => {
                                             }
                                         />
                                     )}
+                                    <Pagination
+                                                  page={activeAcceptedPage}
+                                                  total={activeAcceptedPage}
+                                                  onChange={handleAcceptedPage}
+                                                  boundaries={1}
+                                                  recordPerpage={
+                                                      acceptedData?.data
+                                                          ? acceptedData?.data.length
+                                                          : 1
+                                                  }
+                                              />
                                 </Tabs.Panel>
                                 <Tabs.Panel value="rejected">
                                     {rejectedData?.data &&
-                                    rejectedData?.data.length > 0 ? (
+                                    rejectedData?.data?.length > 0 ? (
                                         <ApplicationTable
                                             elements={rejectedData?.data || []}
                                             setPhase={setPhase}
@@ -164,6 +248,17 @@ const Applications = () => {
                                             }
                                         />
                                     )}
+                                    <Pagination
+                                                  page={activeRejectedPage}
+                                                  total={activeRejectedPage}
+                                                  onChange={handleRejectedPage}
+                                                  boundaries={1}
+                                                  recordPerpage={
+                                                      rejectedData?.data
+                                                          ? rejectedData?.data.length
+                                                          : 1
+                                                  }
+                                              />
                                 </Tabs.Panel>
                             </Tabs>
                         </div>

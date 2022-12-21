@@ -66,7 +66,7 @@ const Approvals = () => {
                         </div>
                     ) : (
                         <div>
-                            <div className="relative">
+                            <div className="relative hidden lg:block">
                                 <div className="flex absolute right-10 items-center cursor-pointer">
                                     <IoFilterSharp />
                                     <p className="pl-2">Filter</p>
@@ -114,7 +114,7 @@ const Approvals = () => {
                                         value="rejected"
                                         className={`body-regular ${
                                             activeTab === "rejected"
-                                                ? "text-yellow-100 font-bold active"
+                                                ? "text-red-100 font-bold active"
                                                 : "text-black-60 inactive"
                                         }`}
                                     >

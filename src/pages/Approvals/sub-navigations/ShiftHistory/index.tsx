@@ -29,7 +29,7 @@ const ShiftDetails = ({
                     <CgSpinner className="animate-spin text-primary-90 text-4xl" />
                 </div>
             ) : (
-                <div className="pt-8 px-6">
+                <div className="pt-12 lg:pt-8 px-6">
                     <span
                         onClick={() => setPhase(2)}
                         className="p-3 rounded inline-flex items-center justify-center bg-black-10 cursor-pointer"
