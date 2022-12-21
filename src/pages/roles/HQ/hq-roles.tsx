@@ -69,7 +69,6 @@ const HQRoles = () => {
         data: revokedData,
         mutate: mutateRevoke,
         isSuccess: isSuccessfullyRevoked,
-        error: revokeError,
     } = useRevokeInvite({
         userId,
     })
@@ -160,13 +159,7 @@ const HQRoles = () => {
                 message: resendError.message,
             })
         }
-        if (revokeError) {
-            showNotification({
-                title: "error",
-                color: "red",
-                message: revokeError.message,
-            })
-        }
+
         if (DeleteError) {
             showNotification({
                 title: "Error",

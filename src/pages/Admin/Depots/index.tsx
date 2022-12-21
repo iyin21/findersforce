@@ -1,14 +1,70 @@
 import { Tabs } from "@mantine/core"
-import { useState } from "react"
+import { useGetRoles, useRevokeInvite } from "../../../hooks/roles/use-roles"
+import { useEffect, useState } from "react"
 import { FiPlus } from "react-icons/fi"
 import { useNavigate } from "react-router-dom"
-import { Button, EmptyState } from "../../../components"
+import { Button, EmptyState, Pagination } from "../../../components"
 import Layout from "../../../components/Layout"
 import DepotTable from "./components/Tables/depot-table"
+import { showNotification } from "@mantine/notifications"
 
 const AdminDepot = () => {
     const [activeTab, setActiveTab] = useState<string | null>("active")
+    const [activePage, setActivePage] = useState(1)
+    const [pendingPage, setPendingPage] = useState(1)
+    const [userId, setUserId] = useState("")
+
     const navigate = useNavigate()
+
+    const { data: activeData, refetch: refetchActiveData } = useGetRoles({
+        status: "accepted",
+        depotRole: "HQ-MANAGER",
+        limit: 15,
+        page: activePage,
+    })
+    const { data: pendingData, refetch: refetchPendingData } = useGetRoles({
+        status: "pending",
+        limit: 15,
+        page: activePage,
+    })
+
+    const {
+        data: revokedData,
+        mutate: mutateRevoke,
+        isSuccess: isSuccessfullyRevoked,
+    } = useRevokeInvite({
+        userId,
+    })
+
+    const handleRevokeInvite = () => {
+        if (userId) {
+            mutateRevoke()
+        }
+    }
+
+    const handleActivePage = (pageNumber: number) => {
+        setActivePage(pageNumber)
+    }
+
+    const handlePendingPage = (pageNumber: number) => {
+        setPendingPage(pageNumber)
+    }
+
+    useEffect(() => {
+        if (isSuccessfullyRevoked) {
+            showNotification({
+                title: "success",
+                color: "green",
+                message: "Invitation revoked successfully",
+            })
+            refetchActiveData()
+            refetchPendingData()
+        }
+
+        refetchActiveData()
+        refetchPendingData()
+    }, [pendingData, activeData, revokedData])
+
     return (
         <Layout>
             <div className="md:p-6 p-6 mt-4 md:mt-14">
@@ -63,8 +119,7 @@ const AdminDepot = () => {
                                                 : "bg-red-40 text-white-100 text-3sm"
                                         }`}
                                     >
-                                        {/* {activeData?.data?.length || 0} */}{" "}
-                                        0
+                                        {activeData?.data?.length || 0}{" "}
                                     </span>
                                 </p>
                             </Tabs.Tab>
@@ -85,55 +140,69 @@ const AdminDepot = () => {
                                                 : "bg-red-40 text-white-100 text-3sm"
                                         }`}
                                     >
-                                        {/* {activeData?.data?.length || 0} */}{" "}
-                                        0
+                                        {pendingData?.data?.length || 0}{" "}
                                     </span>
                                 </p>
                             </Tabs.Tab>
                         </Tabs.List>
                         <Tabs.Panel value="active">
-                            <DepotTable
-                                status="active"
-                                elements={new Array(15).fill({
-                                    headquarter: "Iolaire Road, New Invention",
-                                    location: 3,
-                                    date: "Nov 15, 2022",
-                                    name: "Ufonabasi Umo",
-                                    shift: 20,
-                                    operatives: "134",
-                                    _id: "1",
-                                    email: "ufonumo@gmail.com",
-                                })}
-                            />
-                            <EmptyState
-                                description="Active depot data will show here, when you add one"
-                                buttonText="Add a depot"
-                                handleButtonClick={() => {
-                                    navigate("/add-depots")
-                                }}
-                            />
+                            {!activeData?.data ? (
+                                <EmptyState
+                                    description="Active depot data will show here, when you add one"
+                                    buttonText="Add a depot"
+                                    handleButtonClick={() => {
+                                        navigate("/add-depots")
+                                    }}
+                                />
+                            ) : (
+                                <div>
+                                    <DepotTable
+                                        status="active"
+                                        elements={activeData?.data || []}
+                                        handleRevokeInvite={handleRevokeInvite}
+                                        setUserId={setUserId}
+                                    />
+                                    <Pagination
+                                        page={activePage}
+                                        total={
+                                            activeData?.pagination?.total || 0
+                                        }
+                                        onChange={handleActivePage}
+                                        boundaries={1}
+                                        recordPerpage={15}
+                                    />
+                                </div>
+                            )}
                         </Tabs.Panel>
                         <Tabs.Panel value="pending">
-                            <DepotTable
-                                status="pending"
-                                elements={new Array(15).fill({
-                                    headquarter: "Iolaire Road, New Invention",
-                                    location: 3,
-                                    date: "Nov 15, 2022",
-                                    name: "Ufonabasi Umo",
-                                    shift: 20,
-                                    operatives: "134",
-                                    _id: "1",
-                                    email: "ufonumo@gmail.com",
-                                })}
-                            />
-                            <EmptyState
-                                description="Pending depot data will show here, when you add one"
-                                buttonText="Add a depot"
-                                handleButtonClick={() => {
-                                    navigate("/add-depots")
-                                }}
-                            />
+                            {!pendingData?.data ? (
+                                <EmptyState
+                                    description="Pending depot data will show here, when you add one"
+                                    buttonText="Add a depot"
+                                    handleButtonClick={() => {
+                                        navigate("/add-depots")
+                                    }}
+                                />
+                            ) : (
+                                <div>
+                                    {" "}
+                                    <DepotTable
+                                        status="pending"
+                                        elements={pendingData?.data || []}
+                                        handleRevokeInvite={handleRevokeInvite}
+                                        setUserId={setUserId}
+                                    />
+                                    <Pagination
+                                        page={pendingPage}
+                                        total={
+                                            activeData?.pagination?.total || 0
+                                        }
+                                        onChange={handlePendingPage}
+                                        boundaries={1}
+                                        recordPerpage={15}
+                                    />
+                                </div>
+                            )}
                         </Tabs.Panel>
                     </Tabs>
                 </div>

@@ -62,6 +62,7 @@ export interface RoleResponse {
             page: number
             limit: number
         }
+        total: number
     }
     data: IRolesResponse[]
 }
@@ -88,4 +89,12 @@ export interface IRolesResponse {
             depotRole: string
         }
     }
+    depotCompany: {
+        name: string
+        completedShifts: number
+        totalOperatives: number
+        regionLimit: number
+        address: string
+    }
+    depotRole: string
 }
