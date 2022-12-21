@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { TelegramClient, Api } from "telegram"
-import { Buffer } from "buffer"
+//import { Buffer } from "buffer"
 import { AiOutlineArrowDown } from "react-icons/ai"
 import { CgSpinner } from "react-icons/cg"
 import ImageModal from "./ImageModal"
@@ -23,8 +23,8 @@ export default function ImageMessage({
     const [thumbnailImg, setThumbnailImg] = useState("")
     const [image, setImage] = useState("")
     const [openImageModal, setOpenImageModal] = useState(false)
-    const [document, setDocument] = useState<string | Buffer>("")
-    // const [webPage, setWebpage]= useState<Buffer | string>("")
+    const [document, setDocument] = useState<Buffer | string>("")
+    // const [webPage, setWebpage] = useState<Buffer | string>("")
 
     useEffect(() => {
         if (data.photo) {
@@ -33,6 +33,22 @@ export default function ImageMessage({
             handleDocumentContent()
         }
     }, [])
+    const base64_arraybuffer = async (data: Buffer | string) => {
+        // Use a FileReader to generate a base64 data URI
+        const base64url = await new Promise((r) => {
+            const reader = new FileReader()
+            reader.onload = () => r(reader.result)
+            reader.readAsDataURL(new Blob([data]))
+        })
+
+        /*
+        The result looks like 
+        "data:application/octet-stream;base64,<your base64 data>", 
+        so we split off the beginning:
+        */
+        //@ts-expect-error
+        return base64url.split(",", 2)[1]
+    }
     const handleImageContent = async () => {
         // await client.connect()
         try {
@@ -41,10 +57,10 @@ export default function ImageMessage({
                 thumb: 0,
                 // outputFile: "path/to/downloads_dir",
             })
+
             if (thumbnailBuffer) {
-                const thumbnail =
-                    Buffer.from(thumbnailBuffer).toString("base64")
-                // data.photo.sizes[0].
+                //@ts-expect-error
+                const thumbnail = await base64_arraybuffer(thumbnailBuffer)
                 setThumbnailImg(thumbnail)
             }
         } catch (err) {}
@@ -57,8 +73,8 @@ export default function ImageMessage({
                 // @ts-ignore
                 setDocument(buffer)
             }
-        } catch (err) {
-            // console.log("error", err)
+        } catch (_err) {
+        
         }
     }
 
@@ -68,7 +84,8 @@ export default function ImageMessage({
         try {
             const buffer = await client.downloadMedia(data, {})
             if (buffer) {
-                const imageBuffer = Buffer.from(buffer).toString("base64")
+                //@ts-expect-error
+                const imageBuffer =await base64_arraybuffer(buffer)
 
                 setImage(imageBuffer)
             }
@@ -76,7 +93,7 @@ export default function ImageMessage({
             showNotification({
                 title: "Error",
                 message:
-                    err.errorMessage || "An error occured, pleease try again",
+                    err.errorMessage || "An error occured, please try again",
                 color: "red",
             })
         } finally {
@@ -136,9 +153,8 @@ export default function ImageMessage({
                     {image ? (
                         <img
                             src={`data:image/jpeg;base64,${image}`}
-                            height={200}
-                            width={200}
-                            alt=""
+                            height={100}
+                            width={300}
                         />
                     ) : (
                         <div className="relative rounded">
