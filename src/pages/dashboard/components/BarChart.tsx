@@ -5,7 +5,7 @@ import { Chart } from "react-google-charts"
 import { useGetDashboardAnalytics } from "../../../hooks/dashboard/useDashboard.hook"
 import dayjs from "dayjs"
 
-const BarChart = ({value, selectValue}:{value: [Date | null, Date | null], selectValue:any}) => {
+const BarChart = ({value, selectValue}:{value: [Date | null, Date | null], selectValue?:any}) => {
   const {data:dashboardAnalytics} = useGetDashboardAnalytics({
     dateFrom: value[0] ,
     dateTo: value[1],
