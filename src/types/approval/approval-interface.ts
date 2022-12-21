@@ -42,7 +42,7 @@ export interface Data {
     banned: boolean
     createdAt: Date
     updatedAt: Date
-    certificates: Certificates[]
+    certifications: Certificates[]
     __v: number
     twoFa_enabled: boolean
     twoFa_type: string

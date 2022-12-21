@@ -13,6 +13,10 @@ interface Prop {
     setActiveId: (val: string) => void
 }
 const AcceptedTable = ({ elements, setPhase, setActiveId }: Prop) => {
+    const qualificationName = elements.map((item) => {
+        return item.qualification.map((item) => item.name)
+    })
+
     const rows = elements.map((item, index) => (
         <tr key={index}>
             <td>
@@ -40,7 +44,7 @@ const AcceptedTable = ({ elements, setPhase, setActiveId }: Prop) => {
 
             <td>{item.email}</td>
             <td>{item.gender}</td>
-            <td>{item.qualification[0].name}</td>
+            <td>{qualificationName[index].join(", ")}</td>
             <td>
                 {item.completedShifts}
                 {/* use shift history to get each user's shift completed */}
@@ -148,7 +152,7 @@ const AcceptedTable = ({ elements, setPhase, setActiveId }: Prop) => {
                                     <h6 className="text-black-50 text-3sm">
                                         GENDER
                                     </h6>
-                                    <p className="text-2md mt-1">{"unset"}</p>
+                                    <p className="text-2md mt-1">{item.gender}</p>
                                 </div>
                                 <div className="mt-4">
                                     <h6 className="text-black-50 text-3sm">
@@ -170,14 +174,20 @@ const AcceptedTable = ({ elements, setPhase, setActiveId }: Prop) => {
                                     <h6 className="text-black-50 text-3sm">
                                         QUALIFICATION
                                     </h6>
-                                    <p className="text-2md mt-1">{"unset"}</p>
+                                    <p className="text-2md mt-1">
+                                        {qualificationName[index]
+                                            .join(", ")
+                                            .substring(0, 10) + "..."}
+                                    </p>
                                 </div>
 
                                 <div className="mt-4">
                                     <h6 className="text-black-50 text-3sm">
-                                        ID TYPE
+                                        SHIFT COMPLETED
                                     </h6>
-                                    <p className="text-2md mt-1">{"unset"}</p>
+                                    <p className="text-2md mt-1">
+                                        {item.completedShifts}
+                                    </p>
                                 </div>
                             </div>
                         </div>
