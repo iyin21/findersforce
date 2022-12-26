@@ -206,7 +206,19 @@ function useRevokeInvite({ userId }: { userId: string | undefined }) {
 
         return data
     }
-    return useMutation<AxiosResponse, AxiosError>(revokeInvite)
+    return useMutation<AxiosResponse, AxiosError>(revokeInvite, {
+        onError: (err: AxiosError) => {
+            showNotification({
+                message:
+                    // @ts-ignore
+                    err.response?.data?.error ||
+                    err.message ||
+                    "An error occurred",
+                title: "Error",
+                color: "red",
+            })
+        },
+    })
 }
 
 export { useGetRoles, useDeleteUser, useResendInvite, useRevokeInvite }

@@ -33,7 +33,7 @@ import AdminPayment from "./pages/Admin/Payments"
 function App() {
     ;(window as any).global = window
     window.Buffer = window.Buffer || require("buffer/").Buffer
-    // window.Buffer = Buffer
+
     return (
         <Routes>
             {/* public routes */}
@@ -64,7 +64,7 @@ function App() {
                     <Route path="/support" element={<SupportMedium />} />
                     <Route path="/support/complaint" element={<Support />} />
                     <Route path="/messaging" element={<Messaging />} />
-                    <Route path="/subscription" element={<Subscription/>} />
+                    <Route path="/subscription" element={<Subscription />} />
                     <Route
                         path="/subscription/id"
                         element={<SubscriptionDetails />}
