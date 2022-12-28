@@ -1,9 +1,10 @@
 import { Menu } from "@mantine/core"
+import dayjs from "dayjs"
 import { IoEllipsisVerticalSharp } from "react-icons/io5"
 import { useNavigate } from "react-router-dom"
-import { DepotSingleTableInterface } from "../../../../../../../types/depot/depot-inteface"
+import { OperativeTableProps } from "./operative-table"
 
-const MobileOperativesTable = ({ elements }: DepotSingleTableInterface) => {
+const MobileOperativesTable = ({ elements }: OperativeTableProps) => {
     const navigate = useNavigate()
 
     return (
@@ -13,7 +14,9 @@ const MobileOperativesTable = ({ elements }: DepotSingleTableInterface) => {
                     <div className="flex justify-between items-center border-b border-black-20 pb-2">
                         <div>
                             <h6 className="text-black-50 text-3sm">NAME</h6>
-                            <p className="text-2md mt-1">{element?.name}</p>
+                            <p className="text-2md mt-1">
+                                {element?.firstName} {element?.lastName}
+                            </p>
                         </div>
                         <Menu
                             width={200}
@@ -32,9 +35,7 @@ const MobileOperativesTable = ({ elements }: DepotSingleTableInterface) => {
                                     <Menu.Item
                                         className="text-black-100"
                                         onClick={() => {
-                                            navigate(
-                                                `/planner/${element?._id}}`
-                                            )
+                                            navigate(`/shifts/${element?._id}}`)
                                         }}
                                     >
                                         View shift history
@@ -53,13 +54,15 @@ const MobileOperativesTable = ({ elements }: DepotSingleTableInterface) => {
                                 SHIFT JOINED
                             </h6>
                             <p className="text-2md mt-1">
-                                {element?.shift_joined}
+                                {element?.completedShifts}
                             </p>
                         </div>
                     </div>
                     <div className="my-4">
                         <h6 className="text-black-50 text-3sm">PHONE NUMBER</h6>
-                        <p className="text-2md mt-1">{element?.phone_number}</p>
+                        <p className="text-2md mt-1">
+                            {element?.phone_number || "N/A"}
+                        </p>
                     </div>
                     <div className="flex  justify-between items-center mt-3">
                         <div>
@@ -67,14 +70,23 @@ const MobileOperativesTable = ({ elements }: DepotSingleTableInterface) => {
                                 QUALIFICATION
                             </h6>
                             <p className="text-2md mt-1">
-                                {element?.qualification}
+                                {element?.qualification.map((item) => (
+                                    <span key={item?._id} className="ml-1">
+                                        {" "}
+                                        {item?.name}/
+                                    </span>
+                                ))}
                             </p>
                         </div>
                         <div>
                             <h6 className="text-black-50 text-3sm">
                                 DATE JOINED
                             </h6>
-                            <p className="text-2md mt-1">{element?.date}</p>
+                            <p className="text-2md mt-1">
+                                {dayjs(element?.createdAt).format(
+                                    "MMM, D, YYYY"
+                                )}
+                            </p>
                         </div>
                     </div>
                 </div>

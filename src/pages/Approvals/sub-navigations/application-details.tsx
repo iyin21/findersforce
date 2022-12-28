@@ -80,7 +80,7 @@ const ApplicationDetails = ({ setPhase, activeId, setShiftId }: Prop) => {
     const qualifications = data?.results?.map((item) => {
         return item.qualification.map((item) => item.name)
     })
-   
+
     return (
         <>
             <RejectModal
@@ -186,14 +186,12 @@ const ApplicationDetails = ({ setPhase, activeId, setShiftId }: Prop) => {
                                     </button>
                                     <p
                                         className="flex ml-4 items-center font-bold cursor-pointer"
-                                        onClick={
-                                            () => {
-                                                setShiftId(
-                                                    data?.results[0]._id || ""
-                                                )
-                                                setPhase(3)
-                                            }
-                                        }
+                                        onClick={() => {
+                                            setShiftId(
+                                                data?.results[0]._id || ""
+                                            )
+                                            setPhase(3)
+                                        }}
                                     >
                                         View shift history
                                         <HiChevronRight size="25px" />{" "}
@@ -285,9 +283,7 @@ const ApplicationDetails = ({ setPhase, activeId, setShiftId }: Prop) => {
                                             QUALIFICATION
                                         </p>
                                         <p className="font-medium body-regular">
-                                            {
-                                                qualifications?.join(", ")
-                                            }
+                                            {qualifications?.join(", ")}
                                         </p>
                                     </div>
                                     <div className="ml-24">

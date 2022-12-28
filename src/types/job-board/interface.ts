@@ -3,7 +3,8 @@ export interface JobBoardRequest {
     signal?: AbortSignal
     limit?: number
     page?: number
-    meetingPoint: string
+    meetingPoint?: string
+    companyId?: string
     // amount: string[]
     // perPage?: number
     // jobType: string
@@ -78,11 +79,14 @@ export interface JobBoardResponseInterface {
     numberOfOpsRequired: number
     shiftStartTime: string
     shiftDurationInHours: number
-    applicationsCount: number
+    applicationCount: number
     shiftEndTime: string
     companyName: string
     jobMeetingPoint: string
     jobMatchPercentage: number
+    cancelledShiftCount: number
+    completedShiftCount: number
+    hireCount: number
 }
 
 export interface JobBoardByIdResponse {

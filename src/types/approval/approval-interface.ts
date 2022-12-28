@@ -46,8 +46,19 @@ export interface Data {
     __v: number
     twoFa_enabled: boolean
     twoFa_type: string
+    companyName: string
     skillset: skill[]
     qualification: qualification[]
+    depotCompany: {
+        name: string
+        completedShifts: number
+        totalOperatives: number
+        regionLimit: number
+        address: string
+        createdAt: Date
+        logo: string
+        _id: string
+    }
 }
 interface qualification {
     createdAt: Date

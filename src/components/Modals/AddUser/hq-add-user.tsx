@@ -189,7 +189,6 @@ const HQAddUser = ({
                                         {isInviting
                                             ? "Adding user..."
                                             : "Add user"}
-                                        {/* Add user */}
                                     </Button>
                                 </div>
                             </Form>
