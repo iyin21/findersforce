@@ -28,6 +28,7 @@ import AddDepot from "./pages/Admin/Depots/components/AddDepot/add-depot"
 import SingleDepot from "./pages/Admin/Depots/components/ViewSingleDepot"
 // eslint-disable-next-line no-unused-vars
 import { Buffer } from "buffer/"
+import AdminPayment from "./pages/Admin/Payments"
 
 function App() {
     ;(window as any).global = window
@@ -79,6 +80,7 @@ function App() {
                     <Route path="/depots" element={<AdminDepot />} />
                     <Route path="/add-depots" element={<AddDepot />} />
                     <Route path="/depots/:depotId" element={<SingleDepot />} />
+                    <Route path="/payment" element={<AdminPayment />} />
                 </Route>
             </Route>
         </Routes>
