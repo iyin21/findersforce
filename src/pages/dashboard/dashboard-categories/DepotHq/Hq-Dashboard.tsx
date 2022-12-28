@@ -66,7 +66,7 @@ const DepotHqDashboard = () => {
 
     let regionAddress: any
     if (regionData) {
-        regionAddress = regionData?.map((item) => {
+        regionAddress = regionData?.data?.map((item) => {
             return {
                 label: item?.address,
                 value: item?._id,
@@ -166,7 +166,7 @@ const DepotHqDashboard = () => {
                             </div>
                         </section>
                         <section className="lg:flex justify-between gap-8">
-                            <BarChart value={value}  selectValue={selectValue}/>
+                            <BarChart value={value} selectValue={selectValue} />
                             <PieChart value={value} selectValue={selectValue} />
                         </section>
                     </div>

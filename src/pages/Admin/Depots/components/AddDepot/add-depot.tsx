@@ -14,8 +14,8 @@ import {
 } from "../../../../../hooks/depots/use-depot"
 import { UseMutateFunction } from "react-query"
 import { AxiosError } from "axios"
-import { InviteDepotInterfaceRequest } from "../../../../../types/roles/role-interface"
 import { showNotification } from "@mantine/notifications"
+import { InviteDepotInterfaceRequest } from "../../../../../types/depot/depot-inteface"
 
 const AddDepot = () => {
     const [openSuccessModal, setOpenSuccessModal] = useState(false)

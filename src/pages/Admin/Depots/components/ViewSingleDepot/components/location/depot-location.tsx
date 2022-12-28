@@ -1,22 +1,27 @@
 import { Menu, Table } from "@mantine/core"
+import dayjs from "dayjs"
 import { IoEllipsisVerticalSharp } from "react-icons/io5"
 import { MdOutlineStarPurple500 } from "react-icons/md"
-import { DepotSingleTableInterface } from "../../../../../../../types/depot/depot-inteface"
+import { Regions } from "../../../../../../../types/dashboard/interfaces"
 import MobileLocationTable from "./mobile-location-table"
 
-const DepotLocationTable = ({ elements }: DepotSingleTableInterface) => {
+export interface DepotLocationTableInterface {
+    elements: Regions[]
+}
+
+const DepotLocationTable = ({ elements }: DepotLocationTableInterface) => {
     const rows = elements?.map((element, index) => (
         <tr key={index}>
             <td>{index + 1}</td>
-            <td>{element?.location}</td>
-            <td>{element?.completed}</td>
-            <td>{element?.cancelled}</td>
-            <td>{element?.subscription}</td>
-            <td>{element?.date}</td>
+            <td>{element?.location?.formattedAddress}</td>
+            <td>{element?.regionalManagerCount || 0} </td>
+            <td>{element?.shiftManagerCount || 0}</td>
+            <td>{element?.subscriptionPlan}</td>
+            <td>{dayjs(element?.createdAt).format("MMM, D, YYYY")}</td>
             <td>
                 <p className="flex items-center gap-1">
                     <MdOutlineStarPurple500 color="#FED70A" size={20} />{" "}
-                    {element?.rating}
+                    {element?.averageRating}
                 </p>
             </td>
             <td>
@@ -40,7 +45,7 @@ const DepotLocationTable = ({ elements }: DepotSingleTableInterface) => {
                                     // setOpenDeactivateModal(true)
                                 }}
                             >
-                                Remove {element?.location}
+                                Remove {element?.location?.formattedAddress}
                             </Menu.Item>
                         </div>
                     </Menu.Dropdown>

@@ -8,22 +8,27 @@ import { CgSpinner } from "react-icons/cg"
 // import Layout from "../../components/layout/Layout"
 import relativeTime from "dayjs/plugin/relativeTime"
 import dayjs from "dayjs"
+import { useNavigate, useParams } from "react-router-dom"
 dayjs.extend(relativeTime)
 
 const ShiftDetails = ({
     shiftId,
     setPhase,
 }: {
-    shiftId: string
+    shiftId?: string
     setPhase: (val: number) => void
 }) => {
-    // const { shiftId } = useParams<{ shiftId: string }>()
+    const { shiftIds } = useParams<string>()
+    const navigate = useNavigate()
 
     const { data, isLoading } = useGetShiftHistory({
-        operativeId: shiftId || "",
+        operativeId: shiftId || shiftIds,
     })
 
-    const item = data?.results.find((item) => item.operative._id === shiftId)
+    const item = data?.results.find(
+        (item) =>
+            item.operative._id === shiftId || item.operative._id === shiftIds
+    )
     return (
         <>
             {isLoading ? (
@@ -33,13 +38,15 @@ const ShiftDetails = ({
             ) : (
                 <div className="pt-4 px-6">
                     <span
-                        onClick={() => setPhase(2)}
+                        onClick={() => {
+                            !navigate ? setPhase(2) : navigate(-1)
+                        }}
                         className="p-3 rounded inline-flex items-center justify-center bg-black-10 cursor-pointer"
                         aria-hidden="true"
                     >
                         <HiArrowLeft className="text-2lg" />
                     </span>
-                    <div className="mt-10 mb-6 flex justify-between">
+                    <div className="mt-10 mb-6 flex flex-col md:flex-row justify-between">
                         <div className="flex">
                             <div>
                                 <img src={Avatar} alt="" />{" "}
@@ -59,15 +66,15 @@ const ShiftDetails = ({
                                         |
                                     </span>
                                     <span className="text-green-100 pl-1 font-bold">
-                                        {item?.jobListing.jobMatchPercentage}%
+                                        {item?.jobListing?.jobMatchPercentage}%
                                         Match
                                     </span>
                                 </p>
                             </div>
                         </div>
-                        <button className="bg-green-10 lg:p-6 mr-4 flex text-green-100 font-bold items-center lg:px-10 px-2 rounded rounded-tr-2xl">
+                        <button className="bg-green-10 lg:p-6 mr-4 flex text-green-100 font-bold items-center lg:px-10 p-3 rounded rounded-tr-2xl mt-3 md:mt-0">
                             <img src={Message} alt="" className="mr-2" />
-                            Message {item?.operative.firstName}
+                            Message {item?.operative?.firstName}
                         </button>
                     </div>
                     <ShiftTable elements={data?.results || []} />
