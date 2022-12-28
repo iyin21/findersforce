@@ -30,6 +30,7 @@ import SingleDepot from "./pages/Admin/Depots/components/ViewSingleDepot"
 import { Buffer } from "buffer/"
 import ShiftDetails from "./pages/Applications/sub-navigations/ShiftDetails"
 import Layout from "./components/Layout"
+import AdminPayment from "./pages/Admin/Payments"
 
 function App() {
     ;(window as any).global = window
@@ -89,6 +90,7 @@ function App() {
                             </Layout>
                         }
                     />
+                    <Route path="/payment" element={<AdminPayment />} />
                 </Route>
             </Route>
         </Routes>

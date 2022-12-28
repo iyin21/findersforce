@@ -58,7 +58,7 @@ export interface ShiftResponse {
       __v: number
   }
   depotHasRated: boolean
-  depotRating: null | string
+  depotRating: null | DepotRating
   id: string
   jobListing: JobListing
   lastSeenLocationCoordinates: null
@@ -90,6 +90,20 @@ export interface ShiftResponse {
   operativeRating: null
   shiftEnded: boolean
   shiftReminderSent: boolean
+  updatedAt: Date
+  __v: number
+  _id: string
+}
+
+interface DepotRating {
+  averageScore: number
+  createdAt: Date
+  depot: string
+  helpfulnessScore: number
+  organizationScore: number
+  professionalismScore: number
+  rater: string
+  schedule: string
   updatedAt: Date
   __v: number
   _id: string
