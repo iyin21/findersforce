@@ -87,30 +87,19 @@ const Messaging = () => {
                 setIsFetchingDialog(false)
             }
         }
-
+        
         if (phase === 3) {
             run()
-
+            
             async function eventPrint(event: NewMessageEvent) {
                 const message = event.message
-                // const sender = await message.getSender()
-                // const sender2 = await message.getInputSender()
-                // const getChat = await message.getChat()
+               
                 const id = message.chat?.id
                 // Checks if it's a private message (from user or bot)
                 if (event.isPrivate && id) {
-                    // prints sender id
-                    // console.log("gcc", message)
-                    // console.log("ggg", event)
-                    // console.log("inputChat", await message.getChat())
-                    // if (sender) {
-                    //     console.log("gigi", sender)
-                    // }
-                    // if (sender2) {
-                    //     console.log("yfytd", sender2)
-                    // }
-
-                    // console.log(getChat?.firstName + " " + getChat?.lastName)
+                    
+                
+                   
                     // @ts-expect-error
                     if (chatId?.value === id.value) {
                         setChatHistory((chat) => [...chat, message])
