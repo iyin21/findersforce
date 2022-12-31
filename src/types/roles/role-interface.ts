@@ -59,6 +59,9 @@ export interface IRolesResponse {
             lastName: string
             depotRole: string
         }
+        location: {
+            formattedAddress: string
+        }
     }
     depotCompany: {
         name: string
