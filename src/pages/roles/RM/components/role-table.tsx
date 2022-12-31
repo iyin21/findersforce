@@ -26,16 +26,25 @@ const RoleTable = ({
 }: RoleTableInterface) => {
     const rows = elements?.map((element, index) => (
         <tr key={index}>
-            <td>
-                {element?.firstName} {element?.lastName}
-            </td>
-            <td>{element?.regionAddress}</td>
+            {status === "accepted" && (
+                <>
+                    <td>
+                        {element?.firstName} {element?.lastName}
+                    </td>
+                    <td>
+                        {element?.depotRegion?.location?.formattedAddress ||
+                            "N/A"}
+                    </td>
+                </>
+            )}
+
             <td>{element.email}</td>
+            <td> {element?.invitedRole || element?.depotRole}</td>
             <td>
                 {dayjs(element?.createdAt).format("MMM D, YYYY")} |{" "}
                 {dayjs(element?.createdAt).format("hh:mm a")}
             </td>
-            <td> {element?.invitedRole}</td>
+
             <td>
                 {status === "pending" && (
                     <p className="text-red-100">Inactive</p>
@@ -96,12 +105,14 @@ const RoleTable = ({
         </tr>
     ))
 
-    const tableHead = [
-        { list: "NAME" },
-        { list: "LOCATION" },
-        { list: "EMAIL" },
-        { list: "DATE ADDED" },
+    const acceptedTableHead = [
+        "NAME",
+        "LOCATION",
+        "EMAIL",
+        "ROLE",
+        "DATE ADDED",
     ]
+    const pendingTableHead = ["EMAIL", "ROLE", "DATE ADDED", "STATUS"]
     return (
         <>
             <div className="hidden lg:block " data-testid="job_board">
@@ -117,33 +128,36 @@ const RoleTable = ({
                 >
                     <thead>
                         <tr>
-                            {tableHead.map((item, index) => (
-                                <th
-                                    key={index}
-                                    style={{
-                                        borderBottom: "none",
-                                    }}
-                                >
-                                    <p className="text-black-30 ">
-                                        {item?.list}
-                                    </p>
-                                </th>
-                            ))}
-                            <th
-                                style={{
-                                    borderBottom: "none",
-                                }}
-                            >
-                                <p className="text-black-30 ">ROLE</p>
-                            </th>
-                            {status === "pending" && (
-                                <th
-                                    style={{
-                                        borderBottom: "none",
-                                    }}
-                                >
-                                    <p className="text-black-30 ">STATUS</p>
-                                </th>
+                            {status === "accepted" ? (
+                                <>
+                                    {acceptedTableHead.map((item, index) => (
+                                        <th
+                                            key={index}
+                                            style={{
+                                                borderBottom: "none",
+                                            }}
+                                        >
+                                            <p className="text-black-30 ">
+                                                {item}
+                                            </p>
+                                        </th>
+                                    ))}
+                                </>
+                            ) : (
+                                <>
+                                    {pendingTableHead.map((item, index) => (
+                                        <th
+                                            key={index}
+                                            style={{
+                                                borderBottom: "none",
+                                            }}
+                                        >
+                                            <p className="text-black-30 ">
+                                                {item}
+                                            </p>
+                                        </th>
+                                    ))}
+                                </>
                             )}
                         </tr>
                     </thead>
