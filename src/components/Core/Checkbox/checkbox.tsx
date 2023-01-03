@@ -11,7 +11,7 @@ interface ICheckBoxProps {
     name?: string
     value?: string
     onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void
-    label?: string
+    label?: string|JSX.Element
     checked?: boolean
     id?: string
 }

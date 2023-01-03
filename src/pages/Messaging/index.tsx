@@ -30,6 +30,7 @@ import SignIn from "./components/signIn"
 import SendCode from "./components/sendCode"
 import { Dialog } from "telegram/tl/custom/dialog"
 import calendar from "dayjs/plugin/calendar"
+import AddMembersModal from "../../components/Modals/Messaging/addMemberModal"
 
 dayjs.extend(calendar)
 
@@ -38,7 +39,7 @@ const Messaging = () => {
     const [phone, setPhone] = useState("")
     const [phoneCodeHash, setPhoneCodeHash] = useState("")
     const [newClient, setNewClient] = useState<TelegramClient>()
-    // const [session, setSession] = useState("")
+    //const [session, setSession] = useState("")
     const [dialog, setDialog] = useState<Dialog[]>([])
     const [activeChat, setActiveChat] = useState("")
     const [chatHistory, setChatHistory] = useState<Api.Message[]>([])
@@ -48,7 +49,7 @@ const Messaging = () => {
     const [isLoading, setIsLoading] = useState(false)
     const [chatId, setChatId] = useState<bigInt.BigInteger>()
 
-    // Telegram
+    //Telegram
 
     const apiId = import.meta.env.VITE_TELEGRAM_API_ID as number
 
@@ -58,9 +59,16 @@ const Messaging = () => {
     ) // fill this later with the value from session.save()
     const client = new TelegramClient(stringSession, apiId, apiHash, {
         connectionRetries: 10000,
-        // testServers: true,
+        //testServers: true,
     })
 
+    // console.log(sessionStorage.getItem("session"))
+    // const getDialogs = async () => {
+    //     const result = await client.getDialogs({})
+    //     if (result) {
+    //         setDialog(result)
+    //     }
+    // }
     useEffect(() => {
         const run = async () => {
             setIsFetchingDialog(true)
@@ -87,24 +95,41 @@ const Messaging = () => {
                 setIsFetchingDialog(false)
             }
         }
-        
+
         if (phase === 3) {
             run()
-            
+
             async function eventPrint(event: NewMessageEvent) {
                 const message = event.message
-               
+                const sender = await message.getSender()
+                const sender2 = await message.getInputSender()
+                const getChat = await message.getChat()
                 const id = message.chat?.id
                 // Checks if it's a private message (from user or bot)
                 if (event.isPrivate && id) {
-                    
+                    // prints sender id
+                    // console.log("gcc", message)
+                    // console.log("ggg", event)
+                   // console.log("inputChat", await message.getChat())
+                    // if (sender) {
+                    //     console.log("gigi", sender)
+                    // }
+                    // if (sender2) {
+                    //     console.log("yfytd", sender2)
+                    // }
+                    // @ts-expect-error
+                    console.log(getChat?.firstName + " " + getChat?.lastName)
                 
-                   
+                    // console.log("chatid", chatId)
+                    // // @ts-expect-error
+                    // console.log("value",id.value);
                     // @ts-expect-error
                     if (chatId?.value === id.value) {
+                
                         setChatHistory((chat) => [...chat, message])
                     }
                     // else {
+                    //     // @ts-expect-error
                     //     console.log("hjhj", dialog[0].message.chat?.id?.value)
 
                     // }
@@ -113,7 +138,7 @@ const Messaging = () => {
             // adds an event handler for new messages
             client.addEventHandler(eventPrint, new NewMessage({}))
         }
-    }, [phase, client.getDialogs, client.addEventHandler])
+    }, [phase])
     useEffect(() => {
         const run = async () => {
             setIsLoading(true)
@@ -147,7 +172,7 @@ const Messaging = () => {
                 reverse: true,
             })
             if (result) {
-                // console.log("result", result)
+                
                 setChatId(result[0].chat?.id)
 
                 setChatHistory(() => [
@@ -174,7 +199,9 @@ const Messaging = () => {
     const [uploadedFile, setUploadedFile] = useState<
         Api.InputFile | null | Api.InputFileBig
     >(null)
-
+    const [groupPhoto, setGroupPhoto] = useState<File | null>(null)
+    const [groupName, setGroupName] = useState("")
+    const [openAddMember, setOpenAddMember] = useState(false)
     const handleSendMessage = async () => {
         setIsLoadingSendMessage(true)
         try {
@@ -247,7 +274,7 @@ const Messaging = () => {
                 chat={activeChat}
                 uploadedFile={uploadedFile}
             />
-            <div className="h-screen relative">
+            <div >
                 {isLoading || isFetchingDialog ? (
                     <div className="h-screen w-full flex mt-24 justify-center">
                         <CgSpinner className="animate-spin text-primary-90 text-4xl" />
@@ -273,13 +300,23 @@ const Messaging = () => {
                             <AddGroup
                                 opened={openModal}
                                 setOpened={setOpenModal}
+                                setGroupName={setGroupName}
+                                setGroupPhoto={setGroupPhoto}
+                                setOpenAddMember={setOpenAddMember}
                             />
                         )}
+                        <AddMembersModal
+                            opened={openAddMember}
+                            setOpened={setOpenAddMember}
+                            client={client}
+                            groupName={groupName}
+                            groupPhoto={groupPhoto}
+                        />
                         <>
                             <Drawer
                                 opened={openMenu}
                                 onClose={() => setOpenMenu(false)}
-                                // size="75%"
+                                //size="75%"
                                 withCloseButton={false}
                                 overlayBlur={2}
                                 overlayColor="#132013"
@@ -302,7 +339,10 @@ const Messaging = () => {
                                     </div>
                                     <p
                                         className="pl-2 cursor-pointer"
-                                        onClick={() => setOpenModal(true)}
+                                        onClick={() => {
+                                            setOpenMenu(false)
+                                            setOpenModal(true)
+                                        }}
                                     >
                                         New Group
                                     </p>
@@ -548,7 +588,7 @@ const Messaging = () => {
                                             <GrAttachment color="rgba(15, 13, 0, 0.5)" />
                                             <input
                                                 data-testid="file-upload"
-                                                // ref={fileInputRef}
+                                                //ref={fileInputRef}
                                                 type="file"
                                                 hidden
                                                 onChange={handleUpload}
@@ -574,7 +614,7 @@ const Messaging = () => {
                                             onClick={() =>
                                                 message && handleSendMessage()
                                             }
-                                            // disabled={isLoading}
+                                            //disabled={isLoading}
                                         >
                                             {isLoadingSendMessage ? (
                                                 <CgSpinner className="animate-spin text-primary-90 text-3xl" />
