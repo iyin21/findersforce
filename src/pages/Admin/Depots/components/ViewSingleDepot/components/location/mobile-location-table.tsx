@@ -1,10 +1,19 @@
 import { Menu } from "@mantine/core"
 import dayjs from "dayjs"
+import { Dispatch, SetStateAction } from "react"
 import { IoEllipsisVerticalSharp } from "react-icons/io5"
 import { MdOutlineStarPurple500 } from "react-icons/md"
 import { DepotLocationTableInterface } from "./depot-location"
 
-const MobileLocationTable = ({ elements }: DepotLocationTableInterface) => {
+const MobileLocationTable = ({
+    elements,
+    setOpenDeleteModal,
+    setRegionId,
+}: {
+    elements: DepotLocationTableInterface["elements"]
+    setOpenDeleteModal: Dispatch<SetStateAction<boolean>>
+    setRegionId: Dispatch<SetStateAction<string[]>>
+}) => {
     return (
         <div className="mt-4">
             {elements?.map((element, index) => (
@@ -33,7 +42,8 @@ const MobileLocationTable = ({ elements }: DepotLocationTableInterface) => {
                                     <Menu.Item
                                         className="text-red-100"
                                         onClick={() => {
-                                            // setOpenDeactivateModal(true)
+                                            setOpenDeleteModal(true)
+                                            setRegionId([element?._id])
                                         }}
                                     >
                                         Remove{" "}

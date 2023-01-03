@@ -1,7 +1,7 @@
 import { showNotification } from "@mantine/notifications"
 import { axiosInstance } from "../../services/api.service"
 import { useMutation, useQuery } from "@tanstack/react-query"
-import { AxiosError } from "axios"
+import { AxiosError, AxiosRequestConfig } from "axios"
 import useAuthContext from "../../hooks/auth-hooks/useAuth"
 import {
     InviteDepotInterfaceResponse,
@@ -18,6 +18,7 @@ import {
     CreateJobRateRequest,
     PaymentResponse,
     ISingleJobRateResponse,
+    deleteRequest,
 } from "../../types/depot/depot-inteface"
 
 export const useInviteDepot = () => {
@@ -334,6 +335,49 @@ export const useGetPayments = ({ regionId }: OperativeRequest) => {
                 showNotification({
                     title: "Error",
                     message: err.message,
+                    color: "red",
+                })
+            },
+        }
+    )
+}
+
+export const useDeleteRegion = () => {
+    const { state } = useAuthContext()
+    const deleteRegion = async (requestBody: deleteRequest) => {
+        const config: AxiosRequestConfig = {
+            headers: {
+                Authorization: `${state.jwt?.token}`,
+            },
+        }
+        const { data } = await axiosInstance.delete(
+            `/admin/delete-regions`,
+            {
+                data: requestBody,
+            },
+            // @ts-ignore
+            config
+        )
+
+        return data
+    }
+    return useMutation<any, AxiosError, deleteRequest>(
+        ["delete region"],
+        (requestBody: deleteRequest) => deleteRegion(requestBody),
+        {
+            onSuccess: (data) => {
+                showNotification({
+                    // @ts-ignore
+                    message: data?.message,
+                    title: "Success",
+                    color: "green",
+                })
+            },
+            onError: (err) => {
+                showNotification({
+                    // @ts-ignore
+                    message: err.response?.data?.error || "An error occurred",
+                    title: "Error",
                     color: "red",
                 })
             },

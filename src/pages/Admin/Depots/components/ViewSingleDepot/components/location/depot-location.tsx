@@ -1,5 +1,6 @@
 import { Menu, Table } from "@mantine/core"
 import dayjs from "dayjs"
+import { Dispatch, SetStateAction } from "react"
 import { IoEllipsisVerticalSharp } from "react-icons/io5"
 import { MdOutlineStarPurple500 } from "react-icons/md"
 import { Regions } from "../../../../../../../types/dashboard/interfaces"
@@ -9,7 +10,15 @@ export interface DepotLocationTableInterface {
     elements: Regions[]
 }
 
-const DepotLocationTable = ({ elements }: DepotLocationTableInterface) => {
+const DepotLocationTable = ({
+    elements,
+    setOpenDeleteModal,
+    setRegionId,
+}: {
+    elements: DepotLocationTableInterface["elements"]
+    setOpenDeleteModal: Dispatch<SetStateAction<boolean>>
+    setRegionId: Dispatch<SetStateAction<string[]>>
+}) => {
     const rows = elements?.map((element, index) => (
         <tr key={index}>
             <td>{index + 1}</td>
@@ -42,7 +51,8 @@ const DepotLocationTable = ({ elements }: DepotLocationTableInterface) => {
                             <Menu.Item
                                 className="text-red-100"
                                 onClick={() => {
-                                    // setOpenDeactivateModal(true)
+                                    setOpenDeleteModal(true)
+                                    setRegionId([element?._id])
                                 }}
                             >
                                 Remove {element?.location?.formattedAddress}
@@ -94,7 +104,11 @@ const DepotLocationTable = ({ elements }: DepotLocationTableInterface) => {
                 </Table>{" "}
             </div>
             <div className="block lg:hidden">
-                <MobileLocationTable elements={elements} />
+                <MobileLocationTable
+                    elements={elements}
+                    setOpenDeleteModal={setOpenDeleteModal}
+                    setRegionId={setRegionId}
+                />
             </div>
         </>
     )
