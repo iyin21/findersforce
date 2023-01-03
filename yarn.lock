@@ -13815,10 +13815,10 @@ tdweb@^1.8.0:
     localforage "^1.7.3"
     uuid "^3.3.2"
 
-telegram@^2.15.1:
-  version "2.15.1"
-  resolved "https://registry.yarnpkg.com/telegram/-/telegram-2.15.1.tgz#058fc625ce4ab3a0a9a8364c1a619a20aceb2102"
-  integrity sha512-vvZpc8GPKRH1P6I0vPc2e5agWIoEJkmG5XTXRTskY8leuFpA7J4DBqpvJ0mmLsFcMXUfN39AXNqGimWCPKZvsQ==
+telegram@^2.14.8:
+  version "2.14.8"
+  resolved "https://registry.yarnpkg.com/telegram/-/telegram-2.14.8.tgz#cad9653b7ffcc08aece964569ff2cc763e6423c9"
+  integrity sha512-2BAKcLGYmPl/Z2FKZsxFp9eUMw17cXhueeG4FNtEe9WWECgW1+B8ySgb1HQygxxm1Bq3SXnpcdl+YUL0RfZIwg==
   dependencies:
     "@cryptography/aes" "^0.1.1"
     async-mutex "^0.3.0"
