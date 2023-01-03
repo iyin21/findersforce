@@ -228,3 +228,7 @@ export interface IPaymentResponse {
     fullyPaidByAdmin: boolean
     createdAt: Date
 }
+
+export interface deleteRequest {
+    regionIds: string[]
+}

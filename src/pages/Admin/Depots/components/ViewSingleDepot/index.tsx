@@ -1,6 +1,7 @@
 import {
     AddNewWageModal,
     Button,
+    ConfirmDelete,
     EditWage,
     EmptyState,
     HQAddUser,
@@ -26,6 +27,7 @@ import { useGetOperativeDetails } from "../../../../../hooks/approval-hooks/appr
 import dayjs from "dayjs"
 import { useJobBoards } from "../../../../../hooks/job-board/useJobBoard.hooks"
 import {
+    useDeleteRegion,
     useGetJobRates,
     useGetOperatives,
     useGetPayments,
@@ -43,8 +45,10 @@ const SingleDepot = () => {
     const [openEditWageModal, setOpenEditWageModal] = useState(false)
     const [openAddUser, setOpenAddUser] = useState(false)
     const [openSuccessModal, setOpenSuccessModal] = useState(false)
-
     const [openNewWageModal, setOpenNewWageModal] = useState(false)
+    const [openDeleteModal, setOpenDeleteModal] = useState(false)
+    const [regionId, setRegionId] = useState<string[]>([])
+
     const [activePostPage, setActivePostPage] = useState(1)
     const [activeOperativePage, setActiveOperativePage] = useState(1)
     const [activeManagerPage, setActiveManagerPage] = useState(1)
@@ -120,6 +124,16 @@ const SingleDepot = () => {
         regionId: depotId,
     })
 
+    const { mutate: mutateDeleteRegion, isLoading: isDeleting } =
+        useDeleteRegion()
+
+    const handleRegionDelete = () => {
+        mutateDeleteRegion({
+            regionIds: regionId,
+        })
+        setOpenDeleteModal(false)
+    }
+
     useEffect(() => {
         if (isSent) {
             setOpenSuccessModal(true)
@@ -173,6 +187,16 @@ const SingleDepot = () => {
                     description="This gives them administrative access to your depot
                     account"
                     buttonText="Back"
+                />
+            )}
+            {openDeleteModal && (
+                <ConfirmDelete
+                    setOpened={setOpenDeleteModal}
+                    opened={openDeleteModal}
+                    handleDelete={handleRegionDelete}
+                    isDeleting={isDeleting}
+                    title="Delete Location"
+                    description="Are you sure you want to delete this location?"
                 />
             )}
             <div className="bg-black-10 p-2 w-fit mx-4 rounded-lg relative z-20 hidden md:block">
@@ -489,7 +513,7 @@ const SingleDepot = () => {
                             )}
                         </Tabs.Panel>
                         <Tabs.Panel value="Locations">
-                            {locationData?.data?.length === 0 ? (
+                            {!locationData?.data ? (
                                 <EmptyState
                                     description="Location data will show here, when you add one"
                                     buttonText="Add a depot"
@@ -501,6 +525,8 @@ const SingleDepot = () => {
                                 <div>
                                     <DepotLocationTable
                                         elements={locationData?.data || []}
+                                        setOpenDeleteModal={setOpenDeleteModal}
+                                        setRegionId={setRegionId}
                                     />
                                     <Pagination
                                         page={activeLocationPage}
