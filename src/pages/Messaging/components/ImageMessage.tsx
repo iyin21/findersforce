@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { TelegramClient, Api } from "telegram"
-//import { Buffer } from "buffer"
+// import { Buffer } from "buffer"
 import { AiOutlineArrowDown } from "react-icons/ai"
 import { CgSpinner } from "react-icons/cg"
 import ImageModal from "./ImageModal"
@@ -33,6 +33,7 @@ export default function ImageMessage({
             handleDocumentContent()
         }
     }, [])
+    // eslint-disable-next-line camelcase
     const base64_arraybuffer = async (data: Buffer | string) => {
         // Use a FileReader to generate a base64 data URI
         const base64url = await new Promise((r) => {
@@ -46,7 +47,7 @@ export default function ImageMessage({
         "data:application/octet-stream;base64,<your base64 data>", 
         so we split off the beginning:
         */
-        //@ts-expect-error
+        // @ts-expect-error
         return base64url.split(",", 2)[1]
     }
     const handleImageContent = async () => {
@@ -59,7 +60,7 @@ export default function ImageMessage({
             })
 
             if (thumbnailBuffer) {
-                //@ts-expect-error
+                // @ts-ignore
                 const thumbnail = await base64_arraybuffer(thumbnailBuffer)
                 setThumbnailImg(thumbnail)
             }
@@ -73,9 +74,7 @@ export default function ImageMessage({
                 // @ts-ignore
                 setDocument(buffer)
             }
-        } catch (_err) {
-        
-        }
+        } catch (_err) {}
     }
 
     const handleClick = async () => {
@@ -84,8 +83,8 @@ export default function ImageMessage({
         try {
             const buffer = await client.downloadMedia(data, {})
             if (buffer) {
-                //@ts-expect-error
-                const imageBuffer =await base64_arraybuffer(buffer)
+                // @ts-ignore
+                const imageBuffer = await base64_arraybuffer(buffer)
 
                 setImage(imageBuffer)
             }
@@ -103,7 +102,6 @@ export default function ImageMessage({
 
     // @ts-expect-erro
     // console.log("file", item.file?.size?.value)
-    console.log("data", data)
     return (
         <>
             <ImageModal
@@ -156,6 +154,7 @@ export default function ImageMessage({
                             src={`data:image/jpeg;base64,${image}`}
                             height={100}
                             width={300}
+                            alt=""
                         />
                     ) : (
                         <div className="relative rounded">
