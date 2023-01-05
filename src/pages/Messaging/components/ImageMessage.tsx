@@ -103,7 +103,7 @@ export default function ImageMessage({
 
     // @ts-expect-erro
     // console.log("file", item.file?.size?.value)
-    console.log("data", data)
+    
     return (
         <>
             <ImageModal

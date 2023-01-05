@@ -31,7 +31,7 @@ import SendCode from "./components/sendCode"
 import { Dialog } from "telegram/tl/custom/dialog"
 import calendar from "dayjs/plugin/calendar"
 import AddMembersModal from "../../components/Modals/Messaging/addMemberModal"
-
+// 2.14.8
 dayjs.extend(calendar)
 
 const Messaging = () => {
@@ -44,24 +44,25 @@ const Messaging = () => {
     const [activeChat, setActiveChat] = useState("")
     const [chatHistory, setChatHistory] = useState<Api.Message[]>([])
     const [isLoadingMessages, setIsLoadingMessages] = useState(false)
-    const [me, setMe] = useState<any>()
+    const [me, setMe] = useState<Api.User>()
     const [isFetchingDialog, setIsFetchingDialog] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
     const [chatId, setChatId] = useState<bigInt.BigInteger>()
 
     //Telegram
-
+    
     const apiId = import.meta.env.VITE_TELEGRAM_API_ID as number
 
     const apiHash = import.meta.env.VITE_TELEGRAM_API_HASH
     const stringSession = new StringSession(
         sessionStorage.getItem("session") || ""
     ) // fill this later with the value from session.save()
+    
     const client = new TelegramClient(stringSession, apiId, apiHash, {
         connectionRetries: 10000,
         //testServers: true,
     })
-
+    
     // console.log(sessionStorage.getItem("session"))
     // const getDialogs = async () => {
     //     const result = await client.getDialogs({})
@@ -76,6 +77,7 @@ const Messaging = () => {
             try {
                 const meResult = await client.getMe()
                 if (meResult) {
+                    // @ts-expect-error
                     setMe(meResult)
                 }
                 const result = await client.getDialogs({})
@@ -101,10 +103,10 @@ const Messaging = () => {
 
             async function eventPrint(event: NewMessageEvent) {
                 const message = event.message
-                const sender = await message.getSender()
-                const sender2 = await message.getInputSender()
-                const getChat = await message.getChat()
-                const id = message.chat?.id
+                // const sender = await message.getSender()
+                // const sender2 = await message.getInputSender()
+                // const getChat = await message.getChat()
+                 const id = message.chat?.id
                 // Checks if it's a private message (from user or bot)
                 if (event.isPrivate && id) {
                     // prints sender id
@@ -202,6 +204,21 @@ const Messaging = () => {
     const [groupPhoto, setGroupPhoto] = useState<File | null>(null)
     const [groupName, setGroupName] = useState("")
     const [openAddMember, setOpenAddMember] = useState(false)
+    const [searchParam] = useState(["title"])
+    const [searchQuery, setSearchQuery]= useState("");
+    
+const dialogData = dialog?.filter((item:Dialog) => {
+    return searchParam.some((newItem) => {
+      return (
+        // @ts-expect-error
+        item[newItem as keyof Dialog]
+          .toString()
+          .toLowerCase()
+          .indexOf(searchQuery.toLowerCase()) > -1
+      );
+    });
+  });
+
     const handleSendMessage = async () => {
         setIsLoadingSendMessage(true)
         try {
@@ -325,10 +342,10 @@ const Messaging = () => {
                                 <div className="pl-4 pt-4">
                                     <img src={CompanyLogo} alt="" />
                                     <h5 className="font-bold text-2lg">
-                                        Revive Traffic
+                                        { me?.firstName+" "+ me?.lastName}
                                     </h5>
                                     <p className="text-black-40 pt-2">
-                                        +44 04 7743 1239
+                                        +{me?.phone}
                                     </p>
                                 </div>
 
@@ -373,10 +390,12 @@ const Messaging = () => {
                                         type="text"
                                         placeholder="Search"
                                         className="md:h-8.5 bg-black-5 ml-2"
+                                        value={searchQuery}
+                                        onChange={(e) => setSearchQuery(e.target.value)}
                                     />
                                 </div>
                                 <div className="mt-8 overflow-y-auto h-[80%]">
-                                    {dialog.map((item, index) => (
+                                    {dialogData.map((item, index) => (
                                         <div
                                             key={index}
                                             className={`flex p-2 items-center ${
