@@ -9,6 +9,7 @@ import {
 } from "react"
 import Camera from "../../../assets/camera.svg"
 
+
 export interface AddGroupModalProps {
     opened: boolean
     setOpened: Dispatch<SetStateAction<boolean>>
