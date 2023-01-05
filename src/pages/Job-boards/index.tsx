@@ -228,7 +228,6 @@ const JobBoards = () => {
                                         onClick={() =>
                                             setOpenBulkConfirmModal(true)
                                         }
-                                        // onClick={() => handleDelete()}
                                         className="text-red-100 lg:w-auto mr-3 py-3 lg:py-4"
                                     >
                                         <span className="lg:block hidden text-red-100">
