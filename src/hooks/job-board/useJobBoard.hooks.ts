@@ -21,6 +21,7 @@ function useJobBoards({
     page,
     limit,
     meetingPoint,
+    companyId,
 }: // amount,
 JobBoardRequest) {
     const { state } = useAuthContext()
@@ -34,6 +35,7 @@ JobBoardRequest) {
                 page,
                 meetingPoint,
                 limit,
+                companyId,
             },
             headers: {
                 Authorization: `${state?.jwt?.token}`,

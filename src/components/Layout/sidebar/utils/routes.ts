@@ -65,7 +65,7 @@ export const adminRoute: SidebarRoutes[] = [
     { icon: Analytics, title: "Analytics", route: "/analytics" },
     { icon: Depots, title: "Depots", route: "/depots" },
     { icon: Approval, title: "Approvals", route: "/approvals" },
-    { icon: Payments, title: "Payment", route: "/payments" },
+    { icon: Payments, title: "Payment", route: "/payment" },
     { icon: Subscription, title: "Subscription", route: "/subscription" },
     { icon: GeoTracking, title: "Geotracking", route: "/geotracking" },
     { icon: AdminSupport, title: "Support", route: "/admin-support" },

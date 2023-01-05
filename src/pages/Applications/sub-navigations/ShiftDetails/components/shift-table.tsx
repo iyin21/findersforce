@@ -11,21 +11,21 @@ const ShiftTable = ({ elements }: Prop) => {
     const rows = elements.map((item, index) => (
         <tr key={index} className="font-creato">
             <td>{dayjs(item?.createdAt).format("MMM D, YYYY")}</td>
-            <td>{item?.jobListing.jobLocation.formattedAddress}</td>
-            <td>{dayjs(item.jobListing.shiftStartTime).format("h:mm A")}</td>
-            <td>{dayjs(item?.jobListing.shiftEndTime).format("h:mm A")}</td>
-            <td>{item?.jobListing.shiftDurationInHours}</td>
+            <td>{item?.jobListing?.jobLocation?.formattedAddress}</td>
+            <td>{dayjs(item.jobListing?.shiftStartTime).format("h:mm A")}</td>
+            <td>{dayjs(item?.jobListing?.shiftEndTime).format("h:mm A")}</td>
+            <td>{item?.jobListing?.shiftDurationInHours}</td>
             <td>
                 $
-                {item.jobListing.jobRate.jobRatePerHourDisplayedToDepot *
-                    item.jobListing.shiftDurationInHours}
+                {item?.jobListing?.jobRate.jobRatePerHourDisplayedToDepot *
+                    item?.jobListing?.shiftDurationInHours}
                 /hr
             </td>
             <td>
                 <p className="flex">
                     <img src={Star} alt="" />
                     <span className="pl-1">
-                        {item?.depotRating.averageScore || 0}
+                        {item?.depotRating?.averageScore || 0}
                     </span>
                 </p>
             </td>
@@ -91,8 +91,8 @@ const ShiftTable = ({ elements }: Prop) => {
                                 </h6>
                                 <p className="font-medium text-2lg">
                                     {
-                                        item.jobListing.jobLocation
-                                            .formattedAddress
+                                        item?.jobListing?.jobLocation
+                                            ?.formattedAddress
                                     }
                                 </p>
                             </div>
@@ -110,7 +110,7 @@ const ShiftTable = ({ elements }: Prop) => {
                                         TIME IN
                                     </h6>
                                     <p className="text-2md mt-1">
-                                        {item.jobListing.shiftStartTime}
+                                        {item?.jobListing?.shiftStartTime}
                                     </p>
                                 </div>
 
@@ -120,7 +120,7 @@ const ShiftTable = ({ elements }: Prop) => {
                                     </h6>
                                     <p className="text-2md mt-1">
                                         {dayjs(
-                                            item?.jobListing.shiftEndTime
+                                            item?.jobListing?.shiftEndTime
                                         ).format("h:mm A")}
                                     </p>
                                 </div>
@@ -129,7 +129,7 @@ const ShiftTable = ({ elements }: Prop) => {
                                         DURATION
                                     </h6>
                                     <p className="text-2md mt-1">
-                                        {item?.jobListing.shiftDurationInHours}
+                                        {item?.jobListing?.shiftDurationInHours}
                                     </p>
                                 </div>
                             </div>
@@ -140,10 +140,10 @@ const ShiftTable = ({ elements }: Prop) => {
                                     </h6>
                                     <p className="text-2md mt-1">
                                         $
-                                        {item.jobListing.jobRate
+                                        {item?.jobListing?.jobRate
                                             .jobRatePerHourDisplayedToDepot *
-                                            item.jobListing
-                                                .shiftDurationInHours}
+                                            item?.jobListing
+                                                ?.shiftDurationInHours}
                                         /hr
                                     </p>
                                 </div>
@@ -156,7 +156,7 @@ const ShiftTable = ({ elements }: Prop) => {
                                     <p className="flex text-2md mt-1">
                                         <img src={Star} alt="" />
                                         <span className="pl-1">
-                                            {item?.depotRating.averageScore ||
+                                            {item?.depotRating?.averageScore ||
                                                 0}
                                         </span>
                                     </p>

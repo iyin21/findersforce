@@ -3,18 +3,41 @@ import Button from "../../../components/Core/Buttons/Button"
 import FormikControls from "../../../components/Form/FormControls/form-controls"
 import { Form, Formik } from "formik"
 import { useGetJobQualification } from "../../../hooks/job-board/useJobBoard.hooks"
-import { Dispatch, SetStateAction } from "react"
+import { Dispatch, SetStateAction, useEffect } from "react"
 import { IoClose } from "react-icons/io5"
-import { object, string } from "yup"
+import { createJobRateInitialValues } from "./utils/initialvalues"
+import { createJobRateValidationSchema } from "./utils/validationSchema"
+import { useCreateJobRates } from "../../../hooks/depots/use-depot"
 
 export interface NewWageProps {
     opened: boolean
     setOpened: Dispatch<SetStateAction<boolean>>
     isLoading: boolean
+    depotId: string | undefined
+    companyId: string | undefined
 }
 
-const AddNewWageModal = ({ opened, setOpened }: NewWageProps) => {
+const AddNewWageModal = ({
+    opened,
+    setOpened,
+    depotId,
+    companyId,
+}: NewWageProps) => {
     const { data: jobQualification } = useGetJobQualification()
+
+    const {
+        mutate: createJobRate,
+        isLoading: createJobRateLoading,
+        isSuccess,
+        data: createJobRateData,
+    } = useCreateJobRates()
+
+    useEffect(() => {
+        if (isSuccess) {
+            setOpened(false)
+        }
+    }, [createJobRateData])
+
     return (
         <div>
             <Modal
@@ -41,19 +64,15 @@ const AddNewWageModal = ({ opened, setOpened }: NewWageProps) => {
                 </div>
                 <div className="px-10 py-5 font-creato">
                     <Formik
-                        initialValues={{
-                            mos_depots_pays: "",
-                            mos_op_receives: "",
-                            dpf_depots_pays: "",
-                            dpf_op_receives: "",
-                            jobQualificationId: "",
+                        initialValues={createJobRateInitialValues}
+                        validationSchema={createJobRateValidationSchema}
+                        onSubmit={(values) => {
+                            createJobRate({
+                                ...values,
+                                // depotId: depotId,
+                                companyId: companyId,
+                            })
                         }}
-                        validationSchema={object().shape({
-                            mos_depots_pays: string().required("Required"),
-                            mos_op_receives: string().required("Required"),
-                            jobQualificationId: string().required("Required"),
-                        })}
-                        onSubmit={(values) => {}}
                     >
                         {({ values }) => (
                             <Form className="my-6 ">
@@ -67,11 +86,11 @@ const AddNewWageModal = ({ opened, setOpened }: NewWageProps) => {
                                     </label>
                                     <FormikControls
                                         control="select"
-                                        name="banReason"
-                                        aria-label="Reason"
+                                        name="jobQualificationId"
+                                        aria-label="Qualification"
                                         type="select"
                                         className="rounded text-black-50"
-                                        data-testid="banReason"
+                                        data-testid="jobQualificationId"
                                         defaultValue={
                                             values?.jobQualificationId
                                         }
@@ -100,13 +119,13 @@ const AddNewWageModal = ({ opened, setOpened }: NewWageProps) => {
 
                                         <FormikControls
                                             type="text"
-                                            name="mos_depots_pays"
+                                            name="jobRateMeetOnsiteDisplayedToDepot"
                                             control="input"
                                             placeholder="0"
                                             aria-label="Depot pays"
                                             required
                                             className="rounded"
-                                            data-testid="mos_depots_pays"
+                                            data-testid="jobRateMeetOnsiteDisplayedToDepot"
                                             prefixIcon={
                                                 <span className="text-black-100 text-2md font-creatoMedium">
                                                     £{" "}
@@ -126,13 +145,13 @@ const AddNewWageModal = ({ opened, setOpened }: NewWageProps) => {
 
                                         <FormikControls
                                             type="text"
-                                            name="mos_op_receives"
+                                            name="jobRateMeetOnsiteDisplayedToOp"
                                             control="input"
                                             placeholder="0"
                                             aria-label="Op receives"
                                             required
                                             className="rounded"
-                                            data-testid="mos_op_receives"
+                                            data-testid="jobRateMeetOnsiteDisplayedToOp"
                                             prefixIcon={
                                                 <span className="text-black-100 text-2md font-creatoMedium">
                                                     £{" "}
@@ -152,13 +171,13 @@ const AddNewWageModal = ({ opened, setOpened }: NewWageProps) => {
 
                                         <FormikControls
                                             type="text"
-                                            name="dpf_depots_pays"
+                                            name="jobRateDepotFirstDisplayedToDepot"
                                             control="input"
                                             placeholder="0"
                                             aria-label="Depot pays"
                                             required
                                             className="rounded"
-                                            data-testid="dpf_depots_pays"
+                                            data-testid="jobRateDepotFirstDisplayedToDepot"
                                             prefixIcon={
                                                 <span className="text-black-100 text-2md font-creatoMedium">
                                                     £{" "}
@@ -178,13 +197,13 @@ const AddNewWageModal = ({ opened, setOpened }: NewWageProps) => {
 
                                         <FormikControls
                                             type="text"
-                                            name="dpf_op_receives"
+                                            name="jobRateDepotFirstDisplayedToOp"
                                             control="input"
                                             placeholder="0"
                                             aria-label="Depot first"
                                             required
                                             className="rounded"
-                                            data-testid="dpf_op_receives"
+                                            data-testid="jobRateDepotFirstDisplayedToOp"
                                             prefixIcon={
                                                 <span className="text-black-100 text-2md font-creatoMedium">
                                                     £{" "}
@@ -195,7 +214,9 @@ const AddNewWageModal = ({ opened, setOpened }: NewWageProps) => {
 
                                     <div className="border-t border-black-5 flex justify-end pt-5 mt-8">
                                         <Button variant="primary">
-                                            Add new
+                                            {createJobRateLoading
+                                                ? "adding..."
+                                                : "Add new"}
                                         </Button>
                                     </div>
                                 </div>

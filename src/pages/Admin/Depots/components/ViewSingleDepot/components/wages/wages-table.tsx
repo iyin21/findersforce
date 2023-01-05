@@ -1,25 +1,47 @@
 import { Table } from "@mantine/core"
+import dayjs from "dayjs"
 import { Dispatch, SetStateAction } from "react"
 import { FiChevronRight } from "react-icons/fi"
-import { DepotSingleTableInterface } from "../../../../../../../types/depot/depot-inteface"
+import { IJobRateResponse } from "../../../../../../../types/depot/depot-inteface"
+import MobileWageTable from "./mobile-wage-table"
+import { useGetJobQualification } from "../../../../../../../hooks/job-board/useJobBoard.hooks"
+
+export interface DepotWagesTableProps {
+    elements: IJobRateResponse[]
+}
 
 const DepotWagesTable = ({
     elements,
     setOpenEditWageModal,
+    setWageId,
 }: {
-    elements: DepotSingleTableInterface["elements"]
+    elements: DepotWagesTableProps["elements"]
     setOpenEditWageModal: Dispatch<SetStateAction<boolean>>
+    setWageId: Dispatch<SetStateAction<string>>
 }) => {
+    const { data: qualificationData } = useGetJobQualification()
     const rows = elements?.map((element, index) => (
-        <tr key={index} onClick={() => setOpenEditWageModal(true)}>
+        <tr
+            key={index}
+            onClick={() => {
+                setOpenEditWageModal(true)
+                setWageId(element._id)
+            }}
+        >
             <td>{index + 1}</td>
-            <td>{element?.qualification}</td>
-            <td>{element?.mos_depots_pays}</td>
-            <td>{element?.mos_op_receives}</td>
-            <td>{element?.dpf_depots_pays}</td>
-            <td>{element?.dpf_op_receives}</td>
-            <td>{element?.registered_by}</td>
-            <td>{element?.date}</td>
+            <td>
+                {
+                    qualificationData?.filter(
+                        (item) => item?._id === element.jobQualification
+                    )[0]?.name
+                }
+            </td>
+            <td>{element?.jobRateMeetOnsiteDisplayedToDepot}</td>
+            <td>{element?.jobRateMeetOnsiteDisplayedToOp}</td>
+            <td>{element?.jobRateDepotFirstDisplayedToDepot}</td>
+            <td>{element?.jobRateDepotFirstDisplayedToOp}</td>
+            <td>{element?.company?.name}</td>
+            <td>{dayjs(element?.company?.createdAt).format("MMM D, YYYY")}</td>
             <td>
                 <FiChevronRight color="#0F0D0099" size={30} />
             </td>
@@ -37,7 +59,7 @@ const DepotWagesTable = ({
         "DATE ADDED",
     ]
     return (
-        <div>
+        <>
             <div className="hidden lg:block " data-testid="shift_table">
                 <Table
                     style={{
@@ -67,7 +89,14 @@ const DepotWagesTable = ({
                     <tbody>{rows}</tbody>
                 </Table>{" "}
             </div>
-        </div>
+            <div className="block lg:hidden">
+                <MobileWageTable
+                    elements={elements}
+                    setOpenEditWageModal={setOpenEditWageModal}
+                    qualificationData={qualificationData}
+                />
+            </div>
+        </>
     )
 }
 

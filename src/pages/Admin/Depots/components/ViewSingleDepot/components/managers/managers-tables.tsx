@@ -1,22 +1,30 @@
 import { Table } from "@mantine/core"
-import { DepotSingleTableInterface } from "../../../../../../../types/depot/depot-inteface"
+import dayjs from "dayjs"
+import { IRolesResponse } from "../../../../../../../types/roles/role-interface"
+import MobileManagerTable from "./mobile-manager-table"
 
-const ManagersTable = ({ elements }: DepotSingleTableInterface) => {
+export interface ManagersTableProps {
+    elements: IRolesResponse[] | undefined
+}
+
+const ManagersTable = ({ elements }: ManagersTableProps) => {
     const rows = elements?.map((element, index) => (
         <tr key={index}>
             <td>{index + 1}</td>
-            <td>{element?.name}</td>
+            <td>
+                {element?.firstName} {element?.lastName}
+            </td>
             <td>{element?.email}</td>
-            <td>{element?.location}</td>
-            <td>{element?.role}</td>
-            <td>{element?.date}</td>
+            <td>{element?.depotCompany?.address}</td>
+            <td>{element?.depotRole}</td>
+            <td>{dayjs(element.createdAt).format("MMM, D, YYYY")}</td>
         </tr>
     ))
 
     const tableHead = ["NO", "NAME", "EMAIL", " LOCATION", "ROLE", "DATE ADDED"]
     return (
         <>
-            <div className="hidden lg:block " data-testid="shift_table">
+            <div className="hidden lg:block " data-testid="managers_table">
                 <Table
                     style={{
                         backgroundColor: "#FFFFFF",
@@ -44,6 +52,10 @@ const ManagersTable = ({ elements }: DepotSingleTableInterface) => {
                     </thead>
                     <tbody>{rows}</tbody>
                 </Table>{" "}
+            </div>
+
+            <div className="block lg:hidden">
+                <MobileManagerTable elements={elements} />
             </div>
         </>
     )
