@@ -220,10 +220,11 @@ const RMRoles = () => {
                 <div className="flex flex-col-reverse md:flex-row md:justify-between md:items-center">
                     <div className="flex flex-col">
                         <h1 className="text-2xl md:text-3xl font-creatoBold text-black-100 ">
-                            Roles and permission
+                            Management
                         </h1>
                         <p className="text-black-60 text-2md md:text-lg font-normal font-creato">
-                            Operatives who apply for shifts appear here
+                            Add and remove managers across your entire
+                            Organization..
                         </p>
                     </div>
                     <div className="flex justify-end mb-3">
@@ -234,7 +235,7 @@ const RMRoles = () => {
                             onClick={() => setOpenAddUser(!openAddUser)}
                             data-testid="add_user"
                         >
-                            Add new role
+                            Add Managers
                         </Button>
                     </div>
                 </div>
@@ -292,8 +293,9 @@ const RMRoles = () => {
                         <Tabs.Panel value="active">
                             {!acceptedData?.data ? (
                                 <EmptyState
-                                    description="Active administrators will show here. Send a invite to a shift manager"
-                                    buttonText="Add new role"
+                                    title="You have no active Shift Managers."
+                                    description="When a Shift Manager accepts an invitation, they will show here."
+                                    buttonText="Add Managers"
                                     handleButtonClick={handleOpenAddUser}
                                 />
                             ) : (
@@ -328,7 +330,8 @@ const RMRoles = () => {
                         <Tabs.Panel value="pending">
                             {!pendingData?.data ? (
                                 <EmptyState
-                                    description="Administrators who are yet to accept your invite will show here"
+                                    title="You have no sent invitations."
+                                    description="When you send an invitation, it will show here."
                                     buttonText="Add new role"
                                     handleButtonClick={handleOpenAddUser}
                                 />
