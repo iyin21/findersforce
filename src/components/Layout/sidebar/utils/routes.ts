@@ -31,7 +31,7 @@ export const RegionalManagerRoute: SidebarRoutes[] = [
     { icon: Messaging, title: "Messaging", route: "/messaging" },
     {
         icon: RolesPermission,
-        title: "Roles & Permissions",
+        title: "Management",
         route: "/roles&permission",
     },
     { icon: Support, title: "Support", route: "/support" },
@@ -48,12 +48,12 @@ export const shiftManagerRoute: SidebarRoutes[] = [
 
 export const depotHqRoute: SidebarRoutes[] = [
     { icon: Dashboard, title: "Dashboard", route: "/dashboard" },
-    { icon: Shifts, title: "Shifts Board", route: "/job-boards" },
+    { icon: Shifts, title: "Shifts", route: "/job-boards" },
     { icon: Pending, title: "Applications", route: "/pending" },
     { icon: Planner, title: "Planner", route: "/planner" },
     {
         icon: RolesPermission,
-        title: "Roles & Permissions",
+        title: "Management",
         route: "/roles&permission",
     },
     { icon: Locations, title: "Locations", route: "/locations" },
@@ -70,5 +70,9 @@ export const adminRoute: SidebarRoutes[] = [
     { icon: GeoTracking, title: "Geotracking", route: "/geotracking" },
     { icon: AdminSupport, title: "Support", route: "/admin-support" },
     { icon: AllUsers, title: "All users", route: "/all-users" },
-    { icon: AdminRolesPermission, title: "Roles and Permission", route: "/roles-permission" },
+    {
+        icon: AdminRolesPermission,
+        title: "Roles and Permission",
+        route: "/roles-permission",
+    },
 ]

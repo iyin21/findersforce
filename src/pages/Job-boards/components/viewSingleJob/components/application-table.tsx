@@ -16,7 +16,7 @@ const ApplicationJobTable = ({ elements }: ApplicationJobInterface) => {
         switch (status) {
             case "PENDING":
                 return (
-                    <span className="bg-black-10 text-black-100 rounded-2xl px-3 py-1 font-semibold">
+                    <span className="bg-yellow-100 text-black-100 rounded-2xl px-3 py-1 font-semibold">
                         PENDING
                     </span>
                 )
@@ -43,12 +43,15 @@ const ApplicationJobTable = ({ elements }: ApplicationJobInterface) => {
 
     const rows = elements?.map((element, index) => (
         <tr key={index} onClick={() => handleNavigate(element?._id)}>
-            <td>{index}</td>
+            <td>{index + 1}</td>
             <td>
                 {element?.user?.firstName} {element?.user?.lastName}
             </td>
             <td>{element?.jobListing?.jobQualification?.name}</td>
-            <td className="text-green-100">{element?.jobMatchPercentage}%</td>
+            <td className="text-green-100">
+                {element?.jobMatchPercentage}%
+            </td>{" "}
+            <td> {renderStatus(element?.status)}</td>
             <td>
                 <p className="flex items-center gap-2">
                     {" "}
@@ -61,7 +64,6 @@ const ApplicationJobTable = ({ elements }: ApplicationJobInterface) => {
                 <span className="mx-1 text-black-30">|</span>
                 {dayjs(element?.jobDate).format("hh:mm A")}
             </td>
-            <td> {renderStatus(element?.status)}</td>
             <td
                 role="gridcell"
                 className="cursor-pointer h-[60px] border-b border-neutral-5"
@@ -73,12 +75,12 @@ const ApplicationJobTable = ({ elements }: ApplicationJobInterface) => {
 
     const tableHead = [
         { list: "NO" },
-        { list: "NAME" },
+        { list: "OPERATIVE" },
         { list: "QUALIFICATION" },
         { list: "MATCH" },
+        { list: "STATUS" },
         { list: "RATING", icon: <AiOutlineArrowUp /> },
         { list: "DATE APPLIED", icon: <AiOutlineArrowUp /> },
-        { list: "STATUS" },
     ]
 
     return (

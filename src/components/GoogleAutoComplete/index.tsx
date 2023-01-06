@@ -85,7 +85,7 @@ const GoogleAutoComplete = ({
                         : ""
                 }`}
             >
-                <MdLocationOn size={35} color="#0F0D0033" className="mr-2" />{" "}
+                <MdLocationOn size={35} color="#0F0D0060" className="mr-2" />{" "}
                 <Field
                     placeholder="Enter your address"
                     type="text"

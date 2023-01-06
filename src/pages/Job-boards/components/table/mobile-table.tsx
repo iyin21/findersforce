@@ -54,20 +54,11 @@ const MobileJobTable = ({
                                 htmlFor={element?.jobType?.name}
                                 className="capitalize text-black-80"
                             >
-                                {element?.jobType?.name}
+                                {element?.listingId || "N/A"}
                             </label>
                         </div>
 
                         <div className="flex items-center gap-2">
-                            {element?.jobMeetingPoint === "SITE" ? (
-                                <p className="text-black-100 bg-yellow-100 rounded-3xl text-center font-bold p-1 w-fit px-3 py-1 text-3sm font-creatoBlack">
-                                    MEET ONSITE
-                                </p>
-                            ) : (
-                                <p className="text-black-100 bg-white-10 rounded-3xl text-center font-bold p-1 border-2 border-black-100 text-3sm w-fit px-3 py-1">
-                                    DEPOT FIRST
-                                </p>
-                            )}
                             <div className="">
                                 <IoIosArrowForward
                                     size={20}
@@ -90,7 +81,7 @@ const MobileJobTable = ({
                                         APPLICANTS
                                     </h6>
                                     <p className="text-2md mt-1">
-                                        {element.jobMatchPercentage}
+                                        {element.applicationCount}
                                     </p>
                                 </div>
                             )}
@@ -119,12 +110,45 @@ const MobileJobTable = ({
                                     HOURLY RATE
                                 </h6>
                                 <p className="text-2md mt-1">
+                                    {element?.jobRate?.currency}
+
+                                    {element?.jobMeetingPoint === "SITE" ? (
+                                        <span>
+                                            {
+                                                element?.jobRate
+                                                    ?.jobRateMeetOnsiteDisplayedToDepot
+                                            }
+                                        </span>
+                                    ) : (
+                                        <span>
+                                            {
+                                                element?.jobRate
+                                                    ?.jobRateDepotFirstDisplayedToDepot
+                                            }
+                                        </span>
+                                    )}
+
                                     {
                                         element?.jobRate
                                             ?.jobRatePerHourDisplayedToDepot
                                     }
                                 </p>
                             </div>
+                        </div>
+                        <div className="mt-3">
+                            <h6 className="text-black-50 text-3sm mb-2">
+                                {" "}
+                                MODE
+                            </h6>
+                            {element?.jobMeetingPoint === "SITE" ? (
+                                <p className="text-black-100 bg-yellow-100 rounded-3xl text-center font-bold p-1 w-fit px-3 py-2 text-sm md:text-3sm font-creatoMedium">
+                                    MEET ONSITE
+                                </p>
+                            ) : (
+                                <p className="text-black-100 bg-white-10 rounded-3xl text-center font-bold p-1 border-2 border-black-100  text-sm md:text-3sm w-fit px-3 py-2">
+                                    DEPOT FIRST
+                                </p>
+                            )}
                         </div>
                     </div>
                 </div>

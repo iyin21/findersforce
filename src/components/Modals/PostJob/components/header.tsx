@@ -7,12 +7,13 @@ interface IHeadProps {
 
 export const Header = ({ step, draftStatus }: IHeadProps) => {
     return (
-        <div className="px-4">
+        <div className="px-4 font-creato">
             {step === 2 ? (
                 <div>
-                    <h1 className="text-3xl font-bold">Summary</h1>
+                    <h1 className="text-3xl font-bold">Shift Summary</h1>
                     <p className="text-black-60 text-lg font-normal">
-                        Confirm this information before you publish
+                        Boost your depot’s efficiency by triple checking your
+                        shift summary.
                     </p>
                 </div>
             ) : (
@@ -26,10 +27,11 @@ export const Header = ({ step, draftStatus }: IHeadProps) => {
                         </div>
                     ) : (
                         <div>
-                            <h1 className="text-3xl font-bold">Post a Job</h1>
+                            <h1 className="text-3xl font-creatoMedium font-bold">
+                                Post Shift
+                            </h1>
                             <p className="text-black-60 text-2md font-normal">
-                                This is a subtext describing what users can see
-                                here
+                                Add shift critical information.
                             </p>
                         </div>
                     )}
