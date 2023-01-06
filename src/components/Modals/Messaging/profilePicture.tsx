@@ -41,7 +41,7 @@ const ProfilePicture = ({
             const buffer = await client.downloadProfilePhoto(data)
             //@ts-expect-error
             if (buffer?.byteLength > 0) {
-                console.log("buff", buffer)
+                //console.log("buff", buffer)
                 //@ts-expect-error
                 const imageBuffer = await base64_arraybuffer(buffer)
 
