@@ -215,18 +215,19 @@ const HQRoles = () => {
                             setOpenSuccessModal(false)
                         }}
                         title="Invite sent"
-                        description="This gives them administrative access to your depot
-                    account"
-                        buttonText="Back"
+                        description="We’ve sent an invite.
+                        You’ll be notified once they activate their account."
+                        buttonText="Thanks!"
                     />
                 )}
                 <div className="flex flex-col-reverse md:flex-row md:justify-between md:items-center">
                     <div className="flex flex-col">
-                        <h1 className="text-2xl md:text-3xl font-creatoBold text-black-100 ">
-                            Roles and permission
+                        <h1 className="text-2xl md:text-3xl font-creatoMedium text-black-100 ">
+                            Management
                         </h1>
                         <p className="text-black-60 text-2md md:text-lg font-normal font-creato">
-                            Operatives who apply for shifts appear here
+                            Add and remove managers across your entire
+                            Organization..
                         </p>
                     </div>
                     <div className="flex justify-end mb-3">
@@ -237,7 +238,7 @@ const HQRoles = () => {
                             onClick={() => setOpenAddUser(!openAddUser)}
                             data-testid="add_user"
                         >
-                            Add new role
+                            Add Managers
                         </Button>
                     </div>
                 </div>
@@ -259,7 +260,7 @@ const HQRoles = () => {
                                             : "font-creatoMedium text-black-40 text-lg inactive"
                                     }
                                 >
-                                    Regional Managers
+                                    Depot Managers
                                     <span
                                         className={`{" ml-2 py-1 px-2 rounded md:text-white-100 "} ${
                                             activeTab === "regional"
@@ -301,7 +302,7 @@ const HQRoles = () => {
                                             : "font-creatoMedium text-black-40 text-lg inactive"
                                     }
                                 >
-                                    Pending Invites
+                                    Invitations
                                     <span
                                         className={`{" ml-2 py-1 px-2 rounded md:text-white-100 "} ${
                                             activeTab === "pending"
@@ -317,8 +318,9 @@ const HQRoles = () => {
                         <Tabs.Panel value="regional">
                             {!rMData?.data ? (
                                 <EmptyState
-                                    description="Active administrators will show here. Send a invite to a shift manager"
-                                    buttonText="Add new role"
+                                    title="You have no active Depot Managers."
+                                    description="When a Depot Manager accepts an invitation, they will show here."
+                                    buttonText="Add Managers"
                                     handleButtonClick={handleOpenAddUser}
                                 />
                             ) : (
@@ -351,8 +353,9 @@ const HQRoles = () => {
                         <Tabs.Panel value="shift_manager">
                             {!sMData?.data ? (
                                 <EmptyState
-                                    description="Active administrators will show here. Send a invite to a shift manager"
-                                    buttonText="Add new role"
+                                    title="You have no active Shift Managers."
+                                    description="When a Shift Manager accepts an invitation, they will show here."
+                                    buttonText="Add Managers"
                                     handleButtonClick={handleOpenAddUser}
                                 />
                             ) : (
@@ -385,8 +388,9 @@ const HQRoles = () => {
                         <Tabs.Panel value="pending">
                             {!pendingData?.data ? (
                                 <EmptyState
-                                    description="Active administrators will show here. Send an invite"
-                                    buttonText="Add new role"
+                                    title="You have no sent invitations."
+                                    description="When you send an invitation, it will show here."
+                                    buttonText="Add Managers"
                                     handleButtonClick={handleOpenAddUser}
                                 />
                             ) : (

@@ -19,7 +19,7 @@ const Button = ({
     return (
         <button
             {...rest}
-            className={`btn flex items-center justify-center  btn--${variant} btn--${size} ${className} py-4 px-4 md:py-4 md:px-6 `}
+            className={`btn flex items-center justify-center  btn--${variant} btn--${size} ${className} py-4 px-4 md:py-4 md:px-6 font-creato `}
         >
             <span className="mr-2 lg:mr-2">{iconLeft}</span>
             {children}

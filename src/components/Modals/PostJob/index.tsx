@@ -230,7 +230,7 @@ export function FormikStepper({ ...props }: TWizardProps) {
             jobQualificationId: props.jobQualification?.filter(
                 (item) => item.name === values?.jobQualificationId
             )[0]?._id,
-
+            jobAccessibleTo: "ALL_OPERATIVES",
             isPublished: false,
         }
         props.createJob(jobObject)
@@ -289,7 +289,8 @@ export function FormikStepper({ ...props }: TWizardProps) {
                                 handlePost={() => {
                                     handlePostAll(values)
                                 }}
-                                description="You're about to post this shift to all operatives. Do you want to continue?"
+                                description="You are about to post on the Operative Shift Board. 
+                                Do you want to continue?"
                                 isLoading={props.isCreating}
                             />
                         )}
@@ -324,7 +325,7 @@ export function FormikStepper({ ...props }: TWizardProps) {
                                             (props.draftStatus === "draft" &&
                                                 props.isCreating)
                                                 ? "Saving"
-                                                : "Save as draft"}
+                                                : "Save to Drafts"}
                                         </Button>
                                     )}
                                 </>

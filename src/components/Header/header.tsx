@@ -8,7 +8,7 @@ interface IHeadProps {
 
 const Header = ({ step, title }: IHeadProps) => {
     return (
-        <div className="flex justify-between items-center mb-4">
+        <div className="flex justify-between items-center mb-4 font-creato">
             <div>
                 <div className="block lg:hidden">
                     <img src={logo} alt="finders force" className="mb-5" />
@@ -17,7 +17,7 @@ const Header = ({ step, title }: IHeadProps) => {
                     {title}
                 </h1>
                 <span className="text-black-90 opacity-70 pt-2 text-md lg:text-lg">
-                    Please provide the following information
+                    Your account has been created, please complete your profile.
                 </span>
             </div>
 

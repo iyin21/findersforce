@@ -1,14 +1,16 @@
-import { Alert, PasswordInput, Select } from "@mantine/core"
+import { Alert, PasswordInput } from "@mantine/core"
 import { emailInputStyle, passwordInputStyle } from "../../auth/utils"
 import { useState } from "react"
 import FormikControls from "../../../components/Form/FormControls/form-controls"
 import { PasswordRequirement, requirements } from "../utils/passwordRequirement"
 import { useFormikContext } from "formik"
 import { selectData } from "../utils/subscriptionSelectData"
+import { ToolTip } from "../../../components"
+import { Link } from "react-router-dom"
 
 const AccountInfo = () => {
     const { setFieldValue, values, errors } = useFormikContext<{
-        password: string,
+        password: string
         subscriptionPlan: string
     }>()
     // const { setFieldValue, values} = useFormikContext<{
@@ -26,7 +28,7 @@ const AccountInfo = () => {
         />
     ))
     return (
-        <div>
+        <div className="font-creato">
             <div className="grid grid-cols-2 gap-4">
                 <div>
                     <label className="text-3md font-semibold text-neutral-80 block mb-2">
@@ -60,29 +62,59 @@ const AccountInfo = () => {
                 </div>
             </div>
             <div className="mt-3">
-                <label className="text-3md font-semibold text-neutral-80 block mb-2">
-                    Depot Video Link
+                <label className="text-3md font-semibold text-neutral-80 block mb-2 flex items-center gap-2">
+                    Course Link{" "}
+                    <ToolTip
+                        title="Course Link"
+                        description="Insert the link for your Depot Course which Finders
+                            Force created with you. It should have been sent to
+                            your email within the past 30 days."
+                    />
                 </label>
                 <FormikControls
                     type="text"
                     name="courseLink"
                     control="input"
                     placeholder="Provide link for your depot"
-                    aria-label="Depot Video Link"
+                    aria-label="Course Link"
                     required
                     className="rounded"
                     data-testid="courseLink"
                 />
             </div>
-            <div className="mt-3">{" "}</div>
-            <Select
-                label="Choose subscription plan"
-                placeholder="Pick one"
-                onChange={(e) => setFieldValue("subscriptionPlan", e)}
-                required
-                data={selectData}
-                styles={() => emailInputStyle}
-            />
+            <div className="mt-3"> </div>
+
+            <label className="text-3md font-semibold text-black-100 block mb-2  flex items-center gap-2">
+                Choose Subscription plan{" "}
+                <ToolTip
+                    title="Confirm Subscription Plan"
+                    description={
+                        <span>
+                            Change your plan anytime.{" "}
+                            <Link to={"/pricing"} className="text-yellow-100">
+                                View pricing plans.
+                            </Link>
+                        </span>
+                    }
+                />
+            </label>
+            <FormikControls
+                control="select"
+                name="subscriptionPlan"
+                aria-label="Choose Subscription plan"
+                type="select"
+                className="rounded text-black-50"
+                data-testid="subscriptionPlan"
+                defaultValue={values?.subscriptionPlan}
+            >
+                <option>Select an option---</option>
+                {selectData?.map((item, index) => (
+                    <option key={index} value={item?.value}>
+                        {" "}
+                        {item?.label}{" "}
+                    </option>
+                ))}
+            </FormikControls>
             <div
                 onFocusCapture={() => {
                     showErrorText(false)
