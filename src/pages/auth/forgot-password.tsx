@@ -8,6 +8,7 @@ import { useForm } from "@mantine/form"
 import Button from "../../components/Core/Buttons/Button"
 import logo from "../../assets/FF-logo.svg"
 import forgotPassword from "../../hooks/auth-hooks/use-forgot-password"
+import videoBg from "../../assets/videoBg.mp4"
 
 const RecoverPassword = () => {
     const userRef = React.useRef<HTMLInputElement>(
@@ -42,7 +43,15 @@ const RecoverPassword = () => {
 
     return (
         <>
-            <div className="grid grid-cols-1 lg:grid-cols-2 text-white lg:bg-black-1">
+            <video
+                autoPlay
+                loop
+                muted
+                id="video"
+                className="hidden md:block h-screen w-full object-cover fixed"
+                src={videoBg}
+            ></video>
+            <div className="grid grid-cols-1 lg:grid-cols-2 text-white font-creato lg:absolute lg:top-0">
                 <div className="hidden lg:block">
                     <LandingPageText />
                 </div>
@@ -66,9 +75,11 @@ const RecoverPassword = () => {
                     <h1 className="text-black-100 font-extrabold text-2xl md:text-4xl md:pb-2.5">
                         Forgot Password
                     </h1>
-                    <span className="text-2md text-blaq-0 pt-2 pb-[35px] max-w-[439px]">
-                        Enter your email address linked to your accout below and
-                        we`ll send you an OTP to reset your password.
+                    <span className="text-[14px] pt-2 pb-[35px] max-w-[500px] font-creato">
+                        Enter the <strong>email address</strong> linked to your
+                        account below and we`ll send a{" "}
+                        <strong>One Time Passcode </strong>(OTP) to your email,
+                        so you can reset your password.
                     </span>
                     <form
                         onSubmit={recoverPasswordForm.onSubmit((values) =>
@@ -101,9 +112,9 @@ const RecoverPassword = () => {
                                           opacity: "0.7",
                                       }
                             }
-                            className="text-black-100 bg-yellow-100 font-bold text-base w-full text-center py-6 rounded-l rounded-tr-2xl rounded-br"
+                            className="font-creato text-black-100 bg-yellow-100 font-bold text-base w-full text-center py-6 rounded-l rounded-tr-2xl rounded-br"
                         >
-                            {!isSubmitting ? "Reset password" : "Loading..."}
+                            {!isSubmitting ? "Get OTP" : "Loading..."}
                         </Button>
                     </form>
                     {error && (

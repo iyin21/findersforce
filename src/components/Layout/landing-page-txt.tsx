@@ -1,35 +1,41 @@
 /* eslint-disable new-cap */
 import logo from "../../assets/logo.svg"
 import profileImg from "../../assets/profile.png"
+import crhm from "../../assets/crhm.svg"
 import quoteIcon from "../../assets/quote.svg"
 import { useRef } from "react"
 import Autoplay from "embla-carousel-autoplay"
 import { Carousel } from "@mantine/carousel"
+import { useNavigate } from "react-router-dom"
 
 const LandingPageText = () => {
     const autoplay = useRef(Autoplay({ delay: 2000 }))
+    const navigate = useNavigate()
     return (
-        <section className="pt-[80px] pl-[93px] pr-[91px] pb-[78px] bg-black-1 text-white-100">
+        <section className="mt-[80px] ml-[93px] mr-[91px] mb-[78px] text-white-100 font-creato">
             <div className="flex items-center">
-                <img src={logo} alt="finders force logo" />
+                <img
+                    src={logo}
+                    alt="finders force logo"
+                    className="cursor-pointer"
+                    onClick={() => navigate("/login")}
+                />
                 <div className="flex flex-row items-center ml-3 rounded-[30px] bg-white-20 w-fit p-2.5 h-fit">
-                    <span className="text-sm">We`re hiring!</span>
-                    <span
-                        role="img"
-                        aria-label="celebration"
-                        className="pl-0.5"
-                    >
-                        🎉{" "}
+                    <span className="text-sm">
+                        Uniting Humanity’s Workforce.
                     </span>
                 </div>
             </div>
-            <h1 className="leading-extra-loose pt-12 text-4xl font-bold">
-                Access to endless pool of talent in the traffic management
-                industry
+            <h1 className="leading-[58px] pt-12 text-4xl font-bold font-creato">
+                <span className="text-yellow-100">10x Depot Performance </span>
+                With Exclusive Access To Top-Rated &
+                Vetted{" "}
+                <span className="text-yellow-100">Operatives Nationwide. </span>
             </h1>
             <h2 className="pt-4 leading-loose pr-12 text-white-90">
-                join the #1 startup community specialized in onsite and Depot
-                first traffic management talents.
+                No more phone calls, no more waiting, no more emails. Save your
+                time & money whilst winning new contracts with power, efficiency
+                & control at your finger tips.
             </h2>
             <Carousel
                 sx={{ maxWidth: 580 }}
@@ -42,27 +48,25 @@ const LandingPageText = () => {
                 onMouseLeave={autoplay.current.reset}
                 styles={{
                     indicator: {
-                      width: 12,
-                      height: 4,
-                      transition: 'width 250ms ease',
-            
-                      '&[data-active]': {
-                        width: 40,
-                      },
+                        width: 12,
+                        height: 4,
+                        transition: "width 250ms ease",
+
+                        "&[data-active]": {
+                            width: 40,
+                        },
                     },
-                  }}
+                }}
             >
                 <Carousel.Slide>
                     <div className="relative mr-[30px] px-6 py-7 rounded-[10px] bg-white-15 mt-[63px] border-1 border-white-20">
                         <h2 className="leading-loose text-justify opacity-80">
-                            Finders Force understood my expectations in a
-                            company and got me the perfect match, Bamboo.
+                            The agency industry has been on a slippery slope for
+                            decades. Finders Force is exactly what we have been
+                            crying out for. Access to high-quality agency
+                            operatives in seconds, what more could a depot want?
                         </h2>
-                        <h2 className="leading-loose text-justify pt-1 opacity-80">
-                            I’m glad to be part of the founding team at Bamboo
-                            and excited at the prospect of building a unicorn.
-                        </h2>
-                        <div className="flex flex-row items-center mt-4">
+                        <div className="flex flex-row items-center mt-12">
                             <img
                                 src={profileImg}
                                 alt="profile img"
@@ -73,7 +77,7 @@ const LandingPageText = () => {
                                     Jordan Belonwu
                                 </h1>
                                 <h2 className="text-md opacity-80">
-                                    Brand Designer, Bamboo
+                                    CEO, Revive Traffic
                                 </h2>
                             </div>
                         </div>
@@ -87,25 +91,24 @@ const LandingPageText = () => {
                 <Carousel.Slide>
                     <div className="relative mr-[30px] px-6 py-7 rounded-[10px] bg-white-15 mt-[63px] border-1 border-white-20">
                         <h2 className="leading-loose text-justify opacity-80">
-                            Finders Force understood my expectations in a
-                            company and got me the perfect match, Bamboo.
-                        </h2>
-                        <h2 className="leading-loose text-justify pt-1 opacity-80">
-                            I’m glad to be part of the founding team at Bamboo
-                            and excited at the prospect of building a unicorn.
+                            Finders Force makes our old processes look like we
+                            are from the stone age. They have 10x’ed our
+                            productivity by enhancing what we do from multiple
+                            angles. Finally, managers can be full-time managers
+                            rather than part-time recruiters.
                         </h2>
                         <div className="flex flex-row items-center mt-4">
                             <img
-                                src={profileImg}
+                                src={crhm}
                                 alt="profile img"
                                 className="rounded-full"
                             ></img>
                             <div className="pl-2">
                                 <h1 className="font-bold text-base m-0">
-                                    Jordan Belonwu
+                                    Sara Giovani
                                 </h1>
                                 <h2 className="text-md opacity-80">
-                                    Brand Designer, Bamboo
+                                    CHRM, Bridge-Water Traffic
                                 </h2>
                             </div>
                         </div>
