@@ -112,6 +112,7 @@ export interface DashboardResponse {
     createdAt: string;
     updatedAt: string;
     location: Location;
+    subscriptionPlan: string
 
  }
 

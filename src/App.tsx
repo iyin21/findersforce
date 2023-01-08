@@ -28,6 +28,7 @@ import AddDepot from "./pages/Admin/Depots/components/AddDepot/add-depot"
 import SingleDepot from "./pages/Admin/Depots/components/ViewSingleDepot"
 // eslint-disable-next-line no-unused-vars
 import { Buffer } from "buffer/"
+import Invoice from "./pages/invoice/index"
 
 function App() {
     ;(window as any).global = window
@@ -65,10 +66,9 @@ function App() {
                     <Route path="/messaging" element={<Messaging />} />
                     <Route path="/subscription" element={<Subscription/>} />
                     <Route
-                        path="/subscription/id"
+                        path="/subscription/:id"
                         element={<SubscriptionDetails />}
                     />
-                    <Route path="/subscriptions" element={<Subscription />} />
                     <Route path="/locations" element={<Location />} />
                     <Route
                         path="/locations/:locationId"
@@ -79,6 +79,7 @@ function App() {
                     <Route path="/depots" element={<AdminDepot />} />
                     <Route path="/add-depots" element={<AddDepot />} />
                     <Route path="/depots/:depotId" element={<SingleDepot />} />
+                    <Route path="/subscription/invoice/:subscriptionId" element={<Invoice/>} />
                 </Route>
             </Route>
         </Routes>
