@@ -14,7 +14,7 @@ import Support from "./pages/Support"
 import Planner from "./pages/planner/Planner"
 import ShiftsDetailTable from "./pages/planner/components/ShiftsDetailsTable"
 import Roles from "./pages/roles"
-import Messaging from "./pages/Messaging"
+// import Messaging from "./pages/Messaging"
 import Settings from "./pages/Settings/index"
 import Location from "./pages/Location"
 import LocationBasedData from "./pages/Location/components/locationBasedData"
@@ -27,15 +27,11 @@ import AdminDepot from "./pages/Admin/Depots"
 import AddDepot from "./pages/Admin/Depots/components/AddDepot/add-depot"
 import SingleDepot from "./pages/Admin/Depots/components/ViewSingleDepot"
 // eslint-disable-next-line no-unused-vars
-import { Buffer } from "buffer/"
 import ShiftDetails from "./pages/Applications/sub-navigations/ShiftDetails"
 import Layout from "./components/Layout"
 import AdminPayment from "./pages/Admin/Payments"
 
 function App() {
-    ;(window as any).global = window
-    window.Buffer = window.Buffer || require("buffer/").Buffer
-
     return (
         <Routes>
             {/* public routes */}
@@ -65,7 +61,7 @@ function App() {
                     <Route path="/roles&permission" element={<Roles />} />
                     <Route path="/support" element={<SupportMedium />} />
                     <Route path="/support/complaint" element={<Support />} />
-                    <Route path="/messaging" element={<Messaging />} />
+                    {/* <Route path="/messaging" element={<Messaging />} /> */}
                     <Route path="/subscription" element={<Subscription />} />
                     <Route
                         path="/subscription/id"

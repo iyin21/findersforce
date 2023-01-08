@@ -10,6 +10,9 @@ import Checkbox from "../../Core/Checkbox/checkbox"
 import { TelegramClient, Api } from "telegram"
 import { showNotification } from "@mantine/notifications"
 import ProfilePicture from "./profilePicture"
+import Input from "../../Core/Input/Input"
+import { AiOutlineSearch } from "react-icons/ai";
+
 
 export interface AddGroupModalProps {
     opened: boolean
@@ -30,6 +33,8 @@ const AddMembersModal = ({
     const [userIds, setUserIds] = useState<string[]>([])
     const [isLoading, setIsLoading] = useState(false)
     const [isCreatingGroup, setIsCreatingGroup]=useState(false)
+    const [search, setSearch]= useState("");
+    const [searchParam]= useState(["firstName"])
     useEffect(() => {
         setIsLoading(true)
         const run = async function run() {
@@ -116,7 +121,17 @@ const AddMembersModal = ({
             setOpened(false)
         }
     }
-
+const searchedData = contacts.filter((item:Api.User) => {
+        return searchParam.some((newItem) => {
+          return (
+            // @ts-expect-error
+            item[newItem as keyof Api.User]
+              .toString()
+              .toLowerCase()
+              .indexOf(search.toLowerCase()) > -1
+          );
+        });
+      });
     return (
         <Modal
             opened={opened}
@@ -140,6 +155,7 @@ const AddMembersModal = ({
                         <h5 className="">Add members</h5>
                         <p className="text-black-50 pl-4">{checkedContact.length}/20000</p>
                     </div>
+                
                     <div className="flex flex-wrap mt-2">
                         {checkedContact.map((item, index) => (
                             <div
@@ -157,13 +173,15 @@ const AddMembersModal = ({
                             </div>
                         ))}
                     </div>
-                    <hr className="text-black-20 mt-4 mb-4" />
+                    <Input control="" prefixIcon={<AiOutlineSearch color="rgba(15, 13, 0, 0.4)" size="16px"/>} className="w-full outline-none border-none input bg-transparent  md:h-8" placeholder="Search"  onChange={(e: React.ChangeEvent<HTMLInputElement>)=>setSearch(e.target.value)}/>
+                    
+                    <hr className="text-black-20  mb-4" />
                     <div className="h-[350px] overflow-y-auto">
-                        {contacts.map((item, index) => (
+                        {searchedData.map((item, index) => (
                             <Checkbox
                                 key={index}
                                 value={
-                                    item.username ||
+                                
                                     item.firstName +
                                         " " +
                                         (item?.lastName || "")
@@ -178,7 +196,7 @@ const AddMembersModal = ({
                                             data={item}
                                         />
                                         <p className="px-2">
-                                            {item.username ||
+                                            {
                                                 item.firstName +
                                                     " " +
                                                     (item?.lastName || "")}

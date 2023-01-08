@@ -1,5 +1,6 @@
 import { Menu } from "@mantine/core"
 import { Dispatch, SetStateAction } from "react"
+import { FiChevronRight } from "react-icons/fi"
 import Button from "../../../../components/Core/Buttons/Button"
 
 export interface DropdownInterface {
@@ -21,6 +22,7 @@ const Dropdown = ({ setOpenPostAll, setOpenPostDirect }: DropdownInterface) => {
                             style={{
                                 backgroundColor: "rgba(254, 215, 10, 1)",
                             }}
+                            iconRight={<FiChevronRight size={25} />}
                         >
                             Post
                         </Button>

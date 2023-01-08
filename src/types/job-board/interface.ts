@@ -54,6 +54,8 @@ export interface JobBoardResponseInterface {
         currency: string
         jobRatePerHourDisplayedToDepot: number
         jobRatePerHourDisplayedToOp: number
+        jobRateDepotFirstDisplayedToDepot: number
+        jobRateMeetOnsiteDisplayedToDepot: number
     }
     jobType: {
         name: string
@@ -124,6 +126,7 @@ export interface JobInformationInterface {
     jobType: string | undefined
     createdAt: string | undefined
     additionalInfoImageUrls: string[] | undefined
+    listingId: string | undefined
 }
 
 export interface BulkDeleteJobRequest {

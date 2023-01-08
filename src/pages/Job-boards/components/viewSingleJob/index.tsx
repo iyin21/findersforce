@@ -159,6 +159,7 @@ const SingleJobBoard = () => {
                             </Tabs.List>
                             <Tabs.Panel value="first">
                                 <JobInformation
+                                    listingId={data?.listingId}
                                     description={data?.jobDescription}
                                     jobType={data?.jobType?.name}
                                     hourlyPay={
