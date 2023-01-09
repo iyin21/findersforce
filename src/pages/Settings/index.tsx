@@ -8,7 +8,7 @@ import {
     Tabs,
     TextInput,
 } from "@mantine/core"
-import { useEffect, useState } from "react"
+import { ChangeEvent, useEffect, useRef, useState } from "react"
 import InputText from "./components/textInput"
 import { useProfile } from "../../hooks/profile/use-profile"
 import CompanyLogo from "../../assets/companyLogo.svg"
@@ -25,6 +25,7 @@ import useDisableTwoFactor from "../../hooks/settings/disable2fa-hook"
 import useEnableTwoFactor from "../../hooks/settings/enable2fa-hook"
 import useDisableTwoFactorRequest from "../../hooks/settings/disable-otp-request-hook"
 import { showNotification } from "@mantine/notifications"
+import { BsCameraFill } from "react-icons/bs"
 
 const inputStyle: {} = {
     input: {
@@ -76,10 +77,21 @@ const Settings = () => {
     const [isPublishing, setIsPublishing] = useState(false)
     const { state } = useAuthContext()
     const protectedAxios = useAxiosInstance()
+    const fileInputRef = useRef<HTMLInputElement>(null)
+    const [pictureName, setPictureName] = useState("")
 
     useEffect(() => {
         if (data) setChecked(data?.twoFa_enabled ?? false)
     }, [])
+
+    const handleProfilePictureUpload = (e: ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0]
+
+        if (file) {
+            setPictureName(file.name)
+            //            setFieldValue("image", file)
+        }
+    }
 
     const updatePasswordForm = useForm({
         initialValues: {
@@ -194,7 +206,7 @@ const Settings = () => {
                     </Tabs.List>
 
                     <Tabs.Panel value="general" pt="xs">
-                        <div className="flex flex-col items-center pt-9">
+                        <div className="flex flex-col items-center pt-9 relative">
                             <InputText
                                 label="First Name"
                                 value={data?.firstName ?? " "}
@@ -213,23 +225,48 @@ const Settings = () => {
                             />
                             <div className="flex justify-between w-[500px]">
                                 <h5 className="text-2lg font-medium font-creatoMedium">
-                                    Company Logo
+                                    Profile Image
                                 </h5>
                             </div>
-                            <div className="flex justify-between w-[500px]">
-                                <span className="text-black-60 text-lg pt-2">
-                                    This will be your displayed profile photo
-                                </span>
+                            <input
+                                data-testid="file-upload"
+                                ref={fileInputRef}
+                                type="file"
+                                hidden
+                                onChange={handleProfilePictureUpload}
+                            />
+                            <div className="absolute bottom-[38px] left-[430px] z-10 bg-white-100 border-[1px] border-black-100 border-solid rounded-full p-2">
+                                <BsCameraFill
+                                    size={22}
+                                    className="cursor-pointer"
+                                    onClick={() =>
+                                        fileInputRef.current?.click()
+                                    }
+                                />
                             </div>
                             <div className="flex justify-between w-[500px] pt-4">
                                 {data?.profileImageUrl === null ? (
-                                    <img src={CompanyLogo} alt="company logo" />
+                                    <img
+                                        src={CompanyLogo}
+                                        alt="company logo"
+                                        width={122}
+                                        height={122}
+                                    />
                                 ) : (
                                     <img
                                         src={data?.profileImageUrl}
                                         alt="company logo"
+                                        width={122}
+                                        height={122}
                                     />
                                 )}
+                            </div>
+                            <div>
+                                <span className="text-black-100 text-md">
+                                    {pictureName
+                                        ? pictureName + " selected"
+                                        : "JPEG, PNG accepted; 10MB max file size"}
+                                </span>
                             </div>
                         </div>
                     </Tabs.Panel>
