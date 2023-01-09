@@ -2,7 +2,7 @@
 import { SubscriptionTableInterface } from "../../../types/subscriptions/interface"
 import ProfileImage from "../../../assets/ProfileImage.svg"
 
-const MobileJobTable = ({ elements }: SubscriptionTableInterface) => {
+const MobileJobTable = ({ elements}: SubscriptionTableInterface) => {
    
     return (
         <div className="mt-4">
@@ -43,7 +43,7 @@ const MobileJobTable = ({ elements }: SubscriptionTableInterface) => {
                                     PAYMENT REFERENCE
                                 </h6>
                                 <p className="text-2md mt-1">
-                                    {element?.paymentReference}
+                                    {element?.invoiceNo}
                                 </p>
                             </div>
                         </div>
