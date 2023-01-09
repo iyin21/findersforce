@@ -1,9 +1,9 @@
 import { showNotification } from "@mantine/notifications"
-import { useQuery } from "@tanstack/react-query"
-import { AxiosError } from "axios"
+import { useMutation, useQuery } from "@tanstack/react-query"
+import { AxiosError, AxiosRequestConfig } from "axios"
 import { RegionsResponse } from "../../types/dashboard/interfaces"
 import { axiosInstance } from "../../services/api.service"
-import { DepotCompanyResponse, SubscriptionPrice, SubscriptionResponse } from "../../types/subscriptions/interface"
+import { CreateSubscriptionRequest, CreateSubscriptionResponse, DepotCompanyResponse, SubscriptionPrice, SubscriptionResponse } from "../../types/subscriptions/interface"
 import useAuthContext from "../auth-hooks/useAuth"
 
 function useGetAllSubscriptions() {
@@ -179,6 +179,37 @@ function useGetDepotRegions({id}: {id: string}) {
 }
 
 
+function useCreateSubscription() {
+    const {
+        state: { jwt },
+    } = useAuthContext();
+
+    const createSubscription = async (requestBody: CreateSubscriptionRequest) => {
+        const config: AxiosRequestConfig = {
+            headers: {
+                Authorization: `Bearer ${jwt?.token}`,
+            },
+        };
+        const { data } = await axiosInstance.post("/admin/subscription", requestBody, config);
+
+        return data;
+    };
+
+    return useMutation<CreateSubscriptionResponse, AxiosError, CreateSubscriptionRequest>(
+        ["createSubscriptionRequest"],
+        (requestBody: CreateSubscriptionRequest) => createSubscription(requestBody),
+        {
+            onSuccess: (data) => {
+                showNotification({
+                    title: "Success",
+                    message: data.message,
+                    color: "green",
+                });
+            },
+        },
+    );
+}
+
 
 export {
     useGetSingleSubscriptions,
@@ -187,4 +218,5 @@ export {
     useGetDepotCompanies,
     useGetDepotRegions,
     useGetSubscriptionPrice,
+    useCreateSubscription
 }

@@ -5,13 +5,13 @@ import SubscriptionTable from "../components/SubscriptionTable"
 import { ApplicationFilterRequest } from "../../../types/filter/filter"
 import { FaFileExport } from "react-icons/fa"
 import { useGetAllSubscriptions } from "../../../hooks/subscriptions/useSubscriptions.hooks"
-import useAuthContext from "../../../hooks/auth-hooks/useAuth"
+// import useAuthContext from "../../../hooks/auth-hooks/useAuth"
 
 const HqSubscription = () => {
     
     const { data: subscriptionData } = useGetAllSubscriptions();
-    const { state } = useAuthContext()
-    console.log(state?.user)
+    // const { state } = useAuthContext()
+    // console.log(state?.user)
     
     const applyFilter = (filter: ApplicationFilterRequest) => {}
     return (

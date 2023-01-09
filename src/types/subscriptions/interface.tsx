@@ -3,7 +3,6 @@ export interface SubscriptionTableInterface {
     elements?: Result[]
 }
 
-
 export interface SubscriptionResponse {
     message: string
     status: string
@@ -57,17 +56,19 @@ export interface DepotCompanyResponse {
     message: string
     status: string
     data: [
-        {_id: string
+        {
+            _id: string
             depot: string
             name: string
             address: string
             logo: string
             regionLimit: number
             email: string
-            createdAt:Date | string
+            createdAt: Date | string
             updatedAt: Date | string
             createdBy: string
-            __v: number}
+            __v: number
+        }
     ]
 }
 
@@ -82,5 +83,37 @@ export interface SubscriptionPrice {
             enterprise: number
         }
     }
-    
+}
+
+export interface CreateSubscriptionRequest {
+    regionId: string
+    totalAmountPaid: number
+    subscriptionPlan: string
+    space: number
+    startDate: Date | string
+    endDate: Date | string
+    paymentMethod: string
+    paymentDate: Date | string
+}
+
+export interface CreateSubscriptionResponse {
+    status: string
+    message: string
+    data: {
+        depotCompany: string
+        depotRegion: string
+        subscriptionPlan: string
+        space: number
+        totalAmountPaid: number
+        paymentMethod: string
+        startDate: Date | string
+        endDate: Date | string
+        paymentDate: Date | string
+        paymentInvoice: string
+        createdBy: string
+        _id: string
+        createdAt: Date | string
+        updatedAt: Date | string
+        __v: number
+    }
 }

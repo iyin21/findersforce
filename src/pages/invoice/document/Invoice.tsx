@@ -1,5 +1,5 @@
-import FindersForceLogo from "../../../assets/FF-logo-dark.svg"
-import FFSignature from "../../../assets/FF-signature.svg"
+import FindersForceLogo from "../../../assets/FF-Logo-Dark.png"
+import FFSignature from "../../../assets/FFsignature.png"
 import {
     Page,
     View,
@@ -11,7 +11,6 @@ import {
 import { ReactNode, useEffect, useState } from "react"
 import { SubscriptionResponse } from "types/subscriptions/interface"
 import dayjs from "dayjs"
-
 
 // Register font
 // Font.register({
@@ -40,19 +39,11 @@ const pdfStyles = StyleSheet.create({
         // fontFamily: "creato",
         // fontWeight: "normal",
     },
-    
-    // text: {
-    //     color: "rgba(255, 255, 255, 1)",
-    //     fontSize: "10px",
-    //     lineHeight: "14px",
-    //     letterSpacing: "0.002rem"
-
-    // },
     recieverTitle: {
         marginBottom: "4px",
         color: "#fff",
         fontWeight: "semibold",
-        fontSize: 14,
+        fontSize: 13,
     },
     signature: {
         marginBottom: "4px",
@@ -65,24 +56,24 @@ const pdfStyles = StyleSheet.create({
         marginLeft: "24px",
         color: "#fff",
         fontWeight: "semibold",
-        fontSize: 14,
+        fontSize: 12,
     },
     recieverAddress: {
-        fontSize: 12,
+        fontSize: 10,
         fontWeight: "normal",
         color: "rgba(255, 255, 255, 0.2)",
         marginBottom: "2px",
     },
     table: {
         width: "100%",
-        // marginBottom: "40px",
+        marginVertical: "20px"
     },
-    disclaimer: {
-        margin: "40px 0",
-        // fontSize: 12,
-        lineHeight: "1.5",
-        color: "rgba(19, 32, 19, 0.9)",
-        // fontWeight: "normal",
+    tableHeaderContainer: {
+        display: "flex",
+        flexDirection: "row",
+        borderRadius: "5px",
+        backgroundColor: "rgba(254, 215, 10, 0.2)",
+        marginBottom: "10px",
     },
     tableHeader: {
         // fontWeight: "bold",
@@ -91,22 +82,24 @@ const pdfStyles = StyleSheet.create({
         paddingRight: "10px",
         paddingTop: "10px",
         // border: "1px solid ",
-        marginBottom: "10px",
+        
         fontSize: "10px",
-        color:"rgba(253, 203, 55, 1)",
-        backgroundColor: "rgba(254, 215, 10, 0.4)",
+        color: "rgba(253, 203, 55, 1)",
+        
     },
     total: {
-        fontSize: "10px", 
-        color:"rgba(253, 203, 55, 1)",
+        fontSize: "10px",
+        color: "rgba(253, 203, 55, 1)",
         marginRight: "4px",
         marginLeft: "auto",
-        marginTop: "10px"
+        marginTop: "10px",
+        marginBottom: "40px"
     },
     totalWrapper: {
-        fontSize: "15px", 
-        color:"#000000",
+        fontSize: "15px",
+        color: "#000000",
         backgroundColor: "rgba(253, 203, 55, 1)",
+        padding: "20px"
     },
     tableCell: {
         paddingBottom: "20px",
@@ -116,56 +109,23 @@ const pdfStyles = StyleSheet.create({
         // border: "1px solid #ccc",
         fontSize: "10px",
         color: "#fff",
-        backgroundColor: "#1A1A1A"
     },
-    // tableName: {
-    //     marginBottom: "16px",
-    //     color: "rgba(19, 32, 19, 0.7)",
-    //     textTransform: "uppercase",
-    //     fontWeight: "bold",
-    //     // fontSize: "10.5",
-    // },
-    deliveryPeriodSection: {
-        backgroundColor: "rgba(52, 101, 52, 1)",
-        padding: "36px 24px 36px 24px",
-        color: "white",
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        borderRadius: "10px",
-        marginBottom: "56px",
+    tableCellContainer: {
+        flexDirection: "row",
+        backgroundColor: "#1A1A1A",
+        borderRadius: "5px"
     },
     deliveryPeriodWrapper: {
         display: "flex",
         flexDirection: "row",
         justifyContent: "space-between",
-        marginBottom: "40px"
+        marginBottom: "40px",
     },
-    deliveryPeriodDates: {},
-    deliveryPeriodHeading: {},
-    deliveryDateWrapper: {},
-    deliveryDetailsTitle: {
-        color: "rgba(243, 188, 9, 1)",
-        // fontSize: "9.75",
-    },
-    deliveryDate: {
-        color: "white",
-        // fontSize: "13",
-    },
-    section: {
-        margin: 10,
-        padding: 10,
-        flexGrow: 1,
-    },
-    address:{
-        display: "flex",
-        justifyContent: "space-between"
-    }
 })
 
-
-export default function PDFInvoice({}: { data?: SubscriptionResponse["data"] | null}) {
-    
+export default function PDFInvoice({}: {
+    data?: SubscriptionResponse["data"] | null
+}) {
     const [pdfDataMemoized, setPdfDataMemoized] = useState<
         SubscriptionResponse["data"]["results"] | null
     >(null)
@@ -178,16 +138,17 @@ export default function PDFInvoice({}: { data?: SubscriptionResponse["data"] | n
             } else {
                 setPdfDataMemoized(null)
             }
-            
         }
-        
     }, [])
-
 
     const tableHeader = ["DESCRIPTION", "QTY", "AMOUNT", "SUBTOTAL"]
 
     const tableBody = [
-        `${`Finder’s Force Elite Plan for ${dayjs(pdfDataMemoized?.[0].paymentDate).format("MMMM")}` || "Finder’s Force Elite Plan for November"}`,
+        `${
+            `Finder’s Force Elite Plan for ${dayjs(
+                pdfDataMemoized?.[0].paymentDate
+            ).format("MMMM")}` || "Finder’s Force Elite Plan for November"
+        }`,
         `${"1"}`,
         `${`£ ${pdfDataMemoized?.[0].totalAmountPaid}` || "£ 10,000"}`,
         `${`£ ${pdfDataMemoized?.[0].totalAmountPaid}` || "£ 10,000"}`,
@@ -200,16 +161,19 @@ export default function PDFInvoice({}: { data?: SubscriptionResponse["data"] | n
             creator="Finders Force"
         >
             <Page size="A4" style={pdfStyles.page} wrap>
-                {/* <View
+                <View
                     style={{
                         display: "flex",
                         justifyContent: "center",
+                        width: "15%",
+                        marginHorizontal: "auto",
+                        marginTop: "20px",
+                        marginBottom: "50px",
                     }}
                 >
                     <Image src={FindersForceLogo} />
-                </View> */}
-                <View style={pdfStyles.deliveryPeriodWrapper}
-                >
+                </View>
+                <View style={pdfStyles.deliveryPeriodWrapper}>
                     <View>
                         <Text style={pdfStyles.recieverAddress}>FROM</Text>
                         <Text style={pdfStyles.recieverTitle}>
@@ -233,32 +197,48 @@ export default function PDFInvoice({}: { data?: SubscriptionResponse["data"] | n
                             {pdfDataMemoized?.[0]?.depotCompany?.address}
                         </Text>
                         <Text style={pdfStyles.recieverAddress}>
-                            {pdfDataMemoized?.[0]?.depotCompany?.createdBy?.email}
+                            {
+                                pdfDataMemoized?.[0]?.depotCompany?.createdBy
+                                    ?.email
+                            }
                         </Text>
                     </View>
                 </View>
-                <View style={{
-                    marginBottom: "20px"
-                }}>
+                <View
+                    style={{
+                        marginBottom: "50px",
+                    }}
+                >
                     <Text style={pdfStyles.recieverAddress}>
-                        INVOICE NO : <Text style={pdfStyles.recieverData}> {pdfDataMemoized?.[0]?.paymentInvoice}</Text>
+                        INVOICE NO :{" "}
+                        <Text style={pdfStyles.recieverData}>
+                            {" "}
+                            {pdfDataMemoized?.[0]?.paymentInvoice}
+                        </Text>
                     </Text>
                     <Text style={pdfStyles.recieverAddress}>
-                        DATE ISSUED : <Text style={pdfStyles.recieverData}> {dayjs(pdfDataMemoized?.[0]?.paymentDate).format("MMMM DD, YYYY")}</Text>
+                        DATE ISSUED :{" "}
+                        <Text style={pdfStyles.recieverData}>
+                            {" "}
+                            {dayjs(pdfDataMemoized?.[0]?.paymentDate).format(
+                                "MMMM DD, YYYY"
+                            )}
+                        </Text>
                     </Text>
                 </View>
-                <Table
-                    tableHeader={tableHeader}
-                    tableBody={tableBody}
-                ></Table>
-                <Text style={pdfStyles.total}>TOTAL <Text style={pdfStyles.totalWrapper}>$ {pdfDataMemoized?.[0]?.totalAmountPaid}</Text></Text>
-                <View>
-                    {/* <Image src={FFSignature} /> */}
-                    <Text style={pdfStyles.signature}>
-                        {" "}
-                        Audrey Childs-Mee
+                <Table tableHeader={tableHeader} tableBody={tableBody}></Table>
+                <Text style={pdfStyles.total}>
+                    TOTAL{" "}
+                    <Text style={pdfStyles.totalWrapper}>
+                        $ {pdfDataMemoized?.[0]?.totalAmountPaid}
                     </Text>
-                    <Text style={pdfStyles.signature}>Finder’s Force</Text>
+                </Text>
+                <View>
+                    <Image src={FFSignature} style={{width: "20%", marginVertical: "10px"}} />
+                    <Text style={pdfStyles.signature}> Audrey Childs-Mee</Text>
+                    <Text style={pdfStyles.recieverAddress}>
+                        Finder’s Force
+                    </Text>
                 </View>
             </Page>
         </Document>
@@ -276,18 +256,11 @@ export const Table = ({
 }) => {
     return (
         <View
-            // style={{
-            //     marginBottom: "40px",
-            // }}
+        // style={{
+        //     marginBottom: "40px",
+        // }}
         >
-            
-
-            <View
-                style={{
-                    display: "flex",
-                    flexDirection: "row",
-                    borderRadius: "5px",
-                }}
+            <View style={pdfStyles.tableHeaderContainer}
             >
                 {tableHeader.map((item, index) => (
                     <Text
@@ -307,10 +280,7 @@ export const Table = ({
                     </Text>
                 ))}
             </View>
-            <View
-                style={{
-                    flexDirection: "row",
-                }}
+            <View style={pdfStyles.tableCellContainer}
             >
                 {tableBody.map((item, index) => (
                     <Text

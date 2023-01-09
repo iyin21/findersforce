@@ -8,9 +8,10 @@ import { useState } from "react"
 // import InputText from "../components/TextInput"
 // import { FaAngleDown, FaCalendarDay } from "react-icons/fa"
 import Sent from "../../../assets/sent.svg"
-import { Code, Group, Modal, Select, TextInput } from "@mantine/core"
+import {  Group, Modal, Select, TextInput } from "@mantine/core"
 // import DatePickers from "../../../components/DatePicker"
 import {
+    useCreateSubscription,
     useGetAdminSubscriptions,
     useGetDepotCompanies,
     useGetDepotRegions,
@@ -21,25 +22,30 @@ import { DatePicker, DateRangePicker } from "@mantine/dates"
 import { AiFillInfoCircle } from "react-icons/ai"
 import { BiCalendarEvent, BiPound } from "react-icons/bi"
 import dayjs from "dayjs"
+// import { useAuthContext } from "../../../pages/auth/context/authContext"
+
 // import useAuthContext from "../../../hooks/auth-hooks/useAuth"
 const AdminSubscription = () => {
-    const form: any = useForm({
-        initialValues: {
-            depot: {
-                label: "",
-                value: ""
-            },
-            regionId: "",
-            totalAmountPaid: 0,
-            subscriptionPlan: "",
-            space: 0,
-            startDate: "",
-            endDate: "",
-            paymentDate: "",
-            paymentMethod: "Bank Transfer",
+    // const { state } = useAuthContext()
+    // console.log(state.jwt?.token)
+    const iValues = {
+        depot: {
+            label: "",
+            value: "",
         },
+        regionId: "",
+        totalAmountPaid: 0,
+        subscriptionPlan: "",
+        space: 0,
+        startDate: "",
+        endDate: "",
+        paymentDate: "",
+        paymentMethod: "Bank Transfer",
+    }
+    const form: any = useForm({
+        initialValues: iValues,
         transformValues: (values) => ({
-            depot: `${values.depot.value}`,
+            // depot: `${values.depot.value}`,
             regionId: `${values.regionId}`,
             subscriptionPlan: `${values.subscriptionPlan}`,
             space: `${values.space}`,
@@ -47,19 +53,28 @@ const AdminSubscription = () => {
             endDate: `${dayjs(values.endDate).format()}`,
             paymentDate: `${dayjs(values.paymentDate).format()}`,
             paymentMethod: "Bank Transfer",
-            totalAmountPaid: `(${values.totalAmountPaid * (dayjs(form.values.endDate).diff(dayjs(form.values.startDate), "month")) }) `
+            totalAmountPaid: `${
+                values.totalAmountPaid *
+                dayjs(form.values.endDate).diff(
+                    dayjs(form.values.startDate),
+                    "month"
+                )
+            } `,
         }),
     })
     const selectedDepot = form.values.depot
     const selectedPlan = form.values.subscriptionPlan
     const [record, setRecord] = useState(false)
     const [confirmRecord, setConfirmRecord] = useState(false)
-    const [submittedValues, setSubmittedValues] = useState('');
+    const [submittedValues, setSubmittedValues] = useState(iValues)
 
     const { data: subscriptionData } = useGetAdminSubscriptions({})
     const { data: depotCompanies } = useGetDepotCompanies()
-    const { data: depotRegions } = useGetDepotRegions({ id: selectedDepot.value })
+    const { data: depotRegions } = useGetDepotRegions({
+        id: selectedDepot.value,
+    })
     const { data: subscriptionPrices } = useGetSubscriptionPrice()
+    const { mutate } = useCreateSubscription()
 
     // console.log(subscriptionPrices)
     // console.log(depotRegions)
@@ -123,7 +138,7 @@ const AdminSubscription = () => {
                 label: item?.name,
                 value: {
                     depotName: item?.name,
-                    depotId: item?._id
+                    depotId: item?._id,
                 },
             }
         })
@@ -151,7 +166,7 @@ const AdminSubscription = () => {
     // }
 
     // console.log(submittedValues)
-    // console.log(form.values)
+    // console.log(JSON.parse(submittedValues))
     // console.log(dayjs(form.values.endDate).diff(dayjs(form.values.startDate), "month"))
     // console.log(subscriptionPrices?.subscriptionPrice?.pro)
     return (
@@ -204,7 +219,11 @@ const AdminSubscription = () => {
                     // })}
                 >
                     <div className="p-6">
-                        <form onSubmit={form.onSubmit((values: any) => setSubmittedValues(JSON.stringify(values, null, 2)))}>
+                        <form
+                            onSubmit={form.onSubmit((values: any) =>
+                                setSubmittedValues(values)
+                            )}
+                        >
                             <header className="mb-4">
                                 <p className="font-extrabold text-2xl">
                                     Record subscription
@@ -303,7 +322,7 @@ const AdminSubscription = () => {
                                         icon={<BiPound />}
                                         label="Subscription Amount (Monthly)"
                                         {...form.getInputProps(
-                                            "totalAmountPaid",
+                                            "totalAmountPaid"
                                         )}
                                         // onChange={() => form.setFieldValue('totalAmountPaid', (Number(form.values.totalAmountPaid) * (dayjs(form.values.endDate).diff(dayjs(form.values.startDate), "month"))) )}
                                     />
@@ -346,19 +365,19 @@ const AdminSubscription = () => {
                                 </span>
                             </div>
                             <Group position="right" mt="md">
-                            <Button onClick={() => setRecord(!record)}>
-                                Cancel
-                            </Button>
-                            <Button
-                                variant="primary"
-                                size="small"
-                                onClick={() => setConfirmRecord(true)}
-                            >
-                                Record new subscription
-                            </Button>
-                        </Group>
+                                <Button onClick={() => setRecord(!record)}>
+                                    Cancel
+                                </Button>
+                                <Button
+                                    variant="primary"
+                                    size="small"
+                                    onClick={() => setConfirmRecord(true)}
+                                >
+                                    Record new subscription
+                                </Button>
+                            </Group>
                         </form>
-                        {submittedValues && <Code block>{submittedValues}</Code>}
+                        {/* {submittedValues && <Code block>{submittedValues}</Code>} */}
                     </div>
                 </Modal>
             )}
@@ -390,8 +409,11 @@ const AdminSubscription = () => {
                             Are you sure you want to record this subscription?
                         </h3>
                         <p className="text-black-90 text-lg text-center md:mx-auto  px-3 md:px-0">
-                            You are about to renew {form.values.depot.label} is subcription
-                            of £ {form.values.totalAmountPaid} for {dayjs(form.values.startDate).format("MMM YYYY")} - {dayjs(form.values.endDate).format("MMM YYYY")}
+                            You are about to renew {form.values.depot.label} is
+                            subcription of £ {submittedValues.totalAmountPaid}{" "}
+                            for{" "}
+                            {dayjs(form.values.startDate).format("MMM YYYY")} -{" "}
+                            {dayjs(form.values.endDate).format("MMM YYYY")}
                         </p>
                     </div>
 
@@ -405,7 +427,15 @@ const AdminSubscription = () => {
                             variant="green"
                             className="text-white-100 w-full"
                             size="small"
-                            // onClick={handleSubmit}
+                            onClick={() =>
+                                mutate({
+                                    ...submittedValues,
+                                    totalAmountPaid: Number(
+                                        submittedValues.totalAmountPaid
+                                    ),
+                                    space: Number(submittedValues.space),
+                                })
+                            }
                         >
                             Record
                         </Button>
