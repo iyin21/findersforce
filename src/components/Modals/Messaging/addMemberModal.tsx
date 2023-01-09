@@ -89,7 +89,7 @@ const AddMembersModal = ({
             )
             // console.log("groupresult", result)
             if (result && groupPhoto) {
-                await client.invoke(
+                const result2=await client.invoke(
                     new Api.messages.EditChatPhoto({
                         //@ts-expect-error
                       chatId: result.chats[0].id,
@@ -100,7 +100,9 @@ const AddMembersModal = ({
                       }),
                     })
                   );
-                
+                if(result2){
+                    setIsCreatingGroup(false)
+                }
             } else {
                 setOpened(false)
             }
@@ -115,9 +117,9 @@ const AddMembersModal = ({
             showNotification({
                 title: "Success",
                 message:"Group created successfully",
-                color: "red",
+                color: "green",
             })
-            setIsCreatingGroup(false)
+            
             setOpened(false)
         }
     }

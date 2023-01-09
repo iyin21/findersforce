@@ -56,6 +56,7 @@ export const depotHqRoute: SidebarRoutes[] = [
         title: "Roles & Permissions",
         route: "/roles&permission",
     },
+    { icon: Messaging, title: "Messaging", route: "/messaging" },
     { icon: Locations, title: "Locations", route: "/locations" },
     { icon: Subscriptions, title: "Subscriptions", route: "/subscription" },
     { icon: Support, title: "Support", route: "/support" },
@@ -69,6 +70,7 @@ export const adminRoute: SidebarRoutes[] = [
     { icon: Subscription, title: "Subscription", route: "/subscription" },
     { icon: GeoTracking, title: "Geotracking", route: "/geotracking" },
     { icon: AdminSupport, title: "Support", route: "/admin-support" },
+    { icon: Messaging, title: "Messaging", route: "/messaging" },
     { icon: AllUsers, title: "All users", route: "/all-users" },
     { icon: AdminRolesPermission, title: "Roles and Permission", route: "/roles-permission" },
 ]

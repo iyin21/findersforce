@@ -31,6 +31,7 @@ import SendCode from "./components/sendCode"
 import { Dialog } from "telegram/tl/custom/dialog"
 import calendar from "dayjs/plugin/calendar"
 import AddMembersModal from "../../components/Modals/Messaging/addMemberModal"
+import { Overlay } from '@mantine/core';
 //2.14.8
 dayjs.extend(calendar)
 
@@ -50,19 +51,19 @@ const Messaging = () => {
     const [chatId, setChatId] = useState<bigInt.BigInteger>()
 
     //Telegram
-    
+
     const apiId = import.meta.env.VITE_TELEGRAM_API_ID as number
 
     const apiHash = import.meta.env.VITE_TELEGRAM_API_HASH
     const stringSession = new StringSession(
         sessionStorage.getItem("session") || ""
     ) // fill this later with the value from session.save()
-    
+
     const client = new TelegramClient(stringSession, apiId, apiHash, {
         connectionRetries: 10000,
         //testServers: true,
     })
-    
+
     // console.log(sessionStorage.getItem("session"))
     // const getDialogs = async () => {
     //     const result = await client.getDialogs({})
@@ -106,13 +107,13 @@ const Messaging = () => {
                 // const sender = await message.getSender()
                 // const sender2 = await message.getInputSender()
                 // const getChat = await message.getChat()
-                 const id = message.chat?.id
+                const id = message.chat?.id
                 // Checks if it's a private message (from user or bot)
                 if (event.isPrivate && id) {
                     // prints sender id
                     // console.log("gcc", message)
                     // console.log("ggg", event)
-                   // console.log("inputChat", await message.getChat())
+                    // console.log("inputChat", await message.getChat())
                     // if (sender) {
                     //     console.log("gigi", sender)
                     // }
@@ -121,13 +122,12 @@ const Messaging = () => {
                     // }
                     // @ts-expect-error
                     console.log(getChat?.firstName + " " + getChat?.lastName)
-                
+
                     // console.log("chatid", chatId)
                     // // @ts-expect-error
                     // console.log("value",id.value);
                     // @ts-expect-error
                     if (chatId?.value === id.value) {
-                
                         setChatHistory((chat) => [...chat, message])
                     }
                     // else {
@@ -174,7 +174,8 @@ const Messaging = () => {
                 reverse: true,
             })
             if (result) {
-                
+                console.log("result", result)
+
                 setChatId(result[0].chat?.id)
 
                 setChatHistory(() => [
@@ -185,6 +186,7 @@ const Messaging = () => {
                         )
                         .map((item: Api.Message) => item),
                 ])
+                await newClient?.markAsRead(value, result[result.length - 1].id)
             }
         } finally {
             setIsLoadingMessages(false)
@@ -205,19 +207,19 @@ const Messaging = () => {
     const [groupName, setGroupName] = useState("")
     const [openAddMember, setOpenAddMember] = useState(false)
     const [searchParam] = useState(["title"])
-    const [searchQuery, setSearchQuery]= useState("");
-    
-const dialogData = dialog?.filter((item:Dialog) => {
-    return searchParam.some((newItem) => {
-      return (
-        // @ts-expect-error
-        item[newItem as keyof Dialog]
-          .toString()
-          .toLowerCase()
-          .indexOf(searchQuery.toLowerCase()) > -1
-      );
-    });
-  });
+    const [searchQuery, setSearchQuery] = useState("")
+
+    const dialogData = dialog?.filter((item: Dialog) => {
+        return searchParam.some((newItem) => {
+            return (
+                // @ts-expect-error
+                item[newItem as keyof Dialog]
+                    .toString()
+                    .toLowerCase()
+                    .indexOf(searchQuery.toLowerCase()) > -1
+            )
+        })
+    })
 
     const handleSendMessage = async () => {
         setIsLoadingSendMessage(true)
@@ -258,19 +260,23 @@ const dialogData = dialog?.filter((item:Dialog) => {
 
     const handleUpload = async (e: ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0]
-
-        if (file) {
+        console.log(file)
+        console.log("jhr")
+        if (e.target.files?.[0]) {
+            setFileUpload(e.target.files?.[0])
             try {
                 const result = await newClient?.uploadFile({
-                    file: file,
+                    file: e.target.files?.[0],
                     workers: 1,
                 })
                 if (result) {
+                    setOpenFileModal(true)
+                    console.log("ahrjh")
                     setFileUpload(e.target.files?.[0])
                     setUploadedFile(result)
-                    setOpenFileModal(true)
                 }
             } catch (err) {
+                console.log("error")
                 showNotification({
                     title: "Error",
                     message: "Error uploading file, plese try again",
@@ -280,6 +286,9 @@ const dialogData = dialog?.filter((item:Dialog) => {
             }
         }
     }
+
+    const [visible, setVisible] = useState(true);
+
 
     return (
         <Layout pageTitle="Messaging" noTopNav>
@@ -291,7 +300,7 @@ const dialogData = dialog?.filter((item:Dialog) => {
                 chat={activeChat}
                 uploadedFile={uploadedFile}
             />
-            <div >
+            <div>
                 {isLoading || isFetchingDialog ? (
                     <div className="h-screen w-full flex mt-24 justify-center">
                         <CgSpinner className="animate-spin text-primary-90 text-4xl" />
@@ -342,7 +351,7 @@ const dialogData = dialog?.filter((item:Dialog) => {
                                 <div className="pl-4 pt-4">
                                     <img src={CompanyLogo} alt="" />
                                     <h5 className="font-bold text-2lg">
-                                        { me?.firstName+" "+ me?.lastName}
+                                        {me?.firstName + " " + me?.lastName}
                                     </h5>
                                     <p className="text-black-40 pt-2">
                                         +{me?.phone}
@@ -391,7 +400,9 @@ const dialogData = dialog?.filter((item:Dialog) => {
                                         placeholder="Search"
                                         className="md:h-8.5 bg-black-5 ml-2"
                                         value={searchQuery}
-                                        onChange={(e) => setSearchQuery(e.target.value)}
+                                        onChange={(e) =>
+                                            setSearchQuery(e.target.value)
+                                        }
                                     />
                                 </div>
                                 <div className="mt-8 overflow-y-auto h-[80%]">
@@ -486,7 +497,8 @@ const dialogData = dialog?.filter((item:Dialog) => {
                                     ))}
                                 </div>
                             </div>
-                            {chatHistory && chatHistory.length > 0 ? (
+                            {(chatHistory && chatHistory.length > 0) ||
+                            activeChat ? (
                                 <div className="w-full pt-8">
                                     <div className="flex justify-between pl-4 pr-8 pb-2">
                                         <div>
@@ -509,6 +521,10 @@ const dialogData = dialog?.filter((item:Dialog) => {
                                         className="overflow-y-auto h-full pb-9"
                                         ref={containerRef}
                                     >
+                                        {visible && <Overlay opacity={0.6} color="#000" zIndex={5}>
+                                            <p className="bg-black-5 mt-20 ml-10">cckclkldgggggggggggggggggggggghfhf</p>
+                                            </Overlay>}
+                                            
                                         {chatHistory.map((item, index) => (
                                             <div key={index}>
                                                 {item.media ? (
