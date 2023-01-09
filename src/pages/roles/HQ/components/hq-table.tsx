@@ -50,6 +50,7 @@ const HQRoleTable = ({
             <td>
                 {element?.depotRegion?.address ||
                     element?.regionAddress ||
+                    element?.depotCompany?.address ||
                     "N/A"}{" "}
             </td>
             {status === "SHIFT-MANAGER" && (

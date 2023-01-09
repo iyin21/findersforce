@@ -1,21 +1,34 @@
 import { Menu, Table } from "@mantine/core"
+import dayjs from "dayjs"
 import { IoEllipsisVerticalSharp } from "react-icons/io5"
 import { useNavigate } from "react-router-dom"
-import { DepotSingleTableInterface } from "../../../../../../../types/depot/depot-inteface"
+import { IOperativeResponse } from "../../../../../../../types/depot/depot-inteface"
 import MobileOperativesTable from "./mobile-operatives-table"
 
-const OperativeTable = ({ elements }: DepotSingleTableInterface) => {
+export interface OperativeTableProps {
+    elements: IOperativeResponse[]
+}
+
+const OperativeTable = ({ elements }: OperativeTableProps) => {
     const navigate = useNavigate()
 
     const rows = elements?.map((element, index) => (
         <tr key={index}>
             <td>{index + 1}</td>
-            <td>{element?.name}</td>
+            <td>
+                {element?.firstName} {element?.lastName}
+            </td>
             <td>{element?.email}</td>
-            <td>{element?.phone_number}</td>
-            <td>{element?.shift_joined}</td>
-            <td>{element?.qualification}</td>
-            <td>{element?.date}</td>
+            <td>{element?.phone_number || "N/A"} </td>
+            <td>{element?.completedShifts}</td>
+            <td>
+                {element?.qualification.map((item) => (
+                    <span key={item?._id} className="ml-1">
+                        {item?.name}/
+                    </span>
+                ))}
+            </td>
+            <td>{dayjs(element?.createdAt).format("MMM, D, YYYY")}</td>
             <td>
                 <Menu
                     width={200}
@@ -34,7 +47,7 @@ const OperativeTable = ({ elements }: DepotSingleTableInterface) => {
                             <Menu.Item
                                 className="text-black-100"
                                 onClick={() => {
-                                    navigate(`/planner/${element?._id}}`)
+                                    navigate(`/shifts/${element?._id}}`)
                                 }}
                             >
                                 View shift history

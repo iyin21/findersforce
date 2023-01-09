@@ -38,14 +38,14 @@ const HQAddUser = ({
                 size="lg"
                 centered
             >
-                <div className="flex justify-between items-center p-3">
+                <div className="flex justify-between items-center p-3 font-creato">
                     <div>
                         <h1 className="text-2xl mb-2 md:mb-0 md:text-3xl font-bold">
-                            Add Roles to your Depot
+                            Add Managers
                         </h1>
                         <p className="text-black-60 text-2md font-normal">
-                            Delegate administrative right to this users across
-                            your business location
+                            Select a location and delegate administrative rights
+                            to your managers.
                         </p>
                     </div>
                     <IoClose size={30} onClick={() => setOpened(false)} />
@@ -70,16 +70,16 @@ const HQAddUser = ({
                         }}
                     >
                         {({ errors, setFieldValue, values }) => (
-                            <Form className="">
+                            <Form className="font-creato">
                                 <GoogleAutoComplete fieldName="regionAddress" />
 
                                 <div className="mt-10">
                                     <label className="text-3md font-semibold text-neutral-80 block mb-2">
-                                        Select user type to add
+                                        Select access
                                     </label>
                                     <div className="flex  flex-col md:flex-row md:items-center md:gap-10 mt-4 mb-4">
                                         <RadioButton
-                                            label="Regional Manager"
+                                            label="Depot Manager"
                                             id="regional_manger"
                                             name="invitedRole"
                                             checked={
@@ -122,16 +122,16 @@ const HQAddUser = ({
                                 <div>
                                     <div className="mb-2">
                                         <label className="text-3md font-semibold text-neutral-80 block">
-                                            Send Invite (s) by Email
+                                            Email
                                         </label>
-                                        <span className="text-md text-black-40">
+                                        {/* <span className="text-md text-black-40">
                                             Separate email addresses with a
                                             comma.
-                                        </span>
+                                        </span> */}
                                     </div>
 
                                     <ReactMultiEmail
-                                        placeholder="Input your email"
+                                        placeholder="Separate email addresses with a comma ( , )."
                                         emails={emails}
                                         onChange={(_emails: string[]) => {
                                             setEmails(_emails)
@@ -189,7 +189,6 @@ const HQAddUser = ({
                                         {isInviting
                                             ? "Adding user..."
                                             : "Add user"}
-                                        {/* Add user */}
                                     </Button>
                                 </div>
                             </Form>

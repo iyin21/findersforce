@@ -3,7 +3,8 @@ export interface JobBoardRequest {
     signal?: AbortSignal
     limit?: number
     page?: number
-    meetingPoint: string
+    meetingPoint?: string
+    companyId?: string
     // amount: string[]
     // perPage?: number
     // jobType: string
@@ -53,6 +54,8 @@ export interface JobBoardResponseInterface {
         currency: string
         jobRatePerHourDisplayedToDepot: number
         jobRatePerHourDisplayedToOp: number
+        jobRateDepotFirstDisplayedToDepot: number
+        jobRateMeetOnsiteDisplayedToDepot: number
     }
     jobType: {
         name: string
@@ -78,11 +81,14 @@ export interface JobBoardResponseInterface {
     numberOfOpsRequired: number
     shiftStartTime: string
     shiftDurationInHours: number
-    applicationsCount: number
+    applicationCount: number
     shiftEndTime: string
     companyName: string
     jobMeetingPoint: string
     jobMatchPercentage: number
+    cancelledShiftCount: number
+    completedShiftCount: number
+    hireCount: number
 }
 
 export interface JobBoardByIdResponse {
@@ -120,6 +126,7 @@ export interface JobInformationInterface {
     jobType: string | undefined
     createdAt: string | undefined
     additionalInfoImageUrls: string[] | undefined
+    listingId: string | undefined
 }
 
 export interface BulkDeleteJobRequest {

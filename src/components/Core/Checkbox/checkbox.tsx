@@ -11,7 +11,7 @@ interface ICheckBoxProps {
     name?: string
     value?: string
     onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void
-    label?: string
+    label?: string | JSX.Element
     checked?: boolean
     id?: string
 }
@@ -42,7 +42,7 @@ export default function Checkbox({
             >
                 <input
                     type="checkbox"
-                    className={` accent-black-10 focus:ring-0 outline-none cursor-pointer focus:outline-none border border-black-20 h-6 w-6 ${
+                    className={` accent-black-10 focus:ring-0 outline-none cursor-pointer focus:outline-none border border-green-20 h-6 w-6 ${
                         classNames?.input || ""
                     }`}
                     {...rest}

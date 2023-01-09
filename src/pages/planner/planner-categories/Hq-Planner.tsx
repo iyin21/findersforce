@@ -61,19 +61,19 @@ const HqPlanner = () => {
         useGetShiftHistory({
             ongoing: true,
             jobMeetingPoint: ongoingShiftsFilter?.meetingPoint,
-            regionId: selectValue
+            regionId: selectValue,
         })
     const { data: cancelledShiftsData, isLoading: isLoadingCancelledData } =
         useGetShiftHistory({
             cancelled: true,
             jobMeetingPoint: cancelledShiftsFilter?.meetingPoint,
-            regionId: selectValue
+            regionId: selectValue,
         })
     const { data: completedShiftsData, isLoading: isLoadingCompletedData } =
         useGetShiftHistory({
             completed: true,
             jobMeetingPoint: completedShiftsFilter?.meetingPoint,
-            regionId: selectValue
+            regionId: selectValue,
         })
 
     const shiftsDuration: any = completedShiftsData?.results?.map((item) => {
@@ -98,7 +98,7 @@ const HqPlanner = () => {
 
     let regionAddress: any
     if (regionData) {
-        regionAddress = regionData?.map((item) => {
+        regionAddress = regionData?.data?.map((item) => {
             return {
                 label: item?.address,
                 value: item?._id,

@@ -36,11 +36,10 @@ const EmptyApplication = ({ id }: EmptyApplicationInterface) => {
         <div className="flex flex-col justify-center items-center mt-32">
             <img src={EmptyApplicationImage} alt="empty application" />
             <h1 className="text-black-100 text-3xl font-creatoMedium mt-5 font-bold">
-                No applications yet!
+                This shift has no applications yet.
             </h1>
             <p className="text-black-70 text-3md font-creato mt-3">
-                Copy the link and share to increase visibility to prospective
-                applicants.
+                Share your link to increase visibility to potential Operatives.
             </p>
             <div className="grid grid-cols-1 w-full md:w-auto md:flex md:flex-cols  justify-center md:flex-row items-center gap-2 md:gap-5 rounded p-2 border-accent-70 mt-5">
                 <input

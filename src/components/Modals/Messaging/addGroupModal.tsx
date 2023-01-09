@@ -9,20 +9,26 @@ import {
 } from "react"
 import Camera from "../../../assets/camera.svg"
 
+
 export interface AddGroupModalProps {
     opened: boolean
     setOpened: Dispatch<SetStateAction<boolean>>
+    setOpenAddMember:Dispatch<SetStateAction<boolean>>
+    setGroupPhoto:Dispatch<SetStateAction<File|null>>
+    setGroupName:Dispatch<SetStateAction<string>>
 }
-const AddGroup = ({ opened, setOpened }: AddGroupModalProps) => {
+const AddGroup = ({ opened, setOpened, setOpenAddMember, setGroupPhoto, setGroupName }: AddGroupModalProps) => {
     const [imageFile, setImageFile] = useState<File | null>(null)
     const [fileDataURL, setFileDataURL] = useState("")
     const fileInputRef = useRef<HTMLInputElement>(null)
+    const [groupTitle, setGroupTitle]= useState("")
     const handleGroupImageUpload = (e: ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0]
 
         if (file) {
             setImageFile(file)
-            // setPictureName(file.name)
+            setGroupPhoto(file)
+
         }
     }
     useEffect(() => {
@@ -46,6 +52,10 @@ const AddGroup = ({ opened, setOpened }: AddGroupModalProps) => {
         }
     }, [imageFile])
 
+    const handleNext=()=>{
+        setOpened(false);
+        setOpenAddMember(true)
+    }
     return (
         <Modal
             opened={opened}
@@ -88,12 +98,13 @@ const AddGroup = ({ opened, setOpened }: AddGroupModalProps) => {
                         <input
                             type="text"
                             className="w-full outline-none input bg-transparent"
+                            onChange={(e: ChangeEvent<HTMLInputElement>)=>{setGroupTitle(e.target.value);setGroupName(e.target.value)}}
                         />
                     </div>
                     {/* <Input control="" className="border-b-2 border-t-none border-blue-100" /> */}
                     <div className="flex justify-end mt-8 font-bold">
                         <p>Cancel</p>
-                        <p className="pl-4">Next</p>
+                        <p className="pl-4" onClick={()=>groupTitle &&handleNext()}>Next</p>
                     </div>
                 </div>
             </div>

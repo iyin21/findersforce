@@ -1,9 +1,22 @@
 import { Tabs } from "@mantine/core"
+import { useGetJobRates } from "../../../../../../../hooks/depots/use-depot"
 import { useState } from "react"
+import { Data } from "../../../../../../../types/approval/approval-interface"
 import ProfileWages from "./profile-wages"
+import { useGetJobQualification } from "../../../../../../../hooks/job-board/useJobBoard.hooks"
 
-const Profile = () => {
+export interface ProfileProps {
+    profileData: Data[]
+}
+
+const Profile = ({ profileData }: ProfileProps) => {
     const [activeTab, setActiveTab] = useState<string | null>("business")
+
+    const { data: jobRatesData } = useGetJobRates({
+        company: profileData[0]?.depotCompany?._id,
+    })
+
+    const { data: qualificationData } = useGetJobQualification()
 
     return (
         <div className="mt-8">
@@ -16,17 +29,20 @@ const Profile = () => {
                     <div>
                         <h6 className="text-black-50 ">EMAIL</h6>
                         <p className="text-lg font-semibold">
-                            robertshaquan@findersforce.com
+                            {profileData[0]?.email}
                         </p>
                     </div>
                     <div>
                         <h6 className="text-black-50 ">PHONE NUMBER</h6>
-                        <p className="text-lg font-semibold">+445480844</p>
+                        <a href={`tel:+${profileData[0]?.phoneNumber}`}>
+                            {profileData[0]?.phoneNumber}
+                        </a>
                     </div>
                     <div>
                         <h6 className="text-black-50 ">ADDRESS</h6>
                         <p className="text-lg font-semibold">
-                            11 Maryland road Liverpool United Kingdom
+                            {profileData[0]?.depotCompany?.address ||
+                                "No address"}
                         </p>
                     </div>
                 </div>
@@ -38,7 +54,7 @@ const Profile = () => {
                     onTabChange={setActiveTab}
                     color="yellow"
                     keepMounted={false}
-                    data-testid="job_tabs"
+                    data-testid="profile_tabs"
                 >
                     <Tabs.List>
                         <Tabs.Tab value="business">
@@ -71,35 +87,43 @@ const Profile = () => {
                                     BUSINESS NAME
                                 </h6>
                                 <p className="text-lg font-semibold">
-                                    Robert shaquan
+                                    {profileData[0]?.depotCompany?.name ||
+                                        "No name"}
                                 </p>
                             </div>
                             <div>
                                 <h6 className="text-black-50 ">PHONE NUMBER</h6>
-                                <p className="text-lg font-semibold">
-                                    +445480844
-                                </p>
+                                <a href={`tel:+${profileData[0]?.phoneNumber}`}>
+                                    {profileData[0]?.phoneNumber}
+                                </a>
                             </div>
                             <div>
                                 <h6 className="text-black-50 ">LOCATION</h6>
-                                <p className="text-lg font-semibold">4</p>
+                                <p className="text-lg font-semibold">
+                                    {profileData[0]?.depotCompany
+                                        ?.regionLimit || "No address"}
+                                </p>
                             </div>
                             <div>
                                 <h6 className="text-black-50 ">EMAIL</h6>
                                 <p className="text-lg font-semibold">
-                                    robertshaquan@findersforce.com
+                                    {profileData[0]?.email}
                                 </p>
                             </div>
                             <div>
                                 <h6 className="text-black-50 ">ADDRESS</h6>
                                 <p className="text-lg font-semibold">
-                                    11 Maryland road Liverpool United Kingdom
+                                    {profileData[0]?.depotCompany?.address ||
+                                        "No address"}
                                 </p>
                             </div>
                         </div>
                     </Tabs.Panel>
                     <Tabs.Panel value="wage">
-                        <ProfileWages />
+                        <ProfileWages
+                            jobRatesData={jobRatesData?.data || []}
+                            qualificationData={qualificationData}
+                        />
                     </Tabs.Panel>
                 </Tabs>
             </div>

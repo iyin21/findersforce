@@ -73,6 +73,13 @@ const ApplicationDetails = ({ setPhase, activeId, setShiftId }: Prop) => {
 
     const [openRejectModal, setOpenRejectModal] = useState(false)
     const [openApproveModal, setOpenApproveModal] = useState(false)
+    const skillSet = data?.results?.map((item) => {
+        return item.skillset.map((item) => item.name)
+    })
+
+    const qualifications = data?.results?.map((item) => {
+        return item.qualification.map((item) => item.name)
+    })
 
     return (
         <>
@@ -95,7 +102,7 @@ const ApplicationDetails = ({ setPhase, activeId, setShiftId }: Prop) => {
                     <CgSpinner className="animate-spin text-primary-90 text-4xl" />
                 </div>
             ) : (
-                <div className="pt-8 px-6">
+                <div className="pt-12 px-5 lg:pt-8 lg:px-6">
                     <span
                         onClick={() => setPhase(1)}
                         className="p-3 rounded inline-flex items-center justify-center bg-black-10 cursor-pointer"
@@ -103,7 +110,7 @@ const ApplicationDetails = ({ setPhase, activeId, setShiftId }: Prop) => {
                     >
                         <HiArrowLeft className="text-2lg" />
                     </span>
-                    <div className="pt-4 lg:flex justify-between px-4 lg:px-0">
+                    <div className="pt-4 lg:flex justify-between lg:px-0">
                         <div className="lg:flex">
                             <div className="flex justify-between">
                                 <img
@@ -112,14 +119,14 @@ const ApplicationDetails = ({ setPhase, activeId, setShiftId }: Prop) => {
                                     className="rounded-full  h-14 w-14"
                                     alt="profile pictogram"
                                 />
-                                <button className="bg-green-10 p-2 lg:mr-4 flex text-green-100 font-bold items-center  rounded rounded-tr-2xl lg:hidden block">
+                                {/* <button className="bg-green-10 p-2 lg:mr-4 flex text-green-100 font-bold items-center  rounded rounded-tr-2xl lg:hidden block">
                                     <img
                                         src={Message}
                                         alt=""
                                         className="mr-2"
                                     />
                                     Message
-                                </button>
+                                </button> */}
                             </div>
 
                             <div className="lg:pl-4 ">
@@ -147,7 +154,7 @@ const ApplicationDetails = ({ setPhase, activeId, setShiftId }: Prop) => {
                         </div>
 
                         {data?.results[0].doc.status === "pending" ? (
-                            <div className=" hidden lg:flex">
+                            <div className="pt-4 lg:pt-0 flex">
                                 <button
                                     className="bg-red-10 p-4 rounded rounded-tr-2xl flex items-center font-bold body-medium px-6"
                                     onClick={() => setOpenRejectModal(true)}
@@ -168,7 +175,7 @@ const ApplicationDetails = ({ setPhase, activeId, setShiftId }: Prop) => {
                     <div className="lg:grid grid-cols-2 mt-4">
                         <div className="">
                             {data?.results[0].doc.status !== "pending" && (
-                                <div className="items-center  hidden lg:flex">
+                                <div className="items-center flex">
                                     <button className="bg-green-10 p-6 mr-4 flex text-green-100 font-bold items-center px-10 rounded rounded-tr-2xl">
                                         <img
                                             src={Message}
@@ -178,17 +185,13 @@ const ApplicationDetails = ({ setPhase, activeId, setShiftId }: Prop) => {
                                         Message {data?.results[0].firstName}
                                     </button>
                                     <p
-                                        // href={`/applications/${applicationId}/${data?.user._id}`}
                                         className="flex ml-4 items-center font-bold cursor-pointer"
-                                        onClick={
-                                            () => {
-                                                setShiftId(
-                                                    data?.results[0]._id || ""
-                                                )
-                                                setPhase(3)
-                                            }
-                                            // navigate(`/applications/${item._id}`)
-                                        }
+                                        onClick={() => {
+                                            setShiftId(
+                                                data?.results[0]._id || ""
+                                            )
+                                            setPhase(3)
+                                        }}
                                     >
                                         View shift history
                                         <HiChevronRight size="25px" />{" "}
@@ -202,14 +205,14 @@ const ApplicationDetails = ({ setPhase, activeId, setShiftId }: Prop) => {
                                         QUALIFICATION
                                     </p>
                                     <p className="font-bold body-regular">
-                                        {data?.results[0].skillset[0].name}
+                                        {qualifications?.join(", ")}
                                     </p>
                                 </div>
                                 <p className="mt-12 text-black-50 font-medium body-mediumn mb-2">
                                     SKILLS
                                 </p>
                                 <p className="font-bold">
-                                    {data?.results[0].skillset[0].name}
+                                    {skillSet?.join(", ")}
                                 </p>
                                 <p className="mt-12 text-black-50 font-medium body-mediumn mb-2">
                                     PROFESSIONAL SUMMARY
@@ -217,7 +220,7 @@ const ApplicationDetails = ({ setPhase, activeId, setShiftId }: Prop) => {
                                 <p>{data?.results[0].bio}</p>
                             </div>
                         </div>
-                        <div className="pl-4 mt-4">
+                        <div className="lg:pl-4 mt-4">
                             <div className="flex">
                                 <div>
                                     <p className="body-medium text-black-50 pb-2 font-medium">
@@ -280,10 +283,7 @@ const ApplicationDetails = ({ setPhase, activeId, setShiftId }: Prop) => {
                                             QUALIFICATION
                                         </p>
                                         <p className="font-medium body-regular">
-                                            {
-                                                data?.results[0]
-                                                    .qualification[0].name
-                                            }
+                                            {qualifications?.join(", ")}
                                         </p>
                                     </div>
                                     <div className="ml-24">
@@ -312,7 +312,7 @@ const ApplicationDetails = ({ setPhase, activeId, setShiftId }: Prop) => {
                                 <p className="body-medium text-black-50 pb-2 font-medium">
                                     CERTIFICATIONS
                                 </p>
-                                {data?.results[0]?.certificates?.map(
+                                {data?.results[0]?.certifications?.map(
                                     (item, index) => (
                                         <div
                                             key={index}

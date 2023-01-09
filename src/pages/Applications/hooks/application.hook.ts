@@ -6,7 +6,7 @@ import {
     ApplicationResponse,
     ShiftResponse,
     ApplicationDetailsResponse,
-} from "../interface";
+} from "../interface"
 import useAuthContext from "../../../hooks/auth-hooks/useAuth"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 
@@ -20,13 +20,25 @@ interface ApplicationRequest {
 interface UpdateApplicationRequest {
     status: string
 }
-function useGetApplications({ status, page, jobTypeId, jobMatchPercentageMin, jobMatchPercentageMax }: ApplicationRequest) {
+function useGetApplications({
+    status,
+    page,
+    jobTypeId,
+    jobMatchPercentageMin,
+    jobMatchPercentageMax,
+}: ApplicationRequest) {
     // const { auth } =  useAuth()
     // console.log(auth)
     const { state } = useAuthContext()
     const getApplications = async () => {
         const { data } = await axiosInstance.get("/applications", {
-            params: { status, page, jobTypeId, jobMatchPercentageMin, jobMatchPercentageMax },
+            params: {
+                status,
+                page,
+                jobTypeId,
+                jobMatchPercentageMin,
+                jobMatchPercentageMax,
+            },
             headers: {
                 Authorization: `Bearer ${state?.jwt?.token}`,
             },
@@ -35,7 +47,16 @@ function useGetApplications({ status, page, jobTypeId, jobMatchPercentageMin, jo
     }
 
     return useQuery<ApplicationRequest, AxiosError, ApplicationResponse>(
-        ["applications", { status, page, jobTypeId, jobMatchPercentageMin, jobMatchPercentageMax }],
+        [
+            "applications",
+            {
+                status,
+                page,
+                jobTypeId,
+                jobMatchPercentageMin,
+                jobMatchPercentageMax,
+            },
+        ],
         getApplications,
 
         {
@@ -81,7 +102,7 @@ function useGetApplicationDetails({ id }: { id: string }) {
 function useUpdateApplication({ id }: { id: string }) {
     const { state } = useAuthContext()
     // Get QueryClient from the context
-    const queryClient = useQueryClient();
+    const queryClient = useQueryClient()
 
     const updateApplication = async ({ status }: UpdateApplicationRequest) => {
         const config: AxiosRequestConfig = {
@@ -113,8 +134,8 @@ function useUpdateApplication({ id }: { id: string }) {
                 })
             },
             onSuccess: () => {
-                queryClient.invalidateQueries({ queryKey: ["applications"] });
-            }
+                queryClient.invalidateQueries({ queryKey: ["applications"] })
+            },
         }
     )
 }
@@ -122,7 +143,7 @@ function useGetShiftHistory({
     operativeId,
     completed,
 }: {
-    operativeId: string
+    operativeId: string | undefined
     completed?: boolean
 }) {
     const { state } = useAuthContext()

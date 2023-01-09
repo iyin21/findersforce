@@ -17,15 +17,15 @@ const LocationInfo = () => {
     }
 
     return (
-        <div>
+        <div className="font-creato">
             <GoogleAutoComplete fieldName="regionAddress" />
             <div className="mt-8">
                 <label className="text-3md font-semibold text-neutral-80 block mb-2">
-                    Select user type to add
+                    Select Access
                 </label>
                 <div className="flex items-center gap-10 mt-4">
                     <RadioButton
-                        label="Regional Manager"
+                        label="Depot Manager"
                         id="regional_manger"
                         name="accountType"
                         checked={
@@ -53,7 +53,7 @@ const LocationInfo = () => {
             <div className="mt-6">
                 <div className="mb-2">
                     <label className="text-3md font-semibold text-neutral-80 block">
-                        Send Invite (s) by Email
+                        Invite Manager(s)
                     </label>
                     <span className="text-md text-black-40">
                         Separate email addresses with a comma.
@@ -61,7 +61,7 @@ const LocationInfo = () => {
                 </div>
 
                 <ReactMultiEmail
-                    placeholder="Input your email"
+                    placeholder="Enter email address"
                     emails={emails}
                     onChange={(_emails: string[]) => {
                         setEmails(_emails)

@@ -1,20 +1,26 @@
 import { Table } from "@mantine/core"
+import dayjs from "dayjs"
 import { FiCheck } from "react-icons/fi"
 import { Button } from "../../../../../../../components"
-import { DepotSingleTableInterface } from "../../../../../../../types/depot/depot-inteface"
+import { IPaymentResponse } from "../../../../../../../types/depot/depot-inteface"
+import MobileDepotPayment from "./mobile-payment"
 
-const DepotPaymentTable = ({ elements }: DepotSingleTableInterface) => {
+export interface DepotPaymentTableProps {
+    elements: IPaymentResponse[]
+}
+
+const DepotPaymentTable = ({ elements }: DepotPaymentTableProps) => {
     const rows = elements?.map((element, index) => (
         <tr key={index}>
             <td>{index + 1}</td>
-            <td>{element?.date}</td>
-            <td>{element?.depot}</td>
-            <td>{element?.email}</td>
-            <td>{element?.month}</td>
+            <td>{dayjs(element?.createdAt).format("MMM D, YYYY")}</td>
+            <td>{element?.schedule?.jobLocation?.formattedAddress || "N/A"}</td>
+            <td>{element?.depot?.email || "N/A"}</td>
+            <td>{dayjs(element?.createdAt).format("MMM, YYYY")}</td>
             <td>
                 <a
                     href="/"
-                    download={"/"}
+                    download={`${element?.schedule?.additionalInfoImageUrls}`}
                     className="border-b border-black-100"
                 >
                     View receipt
@@ -28,7 +34,7 @@ const DepotPaymentTable = ({ elements }: DepotSingleTableInterface) => {
         </tr>
     ))
 
-    const tableHead = ["NO", "DATE RECEIVED", "DEPOT", "EMAIL", "MONTH"]
+    const tableHead = ["NO", "DATE RECEIVED", "LOCATION", "EMAIL", "MONTH"]
     return (
         <>
             <div className="hidden lg:block " data-testid="shift_table">
@@ -60,6 +66,9 @@ const DepotPaymentTable = ({ elements }: DepotSingleTableInterface) => {
                     <tbody>{rows}</tbody>
                 </Table>
             </div>{" "}
+            <div className="block lg:hidden">
+                <MobileDepotPayment elements={elements} />
+            </div>
         </>
     )
 }

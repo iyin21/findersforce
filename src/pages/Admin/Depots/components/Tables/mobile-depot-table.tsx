@@ -1,8 +1,14 @@
+import dayjs from "dayjs"
 import { FiChevronRight } from "react-icons/fi"
 import { useNavigate } from "react-router-dom"
 import { DepotTableInterface } from "./depot-table"
 
-const MobileDepotTable = ({ status, elements }: DepotTableInterface) => {
+const MobileDepotTable = ({
+    status,
+    elements,
+    handleRevokeInvite,
+    setUserId,
+}: DepotTableInterface) => {
     const navigate = useNavigate()
     const handleNavigate = (id: string) => {
         if (status === "active") {
@@ -22,7 +28,9 @@ const MobileDepotTable = ({ status, elements }: DepotTableInterface) => {
                     <div className="flex justify-between items-center border-b border-black-20 pb-2">
                         <div>
                             <h6 className="text-black-50 text-3sm">NAME</h6>
-                            <p className="text-2md mt-1">{element?.name}</p>
+                            <p className="text-2md mt-1">
+                                {element?.firstName} {element?.lastName}
+                            </p>
                         </div>
                         <FiChevronRight color="#0F0D0099" size={30} />
                     </div>
@@ -33,7 +41,10 @@ const MobileDepotTable = ({ status, elements }: DepotTableInterface) => {
                     </div>
                     <div className="mt-4">
                         <h6 className="text-black-50 text-3sm">HEADQUARTER</h6>
-                        <p className="text-2md mt-1">{element?.headquarter}</p>
+                        <p className="text-2md mt-1">
+                            {element?.depotCompany?.address ||
+                                element?.regionAddress}
+                        </p>
                     </div>
 
                     {status === "active" && (
@@ -44,7 +55,7 @@ const MobileDepotTable = ({ status, elements }: DepotTableInterface) => {
                                         SHIFTS
                                     </h6>
                                     <p className="text-2md mt-1">
-                                        {element?.shift}
+                                        {element?.depotCompany?.completedShifts}
                                     </p>
                                 </div>
                                 <div>
@@ -52,7 +63,7 @@ const MobileDepotTable = ({ status, elements }: DepotTableInterface) => {
                                         OPERATIVES
                                     </h6>
                                     <p className="text-2md mt-1">
-                                        {element?.operatives}
+                                        {element?.depotCompany?.totalOperatives}
                                     </p>
                                 </div>
                             </div>
@@ -61,7 +72,7 @@ const MobileDepotTable = ({ status, elements }: DepotTableInterface) => {
                                     LOCATIONS
                                 </h6>
                                 <p className="text-2md mt-1">
-                                    {element?.location}
+                                    {element?.depotCompany?.regionLimit}
                                 </p>
                             </div>
                         </>
@@ -73,13 +84,26 @@ const MobileDepotTable = ({ status, elements }: DepotTableInterface) => {
                                 <h6 className="text-black-50 text-3sm">
                                     DATE ADDED
                                 </h6>
-                                <p className="text-2md mt-1">{element?.date}</p>
+                                <p className="text-2md mt-1">
+                                    {dayjs(element.createdAt).format(
+                                        "MMM, D, YYYY"
+                                    )}
+                                </p>
                             </div>
                             <div className="mt-4">
                                 <h6 className="text-black-50 text-3sm">
                                     ACTION
                                 </h6>
-                                <p className="text-red-100"> Revoke Invite</p>
+                                <p
+                                    className="text-red-100"
+                                    onClick={() => {
+                                        handleRevokeInvite()
+                                        setUserId(element._id)
+                                    }}
+                                >
+                                    {" "}
+                                    Revoke Invite
+                                </p>
                             </div>
                         </div>
                     )}

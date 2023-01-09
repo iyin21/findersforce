@@ -65,7 +65,7 @@ const DepotHqDashboard = () => {
 
     let regionAddress: any
     if (regionData) {
-        regionAddress = regionData?.map((item) => {
+        regionAddress = regionData?.data?.map((item) => {
             return {
                 label: item?.address,
                 value: item?._id,

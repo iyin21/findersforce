@@ -1,12 +1,7 @@
 import { axiosInstance } from "../../services/api.service"
 import { showNotification } from "@mantine/notifications"
 import { AxiosError, AxiosRequestConfig } from "axios"
-// import { useQuery, useMutation } from "react-query"
-// import {
-//     ShiftResponse,
-//     ApplicationDetailsResponse,
-// } from "../interface";
-import { AllUsersResponse } from "../../types/approval/approval-interface";
+import { AllUsersResponse } from "../../types/approval/approval-interface"
 import useAuthContext from "../auth-hooks/useAuth"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 interface ApprovalRequest {
@@ -21,12 +16,15 @@ interface UpdateOperativeRequest {
 function useGetAllOperativeUsers({ docStatus }: ApprovalRequest) {
     const { state } = useAuthContext()
     const getAllUsers = async () => {
-        const { data } = await axiosInstance.get("/admin/user?accountType=OPERATIVE", {
-            params: { docStatus },
-            headers: {
-                Authorization: `Bearer ${state?.jwt?.token}`,
-            },
-        })
+        const { data } = await axiosInstance.get(
+            "/admin/user?accountType=OPERATIVE",
+            {
+                params: { docStatus },
+                headers: {
+                    Authorization: `Bearer ${state?.jwt?.token}`,
+                },
+            }
+        )
         return data
     }
 
@@ -47,7 +45,7 @@ function useGetAllOperativeUsers({ docStatus }: ApprovalRequest) {
     )
 }
 
-function useGetOperativeDetails({ id }: { id: string }) {
+function useGetOperativeDetails({ id }: { id: string | undefined }) {
     const { state } = useAuthContext()
     const getOperativeDetails = async () => {
         const { data } = await axiosInstance.get(`/admin/user?userId=${id}`, {
@@ -75,19 +73,25 @@ function useGetOperativeDetails({ id }: { id: string }) {
     )
 }
 
-
 function useUpdateOperative({ id }: { id: string }) {
     const { state } = useAuthContext()
     // Get QueryClient from the context
-    const queryClient = useQueryClient();
+    const queryClient = useQueryClient()
 
-    const updateApplication = async ({ status, rejectReason = "", moreInformation = "" }: UpdateOperativeRequest) => {
+    const updateApplication = async ({
+        status,
+        rejectReason = "",
+        moreInformation = "",
+    }: UpdateOperativeRequest) => {
         const config: AxiosRequestConfig = {
             headers: {
                 Authorization: `Bearer ${state?.jwt?.token}`,
             },
         }
-        const body = rejectReason === "" ? { status } : { status, moreInformation, rejectReason }
+        const body =
+            rejectReason === ""
+                ? { status }
+                : { status, moreInformation, rejectReason }
         const { data } = await axiosInstance.patch(
             `/admin/kyc/${id}`,
             body,
@@ -96,13 +100,10 @@ function useUpdateOperative({ id }: { id: string }) {
 
         return data
     }
-    return useMutation<
-        AllUsersResponse,
-        AxiosError,
-        UpdateOperativeRequest
-    >(
+    return useMutation<AllUsersResponse, AxiosError, UpdateOperativeRequest>(
         ["updateOperativeRequest"],
-        ({ status, rejectReason, moreInformation }: UpdateOperativeRequest) => updateApplication({ status, moreInformation, rejectReason }),
+        ({ status, rejectReason, moreInformation }: UpdateOperativeRequest) =>
+            updateApplication({ status, moreInformation, rejectReason }),
         {
             onError: (err) => {
                 showNotification({
@@ -112,48 +113,10 @@ function useUpdateOperative({ id }: { id: string }) {
                 })
             },
             onSuccess: () => {
-                queryClient.invalidateQueries({ queryKey: ["approval"] });
-            }
+                queryClient.invalidateQueries({ queryKey: ["approval"] })
+            },
         }
     )
 }
-// function useGetShiftHistory({
-//     operativeId,
-//     completed,
-// }: {
-//     operativeId: string
-//     completed?: boolean
-// }) {
-//     const { state } = useAuthContext()
-//     const getShiftHistory = async () => {
-//         const { data } = await axiosInstance.get(`/schedule`, {
-//             params: { operativeId, completed },
-//             headers: {
-//                 Authorization: `Bearer ${state?.jwt?.token}`,
-//             },
-//         })
-//         return data.data
-//     }
 
-//     return useQuery<unknown, AxiosError, ShiftResponse["data"]>(
-//         ["shiftHistory", { operativeId, completed }],
-//         getShiftHistory,
-
-//         {
-//             // initialData:{page, status, commodity},
-//             onError: (err) => {
-//                 showNotification({
-//                     title: "Error",
-//                     message: err.message,
-//                     color: "red",
-//                 })
-//             },
-//         }
-//     )
-// }
-export {
-    useGetAllOperativeUsers,
-    useGetOperativeDetails,
-//    useGetShiftHistory,
-    useUpdateOperative,
-}
+export { useGetAllOperativeUsers, useGetOperativeDetails, useUpdateOperative }

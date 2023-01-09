@@ -31,7 +31,7 @@
 }
 
 input[type="radio"] + label > .checkmark {
-    @apply bg-yellow-100 hidden;
+    @apply bg-yellow-100 hidden text-white-100;
 }
 
 @font-face {

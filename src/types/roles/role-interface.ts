@@ -12,35 +12,6 @@ export interface InviteUserInterface {
     num_of_locations?: string
     trial_period?: boolean
 }
-export interface InviteDepotInterfaceRequest {
-    email: string[]
-    invitedRole: string
-    regionAddress?: string | undefined
-    companyId?: string | undefined
-    companyName?: string | null
-    phoneNumber?: string | null
-    address?: string | null
-    logo?: string | null
-    regionLimit?: string
-    companyEmail?: string
-}
-;[]
-
-export interface MultipleRateRequest {
-    companyId: string | undefined
-    jobRates: {
-        jobQualificationId: string
-        jobRateDepotFirstDisplayedToDepot: string
-        jobRateDepotFirstDisplayedToOp: string
-        jobRateMeetOnsiteDisplayedToDepot: string
-        jobRateMeetOnsiteDisplayedToOp: string
-    }[]
-}
-
-export interface InviteDepotInterfaceResponse {
-    message: string
-    companyId: string
-}
 
 export interface RolesRequest {
     status: "accepted" | "pending" | "REGIONAL-MANAGER"
@@ -62,6 +33,7 @@ export interface RoleResponse {
             page: number
             limit: number
         }
+        total: number
     }
     data: IRolesResponse[]
 }
@@ -87,5 +59,16 @@ export interface IRolesResponse {
             lastName: string
             depotRole: string
         }
+        location: {
+            formattedAddress: string
+        }
     }
+    depotCompany: {
+        name: string
+        completedShifts: number
+        totalOperatives: number
+        regionLimit: number
+        address: string
+    }
+    depotRole: string
 }
