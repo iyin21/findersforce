@@ -6,7 +6,6 @@ import { CgSpinner } from "react-icons/cg"
 export default function InvoiceWrapper({ children }: { children: ReactNode }) {
     const location = useLocation()
     const id = location?.state?.subscriptionId
-    console.log(id, "God Abeg")
 
     const [hasStorage, setHasStorage] = useState(false)
     const { data, isLoading } = useGetSingleSubscriptions({
@@ -51,19 +50,5 @@ export default function InvoiceWrapper({ children }: { children: ReactNode }) {
             </div>
         )
     }
-    return (
-        <div>
-            {/* {!data.data.signature && (
-                        <div className="w-full justify-center fixed lg:top-32 top-5">
-                            <p className="flex items-center justify-center py-4 px-7 mx-auto z-[50px] w-fit bg-red-100  rounded-xs text-white">
-                                {' '}
-                                <IoIosInformationCircle className="text-white" /> This trade term has not
-                                been signed by you.
-                            </p>
-                        </div>
-                    )} */}
-
-            {children}
-        </div>
-    )
+    return <div>{children}</div>
 }

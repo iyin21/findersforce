@@ -65,7 +65,7 @@ const SubscriptionTable = ({ elements}: SubscriptionTableInterface) => {
             {userState?.depotRole === RegionalManager && (
                 <td
                     className="text-green-100"
-                    onClick={() => setDownload(true)}
+                    onClick={() => navigate(`/subscription/invoice/${element?._id}`, {state: {subscriptionId: element?._id}})}
                 >
                     Download Reciept
                 </td>
