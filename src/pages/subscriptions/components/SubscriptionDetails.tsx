@@ -29,7 +29,7 @@ const SubscriptionDetails = ({ elements }: SubscriptionTableInterface) => {
                 {dayjs(element?.startDate).format("DD MMM YYYY")} -{" "}
                 {dayjs(element?.endDate).format("DD MMM YYYY")}
             </td>
-            <td> {element?.totalAmountPaid} </td>
+            <td> £ {element?.totalAmountPaid} </td>
             <td>{dayjs(element?.paymentDate).format("MMM DD, YYYY")}</td>
         </tr>
     ))
