@@ -9,7 +9,7 @@ test("Job board page is visible", async ({ page }) => {
     await page.fill("#email", "ent@pussport.com")
     await page.fill("#password", "Password22@")
     await page.click('button[type="submit"]')
-    await page.waitForSelector("text=Shifts Board")
+    await page.waitForSelector("text=Shifts")
 })
 
 test("Check that the job tables are showing properly", async ({ page }) => {
@@ -19,7 +19,7 @@ test("Check that the job tables are showing properly", async ({ page }) => {
     await page.fill("#email", "ent@pussport.com")
     await page.fill("#password", "Password22@")
     await page.click('button[type="submit"]')
-    await page.waitForSelector("text=Shifts Board")
+    await page.waitForSelector("text=Shifts")
 
     await expect(page.locator('[data-testid="job_tabs"]')).toBeVisible()
 })
@@ -31,8 +31,8 @@ test("Check that post a job modal opens properly", async ({ page }) => {
     await page.fill("#email", "ent@pussport.com")
     await page.fill("#password", "Password22@")
     await page.click('button[type="submit"]')
-    await page.waitForSelector("text=Shifts Board")
+    await page.waitForSelector("text=Shifts ")
 
     await page.locator('[data-testid="job_post_btn"]').click()
-    await page.waitForSelector("text=Post a job")
+    await page.waitForSelector("text=Post Shift")
 })
