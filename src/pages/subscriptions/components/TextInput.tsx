@@ -1,8 +1,8 @@
 import { TextInput } from "@mantine/core"
 
 interface props {
-    label: string,
-    value: string,
+    label: string
+    value: string
     rightSection?: JSX.Element
 }
 
@@ -25,7 +25,7 @@ const inputStyle: {} = {
     },
 }
 
-const InputText: React.FC<props> = ({ label, value, rightSection, }) => {
+const InputText: React.FC<props> = ({ label, value, rightSection }) => {
     return (
         <TextInput
             label={label}
