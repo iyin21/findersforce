@@ -26,6 +26,7 @@ import useEnableTwoFactor from "../../hooks/settings/enable2fa-hook"
 import useDisableTwoFactorRequest from "../../hooks/settings/disable-otp-request-hook"
 import { showNotification } from "@mantine/notifications"
 import { BsCameraFill } from "react-icons/bs"
+import useProfileImageUpload from "../../hooks/settings/upload-profile-image"
 
 const inputStyle: {} = {
     input: {
@@ -78,18 +79,20 @@ const Settings = () => {
     const { state } = useAuthContext()
     const protectedAxios = useAxiosInstance()
     const fileInputRef = useRef<HTMLInputElement>(null)
-    const [pictureName, setPictureName] = useState("")
+    // const [pictureName, setPictureName] = useState("")
 
     useEffect(() => {
         if (data) setChecked(data?.twoFa_enabled ?? false)
     }, [])
 
+    const { mutate } = useProfileImageUpload()
+
     const handleProfilePictureUpload = (e: ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0]
 
         if (file) {
-            setPictureName(file.name)
-            //            setFieldValue("image", file)
+            // setPictureName(file.name)
+            mutate({ file: file })
         }
     }
 
@@ -140,8 +143,6 @@ const Settings = () => {
         )
     }
 
-    const { data: response } = useDisableTwoFactorRequest()
-
     const handleSwitch = () => {
         if (checked === false) {
             useEnableTwoFactor(
@@ -150,6 +151,7 @@ const Settings = () => {
                 setChecked
             )
         } else {
+            const { data: response } = useDisableTwoFactorRequest()
             if (response) {
                 showNotification({
                     title: "Success",
@@ -206,7 +208,7 @@ const Settings = () => {
                     </Tabs.List>
 
                     <Tabs.Panel value="general" pt="xs">
-                        <div className="flex flex-col items-center pt-9 relative">
+                        <div className="flex flex-col items-center pt-9">
                             <InputText
                                 label="First Name"
                                 value={data?.firstName ?? " "}
@@ -235,16 +237,16 @@ const Settings = () => {
                                 hidden
                                 onChange={handleProfilePictureUpload}
                             />
-                            <div className="absolute bottom-[38px] left-[430px] z-10 bg-white-100 border-[1px] border-black-100 border-solid rounded-full p-2">
-                                <BsCameraFill
-                                    size={22}
-                                    className="cursor-pointer"
-                                    onClick={() =>
-                                        fileInputRef.current?.click()
-                                    }
-                                />
-                            </div>
-                            <div className="flex justify-between w-[500px] pt-4">
+                            <div className="flex justify-between w-[500px] pt-4 relative">
+                                <div className="absolute bottom-[18px] left-[100px] z-10 bg-white-100 border-[1px] border-black-100 border-solid rounded-full p-2">
+                                    <BsCameraFill
+                                        size={22}
+                                        className="cursor-pointer"
+                                        onClick={() =>
+                                            fileInputRef.current?.click()
+                                        }
+                                    />
+                                </div>
                                 {data?.profileImageUrl === null ? (
                                     <img
                                         src={CompanyLogo}
@@ -261,13 +263,13 @@ const Settings = () => {
                                     />
                                 )}
                             </div>
-                            <div>
+                            {/* <div>
                                 <span className="text-black-100 text-md">
                                     {pictureName
                                         ? pictureName + " selected"
                                         : "JPEG, PNG accepted; 10MB max file size"}
                                 </span>
-                            </div>
+                            </div> */}
                         </div>
                     </Tabs.Panel>
 
