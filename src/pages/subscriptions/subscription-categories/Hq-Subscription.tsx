@@ -8,11 +8,10 @@ import { useGetAllSubscriptions } from "../../../hooks/subscriptions/useSubscrip
 // import useAuthContext from "../../../hooks/auth-hooks/useAuth"
 
 const HqSubscription = () => {
-    
-    const { data: subscriptionData } = useGetAllSubscriptions();
+    const { data: subscriptionData } = useGetAllSubscriptions()
     // const { state } = useAuthContext()
     // console.log(state?.user)
-    
+
     const applyFilter = (filter: ApplicationFilterRequest) => {}
     return (
         <Layout>
@@ -62,9 +61,7 @@ const HqSubscription = () => {
                     </div>
                 </div>
                 <div className="px-0 pt-10 md:pt-4">
-                        <SubscriptionTable
-                        elements={subscriptionData?.results}
-                        />
+                    <SubscriptionTable elements={subscriptionData?.results} />
                 </div>
             </main>
         </Layout>
