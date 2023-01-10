@@ -1,5 +1,5 @@
 import FindersForceLogo from "../../../assets/FF-Logo-Dark.png"
-import FFSignature from "../../../assets/FFsignature.png"
+import FFSignature from "../../../assets/ff-Signature.png"
 import {
     Page,
     View,
@@ -66,7 +66,7 @@ const pdfStyles = StyleSheet.create({
     },
     table: {
         width: "100%",
-        marginVertical: "20px"
+        marginVertical: "20px",
     },
     tableHeaderContainer: {
         display: "flex",
@@ -82,10 +82,9 @@ const pdfStyles = StyleSheet.create({
         paddingRight: "10px",
         paddingTop: "10px",
         // border: "1px solid ",
-        
+
         fontSize: "10px",
         color: "rgba(253, 203, 55, 1)",
-        
     },
     total: {
         fontSize: "10px",
@@ -93,13 +92,13 @@ const pdfStyles = StyleSheet.create({
         marginRight: "4px",
         marginLeft: "auto",
         marginTop: "10px",
-        marginBottom: "40px"
+        marginBottom: "40px",
     },
     totalWrapper: {
         fontSize: "15px",
         color: "#000000",
         backgroundColor: "rgba(253, 203, 55, 1)",
-        padding: "20px"
+        padding: "20px",
     },
     tableCell: {
         paddingBottom: "20px",
@@ -113,7 +112,7 @@ const pdfStyles = StyleSheet.create({
     tableCellContainer: {
         flexDirection: "row",
         backgroundColor: "#1A1A1A",
-        borderRadius: "5px"
+        borderRadius: "5px",
     },
     deliveryPeriodWrapper: {
         display: "flex",
@@ -234,7 +233,10 @@ export default function PDFInvoice({}: {
                     </Text>
                 </Text>
                 <View>
-                    <Image src={FFSignature} style={{width: "20%", marginVertical: "10px"}} />
+                    <Image
+                        src={FFSignature}
+                        style={{ width: "20%", marginVertical: "10px" }}
+                    />
                     <Text style={pdfStyles.signature}> Audrey Childs-Mee</Text>
                     <Text style={pdfStyles.recieverAddress}>
                         Finder’s Force
@@ -260,8 +262,7 @@ export const Table = ({
         //     marginBottom: "40px",
         // }}
         >
-            <View style={pdfStyles.tableHeaderContainer}
-            >
+            <View style={pdfStyles.tableHeaderContainer}>
                 {tableHeader.map((item, index) => (
                     <Text
                         key={index}
@@ -280,8 +281,7 @@ export const Table = ({
                     </Text>
                 ))}
             </View>
-            <View style={pdfStyles.tableCellContainer}
-            >
+            <View style={pdfStyles.tableCellContainer}>
                 {tableBody.map((item, index) => (
                     <Text
                         key={index}
