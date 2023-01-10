@@ -9,7 +9,7 @@ test("show that roles and permission displays properly", async ({ page }) => {
     await page.fill("#email", "ent@pussport.com")
     await page.fill("#password", "Password22@")
     await page.click('button[type="submit"]')
-    await page.waitForSelector("text=Roles and permission")
+    await page.waitForSelector("text=Management")
 })
 
 // test("Check that add a user modal opens properly", async ({ page }) => {
