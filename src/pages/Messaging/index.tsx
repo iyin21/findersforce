@@ -31,7 +31,7 @@ import SendCode from "./components/sendCode"
 import { Dialog } from "telegram/tl/custom/dialog"
 import calendar from "dayjs/plugin/calendar"
 import AddMembersModal from "../../components/Modals/Messaging/addMemberModal"
-import { Overlay } from '@mantine/core';
+import { Overlay } from "@mantine/core"
 //2.14.8
 dayjs.extend(calendar)
 
@@ -260,23 +260,22 @@ const Messaging = () => {
 
     const handleUpload = async (e: ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0]
-        console.log(file)
-        console.log("jhr")
-        if (e.target.files?.[0]) {
-            setFileUpload(e.target.files?.[0])
+
+        if (file) {
+            setVisible(true)
             try {
                 const result = await newClient?.uploadFile({
-                    file: e.target.files?.[0],
+                    file: file,
                     workers: 1,
                 })
                 if (result) {
+                    setVisible(false)
                     setOpenFileModal(true)
-                    console.log("ahrjh")
+
                     setFileUpload(e.target.files?.[0])
                     setUploadedFile(result)
                 }
             } catch (err) {
-                console.log("error")
                 showNotification({
                     title: "Error",
                     message: "Error uploading file, plese try again",
@@ -287,8 +286,7 @@ const Messaging = () => {
         }
     }
 
-    const [visible, setVisible] = useState(true);
-
+    const [visible, setVisible] = useState(false)
 
     return (
         <Layout pageTitle="Messaging" noTopNav>
@@ -521,15 +519,32 @@ const Messaging = () => {
                                         className="overflow-y-auto h-full pb-9"
                                         ref={containerRef}
                                     >
-                                        {visible && <Overlay opacity={0.6} color="#000" zIndex={5}>
-                                            <p className="bg-black-5 mt-20 ml-10">cckclkldgggggggggggggggggggggghfhf</p>
-                                            </Overlay>}
-                                            
+                                        {visible && (
+                                            <Overlay
+                                                opacity={0.6}
+                                                color="#000"
+                                                zIndex={5}
+                                            />
+                                        )}
+
+                                        {visible && (
+                                            <div className="h-screen flex mt-56 justify-center absolute">
+                                                <CgSpinner className="animate-spin text-primary-90 text-4xl" />
+                                            </div>
+                                        )}
                                         {chatHistory.map((item, index) => (
-                                            <div key={index}>
+                                            <div key={index} className={`${
+                                                item._sender
+                                                    ?.username ||
+                                                item._sender
+                                                    ?.firstName ===
+                                                    me?.firstName
+                                                    ? "ml-64 flex justify-end mr-10"
+                                                    : "ml-10 mr-64"
+                                            }`}>
                                                 {item.media ? (
-                                                    <div>
-                                                        <div className="bg-black-5 mt-8 ml-10 w-[300px] rounded-tl-[20px] rounded-tr-[20px] p-4 ">
+                                                    <div >
+                                                        <div className="bg-black-5 mt-8 ml-10 rounded-tl-[20px] rounded-tr-[20px] p-4 ">
                                                             <p
                                                                 className={`${
                                                                     (item
@@ -571,7 +586,7 @@ const Messaging = () => {
                                                         </div>
                                                     </div>
                                                 ) : (
-                                                    <div className="bg-black-5 mt-8 ml-10 w-[500px] rounded-[20px] p-4 mb-2">
+                                                    <div className={`bg-black-5 mt-8   max-w-fit rounded-[20px] p-4 mb-2`}>
                                                         <div className="flex justify-between">
                                                             <p
                                                                 className={`${
