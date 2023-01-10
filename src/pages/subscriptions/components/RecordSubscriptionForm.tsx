@@ -11,16 +11,17 @@ import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css"
 import { DateRangePicker } from "@mantine/dates"
 import { Field, useFormikContext } from "formik"
+import React from "react"
 
-const RecordSubscriptionForm = ({values}: {values:any}) => {
+const RecordSubscriptionForm = ({ values }: { values: any }) => {
     const { setFieldValue } = useFormikContext<{
-                depot: string
-                regionId: string
-                subscriptionPlan: string
-                totalAmountPaid: string
-                paymentDate: Date | string
-                subscriptionPeriod: Date | string
-                space: number
+        depot: string
+        regionId: string
+        subscriptionPlan: string
+        totalAmountPaid: string
+        paymentDate: Date | string
+        subscriptionPeriod: Date | string
+        space: number
     }>()
     const [selectedDepot, setSelectedDepot] = useState<any>()
     const [selectedSubscriptionPlan, setSelectedSubscriptionPlan] =
