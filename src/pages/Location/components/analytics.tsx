@@ -23,7 +23,13 @@ const upcomingShiftsData = {
     results: [],
 }
 
-const Analytics = ({ value, setValue }: { value: [Date | null, Date | null], setValue: any }) => {
+const Analytics = ({
+    value,
+    setValue,
+}: {
+    value: [Date | null, Date | null]
+    setValue: any
+}) => {
     const navigate = useNavigate()
     const handleNavigate = () => {
         navigate(`/planner`)
@@ -50,22 +56,28 @@ const Analytics = ({ value, setValue }: { value: [Date | null, Date | null], set
                                 title={"AMOUNT PAID"}
                                 amount={0}
                                 icon={Money}
-                                style={"bg-green-10 rounded-full p-4"}
+                                // style={"bg-green-10 rounded-full p-4"}
                                 subtitle={`£ ${"0"}`}
+                                desc={""}
+                                onClick={() => {}}
                             />
                             <Card
                                 title={"HOURS COMPLETED"}
                                 amount={0}
                                 icon={Time}
-                                style={"bg-yellow-20 rounded-full p-4"}
+                                // style={"bg-yellow-20 rounded-full p-4"}
                                 subtitle={`${"0"} hrs`}
+                                desc={""}
+                                onClick={() => {}}
                             />
                             <Card
                                 title={"OPERATIVES HIRED"}
                                 amount={0}
                                 icon={Operative}
-                                style={"bg-green-10 rounded-full p-4"}
+                                // style={"bg-green-10 rounded-full p-4"}
                                 subtitle={`${"0"} operatives`}
+                                desc={""}
+                                onClick={() => {}}
                             />
                         </div>
                     </section>

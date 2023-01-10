@@ -1,3 +1,4 @@
+import { showNotification } from "@mantine/notifications"
 import { axiosInstance } from "../../services/api.service"
 
 const forgotPassword = (
@@ -8,10 +9,14 @@ const forgotPassword = (
     showError: (val: boolean) => void
 ) => {
     axiosInstance
-        .post("/auth/request-password-reset", { email: email }, {
-            headers: { "Content-Type": "application/json" },
-            withCredentials: true,
-        })
+        .post(
+            "/auth/request-password-reset",
+            { email: email },
+            {
+                headers: { "Content-Type": "application/json" },
+                withCredentials: true,
+            }
+        )
         .then((response) => {
             navigate("/verify-email", { state: { email: email } })
         })
@@ -28,3 +33,29 @@ const forgotPassword = (
 }
 
 export default forgotPassword
+
+export const resendOTP = (email: string) => {
+    axiosInstance
+        .post(
+            "/auth/request-password-reset",
+            { email: email },
+            {
+                headers: { "Content-Type": "application/json" },
+                withCredentials: true,
+            }
+        )
+        .then((response) => {
+            showNotification({
+                title: "Success",
+                message: response.data.message,
+                color: "green",
+            })
+        })
+        .catch((err) => {
+            showNotification({
+                title: "Error",
+                message: err.data.error || "Something went wrong",
+                color: "red",
+            })
+        })
+}

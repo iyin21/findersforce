@@ -54,7 +54,7 @@ const PostJobOne = ({ jobType }: PostJobOneProps) => {
     jobTime.setHours(jobTime.getHours() + toTime)
 
     return (
-        <div className="p-3">
+        <div className="p-3 font-creato">
             <div className="mt-1">
                 <label className="text-3md font-semibold text-black-100 block mb-2">
                     Task type
@@ -92,7 +92,6 @@ const PostJobOne = ({ jobType }: PostJobOneProps) => {
                         id="meet_onsite"
                         name="jobMeetingPoint"
                         checked={
-                            // true
                             values?.jobMeetingPoint === "SITE" ? true : false
                         }
                         onChange={() => handleChecked("SITE")}
@@ -127,7 +126,7 @@ const PostJobOne = ({ jobType }: PostJobOneProps) => {
             <div className="grid grid-cols-2 gap-6 justify-between mt-4">
                 <div className="">
                     <label className="text-3md font-semibold text-neutral-80 block mb-2">
-                        From
+                        Start
                     </label>
 
                     <DatePicker
@@ -141,6 +140,7 @@ const PostJobOne = ({ jobType }: PostJobOneProps) => {
                                 : null
                         }
                         timeCaption="Time"
+                        // timeIntervals={15}
                         dateFormat="h:mm aa"
                         className="p-3 rounded border border-black-10 w-full"
                         placeholderText="Select time"
@@ -148,7 +148,7 @@ const PostJobOne = ({ jobType }: PostJobOneProps) => {
                 </div>
                 <div className="">
                     <label className="text-3md font-semibold text-neutral-80 block mb-2">
-                        To
+                        Finish
                     </label>
                     <DatePicker
                         onChange={(date) => handleUpdateToTime(date)}
@@ -160,6 +160,7 @@ const PostJobOne = ({ jobType }: PostJobOneProps) => {
                         }
                         timeCaption="Time"
                         dateFormat="h:mm aa"
+                        // timeIntervals={15}
                         className="p-3 rounded border border-black-10 w-full"
                         placeholderText="Select time"
                     />
@@ -168,7 +169,7 @@ const PostJobOne = ({ jobType }: PostJobOneProps) => {
             <div className="flex items-center gap-2 mt-4 px-2 p-4 rounded-md bg-green-10 border-l-4 border-green-100">
                 <FiClock color="#4DB25D" size={20} />
                 <p className=" text-sm md:text-lg">
-                    This shift will last for <strong>{toTime} hours</strong>{" "}
+                    This shift will last for <strong>{toTime} hour(s)</strong>{" "}
                 </p>
             </div>
         </div>

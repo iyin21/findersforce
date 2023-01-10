@@ -4,9 +4,11 @@ import { Modal, Progress, Table } from "@mantine/core"
 import { useMemo, useState } from "react"
 import MobileSubscriptionTable from "./MobileSubscriptionTable"
 import useAuthContext from "../../../hooks/auth-hooks/useAuth"
-import { admin, HQDepotType } from "../../../utils/user-types"
+import { admin, HQDepotType, RegionalManager } from "../../../utils/user-types"
 import { IoIosArrowForward } from "react-icons/io"
 import { useNavigate } from "react-router-dom"
+import { IoLocationSharp } from "react-icons/io5"
+import dayjs from "dayjs"
 
 const SubscriptionTable = ({ elements }: SubscriptionTableInterface) => {
     const [download, setDownload] = useState(false)
@@ -16,27 +18,74 @@ const SubscriptionTable = ({ elements }: SubscriptionTableInterface) => {
         return state.user
     }, [state.user])
     const navigate = useNavigate()
-    const handleNavigate = () => {
-        navigate(`/subscription/id`)
-    }
 
     const rows = elements?.map((element, index) => (
         <tr key={index}>
-            {userState?.accountType === admin && <td>{element?.depot}</td>}
-            <td> £ {element?.amount}</td>
+            <td>{index + 1}</td>
+            {userState?.accountType === admin && (
+                <td>{element?.depotCompany?.name}</td>
+            )}
             <td>
-                <div className="flex gap-1">
-                    <img src={ProfileImage} alt="Profile" />
-                    <span>{element?.contactPerson}</span>
-                </div>
+                {" "}
+                <IoLocationSharp
+                    size={26}
+                    style={{ color: "#E94444" }}
+                    className="inline"
+                />{" "}
+                {element?.depotCompany?.address}
             </td>
-            <td> {element?.paymentReference} </td>
-            {userState?.accountType === admin && <td>{element?.monthOf}</td>}
-            <td> {element?.monthPaid} </td>
+            <td> £ {element?.totalAmountPaid}</td>
+            {userState?.depotRole === HQDepotType && (
+                <td>
+                    <div className="flex gap-1">
+                        <img src={ProfileImage} alt="Profile" />
+                        <span>
+                            {element?.depotCompany?.createdBy?.firstName}{" "}
+                            {element?.depotCompany?.createdBy?.lastName}
+                        </span>
+                    </div>
+                </td>
+            )}
+            {userState?.depotRole === RegionalManager && (
+                <td>
+                    <div className="flex gap-1">
+                        <img src={ProfileImage} alt="Profile" />
+                        <span>
+                            {element?.depotCompany?.createdBy?.firstName}{" "}
+                            {element?.depotCompany?.createdBy?.lastName}
+                        </span>
+                    </div>
+                </td>
+            )}
+            <td> {element?.paymentInvoice} </td>
+            <td> {element?.subscriptionPlan} </td>
+            {userState?.accountType === admin && (
+                <td>
+                    {dayjs(element?.startDate).format("DD MMM YYYY")} -{" "}
+                    {dayjs(element?.endDate).format("DD MMM YYYY")}
+                </td>
+            )}
+            <td> {dayjs(element?.paymentDate).format("MMM DD, YYYY")} </td>
             {userState?.depotRole === HQDepotType && (
                 <td
                     className="text-green-100"
-                    onClick={() => setDownload(true)}
+                    onClick={() =>
+                        navigate(`/subscription/invoice/${element?._id}`, {
+                            state: { subscriptionId: element?._id },
+                        })
+                    }
+                >
+                    Download Reciept
+                </td>
+            )}
+            {userState?.depotRole === RegionalManager && (
+                <td
+                    className="text-green-100"
+                    onClick={() =>
+                        navigate(`/subscription/invoice/${element?._id}`, {
+                            state: { subscriptionId: element?._id },
+                        })
+                    }
                 >
                     Download Reciept
                 </td>
@@ -46,7 +95,16 @@ const SubscriptionTable = ({ elements }: SubscriptionTableInterface) => {
                     <IoIosArrowForward
                         size={30}
                         style={{ color: "#889088" }}
-                        onClick={() => handleNavigate()}
+                        onClick={() =>
+                            navigate(
+                                `/subscription/${element?.depotCompany?._id}`,
+                                {
+                                    state: {
+                                        companyId: element?.depotCompany?._id,
+                                    },
+                                }
+                            )
+                        }
                     />
                 </td>
             )}
@@ -54,17 +112,22 @@ const SubscriptionTable = ({ elements }: SubscriptionTableInterface) => {
     ))
 
     const HqTableHead = [
+        { list: "NO" },
+        { list: "LOCATION" },
         { list: "AMOUNT" },
         { list: "CONTACT PERSON" },
-        { list: "PAYMENT REFERENCE" },
+        { list: "INVOICE NO" },
+        { list: "PLAN" },
         { list: "MONTH PAID" },
     ]
     const AdTableHead = [
+        { list: "NO" },
         { list: "DEPOT" },
+        { list: "LOCATION" },
         { list: "AMOUNT" },
-        { list: "REGISTERED BY" },
-        { list: "SUBSCRIPTION ID" },
-        { list: "MONTH OF" },
+        { list: "INVOICE NO" },
+        { list: "PLAN" },
+        { list: "SUB PERIOD" },
         { list: "DATE PAID" },
     ]
     return (
@@ -102,6 +165,22 @@ const SubscriptionTable = ({ elements }: SubscriptionTableInterface) => {
                         )}
 
                         {userState?.depotRole === HQDepotType && (
+                            <tr>
+                                {HqTableHead.map((item, index) => (
+                                    <th
+                                        key={index}
+                                        style={{
+                                            borderBottom: "none",
+                                        }}
+                                    >
+                                        <p className="text-black-30 ">
+                                            {item?.list}
+                                        </p>
+                                    </th>
+                                ))}
+                            </tr>
+                        )}
+                        {userState?.depotRole === RegionalManager && (
                             <tr>
                                 {HqTableHead.map((item, index) => (
                                     <th

@@ -156,7 +156,7 @@ const JobBoards = () => {
         }
         refetchActiveJobList()
         refetchDraftJobList()
-    }, [deletedJob, activeData, draftData, deletedBulkJob])
+    }, [deletedJob, activeData, draftData, deletedBulkJob, checkedJob])
 
     return (
         <Layout pageTitle={"Shifts"}>
@@ -183,7 +183,7 @@ const JobBoards = () => {
                     setOpened={setOpenBulkConfirmModal}
                     handleDelete={handleBulkDelete}
                     isDeleting={isDeletingBulkJob}
-                    title="Delete Shift"
+                    title="Are you sure?"
                     description="This action cannot be undone. 
                     Operatives will no longer see this on their dashboard"
                 />
@@ -208,7 +208,7 @@ const JobBoards = () => {
                         onClick={() => setOpenJobPost(true)}
                         data-testid="job_post_btn"
                     >
-                        Post a job
+                        Post Shift
                     </Button>
                 </div>
                 <div className="px-3 pt-10 md:pt-4">
@@ -228,7 +228,6 @@ const JobBoards = () => {
                                         onClick={() =>
                                             setOpenBulkConfirmModal(true)
                                         }
-                                        // onClick={() => handleDelete()}
                                         className="text-red-100 lg:w-auto mr-3 py-3 lg:py-4"
                                     >
                                         <span className="lg:block hidden text-red-100">
@@ -238,7 +237,9 @@ const JobBoards = () => {
                                         </span>
                                     </Button>
                                 )}
-                                <Filter applyFilter={applyFilter} />
+                                <div className="hidden md:block">
+                                    <Filter applyFilter={applyFilter} />
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -303,8 +304,9 @@ const JobBoards = () => {
                                     {activeData?.data &&
                                     activeData?.data?.length === 0 ? (
                                         <EmptyState
-                                            description="Active Job data will show here, when you create one"
-                                            buttonText="Post a job"
+                                            title="You have no posted shifts."
+                                            description="When you create and post a shift you will be able to manage it here."
+                                            buttonText="Post Shift"
                                             handleButtonClick={() => {
                                                 setOpenJobPost(true)
                                             }}
@@ -344,8 +346,9 @@ const JobBoards = () => {
                                     {draftData?.data &&
                                     draftData?.data.length === 0 ? (
                                         <EmptyState
-                                            description="Draft data will show here, when you create one"
-                                            buttonText="Post a job"
+                                            title="You have no drafts saved."
+                                            description="Whilst creating a shift, hit Save to drafts and it will automatically save here."
+                                            buttonText="Create Draft"
                                             handleButtonClick={() => {
                                                 setOpenJobPost(true)
                                             }}
