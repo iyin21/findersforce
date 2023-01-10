@@ -3,17 +3,60 @@ import backIcon from "../../assets/backIcon.svg"
 import LandingPageText from "../../components/Layout/landing-page-txt"
 import OtpContainer from "../../components/OtpContainer/otp-container"
 import logo from "../../assets/FF-logo.svg"
+import videoBg from "../../assets/videoBg.mp4"
+import { useEffect, useState } from "react"
+import { resendOTP } from "../../hooks/auth-hooks/use-forgot-password"
 
 const VerifyEmailAddress = () => {
+    const [enable, setEnable] = useState(false)
     const navigate = useNavigate()
     const location = useLocation()
     const handleVerifyEmail = (values: any) => {
         const otp = Object.values(values).join("")
         navigate("/reset-password", { state: { otp: otp } })
     }
+
+    let interval: any
+    useEffect(() => {
+        const textArea = document.querySelector("#countDown")
+        startTimer(300, textArea)
+    }, [])
+
+    function startTimer(duration: number, display: Element | null) {
+        let timer = duration
+        let minutes
+        let seconds
+        if (!interval) {
+            interval = setInterval(function () {
+                minutes = parseInt(String(timer / 60), 10)
+                seconds = parseInt(String(timer % 60), 10)
+
+                minutes = minutes < 10 ? "0" + minutes : minutes
+                seconds = seconds < 10 ? "0" + seconds : seconds
+
+                display !== null
+                    ? (display.textContent = minutes + ":" + seconds)
+                    : null
+
+                if (--timer < 0) {
+                    timer = 0
+                    setEnable(true)
+                }
+            }, 1000)
+        }
+    }
+
     return (
         <>
-            <div className="grid grid-cols-1 lg:grid-cols-2 text-white lg:bg-black-1">
+            <video
+                autoPlay
+                loop
+                muted
+                id="video"
+                className="hidden md:block h-screen w-full object-cover fixed"
+                src={videoBg}
+            ></video>
+            <div className="grid grid-cols-1 lg:grid-cols-2 text-white font-creato lg:absolute lg:top-0">
                 <div className="hidden lg:block">
                     <LandingPageText />
                 </div>
@@ -35,31 +78,37 @@ const VerifyEmailAddress = () => {
                         />
                     </div>
                     <h1 className="text-blaq-0 font-extrabold text-2xl md:text-4xl md:pb-2.5">
-                        Verify Email Address
+                        Email Verification
                     </h1>
                     <span className="text-blaq-0 max-w-[560px] w-fit pt-2 text-[14px] md:text-base">
                         Enter the 6-digit OTP we sent to{" "}
-                        <b>{location.state?.email}</b> to proceed with your
-                        password reset process.
+                        <b>{location.state?.email || "you"}</b> to proceed with
+                        your password reset process.
                     </span>
-                    <div className="text-blaq-0 pt-[18px] pb-[37px] text-[14px] md:text-base">
-                        <span>Didn`t get an email? </span>
-                        <NavLink to="/recover-password">
-                            <span className="text-yellow-100 underline">
-                                Resend OTP
-                            </span>
-                        </NavLink>
-                    </div>
-                    <h2 className="text-base text-black-100 font-bold pb-4">
+                    <h2 className="text-base text-black-100 font-bold pb-4  pt-12">
                         Enter OTP
                     </h2>
                     <OtpContainer handleSubmit={handleVerifyEmail} />
+                    <div className="pt-[32px] pb-[37px] text-[14px] md:text-center">
+                        <span>Didn’t get an email? Check your Junk or... </span>
+                    </div>
+                    <div className="flex justify-center text-[14px]">
+                        <button
+                            className={`${!enable ? "text-black-10" : "text-yellow-100"}`}
+                            onClick={() => resendOTP(location.state.email || "")}
+                            disabled={!enable}
+                        >
+                            <span className="underline">Resend OTP</span>
+                        </button>
+
+                        <div id="countDown" className="pl-4">05:00</div>
+                    </div>
                     <NavLink
                         to="/recover-password"
                         className="pt-8 self-center"
                     >
                         <span className="underline text-center text-base text-green-90 font-medium cursor-pointer">
-                            Not my email
+                            Try a different Email Address
                         </span>
                     </NavLink>
                 </div>

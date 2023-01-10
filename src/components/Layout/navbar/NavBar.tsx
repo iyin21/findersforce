@@ -16,7 +16,7 @@ import dayjs from "dayjs"
 import { IoIosNotifications } from "react-icons/io"
 
 interface navInterface {
-    setOpenSideBar: Dispatch<SetStateAction<boolean>>;
+    setOpenSideBar: Dispatch<SetStateAction<boolean>>
     noTopNav?: boolean
 }
 
@@ -24,11 +24,6 @@ const NavBar = ({ setOpenSideBar, noTopNav }: navInterface) => {
     const [opened, setOpened] = useState(false)
     const { dispatch, state } = useAuthContext()
     const { data: userNotifications, error, isLoading } = useUserNotification()
-
-    const unreadNotification = userNotifications?.data?.map((notification) => {
-        if (!notification.readStatus) return notification
-    })
-
     const notifications = userNotifications?.data?.map((item, index) => {
         return (
             <div
@@ -85,16 +80,14 @@ const NavBar = ({ setOpenSideBar, noTopNav }: navInterface) => {
     }, [error])
     return (
         <>
-            <nav
-                className={`w-full  pt-6  ${
-                    !noTopNav && ""
-                } `}
-            >
-                
+            <nav className={`w-full  pt-6  ${!noTopNav && ""} `}>
                 {!noTopNav && (
                     <div className=" flex items-center justify-end gap-6 mr-4 lg:mr-12 ">
                         <div className=" md:hidden cursor-pointer mr-auto ml-6">
-                            <HiMenuAlt2 size={28} onClick={() => setOpenSideBar(true)} />
+                            <HiMenuAlt2
+                                size={28}
+                                onClick={() => setOpenSideBar(true)}
+                            />
                         </div>
                         <img
                             src={Search}
@@ -102,7 +95,7 @@ const NavBar = ({ setOpenSideBar, noTopNav }: navInterface) => {
                             className="cursor-pointer"
                         />
                         <Indicator
-                            label={unreadNotification?.length}
+                            label={userNotifications?.data?.length}
                             size={16}
                             color="#E94444"
                         >
@@ -111,6 +104,11 @@ const NavBar = ({ setOpenSideBar, noTopNav }: navInterface) => {
                                 data-testid="notification"
                                 onClick={() => setOpened((state) => !state)}
                                 size={22}
+                                color={
+                                    userNotifications?.data.length === 0
+                                        ? "rgba(15, 13, 0, 0.6)"
+                                        : "#FED70A"
+                                }
                             />
                         </Indicator>
                         <img

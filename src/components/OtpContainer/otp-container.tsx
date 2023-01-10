@@ -5,7 +5,7 @@ import Button from "../../components/Core/Buttons/Button"
 const OtpContainer = ({
     handleSubmit,
     defaultStyle = false,
-    text = "Reset Password",
+    text = "Verify",
     isSubmitting
 }: {
     handleSubmit: (values: any) => void
