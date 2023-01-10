@@ -31,11 +31,12 @@ export type ShiftCardProps = {
 }
 
 export type CardProps = {
-    title: string
-    amount: number | undefined
-    icon: string
-    style: string
-    subtitle: string | undefined
+     title:string,
+     desc: string
+     amount:number | undefined,
+     icon: string,
+     subtitle: string | undefined
+     onClick: any
 }
 
 export interface DashboardResponse {
