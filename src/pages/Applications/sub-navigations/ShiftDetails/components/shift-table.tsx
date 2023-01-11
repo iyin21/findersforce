@@ -5,22 +5,18 @@ import Star from "../../../assets/star.svg"
 import dayjs from "dayjs"
 
 interface Prop {
-    elements: Result[]
+    elements: Result[] | undefined
 }
 const ShiftTable = ({ elements }: Prop) => {
-    const rows = elements.map((item, index) => (
+    const rows = elements?.map((item, index) => (
         <tr key={index} className="font-creato">
-            <td>{dayjs(item?.createdAt).format("MMM D, YYYY")}</td>
+            <td>{index + 1}</td>
+            <td>{item?.jobListing.listingId}</td>
             <td>{item?.jobListing?.jobLocation?.formattedAddress}</td>
-            <td>{dayjs(item.jobListing?.shiftStartTime).format("h:mm A")}</td>
-            <td>{dayjs(item?.jobListing?.shiftEndTime).format("h:mm A")}</td>
-            <td>{item?.jobListing?.shiftDurationInHours}</td>
-            <td>
-                $
-                {item?.jobListing?.jobRate.jobRatePerHourDisplayedToDepot *
-                    item?.jobListing?.shiftDurationInHours}
-                /hr
-            </td>
+            <td>{dayjs(item.jobListing?.shiftStartTime).format("HH:mm")}</td>
+            <td>{dayjs(item?.jobListing?.shiftEndTime).format("HH:mm")}</td>
+            <td>{item?.jobListing?.shiftDurationInHours} Hour(s)</td>
+            <td>{dayjs(item?.createdAt).format("MMM D, YYYY")}</td>
             <td>
                 <p className="flex">
                     <img src={Star} alt="" />
@@ -29,21 +25,27 @@ const ShiftTable = ({ elements }: Prop) => {
                     </span>
                 </p>
             </td>
-            <td>
+            {item?.shiftEnded === true && (<td>
                 <p className="text-white-100 bg-green-100 pl-1.5 py-1 rounded-full w-20">
                     completed
                 </p>
-            </td>
+            </td>)} 
+            {item?.cancelStatus === true && (<td>
+                <p className="text-white-100 bg-red-100 pl-1.5 py-1 rounded-full w-20">
+                    cancelled
+                </p>
+            </td>)} 
         </tr>
     ))
 
     const tableHead = [
-        "Date",
+        "No",
+        "Shift",
         "Location",
-        "Time in",
-        "Time out",
+        "Start",
+        "Finish",
         "Duration",
-        "Amount",
+        "Date",
         "Rating",
         "Status",
     ]
@@ -79,7 +81,7 @@ const ShiftTable = ({ elements }: Prop) => {
                 </Table>
             </div>
             <div className="block lg:hidden mt-4">
-                {elements.map((item, index) => (
+                {elements?.map((item, index) => (
                     <div
                         className="rounded bg-black-5 mb-4 pb-4 cursor-pointer font-creato"
                         key={index}

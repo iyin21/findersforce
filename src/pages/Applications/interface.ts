@@ -26,6 +26,12 @@ export interface Data {
     completedShfts: number
     certificates: Certificates[]
     jobMatchPercentage: number
+    operativeRatingSummary: {
+        avgAverageScore: Number
+        avgHelpfulnessScore: Number
+        avgProfessionalismScore: Number
+        avgPunctualityScore: Number
+    }
 }
 export interface Certificates {
     _id: string
