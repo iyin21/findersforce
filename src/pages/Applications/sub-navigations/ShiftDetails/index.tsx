@@ -10,7 +10,7 @@ import relativeTime from "dayjs/plugin/relativeTime"
 import dayjs from "dayjs"
 import { useNavigate, useParams } from "react-router-dom"
 import { AiFillStar } from "react-icons/ai"
-import { useAuthContext } from "../../../auth/context/authContext"
+// import { useAuthContext } from "../../../auth/context/authContext"
 dayjs.extend(relativeTime)
 
 const ShiftDetails = ({
@@ -23,8 +23,8 @@ const ShiftDetails = ({
     const { shiftIds } = useParams<string>()
     const navigate = useNavigate()
     
-    const {state} = useAuthContext()
-    console.log(state.jwt?.token)
+    // const {state} = useAuthContext()
+    // console.log(state.jwt?.token)
 
     const { data, isLoading } = useGetShiftHistory({
         operativeId: shiftId
@@ -74,11 +74,11 @@ const ShiftDetails = ({
                                         item?.operative.lastName} {}
                                 </h5>
                                 <p className="text-black-70">
-                                    <span>  <AiFillStar
+                                    <span className="font-bold font-creatoBold text-black-100">  <AiFillStar
                                                 size={20}
                                                 style={{ color: "#FED70A" }}
                                                 className="inline"
-                                            /> {item?.operative.averageRating} <span>({})</span></span>
+                                            /> {item?.operative.averageRating} <span className="font-normal font-creato text-md text-black-50">({item?.operative.completedShifts} shifts)</span></span>
                                     <span className="text-black-10 pl-1">
                                         |
                                     </span>

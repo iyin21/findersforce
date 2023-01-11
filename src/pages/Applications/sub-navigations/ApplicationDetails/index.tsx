@@ -20,6 +20,7 @@ import { useEffect } from "react"
 import { showNotification } from "@mantine/notifications"
 import { AiFillStar } from "react-icons/ai"
 import { Progress } from "@mantine/core"
+import { useNavigate } from "react-router-dom"
 
 interface Prop {
     // status?: "pending" | "accepted" | "rejected" ;
@@ -36,6 +37,7 @@ const ApplicationDetails = ({
     activeTab,
 }: Prop) => {
     // const { applicationId } = useParams<{ applicationId: string }>()
+    const navigate = useNavigate()
 
     const { data, isLoading } = useGetApplicationDetails({
         id: activeId || "",
@@ -148,7 +150,7 @@ const ApplicationDetails = ({
                                                 setShiftId(data?.user._id || "")
                                                 setPhase(3)
                                             }
-                                            // navigate(`/applications/${item._id}`)
+                                            
                                         }
                                     >
                                         Shift History
@@ -231,12 +233,13 @@ const ApplicationDetails = ({
                                     onClick={
                                         () => {
                                             setShiftId(data?.user._id || "")
-                                            setPhase(3)
+                                            // setPhase(3)
+                                            navigate(`/job-boards/${data?.jobListing._id}`)
                                         }
-                                        // navigate(`/applications/${item._id}`)
+                                        
                                     }
                                 >
-                                    View shift history
+                                    Shift Details
                                     <HiChevronRight size="25px" />{" "}
                                 </p>
                             </div>
@@ -260,9 +263,10 @@ const ApplicationDetails = ({
                                         onClick={
                                             () => {
                                                 setShiftId(data?.user._id || "")
-                                                setPhase(3)
+                                                // setPhase(3)
+                                                navigate(`/applications/${data?.jobListing._id}`)
                                             }
-                                            // navigate(`/applications/${item._id}`)
+                                            
                                         }
                                     >
                                         Shifts Details

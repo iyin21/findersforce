@@ -88,6 +88,7 @@ export interface User {
     bio: string
     profileImageUrl: string
     createdAt: Date
+    completedShifts: number
 }
 
 export interface JobLocation {
@@ -183,6 +184,7 @@ export interface Result {
     lastSeenLocationCoordinates: null
     opHasRated: boolean
     operative: {
+        completedShifts: number
         averageRating: number
         _id: string
         username: string
