@@ -32,6 +32,8 @@ import { Dialog } from "telegram/tl/custom/dialog"
 import calendar from "dayjs/plugin/calendar"
 import AddMembersModal from "../../components/Modals/Messaging/addMemberModal"
 import { Overlay } from "@mantine/core"
+import ProfilePicture from "./components/profilePicture"
+import { Result } from "postcss"
 //2.14.8
 dayjs.extend(calendar)
 
@@ -102,45 +104,83 @@ const Messaging = () => {
         if (phase === 3) {
             run()
 
-            async function eventPrint(event: NewMessageEvent) {
-                const message = event.message
-                // const sender = await message.getSender()
-                // const sender2 = await message.getInputSender()
-                // const getChat = await message.getChat()
-                const id = message.chat?.id
-                // Checks if it's a private message (from user or bot)
-                if (event.isPrivate && id) {
-                    // prints sender id
-                    // console.log("gcc", message)
-                    // console.log("ggg", event)
-                    // console.log("inputChat", await message.getChat())
-                    // if (sender) {
-                    //     console.log("gigi", sender)
-                    // }
-                    // if (sender2) {
-                    //     console.log("yfytd", sender2)
-                    // }
-                    // @ts-expect-error
-                    console.log(getChat?.firstName + " " + getChat?.lastName)
+            // async function eventPrint(event: NewMessageEvent) {
+            //     const message = event.message
+            //     // const sender = await message.getSender()
+            //     // const sender2 = await message.getInputSender()
+            //     // const getChat = await message.getChat()
+            //     const id = message.chat?.id
+            //     // Checks if it's a private message (from user or bot)
+            //     if (event.isPrivate && id) {
+            //         // prints sender id
+            //         console.log("gcc", message)
+            //         console.log("ggg", event)
+            //         // console.log("inputChat", await message.getChat())
+            //         // if (sender) {
+            //         //     console.log("gigi", sender)
+            //         // }
+            //         // if (sender2) {
+            //         //     console.log("yfytd", sender2)
+            //         // }
+            //         // @ts-expect-error
+            //         console.log(getChat?.firstName + " " + getChat?.lastName)
 
-                    // console.log("chatid", chatId)
-                    // // @ts-expect-error
-                    // console.log("value",id.value);
-                    // @ts-expect-error
-                    if (chatId?.value === id.value) {
-                        setChatHistory((chat) => [...chat, message])
-                    }
-                    // else {
-                    //     // @ts-expect-error
-                    //     console.log("hjhj", dialog[0].message.chat?.id?.value)
+            //         console.log("chatid", chatId)
+            //         // @ts-expect-error
+            //         console.log("value",id.value);
+            //         // @ts-expect-error
+            //         if (chatId?.value === id.value) {
+            //             console.log("hey")
+            //             setChatHistory((chat) => [...chat, message])
+            //         }
+            //         else {
+            //             console.log("trial");
+            //             //// @ts-expect-error
+            //             //console.log("hjhj", dialog[0].message.chat?.id?.value)
 
-                    // }
-                }
-            }
-            // adds an event handler for new messages
-            client.addEventHandler(eventPrint, new NewMessage({}))
+            //         }
+            //     }
+            // }
+            // // adds an event handler for new messages
+            // client.addEventHandler(eventPrint, new NewMessage({}))
         }
     }, [phase])
+    useEffect(() => {
+        async function eventPrint(event: any) {
+            console.log("event", event)
+            const message = event.message
+            console.log("chatkklid", chatId)
+            console.log(message, "message")
+            // const sender = await message.getSender()
+            // const sender2 = await message.getInputSender()
+            // const getChat = await message.getChat()
+            const id = message.peerId.userId
+
+            // Checks if it's a private message (from user or bot)
+            if (event.isPrivate && id) {
+                // @ts-expect-error
+                if (chatId?.value === id.value) {
+                    console.log("hey")
+                    setChatHistory((chat) => [...chat, message])
+                } else {
+                    console.log("trial")
+                    //// @ts-expect-error
+                    //console.log("hjhj", dialog[0].message.chat?.id?.value)
+                    // const getDialogs = async () => {
+                    const result = await client.getDialogs({})
+                    if (result) {
+                        setDialog(result)
+                    }
+                }
+            }
+        }
+        // adds an event handler for new messages
+        client.addEventHandler(eventPrint, new NewMessage({}))
+        // client.addEventHandler((update: Api.TypeUpdate) => {
+        //     console.log("Received new Update")
+        //     console.log(update)
+        // })
+    }, [client])
     useEffect(() => {
         const run = async () => {
             setIsLoading(true)
@@ -175,7 +215,7 @@ const Messaging = () => {
             })
             if (result) {
                 console.log("result", result)
-
+                console.log("chatId", result[0].chat?.id)
                 setChatId(result[0].chat?.id)
 
                 setChatHistory(() => [
@@ -192,7 +232,7 @@ const Messaging = () => {
             setIsLoadingMessages(false)
         }
     }
-
+    console.log("jhhj", chatId)
     const [openMenu, setOpenMenu] = useState(false)
     const [message, setMessage] = useState("")
     const [activeIndex, setActiveIndex] = useState<number | null>(null)
@@ -208,6 +248,7 @@ const Messaging = () => {
     const [openAddMember, setOpenAddMember] = useState(false)
     const [searchParam] = useState(["title"])
     const [searchQuery, setSearchQuery] = useState("")
+    const [fileResult, setFileResult]=useState<Api.Message>()
 
     const dialogData = dialog?.filter((item: Dialog) => {
         return searchParam.some((newItem) => {
@@ -228,6 +269,8 @@ const Messaging = () => {
                 message: message,
             })
             if (result) {
+                console.log("result", result)
+                setChatHistory((chat) => [...chat, result])
                 setMessage("")
             }
         } catch (err: any) {
@@ -287,7 +330,11 @@ const Messaging = () => {
     }
 
     const [visible, setVisible] = useState(false)
+    const handleFileResult=(item:Api.Message)=>{
+    
+            setChatHistory((chat) => [...chat, item])
 
+    }
     return (
         <Layout pageTitle="Messaging" noTopNav>
             <FileModal
@@ -297,6 +344,7 @@ const Messaging = () => {
                 client={newClient}
                 chat={activeChat}
                 uploadedFile={uploadedFile}
+                handleResult={handleFileResult}
             />
             <div>
                 {isLoading || isFetchingDialog ? (
@@ -419,7 +467,11 @@ const Messaging = () => {
                                                 )
                                             }}
                                         >
-                                            <img
+                                            <ProfilePicture
+                                                client={newClient}
+                                                data={item}
+                                            />
+                                            {/* <img
                                                 width="30px"
                                                 height={50}
                                                 src={`https://ui-avatars.com/api/?name=${item.title}&background=rgba(67, 107, 46, 0.5)&color=fff`}
@@ -428,7 +480,7 @@ const Messaging = () => {
                                                 // height={22}
                                                 // alt=""
                                                 className="rounded-full bg-blue-100"
-                                            />
+                                            /> */}
                                             <div className="flex justify-between w-full">
                                                 <div className="pl-2">
                                                     <div className="flex items-center">
@@ -533,17 +585,20 @@ const Messaging = () => {
                                             </div>
                                         )}
                                         {chatHistory.map((item, index) => (
-                                            <div key={index} className={`${
-                                                item._sender
-                                                    ?.username ||
-                                                item._sender
-                                                    ?.firstName ===
+                                            <div
+                                                key={index}
+                                                className={`${
+                                                    item._sender?.firstName ===
                                                     me?.firstName
-                                                    ? "ml-64 flex justify-end mr-10"
-                                                    : "ml-10 mr-64"
-                                            }`}>
+                                                        ? "ml-64 flex justify-end mr-10"
+                                                        : !item._sender
+                                                              ?.firstName
+                                                        ? "ml-64 flex justify-end mr-10"
+                                                        : "ml-10 mr-64"
+                                                }`}
+                                            >
                                                 {item.media ? (
-                                                    <div >
+                                                    <div>
                                                         <div className="bg-black-5 mt-8 ml-10 rounded-tl-[20px] rounded-tr-[20px] p-4 ">
                                                             <p
                                                                 className={`${
@@ -586,7 +641,9 @@ const Messaging = () => {
                                                         </div>
                                                     </div>
                                                 ) : (
-                                                    <div className={`bg-black-5 mt-8   max-w-fit rounded-[20px] p-4 mb-2`}>
+                                                    <div
+                                                        className={`bg-black-5 mt-8   max-w-fit rounded-[20px] p-4 mb-2`}
+                                                    >
                                                         <div className="flex justify-between">
                                                             <p
                                                                 className={`${
