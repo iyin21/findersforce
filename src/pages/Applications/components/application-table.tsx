@@ -13,10 +13,17 @@ interface Prop {
     // status?: "pending" | "accepted" | "rejected" ;
     elements: Data[]
     setPhase: (val: number) => void
-
+    setActiveTab: (val: string) => void
+    activeTab: string | null
     setActiveId: (val: string) => void
 }
-const ApplicationTable = ({ elements, setPhase, setActiveId }: Prop) => {
+const ApplicationTable = ({
+    elements,
+    setPhase,
+    setActiveId,
+    setActiveTab,
+    activeTab,
+}: Prop) => {
     const [orderState, setOrderState] = useState(false)
     useEffect(() => {
         elements.sort((a, b) => {
@@ -62,6 +69,7 @@ const ApplicationTable = ({ elements, setPhase, setActiveId }: Prop) => {
 
             <td>{item?.jobListing?.listingId}</td>
             <td>{item?.jobListing?.jobQualification?.name}</td>
+            {item?.jobListing.jobMeetingPoint === "DEPOT" ? (<td>{item?.jobListing?.jobRate?.jobRateDepotFirstDisplayedToDepot}</td>) : (<td>{item?.jobListing?.jobRate?.jobRateMeetOnsiteDisplayedToDepot}</td>)}
             <td className="text-green-100 font-medium">
                 {item?.jobMatchPercentage}%
             </td>
@@ -71,7 +79,19 @@ const ApplicationTable = ({ elements, setPhase, setActiveId }: Prop) => {
                     <span className="pl-1">{item?.user?.averageRating}</span>
                 </p>
             </td>
-            <td>{dayjs(item?.createdAt).format("MMM D, YYYY")} | {dayjs(item?.createdAt).format("h:mm A")}</td>
+            {activeTab === "pending" ? (
+                <td>
+                    {dayjs(item?.createdAt).format("MMM D, YYYY")} |{" "}
+                    {dayjs(item?.createdAt).format("h:mm A")}
+                </td>
+            ) : activeTab === "accepted" ? (
+                <td>{dayjs(item?.createdAt).format("MMM D, YYYY")}</td>
+            ) : (
+                <td>{dayjs(item?.createdAt).format("MMM D, YYYY")}</td>
+            )}
+            {activeTab !== "pending" && (
+                <td>{dayjs(item?.updatedAt).format("MMM D, YYYY")}</td>
+            )}
             <td
                 className="cursor-pointer"
                 data-testid="view_application"
@@ -79,6 +99,7 @@ const ApplicationTable = ({ elements, setPhase, setActiveId }: Prop) => {
                     () => {
                         setActiveId(item?._id)
                         setPhase(2)
+                        setActiveTab(item?.status)
                     }
                     // navigate(`/applications/${item._id}`)
                 }
@@ -88,16 +109,42 @@ const ApplicationTable = ({ elements, setPhase, setActiveId }: Prop) => {
         </tr>
     ))
 
-    const tableHead = [
+    const pendingTableHead = [
         "NO",
-        "name",
-        "shift Type",
+        "operative",
+        "shift",
         "Qualification",
+        "rate",
         "match",
         "rating",
-        "date Applied",
+        "applied",
         "",
     ]
+    const approvedTableHead = [
+        "NO",
+        "operative",
+        "shift",
+        "Qualification",
+        "rate",
+        "match",
+        "rating",
+        "applied",
+        "approved",
+        "",
+    ]
+    const passedTableHead = [
+        "NO",
+        "operative",
+        "shift",
+        "Qualification",
+        "rate",
+        "match",
+        "rating",
+        "applied",
+        "passed",
+        "",
+    ]
+
     return (
         <>
             <div className="hidden lg:block ">
@@ -109,87 +156,484 @@ const ApplicationTable = ({ elements, setPhase, setActiveId }: Prop) => {
                     }}
                 >
                     <thead>
-                        <tr>
-                            {tableHead.map((item, index) =>
-                                item === "match" ? (
-                                    <>
-                                        <th
-                                            key={index}
-                                            style={{
-                                                color: "rgba(15, 13, 0, 0.3)",
-                                                fontSize: "13px",
-                                                borderBottom: "none",
-                                            }}
-                                            className="text-black-30"
-                                        >
-                                            <div className="flex">
-                                                <span>
-                                                    {item.toUpperCase()}
-                                                </span>
-                                                <BiUpArrowAlt
-                                                    size={20}
-                                                    onClick={
-                                                        !orderState
-                                                            ? ascending
-                                                            : () => {}
-                                                    }
-                                                    color={
-                                                        orderState
-                                                            ? "rgba(15, 13, 0, 0.9)"
-                                                            : "rgba(15, 13, 0, 0.3)"
-                                                    }
-                                                    className={`${
-                                                        orderState
-                                                            ? "bg-yellow-100"
-                                                            : ""
-                                                    } rounded-[50px] ml-2 ${
-                                                        !orderState
-                                                            ? "cursor-pointer"
-                                                            : "cursor-disable"
-                                                    }`}
-                                                />
-                                                <BsArrowDownShort
-                                                    size={20}
-                                                    onClick={
-                                                        orderState
-                                                            ? descending
-                                                            : () => {}
-                                                    }
-                                                    color={
-                                                        !orderState
-                                                            ? "rgba(15, 13, 0, 0.9)"
-                                                            : "rgba(15, 13, 0, 0.3)"
-                                                    }
-                                                    className={`${
-                                                        !orderState
-                                                            ? "bg-yellow-100"
-                                                            : ""
-                                                    } rounded-[50px] ml-2 ${
-                                                        orderState
-                                                            ? "cursor-pointer"
-                                                            : "cursor-disable"
-                                                    }`}
-                                                />
-                                            </div>
-                                        </th>
-                                    </>
-                                ) : (
-                                    <>
-                                        <th
-                                            key={index}
-                                            style={{
-                                                color: "rgba(15, 13, 0, 0.3)",
-                                                fontSize: "13px",
-                                                borderBottom: "none",
-                                            }}
-                                            className="text-black-30"
-                                        >
-                                            {item.toUpperCase()}
-                                        </th>
-                                    </>
-                                )
-                            )}
-                        </tr>
+                        {activeTab === "pending" && (
+                            <tr>
+                                {pendingTableHead.map((item, index) =>
+                                    item === "match" ? (
+                                        <>
+                                            <th
+                                                key={index}
+                                                style={{
+                                                    color: "rgba(15, 13, 0, 0.3)",
+                                                    fontSize: "13px",
+                                                    borderBottom: "none",
+                                                }}
+                                                className="text-black-30"
+                                            >
+                                                <div className="flex">
+                                                    <span>
+                                                        {item.toUpperCase()}
+                                                    </span>
+                                                    <BiUpArrowAlt
+                                                        size={20}
+                                                        onClick={
+                                                            !orderState
+                                                                ? ascending
+                                                                : () => {}
+                                                        }
+                                                        color={
+                                                            orderState
+                                                                ? "rgba(15, 13, 0, 0.9)"
+                                                                : "rgba(15, 13, 0, 0.3)"
+                                                        }
+                                                        className={`${
+                                                            orderState
+                                                                ? "bg-yellow-100"
+                                                                : ""
+                                                        } rounded-[50px] ml-2 ${
+                                                            !orderState
+                                                                ? "cursor-pointer"
+                                                                : "cursor-disable"
+                                                        }`}
+                                                    />
+                                                    <BsArrowDownShort
+                                                        size={20}
+                                                        onClick={
+                                                            orderState
+                                                                ? descending
+                                                                : () => {}
+                                                        }
+                                                        color={
+                                                            !orderState
+                                                                ? "rgba(15, 13, 0, 0.9)"
+                                                                : "rgba(15, 13, 0, 0.3)"
+                                                        }
+                                                        className={`${
+                                                            !orderState
+                                                                ? "bg-yellow-100"
+                                                                : ""
+                                                        } rounded-[50px] ml-2 ${
+                                                            orderState
+                                                                ? "cursor-pointer"
+                                                                : "cursor-disable"
+                                                        }`}
+                                                    />
+                                                </div>
+                                            </th>
+                                        </>
+                                    ) : item === "rate" ? (
+                                        <>
+                                            <th
+                                                key={index}
+                                                style={{
+                                                    color: "rgba(15, 13, 0, 0.3)",
+                                                    fontSize: "13px",
+                                                    borderBottom: "none",
+                                                }}
+                                                className="text-black-30"
+                                            >
+                                                <div className="flex">
+                                                    <span>
+                                                        {item.toUpperCase()}
+                                                    </span>
+                                                    <BiUpArrowAlt size={20} />
+                                                </div>
+                                            </th>
+                                        </>
+                                    ) : item === "rating" ? (
+                                        <>
+                                            <th
+                                                key={index}
+                                                style={{
+                                                    color: "rgba(15, 13, 0, 0.3)",
+                                                    fontSize: "13px",
+                                                    borderBottom: "none",
+                                                }}
+                                                className="text-black-30"
+                                            >
+                                                <div className="flex">
+                                                    <span>
+                                                        {item.toUpperCase()}
+                                                    </span>
+                                                    <BiUpArrowAlt size={20} />
+                                                </div>
+                                            </th>
+                                        </>
+                                    ) : item === "applied" ? (
+                                        <>
+                                            <th
+                                                key={index}
+                                                style={{
+                                                    color: "rgba(15, 13, 0, 0.3)",
+                                                    fontSize: "13px",
+                                                    borderBottom: "none",
+                                                }}
+                                                className="text-black-30"
+                                            >
+                                                <div className="flex">
+                                                    <span>
+                                                        {item.toUpperCase()}
+                                                    </span>
+                                                    <BiUpArrowAlt size={20} />
+                                                </div>
+                                            </th>
+                                        </>
+                                    ) : item === "approved" ? (
+                                        <>
+                                            <th
+                                                key={index}
+                                                style={{
+                                                    color: "rgba(15, 13, 0, 0.3)",
+                                                    fontSize: "13px",
+                                                    borderBottom: "none",
+                                                }}
+                                                className="text-black-30"
+                                            >
+                                                <div className="flex">
+                                                    <span>
+                                                        {item.toUpperCase()}
+                                                    </span>
+                                                    <BiUpArrowAlt size={20} />
+                                                </div>
+                                            </th>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <th
+                                                key={index}
+                                                style={{
+                                                    color: "rgba(15, 13, 0, 0.3)",
+                                                    fontSize: "13px",
+                                                    borderBottom: "none",
+                                                }}
+                                                className="text-black-30"
+                                            >
+                                                {item.toUpperCase()}
+                                            </th>
+                                        </>
+                                    )
+                                )}
+                            </tr>
+                        )}
+
+                        {activeTab === "accepted" && (
+                            <tr>
+                                {approvedTableHead.map((item, index) =>
+                                    item === "match" ? (
+                                        <>
+                                            <th
+                                                key={index}
+                                                style={{
+                                                    color: "rgba(15, 13, 0, 0.3)",
+                                                    fontSize: "13px",
+                                                    borderBottom: "none",
+                                                }}
+                                                className="text-black-30"
+                                            >
+                                                <div className="flex">
+                                                    <span>
+                                                        {item.toUpperCase()}
+                                                    </span>
+                                                    <BiUpArrowAlt
+                                                        size={20}
+                                                        onClick={
+                                                            !orderState
+                                                                ? ascending
+                                                                : () => {}
+                                                        }
+                                                        color={
+                                                            orderState
+                                                                ? "rgba(15, 13, 0, 0.9)"
+                                                                : "rgba(15, 13, 0, 0.3)"
+                                                        }
+                                                        className={`${
+                                                            orderState
+                                                                ? "bg-yellow-100"
+                                                                : ""
+                                                        } rounded-[50px] ml-2 ${
+                                                            !orderState
+                                                                ? "cursor-pointer"
+                                                                : "cursor-disable"
+                                                        }`}
+                                                    />
+                                                    <BsArrowDownShort
+                                                        size={20}
+                                                        onClick={
+                                                            orderState
+                                                                ? descending
+                                                                : () => {}
+                                                        }
+                                                        color={
+                                                            !orderState
+                                                                ? "rgba(15, 13, 0, 0.9)"
+                                                                : "rgba(15, 13, 0, 0.3)"
+                                                        }
+                                                        className={`${
+                                                            !orderState
+                                                                ? "bg-yellow-100"
+                                                                : ""
+                                                        } rounded-[50px] ml-2 ${
+                                                            orderState
+                                                                ? "cursor-pointer"
+                                                                : "cursor-disable"
+                                                        }`}
+                                                    />
+                                                </div>
+                                            </th>
+                                        </>
+                                    ) : item === "rate" ? (
+                                        <>
+                                            <th
+                                                key={index}
+                                                style={{
+                                                    color: "rgba(15, 13, 0, 0.3)",
+                                                    fontSize: "13px",
+                                                    borderBottom: "none",
+                                                }}
+                                                className="text-black-30"
+                                            >
+                                                <div className="flex">
+                                                    <span>
+                                                        {item.toUpperCase()}
+                                                    </span>
+                                                    <BiUpArrowAlt size={20} />
+                                                </div>
+                                            </th>
+                                        </>
+                                    ) : item === "rating" ? (
+                                        <>
+                                            <th
+                                                key={index}
+                                                style={{
+                                                    color: "rgba(15, 13, 0, 0.3)",
+                                                    fontSize: "13px",
+                                                    borderBottom: "none",
+                                                }}
+                                                className="text-black-30"
+                                            >
+                                                <div className="flex">
+                                                    <span>
+                                                        {item.toUpperCase()}
+                                                    </span>
+                                                    <BiUpArrowAlt size={20} />
+                                                </div>
+                                            </th>
+                                        </>
+                                    ) : item === "applied" ? (
+                                        <>
+                                            <th
+                                                key={index}
+                                                style={{
+                                                    color: "rgba(15, 13, 0, 0.3)",
+                                                    fontSize: "13px",
+                                                    borderBottom: "none",
+                                                }}
+                                                className="text-black-30"
+                                            >
+                                                <div className="flex">
+                                                    <span>
+                                                        {item.toUpperCase()}
+                                                    </span>
+                                                    <BiUpArrowAlt size={20} />
+                                                </div>
+                                            </th>
+                                        </>
+                                    ) : item === "approved" ? (
+                                        <>
+                                            <th
+                                                key={index}
+                                                style={{
+                                                    color: "rgba(15, 13, 0, 0.3)",
+                                                    fontSize: "13px",
+                                                    borderBottom: "none",
+                                                }}
+                                                className="text-black-30"
+                                            >
+                                                <div className="flex">
+                                                    <span>
+                                                        {item.toUpperCase()}
+                                                    </span>
+                                                    <BiUpArrowAlt size={20} />
+                                                </div>
+                                            </th>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <th
+                                                key={index}
+                                                style={{
+                                                    color: "rgba(15, 13, 0, 0.3)",
+                                                    fontSize: "13px",
+                                                    borderBottom: "none",
+                                                }}
+                                                className="text-black-30"
+                                            >
+                                                {item.toUpperCase()}
+                                            </th>
+                                        </>
+                                    )
+                                )}
+                            </tr>
+                        )}
+                        {activeTab === "rejected" && (
+                            <tr>
+                                {passedTableHead.map((item, index) =>
+                                    item === "match" ? (
+                                        <>
+                                            <th
+                                                key={index}
+                                                style={{
+                                                    color: "rgba(15, 13, 0, 0.3)",
+                                                    fontSize: "13px",
+                                                    borderBottom: "none",
+                                                }}
+                                                className="text-black-30"
+                                            >
+                                                <div className="flex">
+                                                    <span>
+                                                        {item.toUpperCase()}
+                                                    </span>
+                                                    <BiUpArrowAlt
+                                                        size={20}
+                                                        onClick={
+                                                            !orderState
+                                                                ? ascending
+                                                                : () => {}
+                                                        }
+                                                        color={
+                                                            orderState
+                                                                ? "rgba(15, 13, 0, 0.9)"
+                                                                : "rgba(15, 13, 0, 0.3)"
+                                                        }
+                                                        className={`${
+                                                            orderState
+                                                                ? "bg-yellow-100"
+                                                                : ""
+                                                        } rounded-[50px] ml-2 ${
+                                                            !orderState
+                                                                ? "cursor-pointer"
+                                                                : "cursor-disable"
+                                                        }`}
+                                                    />
+                                                    <BsArrowDownShort
+                                                        size={20}
+                                                        onClick={
+                                                            orderState
+                                                                ? descending
+                                                                : () => {}
+                                                        }
+                                                        color={
+                                                            !orderState
+                                                                ? "rgba(15, 13, 0, 0.9)"
+                                                                : "rgba(15, 13, 0, 0.3)"
+                                                        }
+                                                        className={`${
+                                                            !orderState
+                                                                ? "bg-yellow-100"
+                                                                : ""
+                                                        } rounded-[50px] ml-2 ${
+                                                            orderState
+                                                                ? "cursor-pointer"
+                                                                : "cursor-disable"
+                                                        }`}
+                                                    />
+                                                </div>
+                                            </th>
+                                        </>
+                                    ) : item === "rate" ? (
+                                        <>
+                                            <th
+                                                key={index}
+                                                style={{
+                                                    color: "rgba(15, 13, 0, 0.3)",
+                                                    fontSize: "13px",
+                                                    borderBottom: "none",
+                                                }}
+                                                className="text-black-30"
+                                            >
+                                                <div className="flex">
+                                                    <span>
+                                                        {item.toUpperCase()}
+                                                    </span>
+                                                    <BiUpArrowAlt size={20} />
+                                                </div>
+                                            </th>
+                                        </>
+                                    ) : item === "rating" ? (
+                                        <>
+                                            <th
+                                                key={index}
+                                                style={{
+                                                    color: "rgba(15, 13, 0, 0.3)",
+                                                    fontSize: "13px",
+                                                    borderBottom: "none",
+                                                }}
+                                                className="text-black-30"
+                                            >
+                                                <div className="flex">
+                                                    <span>
+                                                        {item.toUpperCase()}
+                                                    </span>
+                                                    <BiUpArrowAlt size={20} />
+                                                </div>
+                                            </th>
+                                        </>
+                                    ) : item === "applied" ? (
+                                        <>
+                                            <th
+                                                key={index}
+                                                style={{
+                                                    color: "rgba(15, 13, 0, 0.3)",
+                                                    fontSize: "13px",
+                                                    borderBottom: "none",
+                                                }}
+                                                className="text-black-30"
+                                            >
+                                                <div className="flex">
+                                                    <span>
+                                                        {item.toUpperCase()}
+                                                    </span>
+                                                    <BiUpArrowAlt size={20} />
+                                                </div>
+                                            </th>
+                                        </>
+                                    ) : item === "approved" ? (
+                                        <>
+                                            <th
+                                                key={index}
+                                                style={{
+                                                    color: "rgba(15, 13, 0, 0.3)",
+                                                    fontSize: "13px",
+                                                    borderBottom: "none",
+                                                }}
+                                                className="text-black-30"
+                                            >
+                                                <div className="flex">
+                                                    <span>
+                                                        {item.toUpperCase()}
+                                                    </span>
+                                                    <BiUpArrowAlt size={20} />
+                                                </div>
+                                            </th>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <th
+                                                key={index}
+                                                style={{
+                                                    color: "rgba(15, 13, 0, 0.3)",
+                                                    fontSize: "13px",
+                                                    borderBottom: "none",
+                                                }}
+                                                className="text-black-30"
+                                            >
+                                                {item.toUpperCase()}
+                                            </th>
+                                        </>
+                                    )
+                                )}
+                            </tr>
+                        )}
                     </thead>
                     <tbody>{rows}</tbody>
                 </Table>
@@ -206,7 +650,9 @@ const ApplicationTable = ({ elements, setPhase, setActiveId }: Prop) => {
                     >
                         <div className="flex justify-between border-b border-black-20 p-4">
                             <p className="font-medium text-2lg">
-                                {item?.user?.firstName + " " + item?.user?.lastName}
+                                {item?.user?.firstName +
+                                    " " +
+                                    item?.user?.lastName}
                             </p>
                             <IoIosArrowForward
                                 size={20}
@@ -229,7 +675,10 @@ const ApplicationTable = ({ elements, setPhase, setActiveId }: Prop) => {
                                         QUALIFICATION
                                     </h6>
                                     <p className="text-2md mt-1">
-                                        {item?.jobListing?.jobQualification?.name}
+                                        {
+                                            item?.jobListing?.jobQualification
+                                                ?.name
+                                        }
                                     </p>
                                 </div>
                                 <div className="mt-4">

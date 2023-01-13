@@ -1,6 +1,5 @@
 import dayjs from "dayjs"
 import {
-    useGetOperativeRatingSummary,
     useGetShiftHistoryByJobListingId,
     useGetSingleSchedule,
 } from "../../../hooks/planner/usePlanner.hooks"
@@ -11,6 +10,7 @@ import ProfileImage from "../../../assets/ProfileImage.svg"
 import { BiDotsVerticalRounded } from "react-icons/bi"
 import Menu from "../../../components/Modals/Planner/Menu"
 import { Checkbox, Tabs } from "@mantine/core"
+import Cancel from "../../../components/Modals/Planner/Cancel"
 
 const MobileShiftsDetailsTable = () => {
     const { jobListingId } = useParams<string>()
@@ -18,12 +18,16 @@ const MobileShiftsDetailsTable = () => {
     const location = useLocation()
 
     const queryStatus = location?.state?.status
+    const scheduleId = location?.state?.scheduleId
+    
 
     const [openProfile, setOpenProfile] = useState(false)
     const [operativeId, setOperativeId] = useState("")
     const [openMenu, setOpenMenu] = useState(false)
     const [activeTab, setActiveTab] = useState<string | null>("unpaid")
     const [checkedShift, setCheckedShift] = useState<string[]>([])
+
+    const [openCancel, setOpenCancel] = useState(false)
 
     const { data: shiftsData } = useGetShiftHistoryByJobListingId({
         jobListingId,
@@ -47,14 +51,6 @@ const MobileShiftsDetailsTable = () => {
             setCheckedShift(checkedShift.filter((item) => item !== value))
         }
     }
-
-    const singleElement = singleShift?.results?.find(
-        (item) => item?.jobListing?._id === jobListingId
-    )
-
-    const { data: operativeData } = useGetOperativeRatingSummary({
-        id: singleElement?.operative?._id,
-    })
 
     const paidShifts = singleShift?.results?.filter(
         (shift) => shift?.jobListing?.fullyPaidByDepot === true
@@ -151,17 +147,35 @@ const MobileShiftsDetailsTable = () => {
                                         <h6 className="text-black-50 text-3sm">
                                             RATE
                                         </h6>
-                                        <p className="text-2md mt-1">
-                                            {
-                                                element?.jobListing?.jobRate
-                                                    ?.currency
-                                            }
-                                            {
-                                                element?.jobListing?.jobRate
-                                                    ?.jobRatePerHourDisplayedToDepot
-                                            }
-                                            /hr
-                                        </p>
+                                        {element?.jobListing
+                                                    .jobMeetingPoint ===
+                                                "DEPOT" ? (
+                                                    <p className="text-2md mt-1">
+                                                        {
+                                                            element?.jobListing
+                                                                .jobRate
+                                                                .currency
+                                                        }
+                                                        {element?.jobListing
+                                                            ?.jobRate
+                                                            .jobRateDepotFirstDisplayedToDepot *
+                                                            element?.jobListing
+                                                                ?.shiftDurationInHours}
+                                                    </p>
+                                                ) : (
+                                                    <p className="text-2md mt-1">
+                                                        {
+                                                            element?.jobListing
+                                                                .jobRate
+                                                                .currency
+                                                        }
+                                                        {element?.jobListing
+                                                            ?.jobRate
+                                                            .jobRateMeetOnsiteDisplayedToDepot *
+                                                            element?.jobListing
+                                                                ?.shiftDurationInHours}
+                                                    </p>
+                                                )}
                                     </div>
                                     <div>
                                         <h6 className="text-black-50 text-3sm">
@@ -231,7 +245,7 @@ const MobileShiftsDetailsTable = () => {
                         </Tabs.Tab>
                     </Tabs.List>
                     <Tabs.Panel value={"unpaid"}>
-                    <div className="mt-4">
+                        <div className="mt-4">
                             {unPaidShifts?.map((element, index) => (
                                 <div
                                     className="rounded bg-black-5 mb-4"
@@ -240,24 +254,14 @@ const MobileShiftsDetailsTable = () => {
                                     <div className="flex justify-between border-b border-black-20 p-4">
                                         <div className="flex items-center gap-2">
                                             <Checkbox
-                                                id={element?.jobListing?._id}
+                                                id={element?.operative?._id}
                                                 className="rounded-lg"
                                                 onChange={handleCheckedShift}
+                                                name={element?.operative?._id}
                                                 checked={checkedShift.includes(
-                                                    (
-                                                        element?.jobListing
-                                                            ?.jobRate
-                                                            ?.jobRatePerHourDisplayedToDepot *
-                                                        element?.jobListing
-                                                            ?.shiftDurationInHours
-                                                    ).toString()
+                                                    element?.operative?._id
                                                 )}
-                                                value={(
-                                                    element?.jobListing?.jobRate
-                                                        ?.jobRatePerHourDisplayedToDepot *
-                                                    element?.jobListing
-                                                        ?.shiftDurationInHours
-                                                ).toString()}
+                                                value={element?.operative?._id}
                                                 data-testid="checkbox"
                                             />
                                             <p className="text-2md mt-1 font-creato">
@@ -285,97 +289,126 @@ const MobileShiftsDetailsTable = () => {
                                         </div>
                                     </div>
                                     <div className="p-4">
-                                    <div className="flex justify-between mt-3">
-                                    <div>
-                                        <h6 className="text-black-50 text-3sm">
-                                            NAME
-                                        </h6>
-                                        <div className="flex items-center">
-                                            <img
-                                                src={ProfileImage}
-                                                alt="profile_image"
-                                            />
-                                            <p className="text-2md mt-1">
-                                                {element?.operative?.firstName}{" "}
-                                                {element?.operative?.lastName}
-                                            </p>
+                                        <div className="flex justify-between mt-3">
+                                            <div>
+                                                <h6 className="text-black-50 text-3sm">
+                                                    NAME
+                                                </h6>
+                                                <div className="flex items-center">
+                                                    <img
+                                                        src={ProfileImage}
+                                                        alt="profile_image"
+                                                    />
+                                                    <p className="text-2md mt-1">
+                                                        {
+                                                            element?.operative
+                                                                ?.firstName
+                                                        }{" "}
+                                                        {
+                                                            element?.operative
+                                                                ?.lastName
+                                                        }
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <h6 className="text-black-50 text-3sm">
+                                                    TASK TYPE
+                                                </h6>
+                                                <p className="text-2md mt-1">
+                                                    {
+                                                        element?.jobListing
+                                                            ?.jobType?.name
+                                                    }
+                                                </p>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div>
-                                        <h6 className="text-black-50 text-3sm">
-                                            TASK TYPE
-                                        </h6>
-                                        <p className="text-2md mt-1">
-                                            {element?.jobListing?.jobType?.name}
-                                        </p>
-                                    </div>
-                                </div>
 
-                                <div className="flex justify-between mt-3">
-                                    <div>
-                                        <h6 className="text-black-50 text-3sm">
-                                            LOCATION
-                                        </h6>
-                                        <p>
-                                            {
-                                                element?.jobListing?.jobLocation
-                                                    ?.formattedAddress
-                                            }
-                                        </p>
-                                    </div>
-                                    <div>
-                                        <h6 className="text-black-50 text-3sm">
-                                            SCHEDULE
-                                        </h6>
-                                        <p>
-                                            {dayjs(
-                                                element?.jobListing
-                                                    ?.shiftStartTime
-                                            ).format("h")}{" "}
-                                            -{" "}
-                                            {dayjs(
-                                                element?.jobListing.shiftEndTime
-                                            ).format("h A")}
-                                        </p>
-                                    </div>
-                                </div>
-                                <div className="flex justify-between mt-3">
-                                    <div>
-                                        <h6 className="text-black-50 text-3sm">
-                                            RATE
-                                        </h6>
-                                        <p className="text-2md mt-1">
-                                            {
-                                                element?.jobListing?.jobRate
-                                                    ?.currency
-                                            }
-                                            {
-                                                element?.jobListing?.jobRate
-                                                    ?.jobRatePerHourDisplayedToDepot
-                                            }
-                                            /hr
-                                        </p>
-                                    </div>
-                                    <div>
-                                        <h6 className="text-black-50 text-3sm">
-                                            CLOCK-IN TIME
-                                        </h6>
-                                        <div className="flex items-center gap-1">
-                                            <p className="text-2md mt-1">
-                                                {dayjs(
-                                                    element?.clockInTime
-                                                ).format("h:mm A")}
-                                            </p>
+                                        <div className="flex justify-between mt-3">
+                                            <div>
+                                                <h6 className="text-black-50 text-3sm">
+                                                    LOCATION
+                                                </h6>
+                                                <p>
+                                                    {
+                                                        element?.jobListing
+                                                            ?.jobLocation
+                                                            ?.formattedAddress
+                                                    }
+                                                </p>
+                                            </div>
+                                            <div>
+                                                <h6 className="text-black-50 text-3sm">
+                                                    SCHEDULE
+                                                </h6>
+                                                <p>
+                                                    {dayjs(
+                                                        element?.jobListing
+                                                            ?.shiftStartTime
+                                                    ).format("h")}{" "}
+                                                    -{" "}
+                                                    {dayjs(
+                                                        element?.jobListing
+                                                            .shiftEndTime
+                                                    ).format("h A")}
+                                                </p>
+                                            </div>
                                         </div>
-                                    </div>
-                                </div>
+                                        <div className="flex justify-between mt-3">
+                                            <div>
+                                                <h6 className="text-black-50 text-3sm">
+                                                    RATE
+                                                </h6>
+                                                {element?.jobListing
+                                                    .jobMeetingPoint ===
+                                                "DEPOT" ? (
+                                                    <p className="text-2md mt-1">
+                                                        {
+                                                            element?.jobListing
+                                                                .jobRate
+                                                                .currency
+                                                        }
+                                                        {element?.jobListing
+                                                            ?.jobRate
+                                                            .jobRateDepotFirstDisplayedToDepot *
+                                                            element?.jobListing
+                                                                ?.shiftDurationInHours}
+                                                    </p>
+                                                ) : (
+                                                    <p className="text-2md mt-1">
+                                                        {
+                                                            element?.jobListing
+                                                                .jobRate
+                                                                .currency
+                                                        }
+                                                        {element?.jobListing
+                                                            ?.jobRate
+                                                            .jobRateMeetOnsiteDisplayedToDepot *
+                                                            element?.jobListing
+                                                                ?.shiftDurationInHours}
+                                                    </p>
+                                                )}
+                                            </div>
+                                            <div>
+                                                <h6 className="text-black-50 text-3sm">
+                                                    CLOCK-IN TIME
+                                                </h6>
+                                                <div className="flex items-center gap-1">
+                                                    <p className="text-2md mt-1">
+                                                        {dayjs(
+                                                            element?.clockInTime
+                                                        ).format("h:mm A")}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             ))}
                         </div>
                     </Tabs.Panel>
                     <Tabs.Panel value={"paid"}>
-                    <div className="mt-4">
+                        <div className="mt-4">
                             {paidShifts?.map((element, index) => (
                                 <div
                                     className="rounded bg-black-5 mb-4"
@@ -384,24 +417,14 @@ const MobileShiftsDetailsTable = () => {
                                     <div className="flex justify-between border-b border-black-20 p-4">
                                         <div className="flex items-center gap-2">
                                             <Checkbox
-                                                id={element?.jobListing?._id}
+                                                id={element?.operative?._id}
                                                 className="rounded-lg"
                                                 onChange={handleCheckedShift}
+                                                name={element?.operative?._id}
                                                 checked={checkedShift.includes(
-                                                    (
-                                                        element?.jobListing
-                                                            ?.jobRate
-                                                            ?.jobRatePerHourDisplayedToDepot *
-                                                        element?.jobListing
-                                                            ?.shiftDurationInHours
-                                                    ).toString()
+                                                    element?.operative?._id
                                                 )}
-                                                value={(
-                                                    element?.jobListing?.jobRate
-                                                        ?.jobRatePerHourDisplayedToDepot *
-                                                    element?.jobListing
-                                                        ?.shiftDurationInHours
-                                                ).toString()}
+                                                value={element?.operative?._id}
                                                 data-testid="checkbox"
                                             />
                                             <p className="text-2md mt-1 font-creato">
@@ -429,90 +452,119 @@ const MobileShiftsDetailsTable = () => {
                                         </div>
                                     </div>
                                     <div className="p-4">
-                                    <div className="flex justify-between mt-3">
-                                    <div>
-                                        <h6 className="text-black-50 text-3sm">
-                                            NAME
-                                        </h6>
-                                        <div className="flex items-center">
-                                            <img
-                                                src={ProfileImage}
-                                                alt="profile_image"
-                                            />
-                                            <p className="text-2md mt-1">
-                                                {element?.operative?.firstName}{" "}
-                                                {element?.operative?.lastName}
-                                            </p>
+                                        <div className="flex justify-between mt-3">
+                                            <div>
+                                                <h6 className="text-black-50 text-3sm">
+                                                    NAME
+                                                </h6>
+                                                <div className="flex items-center">
+                                                    <img
+                                                        src={ProfileImage}
+                                                        alt="profile_image"
+                                                    />
+                                                    <p className="text-2md mt-1">
+                                                        {
+                                                            element?.operative
+                                                                ?.firstName
+                                                        }{" "}
+                                                        {
+                                                            element?.operative
+                                                                ?.lastName
+                                                        }
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <h6 className="text-black-50 text-3sm">
+                                                    TASK TYPE
+                                                </h6>
+                                                <p className="text-2md mt-1">
+                                                    {
+                                                        element?.jobListing
+                                                            ?.jobType?.name
+                                                    }
+                                                </p>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div>
-                                        <h6 className="text-black-50 text-3sm">
-                                            TASK TYPE
-                                        </h6>
-                                        <p className="text-2md mt-1">
-                                            {element?.jobListing?.jobType?.name}
-                                        </p>
-                                    </div>
-                                </div>
 
-                                <div className="flex justify-between mt-3">
-                                    <div>
-                                        <h6 className="text-black-50 text-3sm">
-                                            LOCATION
-                                        </h6>
-                                        <p>
-                                            {
-                                                element?.jobListing?.jobLocation
-                                                    ?.formattedAddress
-                                            }
-                                        </p>
-                                    </div>
-                                    <div>
-                                        <h6 className="text-black-50 text-3sm">
-                                            SCHEDULE
-                                        </h6>
-                                        <p>
-                                            {dayjs(
-                                                element?.jobListing
-                                                    ?.shiftStartTime
-                                            ).format("h")}{" "}
-                                            -{" "}
-                                            {dayjs(
-                                                element?.jobListing.shiftEndTime
-                                            ).format("h A")}
-                                        </p>
-                                    </div>
-                                </div>
-                                <div className="flex justify-between mt-3">
-                                    <div>
-                                        <h6 className="text-black-50 text-3sm">
-                                            RATE
-                                        </h6>
-                                        <p className="text-2md mt-1">
-                                            {
-                                                element?.jobListing?.jobRate
-                                                    ?.currency
-                                            }
-                                            {
-                                                element?.jobListing?.jobRate
-                                                    ?.jobRatePerHourDisplayedToDepot
-                                            }
-                                            /hr
-                                        </p>
-                                    </div>
-                                    <div>
-                                        <h6 className="text-black-50 text-3sm">
-                                            CLOCK-IN TIME
-                                        </h6>
-                                        <div className="flex items-center gap-1">
-                                            <p className="text-2md mt-1">
-                                                {dayjs(
-                                                    element?.clockInTime
-                                                ).format("h:mm A")}
-                                            </p>
+                                        <div className="flex justify-between mt-3">
+                                            <div>
+                                                <h6 className="text-black-50 text-3sm">
+                                                    LOCATION
+                                                </h6>
+                                                <p>
+                                                    {
+                                                        element?.jobListing
+                                                            ?.jobLocation
+                                                            ?.formattedAddress
+                                                    }
+                                                </p>
+                                            </div>
+                                            <div>
+                                                <h6 className="text-black-50 text-3sm">
+                                                    SCHEDULE
+                                                </h6>
+                                                <p>
+                                                    {dayjs(
+                                                        element?.jobListing
+                                                            ?.shiftStartTime
+                                                    ).format("h")}{" "}
+                                                    -{" "}
+                                                    {dayjs(
+                                                        element?.jobListing
+                                                            .shiftEndTime
+                                                    ).format("h A")}
+                                                </p>
+                                            </div>
                                         </div>
-                                    </div>
-                                </div>
+                                        <div className="flex justify-between mt-3">
+                                            <div>
+                                                <h6 className="text-black-50 text-3sm">
+                                                    RATE
+                                                </h6>
+                                                {element?.jobListing
+                                                    .jobMeetingPoint ===
+                                                "DEPOT" ? (
+                                                    <p className="text-2md mt-1">
+                                                        {
+                                                            element?.jobListing
+                                                                .jobRate
+                                                                .currency
+                                                        }
+                                                        {element?.jobListing
+                                                            ?.jobRate
+                                                            .jobRateDepotFirstDisplayedToDepot *
+                                                            element?.jobListing
+                                                                ?.shiftDurationInHours}
+                                                    </p>
+                                                ) : (
+                                                    <p className="text-2md mt-1">
+                                                        {
+                                                            element?.jobListing
+                                                                .jobRate
+                                                                .currency
+                                                        }
+                                                        {element?.jobListing
+                                                            ?.jobRate
+                                                            .jobRateMeetOnsiteDisplayedToDepot *
+                                                            element?.jobListing
+                                                                ?.shiftDurationInHours}
+                                                    </p>
+                                                )}
+                                            </div>
+                                            <div>
+                                                <h6 className="text-black-50 text-3sm">
+                                                    CLOCK-IN TIME
+                                                </h6>
+                                                <div className="flex items-center gap-1">
+                                                    <p className="text-2md mt-1">
+                                                        {dayjs(
+                                                            element?.clockInTime
+                                                        ).format("h:mm A")}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             ))}
@@ -525,10 +577,7 @@ const MobileShiftsDetailsTable = () => {
                 <OperativeProfile
                     openProfile={openProfile}
                     setOpenProfile={setOpenProfile}
-                    // singleElement={singleElement}
-                    operativeData={operativeData}
-                    operativeId={operativeId}
-                    jobListingId={jobListingId}
+                    scheduleId={scheduleId}
                 />
             )}
             {openMenu && (
@@ -538,8 +587,18 @@ const MobileShiftsDetailsTable = () => {
                     queryStatus={queryStatus}
                     openMenu={openMenu}
                     setOpenMenu={setOpenMenu}
+                    openCancel={openCancel}
+                    setOpenCancel={setOpenCancel}
                 />
             )}
+            {openCancel && (
+                    <Cancel
+                        openCancel={openCancel}
+                        setOpenCancel={setOpenCancel}
+                        operativeId={operativeId}
+                        jobListingId={jobListingId}
+                    />
+                )}
         </>
     )
 }

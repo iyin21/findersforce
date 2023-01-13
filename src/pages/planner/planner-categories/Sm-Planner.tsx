@@ -64,9 +64,9 @@ const SmPlanner = () => {
         })
 
     const navigate = useNavigate()
-    const handleNavigate = () => {
-        navigate("/job-boards")
-    }
+    // const handleNavigate = () => {
+    //     navigate("/job-boards")
+    // }
 
     const shiftsDuration: any = completedShiftsData?.results?.map((item) => {
         return item?.jobListing?.shiftDurationInHours
@@ -78,10 +78,19 @@ const SmPlanner = () => {
     }
 
     const shiftsAmount: any = completedShiftsData?.results?.map((item) => {
-        return (
-            Number(item?.jobListing?.jobRate?.jobRatePerHourDisplayedToDepot) *
-            Number(item?.jobListing?.shiftDurationInHours)
-        )
+        if (item?.jobListing?.jobMeetingPoint === "DEPOT") {
+            return (
+                Number(
+                    item?.jobListing?.jobRate?.jobRateDepotFirstDisplayedToDepot
+                ) * Number(item?.jobListing?.shiftDurationInHours)
+            )
+        } else {
+            return (
+                Number(
+                    item?.jobListing?.jobRate?.jobRateMeetOnsiteDisplayedToDepot
+                ) * Number(item?.jobListing?.shiftDurationInHours)
+            )
+        }
     })
     let totalAmount = 0
     for (let i = 0; i < shiftsAmount?.length; i++) {
@@ -226,12 +235,13 @@ const SmPlanner = () => {
                                         {ongoingShiftsData?.results?.length ===
                                         0 ? (
                                             <EmptyView
-                                                description="Ongoing Shifts will show here"
-                                                buttonText="Post a shift"
-                                                handleButtonClick={() => {
-                                                    handleNavigate()
-                                                }}
-                                            />
+                                            title="You have no active shifts right now."
+                                            description="When a shift starts, you can track it here."
+                                            buttonText="Post shift"
+                                            handleButtonClick={() => {
+                                                navigate("/job-boards")
+                                            }}
+                                        />
                                         ) : (
                                             <ShiftsTable
                                                 elements={
@@ -256,11 +266,12 @@ const SmPlanner = () => {
                                     <Tabs.Panel value="cancelled">
                                         {cancelledShiftsData?.results
                                             ?.length === 0 ? (
-                                            <EmptyView
-                                                description="Cancelled Shifts will show here"
+                                                <EmptyView
+                                                title="You have no cancelled shifts right now."
+                                                description="When a shift is cancelled, you can investigate it here."
                                                 buttonText="Post a shift"
                                                 handleButtonClick={() => {
-                                                    handleNavigate()
+                                                    navigate("/job-boards")
                                                 }}
                                             />
                                         ) : (
@@ -287,11 +298,12 @@ const SmPlanner = () => {
                                     <Tabs.Panel value="completed">
                                         {completedShiftsData?.results
                                             ?.length === 0 ? (
-                                            <EmptyView
-                                                description="Completed Shifts will show here"
-                                                buttonText="Post a shift"
+                                                <EmptyView
+                                                title="You have no completed shifts right now."
+                                                description="When a shift is complete, you can review it here and pay wages."
+                                                buttonText="Post shift"
                                                 handleButtonClick={() => {
-                                                    handleNavigate()
+                                                    navigate("/job-boards")
                                                 }}
                                             />
                                         ) : (
