@@ -12,6 +12,7 @@ import { useInviteHQ } from "../../hooks/roles/use-roles"
 import { UseMutateFunction } from "react-query"
 import { AxiosError } from "axios"
 import { ProfileRequest } from "../../types/profile/interface"
+import { BiArrowBack } from "react-icons/bi"
 
 const HQProfile = () => {
     const [step, setStep] = useState(0)
@@ -132,17 +133,51 @@ export function FormikStepper({ ...props }: TWizardProps) {
         })
     }
 
+    const handleBack = () => {
+        if (props.step > 0) {
+            props.setStep(props.step - 1)
+        }
+    }
+
     return (
         <div>
-            <Header step={props.step} title="Set up your Profile" />
+            {props?.step > 0 ? (
+                <div
+                    className="bg-black-5 p-2 w-fit rounded-lg relative z-20"
+                    onClick={handleBack}
+                >
+                    {" "}
+                    <BiArrowBack size={30} />
+                </div>
+            ) : (
+                ""
+            )}
+
+            <Header
+                step={props.step}
+                title={
+                    props.step === 0
+                        ? "Set up your Profile"
+                        : "Register Depots" || props.step === 2
+                        ? "Confirm Depots"
+                        : ""
+                }
+                description={
+                    props.step === 0
+                        ? ""
+                        : "Add your depot location and corresponding managerial staff." ||
+                          props.step === 2
+                        ? "Are these depot details correct?"
+                        : ""
+                }
+            />
             <Formik
                 {...props}
                 validationSchema={currentChild.props.validationSchema}
                 onSubmit={(values, helpers) => {
                     helpers.setSubmitting(true)
-                    if (props.isError === true) {
-                        props.setStep(0)
-                    } else if (!isLastStep()) {
+
+                    if (!isLastStep()) {
                         props.setStep(props.step + 1)
                     } else {
                         props.onSubmit(values, helpers) as Promise<any>
@@ -156,28 +191,33 @@ export function FormikStepper({ ...props }: TWizardProps) {
 
                         <div className=" justify-between items-center">
                             <div className="">
-                                <Button
-                                    size="normal"
-                                    className="w-full mt-16"
-                                    variant="primary"
-                                    type="submit"
-                                    disabled={props.isLoading}
-                                    style={{
-                                        backgroundColor:
-                                            "rgba(254, 215, 10, 1)",
-                                    }}
-                                    onClick={() => {
-                                        props.step === 0
-                                            ? handleCreateProfile(values)
-                                            : ""
-                                    }}
-                                >
-                                    {isSubmitting
-                                        ? "Finishing..."
-                                        : isLastStep()
-                                        ? "Finish"
-                                        : "Next"}
-                                </Button>
+                                {props.step === 1 ? (
+                                    ""
+                                ) : (
+                                    <Button
+                                        size="normal"
+                                        className="w-full mt-16"
+                                        variant="primary"
+                                        type="submit"
+                                        disabled={props.isLoading}
+                                        style={{
+                                            backgroundColor:
+                                                "rgba(254, 215, 10, 1)",
+                                        }}
+                                        onClick={() => {
+                                            props.step === 0
+                                                ? handleCreateProfile(values)
+                                                : ""
+                                        }}
+                                    >
+                                        {isSubmitting
+                                            ? "Finishing..."
+                                            : isLastStep()
+                                            ? "Finish"
+                                            : "Next"}
+                                    </Button>
+                                )}
+
                                 {props.step === 1 && (
                                     <Button
                                         size="normal"
