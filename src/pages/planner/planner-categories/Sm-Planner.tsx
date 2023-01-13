@@ -78,10 +78,19 @@ const SmPlanner = () => {
     }
 
     const shiftsAmount: any = completedShiftsData?.results?.map((item) => {
-        return (
-            Number(item?.jobListing?.jobRate?.jobRatePerHourDisplayedToDepot) *
-            Number(item?.jobListing?.shiftDurationInHours)
-        )
+        if (item?.jobListing?.jobMeetingPoint === "DEPOT") {
+            return (
+                Number(
+                    item?.jobListing?.jobRate?.jobRateDepotFirstDisplayedToDepot
+                ) * Number(item?.jobListing?.shiftDurationInHours)
+            )
+        } else {
+            return (
+                Number(
+                    item?.jobListing?.jobRate?.jobRateMeetOnsiteDisplayedToDepot
+                ) * Number(item?.jobListing?.shiftDurationInHours)
+            )
+        }
     })
     let totalAmount = 0
     for (let i = 0; i < shiftsAmount?.length; i++) {
