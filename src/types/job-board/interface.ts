@@ -82,6 +82,7 @@ export interface JobBoardResponseInterface {
     shiftStartTime: string
     shiftDurationInHours: number
     applicationCount: number
+    applicationsCount: number
     shiftEndTime: string
     companyName: string
     jobMeetingPoint: string
