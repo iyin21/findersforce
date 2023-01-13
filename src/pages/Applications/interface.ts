@@ -117,8 +117,10 @@ export interface JobRate {
     _id: string
     currency: string
     jobQualification: string
-    jobRatePerHourDisplayedToDepot: number
-    jobRatePerHourDisplayedToOp: number
+    jobRateDepotFirstDisplayedToDepot: number
+    jobRateDepotFirstDisplayedToOp: number
+    jobRateMeetOnsiteDisplayedToDepot: number
+    jobRateMeetOnsiteDisplayedToOp: number
     depot: string
 }
 

@@ -140,14 +140,21 @@ const ShiftTable = ({ elements }: Prop) => {
                                     <h6 className="text-black-50 text-3sm">
                                         AMOUNT
                                     </h6>
-                                    <p className="text-2md mt-1">
-                                        $
+                                    {item?.jobListing.jobMeetingPoint === "DEPOT" ? (<p className="text-2md mt-1">
+                                        {item?.jobListing.jobRate.currency}
                                         {item?.jobListing?.jobRate
-                                            .jobRatePerHourDisplayedToDepot *
+                                            .jobRateDepotFirstDisplayedToDepot *
                                             item?.jobListing
                                                 ?.shiftDurationInHours}
-                                        /hr
-                                    </p>
+                                        
+                                    </p>) : (<p className="text-2md mt-1">
+                                        {item?.jobListing.jobRate.currency}
+                                        {item?.jobListing?.jobRate
+                                            .jobRateMeetOnsiteDisplayedToDepot *
+                                            item?.jobListing
+                                                ?.shiftDurationInHours}
+                                        
+                                    </p>)}
                                 </div>
 
                                 <div className="mt-4">

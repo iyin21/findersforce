@@ -2,38 +2,38 @@ import { Modal, Progress } from "@mantine/core"
 import dayjs from "dayjs"
 import { AiFillStar } from "react-icons/ai"
 import { FaTimes } from "react-icons/fa"
-import { TfiLocationPin } from "react-icons/tfi"
 import Message from "../../../assets/Messaging.svg"
 import { Dispatch, SetStateAction } from "react"
-import { useGetSingleSchedule } from "../../../hooks/planner/usePlanner.hooks"
+import { useGetScheduleByScheduleId,  } from "../../../hooks/planner/usePlanner.hooks"
 import relativeTime from "dayjs/plugin/relativeTime"
+import { IoLocationSharp } from "react-icons/io5"
 dayjs.extend(relativeTime)
 
 interface Props {
     openProfile: boolean
     setOpenProfile: Dispatch<SetStateAction<boolean>>
-    operativeData: any
-    operativeId: string
-    jobListingId: string | undefined
+    scheduleId: string
+    
 }
 
 const OperativeProfile = ({
     openProfile,
     setOpenProfile,
-    operativeData,
-    operativeId,
-    jobListingId,
+    scheduleId,
 }: Props) => {
-    const { data: singleElement } = useGetSingleSchedule({
-        operativeId: operativeId,
-        jobListingId: jobListingId,
+    const { data: singleElement } = useGetScheduleByScheduleId( {
+        scheduleId: scheduleId
     })
+    // console.log(singleElement?.cancelReason)
+    
+    
     return (
         <Modal
             centered
             opened={openProfile}
             onClose={() => setOpenProfile(false)}
             withCloseButton={false}
+            closeOnClickOutside={false}
             overlayOpacity={0.55}
             overlayBlur={3}
             padding={0}
@@ -42,15 +42,15 @@ const OperativeProfile = ({
             transitionTimingFunction="ease"
             // styles={() => ({
             //     modal: {
-            //         width: "580px",
+            //         width: "550px",
             //     },
             // })}
         >
             <header className="bg-black-100 text-white-100 flex justify-between p-4">
                 <div className="flex gap-4 place-items-center">
                     <div>
-                        <p className="font-bold font-creatoBold text-2xl">
-                            Shift Details
+                        <p className="font-bold font-creato text-2xl">
+                            Shift Summary
                         </p>
                     </div>
                 </div>
@@ -61,32 +61,33 @@ const OperativeProfile = ({
                     />
                 </div>
             </header>
-            <div className="flex justify-between bg-yellow-20 p-5 mt-8 w-[90%] mx-auto rounded-lg">
-                <div className="flex gap-5">
+            <div className="flex justify-between bg-yellow-10 mx-8 p-5 mt-8 mb-5  mx-auto rounded-lg">
+                <div className="flex gap-4">
                     <img
                         src={
-                            singleElement?.results?.[0]?.operative
+                            singleElement?.operative
                                 ?.profileImageUrl
                         }
                         alt="profile"
-                        className="mt-3 w-10 h-10 rounded-[100%]"
+                        className="rounded-full  h-14 w-14"
                     />
                     <div>
-                        <p className="text-sm">OPERATIVE</p>
-                        <p className="font-extrabold font-creatoBold text-lg">
-                            {singleElement?.results?.[0]?.operative?.firstName}{" "}
-                            {singleElement?.results?.[0]?.operative?.lastName}
+                        <p className="text-3sm text-black-50">OPERATIVE</p>
+                        <p className="font-extrabold font-creatoBold text-xl">
+                            {singleElement?.operative?.firstName}{" "}
+                            {singleElement?.operative?.lastName}
                         </p>
-                        <p className="text-sm font-creato">
+                        <p className="text-md font-creato">
                             Joined{" "}
                             {dayjs(
-                                singleElement?.results?.[0]?.operative
+                                singleElement?.operative
                                     ?.createdAt
                             ).fromNow()}
+                            <span className="text-black-50"> |</span>
                             <span className="text-green-100">
                                 {" "}
                                 {
-                                    singleElement?.results?.[0]?.jobListing
+                                    singleElement?.jobListing
                                         ?.jobMatchPercentage
                                 }
                                 % Match
@@ -95,128 +96,97 @@ const OperativeProfile = ({
                     </div>
                 </div>
                 <div>
-                    <img src={Message} alt="message icon" className="inline p-1" />
+                    <img
+                        src={Message}
+                        alt="message icon"
+                        className="inline p-1"
+                    />
                     <p className="inline font-bold font-creatoBold text-md">
                         Message{" "}
-                        {singleElement?.results?.[0]?.operative?.firstName}
+                        {singleElement?.operative?.firstName}
                     </p>
                 </div>
             </div>
-            <div className="flex gap-4 bg-yellow-10 p-2 mt-8 w-[90%] mx-auto rounded-lg">
-                <div className="w-[20%]">
+            <div className="flex justify-between p-5 bg-green-10 mx-8 rounded-lg">
+                {singleElement?.jobListing.jobMeetingPoint ===
+                "DEPOT" ? (
                     <div>
-                        <p className="text-2md font-creato w-fit">Rating</p>
-                        <p>
-                            {operativeData?.avgAverageScore}{" "}
-                            <AiFillStar
-                                size={20}
-                                style={{ color: "#FED70A" }}
-                            />
-                        </p>
+                        {" "}
+                        <p className="text-black-50 text-2md mb-3">RATE</p>{" "}
+                        <p className="font-medium font-creatoMedium text-3md">
+                            {
+                                singleElement?.jobListing.jobRate
+                                    .currency
+                            }{" "}
+                            {
+                                singleElement?.jobListing.jobRate
+                                    .jobRateDepotFirstDisplayedToDepot
+                            }
+                        </p>{" "}
                     </div>
+                ) : (
+                    <div>
+                        {" "}
+                        <p className="text-black-50 text-2md mb-3">RATE</p>{" "}
+                        <p className="font-medium font-creatoMedium text-3md">
+                            {
+                                singleElement?.jobListing.jobRate
+                                    .currency
+                            }{" "}
+                            {
+                                singleElement?.jobListing.jobRate
+                                    .jobRateMeetOnsiteDisplayedToDepot
+                            }
+                        </p>{" "}
+                    </div>
+                )}
+                <div>
+                    {" "}
+                    <p className="text-black-50 text-2md mb-3">HOURS WORKED</p>{" "}
+                    <p className="font-medium font-creatoMedium text-3md">
+                        {
+                            singleElement?.jobListing
+                                .shiftDurationInHours
+                        }{" "}
+                        HRS (
+                        {dayjs(
+                            singleElement?.jobListing
+                                .shiftStartTime
+                        ).format("HH:mm")}{" "}
+                        -{" "}
+                        {dayjs(
+                            singleElement?.jobListing.shiftEndTime
+                        ).format("HH:mm")}
+                        )
+                    </p>{" "}
                 </div>
-                <div className="w-full">
-                    <div className="flex justify-between place-items-center">
-                        <p className="text-md font-medium font-creatoMedium">
-                            Professionalism
+                <div>
+                    {" "}
+                    <p className="text-black-50 text-2md mb-3">
+                        PAYMENT STATUS
+                    </p>{" "}
+                    {singleElement?.jobListing
+                        .fullyPaidByDepot === true ? (
+                        <p className="font-medium font-creatoMedium text-3md bg-green-10 text-green-100  text-center rounded-lg">
+                            Paid
                         </p>
-                        {Number(operativeData?.avgProfessionalismScore) <= 2 ? (
-                            <Progress
-                                value={
-                                    (Number(
-                                        operativeData?.avgProfessionalismScore
-                                    ) /
-                                        5) *
-                                    100
-                                }
-                                color="#F44336"
-                                className="w-[50%]"
-                            />
-                        ) : (
-                            <Progress
-                                value={
-                                    (Number(
-                                        operativeData?.avgProfessionalismScore
-                                    ) /
-                                        5) *
-                                    100
-                                }
-                                color="#4DB25D"
-                                className="w-[50%]"
-                            />
-                        )}
-                    </div>
-                    <div className="flex justify-between place-items-center">
-                        <p className="text-md font-medium font-creatoMedium">
-                            Punctuality
+                    ) : (
+                        <p className="font-medium font-creatoMedium text-3md bg-red-10 text-red-100  text-center rounded-lg">
+                            Unpaid
                         </p>
-                        {Number(operativeData?.avgHelpfulnessScore) <= 2 ? (
-                            <Progress
-                                value={
-                                    (Number(
-                                        operativeData?.avgHelpfulnessScore
-                                    ) /
-                                        5) *
-                                    100
-                                }
-                                color="#F44336"
-                                className="w-[50%]"
-                            />
-                        ) : (
-                            <Progress
-                                value={
-                                    (Number(
-                                        operativeData?.avgHelpfulnessScore
-                                    ) /
-                                        5) *
-                                    100
-                                }
-                                color="#4DB25D"
-                                className="w-[50%]"
-                            />
-                        )}
-                    </div>
-                    <div className="flex justify-between place-items-center">
-                        <p className="text-md font-medium font-creatoMedium">
-                            Helpfulness
-                        </p>
-                        {Number(operativeData?.avgOrganizationScore) <= 2 ? (
-                            <Progress
-                                value={
-                                    (Number(
-                                        operativeData?.avgOrganizationScore
-                                    ) /
-                                        5) *
-                                    100
-                                }
-                                color="#F44336"
-                                className="w-[50%]"
-                            />
-                        ) : (
-                            <Progress
-                                value={
-                                    (Number(
-                                        operativeData?.avgOrganizationScore
-                                    ) /
-                                        5) *
-                                    100
-                                }
-                                color="#4DB25D"
-                                className="w-[50%]"
-                            />
-                        )}
-                    </div>
+                    )}
                 </div>
             </div>
+            
             <p className=" px-8 pt-6 text-2md text-black-60">LOCATION</p>
             <p className="text-2md px-8 font-medium">
-                <TfiLocationPin
+                <IoLocationSharp
                     size={20}
                     style={{ color: "#E94444" }}
                     className="inline"
                 />{" "}
                 {
-                    singleElement?.results?.[0]?.jobListing?.jobLocation
+                    singleElement?.jobListing?.jobLocation
                         ?.formattedAddress
                 }
             </p>
@@ -226,19 +196,23 @@ const OperativeProfile = ({
                         TASK TYPE
                     </p>
                     <p className="text-2md px-8 font-creatoMedium font-medium">
-                        {singleElement?.results?.[0]?.jobListing?.jobType?.name}
+                        {singleElement?.jobListing?.jobType?.name}
                     </p>
                 </div>
                 <div>
                     <p className=" px-8 pt-6 text-2md text-black-60">
-                        TASK METHOD
+                        SHIFT METHOD
                     </p>
-                    <p className="text-2md ml-4 px-8 font-creatoMedium font-medium bg-yellow-100 rounded-3xl w-fit">
-                        {
-                            singleElement?.results?.[0]?.jobListing
-                                ?.jobMeetingPoint
-                        }
-                    </p>
+                    {singleElement?.jobListing.jobMeetingPoint ===
+                    "DEPOT" ? (
+                        <p className="text-2md ml-4 px-3 font-creatoMedium font-medium bg-yellow-100 rounded-3xl w-fit">
+                            DEPOT FIRST
+                        </p>
+                    ) : (
+                        <p className="text-2md ml-4 px-3 font-creatoMedium font-medium bg-yellow-100 rounded-3xl w-fit">
+                            MEET ONSITE
+                        </p>
+                    )}
                 </div>
                 <div>
                     <p className=" px-8 pt-6 text-2md text-black-60">
@@ -246,7 +220,7 @@ const OperativeProfile = ({
                     </p>
                     <p className="text-2md px-8 font-creatoMedium font-medium">
                         {
-                            singleElement?.results?.[0]?.jobListing
+                            singleElement?.jobListing
                                 ?.jobQualification?.name
                         }
                     </p>
@@ -257,33 +231,142 @@ const OperativeProfile = ({
                     </p>
                     <p className="text-2md px-8 font-creatoMedium font-medium">
                         {dayjs(
-                            singleElement?.results?.[0]?.jobListing?.jobDate
+                            singleElement?.jobListing?.jobDate
                         ).format("MMMM D, YYYY")}
                     </p>
                 </div>
-                <div>
+                {/* <div>
                     <p className=" px-8 pt-6 text-2md text-black-60">
                         SHIFT DURATION
                     </p>
                     <p className="text-2md px-8 font-creatoMedium font-medium">
                         {
-                            singleElement?.results?.[0]?.jobListing
+                            singleElement?.jobListing
                                 ?.shiftDurationInHours
                         }{" "}
                         Hour(s) (
                         {dayjs(
-                            singleElement?.results?.[0]?.jobListing
+                            singleElement?.jobListing
                                 ?.shiftStartTime
                         ).format("h:mm A")}{" "}
                         -{" "}
                         {dayjs(
-                            singleElement?.results?.[0]?.jobListing
+                            singleElement?.jobListing
                                 ?.shiftEndTime
                         ).format("h:mm A")}{" "}
                         )
                     </p>
-                </div>
+                </div> */}
+               
             </section>
+            <div className="flex gap-4 bg-black-100 text-white-100 p-4 mt-3 mb-8 mx-8 rounded-lg">
+                <div className="w-1/2">
+                    <div>
+                        <p className="text-2lg font-creato w-fit">Performance</p>
+                        <p>
+                            <AiFillStar
+                                size={30}
+                                style={{ color: "#FED70A" }}
+                                className="inline"
+                            />
+                            <span className="text-2xl font-extrabold font-creatoBold">{singleElement?.operative?.averageRating}</span> 
+                            <span className="text-3sm"> ({singleElement?.operative?.completedShifts} shifts)</span>
+                        </p>
+                    </div>
+                </div>
+                <div className="w-full">
+                    <div className="flex justify-between place-items-center">
+                        <p className="text-md font-medium font-creatoMedium">
+                            Communication
+                        </p>
+                        {Number(singleElement?.operativeRatingSummary.avgProfessionalismScore) <= 2 ? (
+                            <Progress
+                                value={
+                                    (Number(
+                                        singleElement?.operativeRatingSummary.avgProfessionalismScore
+                                    ) /
+                                        5) *
+                                    100
+                                }
+                                color="#F44336"
+                                className="w-[50%]"
+                            />
+                        ) : (
+                            <Progress
+                                value={
+                                    (Number(
+                                        singleElement?.operativeRatingSummary.avgProfessionalismScore
+                                    ) /
+                                        5) *
+                                    100
+                                }
+                                color="#4DB25D"
+                                className="w-[50%]"
+                            />
+                        )}
+                    </div>
+                    <div className="flex justify-between place-items-center">
+                        <p className="text-md font-medium font-creatoMedium">
+                            Organization
+                        </p>
+                        {Number(singleElement?.operativeRatingSummary.avgPunctualityScore) <= 2 ? (
+                            <Progress
+                                value={
+                                    (Number(
+                                        singleElement?.operativeRatingSummary.avgPunctualityScore
+                                    ) /
+                                        5) *
+                                    100
+                                }
+                                color="#F44336"
+                                className="w-[50%]"
+                            />
+                        ) : (
+                            <Progress
+                                value={
+                                    (Number(
+                                        singleElement?.operativeRatingSummary.avgPunctualityScore
+                                    ) /
+                                        5) *
+                                    100
+                                }
+                                color="#4DB25D"
+                                className="w-[50%]"
+                            />
+                        )}
+                    </div>
+                    <div className="flex justify-between place-items-center">
+                        <p className="text-md font-medium font-creatoMedium">
+                            Vibe
+                        </p>
+                        {Number(singleElement?.operativeRatingSummary.avgHelpfulnessScore) <= 2 ? (
+                            <Progress
+                                value={
+                                    (Number(
+                                        singleElement?.operativeRatingSummary.avgHelpfulnessScore
+                                    ) /
+                                        5) *
+                                    100
+                                }
+                                color="#F44336"
+                                className="w-[50%]"
+                            />
+                        ) : (
+                            <Progress
+                                value={
+                                    (Number(
+                                        singleElement?.operativeRatingSummary.avgHelpfulnessScore
+                                    ) /
+                                        5) *
+                                    100
+                                }
+                                color="#4DB25D"
+                                className="w-[50%]"
+                            />
+                        )}
+                    </div>
+                </div>
+            </div>
         </Modal>
     )
 }
