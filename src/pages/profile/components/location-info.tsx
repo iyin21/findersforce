@@ -101,6 +101,7 @@ const LocationInfo = () => {
                     onChange={(regionalEmails: string[]) => {
                         setRegionalEmails(regionalEmails)
                         setFieldValue("regional_manager", regionalEmails)
+                        setFieldValue("invitedRole", "REGIONAL-MANAGER")
                     }}
                     getLabel={(email, index, removeEmail) => {
                         return (
@@ -144,6 +145,7 @@ const LocationInfo = () => {
                     onChange={(shiftEmails: string[]) => {
                         setShiftEmails(shiftEmails)
                         setFieldValue("shift_manager", shiftEmails)
+                        setFieldValue("invitedRole", "SHIFT-MANAGER")
                     }}
                     getLabel={(email, index, removeEmail) => {
                         return (
