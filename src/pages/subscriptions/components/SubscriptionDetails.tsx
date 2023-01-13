@@ -1,4 +1,3 @@
-
 import { Table } from "@mantine/core"
 
 import Layout from "../../../components/Layout/index"
@@ -82,10 +81,7 @@ const SubscriptionDetails = () => {
                         </div> */}
                     </div>
                 </div>
-                <div
-                    className="hidden lg:block "
-                    data-testid="subscription"
-                >
+                <div className="hidden lg:block " data-testid="subscription">
                     <Table
                         style={{
                             backgroundColor: "#FFFFFF",
@@ -116,7 +112,7 @@ const SubscriptionDetails = () => {
                     </Table>
                 </div>
                 <div className="block lg:hidden p-6 mt-4">
-                    <MobileSubscriptionDetail/>
+                    <MobileSubscriptionDetail />
                 </div>
             </Layout>
         </>

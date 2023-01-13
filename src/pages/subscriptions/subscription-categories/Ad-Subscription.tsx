@@ -4,7 +4,7 @@ import Layout from "../../../components/Layout/index"
 import SubscriptionTable from "../components/SubscriptionTable"
 import { useState } from "react"
 import Sent from "../../../assets/sent.svg"
-import {  Group, Modal, Select, TextInput } from "@mantine/core"
+import { Group, Modal, Select, TextInput } from "@mantine/core"
 import {
     useCreateSubscription,
     useGetAdminSubscriptions,
