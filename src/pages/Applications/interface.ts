@@ -121,6 +121,8 @@ export interface JobRate {
     jobRateDepotFirstDisplayedToOp: number
     jobRateMeetOnsiteDisplayedToDepot: number
     jobRateMeetOnsiteDisplayedToOp: number
+    jobRatePerHourDisplayedToDepot: number
+    jobRatePerHourDisplayedToOp: number
     depot: string
 }
 
