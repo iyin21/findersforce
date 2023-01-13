@@ -9,12 +9,10 @@ import Layout from "../../components/Layout/index"
 import EmptyState from "../../components/EmptyStates/index"
 import { useNavigate } from "react-router-dom"
 import Pagination from "../../components/Pagination/pagination"
-import  {ApplicationFilterRequest}  from "../../types/filter/filter"
-import Filter  from "../../components/ApplicationFilter/index"
+import { ApplicationFilterRequest } from "../../types/filter/filter"
+import Filter from "../../components/ApplicationFilter/index"
 
 const Applications = () => {
-    
-
     const [activeTab, setActiveTab] = useState<string | null>("pending")
 
     const [activePendingPage, setPendingPage] = useState(1)
@@ -31,26 +29,29 @@ const Applications = () => {
         setRejectedPage(pageNumber)
     }
 
-    const [pendingDataFilter, setPendingDataFilter] = useState<ApplicationFilterRequest>({
-        jobTypeId: "", 
-        jobMatchPercentageMin: "", 
-        jobMatchPercentageMax: ""
-    })
-    const [acceptedDataFilter, setAcceptedDataFilter] = useState<ApplicationFilterRequest>({
-        jobTypeId: "", 
-        jobMatchPercentageMin: "", 
-        jobMatchPercentageMax: ""
-    })
-    const [rejectedDataFilter, setRejectedDataFilter] = useState<ApplicationFilterRequest>({
-        jobTypeId: "", 
-        jobMatchPercentageMin: "", 
-        jobMatchPercentageMax: ""
-    })
+    const [pendingDataFilter, setPendingDataFilter] =
+        useState<ApplicationFilterRequest>({
+            jobTypeId: "",
+            jobMatchPercentageMin: "",
+            jobMatchPercentageMax: "",
+        })
+    const [acceptedDataFilter, setAcceptedDataFilter] =
+        useState<ApplicationFilterRequest>({
+            jobTypeId: "",
+            jobMatchPercentageMin: "",
+            jobMatchPercentageMax: "",
+        })
+    const [rejectedDataFilter, setRejectedDataFilter] =
+        useState<ApplicationFilterRequest>({
+            jobTypeId: "",
+            jobMatchPercentageMin: "",
+            jobMatchPercentageMax: "",
+        })
     const applyFilter = (filter: ApplicationFilterRequest) => {
         if (activeTab === "pending") {
             setPendingDataFilter(filter)
             setPendingPage(1)
-        } else if ( activeTab === "accepted"){
+        } else if (activeTab === "accepted") {
             setAcceptedDataFilter(filter)
             setAcceptedPage(1)
         } else {
@@ -64,7 +65,7 @@ const Applications = () => {
             status: "PENDING",
             jobTypeId: pendingDataFilter?.jobTypeId,
             jobMatchPercentageMin: pendingDataFilter?.jobMatchPercentageMin,
-            jobMatchPercentageMax: pendingDataFilter?.jobMatchPercentageMax
+            jobMatchPercentageMax: pendingDataFilter?.jobMatchPercentageMax,
             // page: 1,
         })
     const { data: acceptedData, isLoading: isLoadingAcceptedData } =
@@ -112,17 +113,23 @@ const Applications = () => {
                     ) : (
                         <div>
                             <div className=" hidden lg:block relative lg:pb-4 bottom-0 lg:bottom-0">
-                              <div className="absolute right-0 w-fit ">
-                                  {" "}
-                                  <Filter applyFilter={applyFilter} className="" />
-                              </div>
-                          </div>
-                          <div className=" lg:hidden relative mb-16">
-                              <div className="absolute right-0 bottom-2">
-                                  {" "}
-                                  <Filter applyFilter={applyFilter} className="" />
-                              </div>
-                          </div>
+                                <div className="absolute right-0 w-fit ">
+                                    {" "}
+                                    <Filter
+                                        applyFilter={applyFilter}
+                                        className=""
+                                    />
+                                </div>
+                            </div>
+                            <div className=" lg:hidden relative mb-16">
+                                <div className="absolute right-0 bottom-2">
+                                    {" "}
+                                    <Filter
+                                        applyFilter={applyFilter}
+                                        className=""
+                                    />
+                                </div>
+                            </div>
                             <Tabs
                                 value={activeTab}
                                 // active={activeTab}
@@ -132,45 +139,66 @@ const Applications = () => {
                                 // variant="lg:default pills"
                             >
                                 <Tabs.List>
-                                    <Tabs.Tab
-                                        value="pending"
-                                        className={`body-regular mr-6 rounded ${
-                                            activeTab === "pending"
-                                                ? "text-yellow-100 font-bold active bg-black-100 lg:bg-white-100"
-                                                : "text-black-60 inactive bg-black-5 lg:bg-white-100"
-                                        }`}
-                                    >
-                                        Pending
-                                        <span className="bg-red-100 rounded ml-2 py-0.5 px-1 text-white-100 text-sm">
-                                            {pendingData?.data?.length || 0}
-                                        </span>
+                                    <Tabs.Tab value="pending">
+                                        <p
+                                            className={
+                                                activeTab === "pending"
+                                                    ? "text-yellow-100 text-lg font-creatoMedium active"
+                                                    : `font-creatoMedium text-black-40 text-lg inactive`
+                                            }
+                                        >
+                                            Applied
+                                            <span
+                                                className={`{" ml-2 py-1 px-2 rounded text-white-100 "} ${
+                                                    activeTab === "pending"
+                                                        ? "bg-white lg:text-white-100 text-dark-green-500  lg:bg-red-100 text-3sm "
+                                                        : "bg-gray-100 text-white-100 text-3sm"
+                                                }`}
+                                            >
+                                                {pendingData?.data?.length}
+                                            </span>
+                                        </p>
                                     </Tabs.Tab>
 
-                                    <Tabs.Tab
-                                        value="accepted"
-                                        className={`body-regular mr-6 ${
-                                            activeTab === "accepted"
-                                                ? "text-yellow-100 font-bold active"
-                                                : "text-black-60 inactive"
-                                        }`}
-                                    >
-                                        Accepted
-                                        <span className="bg-red-100 rounded ml-2 py-0.5 px-1 text-white-100 text-sm">
-                                            {acceptedData?.data?.length ?? 0}
-                                        </span>
+                                    <Tabs.Tab value="accepted">
+                                        <p
+                                            className={
+                                                activeTab === "accepted"
+                                                    ? "text-green-100 text-lg font-creatoMedium active"
+                                                    : `font-creatoMedium text-black-40 text-lg inactive`
+                                            }
+                                        >
+                                            Approved
+                                            <span
+                                                className={`{" ml-2 py-1 px-2 rounded text-white-100 "} ${
+                                                    activeTab === "accepted"
+                                                        ? "bg-white lg:text-white-100 text-dark-green-500  lg:bg-red-100 text-3sm "
+                                                        : "bg-gray-100 text-white-100 text-3sm"
+                                                }`}
+                                            >
+                                                {acceptedData?.data?.length}
+                                            </span>
+                                        </p>
                                     </Tabs.Tab>
-                                    <Tabs.Tab
-                                        value="rejected"
-                                        className={`body-regular ${
-                                            activeTab === "rejected"
-                                                ? "text-yellow-100 font-bold active"
-                                                : "text-black-60 inactive"
-                                        }`}
-                                    >
-                                        Rejected
-                                        <span className="bg-red-100 rounded ml-2 py-0.5 px-1 text-white-100 text-sm">
-                                            {rejectedData?.data?.length || 0}
-                                        </span>
+                                    <Tabs.Tab value="rejected">
+                                        <p
+                                            className={
+                                                activeTab === "rejected"
+                                                    ? "text-red-100 text-lg font-creatoMedium active"
+                                                    : `font-creatoMedium text-black-40 text-lg inactive`
+                                            }
+                                        >
+                                            Passed
+                                            <span
+                                                className={`{" ml-2 py-1 px-2 rounded text-white-100 "} ${
+                                                    activeTab === "rejected"
+                                                        ? "bg-white lg:text-white-100 text-dark-green-500  lg:bg-red-100 text-3sm "
+                                                        : "bg-gray-100 text-white-100 text-3sm"
+                                                }`}
+                                            >
+                                                {rejectedData?.data?.length}
+                                            </span>
+                                        </p>
                                     </Tabs.Tab>
                                 </Tabs.List>
                                 <Tabs.Panel value="pending">
@@ -180,27 +208,30 @@ const Applications = () => {
                                             elements={pendingData?.data || []}
                                             setPhase={setPhase}
                                             setActiveId={setActiveId}
+                                            setActiveTab={setActiveTab}
+                                            activeTab={activeTab}
                                         />
                                     ) : (
-                                        <EmptyState 
-                                            description="Applications you send will show here until the depot makes a decision"
-                                            buttonText="Add new application"
-                                            handleButtonClick={
-                                                () => handleNavigate()
+                                        <EmptyState
+                                            title="Your Depot has no applications yet."
+                                            description="When Operatives apply for any shift, you will be able to manage all applications here."
+                                            buttonText="Post Shift"
+                                            handleButtonClick={() =>
+                                                handleNavigate()
                                             }
                                         />
                                     )}
                                     <Pagination
-                                                  page={activePendingPage}
-                                                  total={activePendingPage}
-                                                  onChange={handlePendingPage}
-                                                  boundaries={1}
-                                                  recordPerpage={
-                                                      pendingData?.data
-                                                          ? pendingData?.data.length
-                                                          : 1
-                                                  }
-                                              />
+                                        page={activePendingPage}
+                                        total={activePendingPage}
+                                        onChange={handlePendingPage}
+                                        boundaries={1}
+                                        recordPerpage={
+                                            pendingData?.data
+                                                ? pendingData?.data.length
+                                                : 1
+                                        }
+                                    />
                                 </Tabs.Panel>
                                 <Tabs.Panel value="accepted">
                                     {acceptedData?.data &&
@@ -209,27 +240,30 @@ const Applications = () => {
                                             elements={acceptedData?.data || []}
                                             setPhase={setPhase}
                                             setActiveId={setActiveId}
+                                            setActiveTab={setActiveTab}
+                                            activeTab={activeTab}
                                         />
                                     ) : (
-                                        <EmptyState 
-                                            description="Accepted applications will show here."
-                                            buttonText="Add new application"
-                                            handleButtonClick={
-                                                () => handleNavigate()
+                                        <EmptyState
+                                            title="You have approved zero Operatives."
+                                            description="When you approve Operative applications, you will be able to manage them here."
+                                            buttonText="View Applications"
+                                            handleButtonClick={() =>
+                                                handleNavigate()
                                             }
                                         />
                                     )}
                                     <Pagination
-                                                  page={activeAcceptedPage}
-                                                  total={activeAcceptedPage}
-                                                  onChange={handleAcceptedPage}
-                                                  boundaries={1}
-                                                  recordPerpage={
-                                                      acceptedData?.data
-                                                          ? acceptedData?.data.length
-                                                          : 1
-                                                  }
-                                              />
+                                        page={activeAcceptedPage}
+                                        total={activeAcceptedPage}
+                                        onChange={handleAcceptedPage}
+                                        boundaries={1}
+                                        recordPerpage={
+                                            acceptedData?.data
+                                                ? acceptedData?.data.length
+                                                : 1
+                                        }
+                                    />
                                 </Tabs.Panel>
                                 <Tabs.Panel value="rejected">
                                     {rejectedData?.data &&
@@ -238,27 +272,30 @@ const Applications = () => {
                                             elements={rejectedData?.data || []}
                                             setPhase={setPhase}
                                             setActiveId={setActiveId}
+                                            setActiveTab={setActiveTab}
+                                            activeTab={activeTab}
                                         />
                                     ) : (
-                                        <EmptyState 
-                                            description="Rejected applications will show here"
-                                            buttonText="Add new application"
-                                            handleButtonClick={
-                                                () => handleNavigate()
+                                        <EmptyState
+                                            title="You have passed on zero Operatives."
+                                            description="When you pass on Operative applications, you will be able to manage them here."
+                                            buttonText="View Applications"
+                                            handleButtonClick={() =>
+                                                handleNavigate()
                                             }
                                         />
                                     )}
                                     <Pagination
-                                                  page={activeRejectedPage}
-                                                  total={activeRejectedPage}
-                                                  onChange={handleRejectedPage}
-                                                  boundaries={1}
-                                                  recordPerpage={
-                                                      rejectedData?.data
-                                                          ? rejectedData?.data.length
-                                                          : 1
-                                                  }
-                                              />
+                                        page={activeRejectedPage}
+                                        total={activeRejectedPage}
+                                        onChange={handleRejectedPage}
+                                        boundaries={1}
+                                        recordPerpage={
+                                            rejectedData?.data
+                                                ? rejectedData?.data.length
+                                                : 1
+                                        }
+                                    />
                                 </Tabs.Panel>
                             </Tabs>
                         </div>
@@ -269,6 +306,7 @@ const Applications = () => {
                     setPhase={setPhase}
                     activeId={activeId}
                     setShiftId={setShiftId}
+                    activeTab={activeTab}
                 />
             ) : (
                 <ShiftDetails shiftId={shiftId} setPhase={setPhase} />

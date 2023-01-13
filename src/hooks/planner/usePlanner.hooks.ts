@@ -1,32 +1,38 @@
 import { showNotification } from "@mantine/notifications"
 import {
     PaymentEvidenceUpload,
+    ShiftByScheduleIdResponse,
     ShiftResponse,
 } from "../../types/planner/interfaces"
 import { useMutation, useQuery } from "@tanstack/react-query"
 import { AxiosError, AxiosRequestConfig } from "axios"
 import { axiosInstance } from "../../services/api.service"
 import useAuthContext from "../auth-hooks/useAuth"
-import { IDepotRating } from "../../types/dashboard/interfaces"
 
 function useGetShiftHistory({
     ongoing,
     completed,
     cancelled,
     jobMeetingPoint,
-    regionId
+    regionId,
 }: {
     upcoming?: boolean
     ongoing?: boolean
     completed?: boolean
     cancelled?: boolean
     jobMeetingPoint?: string
-    regionId?: string|undefined|null
+    regionId?: string | undefined | null
 }) {
     const { state } = useAuthContext()
     const getShiftHistory = async () => {
         const { data } = await axiosInstance.get(`/schedule`, {
-            params: { ongoing, completed, cancelled, jobMeetingPoint, regionId },
+            params: {
+                ongoing,
+                completed,
+                cancelled,
+                jobMeetingPoint,
+                regionId,
+            },
             headers: {
                 Authorization: `Bearer ${state?.jwt?.token}`,
             },
@@ -35,7 +41,10 @@ function useGetShiftHistory({
     }
 
     return useQuery<unknown, AxiosError, ShiftResponse["data"]>(
-        ["shiftHistory", { ongoing, completed, cancelled, jobMeetingPoint, regionId }],
+        [
+            "shiftHistory",
+            { ongoing, completed, cancelled, jobMeetingPoint, regionId },
+        ],
         getShiftHistory,
 
         {
@@ -120,22 +129,19 @@ function useGetSingleSchedule({
     )
 }
 
-function useGetOperativeRatingSummary({ id }: { id?: string }) {
+function useGetScheduleByScheduleId({ scheduleId }: { scheduleId: string }) {
     const { state } = useAuthContext()
     const getOperativeRatingSummary = async () => {
-        const { data } = await axiosInstance.get(
-            `/rating/operative/${id}/summary`,
-            {
-                headers: {
-                    Authorization: `Bearer ${state?.jwt?.token}`,
-                },
-            }
-        )
+        const { data } = await axiosInstance.get(`/schedule/${scheduleId}`, {
+            headers: {
+                Authorization: `Bearer ${state?.jwt?.token}`,
+            },
+        })
         return data.data
     }
 
-    return useQuery<unknown, AxiosError, IDepotRating["data"]>(
-        ["shiftHistory", { id }],
+    return useQuery<unknown, AxiosError, ShiftByScheduleIdResponse["data"]>(
+        ["shiftHistory", { scheduleId }],
         getOperativeRatingSummary,
 
         {
@@ -149,7 +155,6 @@ function useGetOperativeRatingSummary({ id }: { id?: string }) {
         }
     )
 }
-
 function usePaymentEvidenceUpload({ scheduleId }: { scheduleId: string }) {
     const { state } = useAuthContext()
 
@@ -194,6 +199,6 @@ export {
     useGetShiftHistory,
     useGetShiftHistoryByJobListingId,
     useGetSingleSchedule,
-    useGetOperativeRatingSummary,
     usePaymentEvidenceUpload,
+    useGetScheduleByScheduleId,
 }

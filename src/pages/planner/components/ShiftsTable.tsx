@@ -35,7 +35,7 @@ const ShiftsTable = ({ elements, status }: ShiftsTableInterface) => {
     const rows = elements?.map((element, index) => (
         <tr key={index}>
             <td>{index + 1}</td>
-            <td>{element?.jobListing?.listingId}</td>
+            <td className="font-bold">{element?.jobListing?.listingId}</td>
             {/* {status !== "completed" && (<td>
           <div className="flex items-center gap-2">
             <img src={ProfileImage} alt="profile_image" />
@@ -46,20 +46,34 @@ const ShiftsTable = ({ elements, status }: ShiftsTableInterface) => {
             {status !== "ongoing" ? (
                 <td>
                     {dayjs(element?.jobListing?.jobDate).format("MMM D, YYYY")}{" "}
-                    | {dayjs(element?.jobListing?.shiftStartTime).format("h")} -{" "}
-                    {dayjs(element?.jobListing.shiftEndTime).format("h A")}
+                    | {dayjs(element?.jobListing?.shiftStartTime).format("HH:mm")} -{" "}
+                    {dayjs(element?.jobListing.shiftEndTime).format("HH:mm")}
                 </td>
             ) : (
                 <td>
-                    {dayjs(element?.jobListing?.shiftStartTime).format("h")} -{" "}
-                    {dayjs(element?.jobListing.shiftEndTime).format("h A")}
+                    {dayjs(element?.jobListing?.shiftStartTime).format("HH:mm")}{" "}
+                    - {dayjs(element?.jobListing.shiftEndTime).format("HH:mm")}
                 </td>
             )}
-            <td>
-                {element?.jobListing?.jobRate?.currency}
-                {element?.jobListing?.jobRate?.jobRatePerHourDisplayedToDepot}
-                /hr
-            </td>
+            {element?.jobListing.jobMeetingPoint === "DEPOT" ? (
+                <td>
+                    {element?.jobListing?.jobRate?.currency}
+                    {
+                        element?.jobListing?.jobRate
+                            ?.jobRateDepotFirstDisplayedToDepot
+                    }
+                    
+                </td>
+            ) : (
+                <td>
+                    {element?.jobListing?.jobRate?.currency}
+                    {
+                        element?.jobListing?.jobRate
+                            ?.jobRateMeetOnsiteDisplayedToDepot
+                    }
+                    
+                </td>
+            )}
             {/* {
           status === "cancelled" && (<td>{getDurationBeforeCancel(((new Date(element?.cancelTime).getTime()) - new Date(element?.clockInTime).getTime()))}</td>) 
         } */}
@@ -120,27 +134,27 @@ const ShiftsTable = ({ elements, status }: ShiftsTableInterface) => {
 
     const tableHeadCancelled = [
         { list: "NO" },
-        { list: "SHIFTS ID" },
+        { list: "SHIFT" },
         { list: "LOCATION" },
         { list: "SCHEDULE" },
-        { list: "RATE" },
+        { list: "WAGES" },
         { list: "MODE" },
     ]
     const tableHeadActive = [
         { list: "NO" },
-        { list: "SHIFTS ID" },
+        { list: "SHIFT" },
         { list: "LOCATION" },
         { list: "SCHEDULE" },
-        { list: "RATE" },
+        { list: "WAGES" },
         { list: "MODE" },
         { list: "ENDS IN" },
     ]
     const tableHeadCompleted = [
         { list: "NO" },
-        { list: "SHIFTS ID" },
+        { list: "SHIFT" },
         { list: "LOCATION" },
         { list: "SCHEDULE" },
-        { list: "RATE" },
+        { list: "WAGES" },
         { list: "MODE" },
         { list: "STATUS" },
     ]

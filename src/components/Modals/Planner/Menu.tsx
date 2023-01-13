@@ -7,6 +7,8 @@ interface Props {
     queryStatus: any
     openMenu: boolean
     setOpenMenu: Dispatch<SetStateAction<boolean>>
+    openCancel: boolean
+    setOpenCancel:Dispatch<SetStateAction<boolean>>
 }
 
 const Menu = ({
@@ -15,6 +17,8 @@ const Menu = ({
     queryStatus,
     openMenu,
     setOpenMenu,
+    openCancel,
+    setOpenCancel
 }: Props) => {
     return (
         <Modal
@@ -43,7 +47,7 @@ const Menu = ({
                 {queryStatus === "cancelled" && (
                     <>
                         <hr className="text-gray-80" />
-                        <h6>View Reason</h6>
+                        <h6 onClick={() => setOpenCancel(!openCancel)}>View Reason</h6>
                     </>
                 )}
             </div>

@@ -1,19 +1,15 @@
-import Logout from "../../../assets/LogoutNavBar.svg"
-import SettingsCog from "../../../assets/SettingsCog.svg"
 import User from "../../../assets/User.svg"
-import Search from "../../../assets/Search.svg"
 import { Dispatch, SetStateAction, useEffect, useState } from "react"
 import { Indicator, Modal } from "@mantine/core"
 import addressLogo from "../../../assets/addressLogo.svg"
 import useUserNotification from "../../../hooks/notification-hook"
 import { showNotification } from "@mantine/notifications"
 import { CgSpinner } from "react-icons/cg"
-import useAuthContext from "../../../hooks/auth-hooks/useAuth"
 import { useNavigate } from "react-router-dom"
-import handleLogOut from "../../../hooks/auth-hooks/use-logout"
 import { HiMenuAlt2 } from "react-icons/hi"
 import dayjs from "dayjs"
 import { IoIosNotifications } from "react-icons/io"
+import Message from "../../../assets/NavbarMessage.svg"
 
 interface navInterface {
     setOpenSideBar: Dispatch<SetStateAction<boolean>>
@@ -22,7 +18,6 @@ interface navInterface {
 
 const NavBar = ({ setOpenSideBar, noTopNav }: navInterface) => {
     const [opened, setOpened] = useState(false)
-    const { dispatch, state } = useAuthContext()
     const { data: userNotifications, error, isLoading } = useUserNotification()
     const notifications = userNotifications?.data?.map((item, index) => {
         return (
@@ -89,9 +84,10 @@ const NavBar = ({ setOpenSideBar, noTopNav }: navInterface) => {
                                 onClick={() => setOpenSideBar(true)}
                             />
                         </div>
+                        
                         <img
-                            src={Search}
-                            alt="search icon "
+                            src={User}
+                            alt="User icon"
                             className="cursor-pointer"
                         />
                         <Indicator
@@ -111,30 +107,9 @@ const NavBar = ({ setOpenSideBar, noTopNav }: navInterface) => {
                                 }
                             />
                         </Indicator>
-                        <img
-                            src={SettingsCog}
-                            alt="SettingsCog icon"
-                            className="cursor-pointer"
-                            onClick={() => navigate("/settings")}
-                        />
-                        <img
-                            src={User}
-                            alt="User icon"
-                            className="cursor-pointer"
-                        />
-                        <img
-                            src={Logout}
-                            alt="Logout icon"
-                            className="cursor-pointer"
-                            onClick={() =>
-                                handleLogOut(
-                                    state.jwt?.token,
-                                    showNotification,
-                                    dispatch,
-                                    navigate
-                                )
-                            }
-                        />
+                        
+                        <img src={Message} alt="messaging" onClick={() => navigate("/messaging")}/>
+                        
                     </div>
                 )}
             </nav>
