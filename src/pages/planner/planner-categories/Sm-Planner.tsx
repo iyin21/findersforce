@@ -1,4 +1,4 @@
-import { Alert, Tabs } from "@mantine/core"
+import {  Tabs } from "@mantine/core"
 import { useState } from "react"
 import ShiftsTable from "../components/ShiftsTable"
 import { useGetShiftHistory } from "../../../hooks/planner/usePlanner.hooks"
@@ -9,7 +9,7 @@ import Filter from "../../../components/Filter/index"
 import { FilterRequest } from "../../../types/filter/filter"
 import EmptyView from "../../../components/EmptyStates/index"
 import { useNavigate } from "react-router-dom"
-import { IoAlertCircle } from "react-icons/io5"
+// import { IoAlertCircle } from "react-icons/io5"
 
 const SmPlanner = () => {
     const [activeTab, setActiveTab] = useState<string | null>("active")
@@ -68,34 +68,34 @@ const SmPlanner = () => {
     //     navigate("/job-boards")
     // }
 
-    const shiftsDuration: any = completedShiftsData?.results?.map((item) => {
-        return item?.jobListing?.shiftDurationInHours
-    })
+    // const shiftsDuration: any = completedShiftsData?.results?.map((item) => {
+    //     return item?.jobListing?.shiftDurationInHours
+    // })
 
-    let totalDuration = 0
-    for (let i = 0; i < shiftsDuration?.length; i++) {
-        totalDuration += Number(shiftsDuration[i])
-    }
+    // let totalDuration = 0
+    // for (let i = 0; i < shiftsDuration?.length; i++) {
+    //     totalDuration += Number(shiftsDuration[i])
+    // }
 
-    const shiftsAmount: any = completedShiftsData?.results?.map((item) => {
-        if (item?.jobListing?.jobMeetingPoint === "DEPOT") {
-            return (
-                Number(
-                    item?.jobListing?.jobRate?.jobRateDepotFirstDisplayedToDepot
-                ) * Number(item?.jobListing?.shiftDurationInHours)
-            )
-        } else {
-            return (
-                Number(
-                    item?.jobListing?.jobRate?.jobRateMeetOnsiteDisplayedToDepot
-                ) * Number(item?.jobListing?.shiftDurationInHours)
-            )
-        }
-    })
-    let totalAmount = 0
-    for (let i = 0; i < shiftsAmount?.length; i++) {
-        totalAmount += Number(shiftsAmount[i])
-    }
+    // const shiftsAmount: any = completedShiftsData?.results?.map((item) => {
+    //     if (item?.jobListing?.jobMeetingPoint === "DEPOT") {
+    //         return (
+    //             Number(
+    //                 item?.jobListing?.jobRate?.jobRateDepotFirstDisplayedToDepot
+    //             ) * Number(item?.jobListing?.shiftDurationInHours)
+    //         )
+    //     } else {
+    //         return (
+    //             Number(
+    //                 item?.jobListing?.jobRate?.jobRateMeetOnsiteDisplayedToDepot
+    //             ) * Number(item?.jobListing?.shiftDurationInHours)
+    //         )
+    //     }
+    // })
+    // let totalAmount = 0
+    // for (let i = 0; i < shiftsAmount?.length; i++) {
+    //     totalAmount += Number(shiftsAmount[i])
+    // }
 
     return (
         <Layout>
@@ -115,7 +115,7 @@ const SmPlanner = () => {
                 </div>
                 {activeTab === "completed" && (
                     <div className="relative mt-4">
-                        <Alert
+                        {/* <Alert
                             icon={<IoAlertCircle size={26} />}
                             color="red"
                             radius="md"
@@ -124,7 +124,7 @@ const SmPlanner = () => {
                             {completedShiftsData?.results?.length} completed
                             shift(s) to pay for, to the value of{" "}
                             <strong>£{totalAmount}</strong>
-                        </Alert>
+                        </Alert> */}
                     </div>
                 )}
 
