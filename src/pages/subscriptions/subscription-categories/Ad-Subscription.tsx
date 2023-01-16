@@ -3,13 +3,8 @@ import { FiPlus } from "react-icons/fi"
 import Layout from "../../../components/Layout/index"
 import SubscriptionTable from "../components/SubscriptionTable"
 import { useState } from "react"
-// import {  Group, Modal, TextInput } from "@mantine/core"
-// import { useForm } from "@mantine/form"
-// import InputText from "../components/TextInput"
-// import { FaAngleDown, FaCalendarDay } from "react-icons/fa"
 import Sent from "../../../assets/sent.svg"
-import {  Group, Modal, Select, TextInput } from "@mantine/core"
-// import DatePickers from "../../../components/DatePicker"
+import { Group, Modal, Select, TextInput } from "@mantine/core"
 import {
     useCreateSubscription,
     useGetAdminSubscriptions,
@@ -22,12 +17,7 @@ import { DatePicker, DateRangePicker } from "@mantine/dates"
 import { AiFillInfoCircle } from "react-icons/ai"
 import { BiCalendarEvent, BiPound } from "react-icons/bi"
 import dayjs from "dayjs"
-// import { useAuthContext } from "../../../pages/auth/context/authContext"
-
-// import useAuthContext from "../../../hooks/auth-hooks/useAuth"
 const AdminSubscription = () => {
-    // const { state } = useAuthContext()
-    // console.log(state.jwt?.token)
     const iValues = {
         depot: {
             label: "",
@@ -75,13 +65,6 @@ const AdminSubscription = () => {
     })
     const { data: subscriptionPrices } = useGetSubscriptionPrice()
     const { mutate } = useCreateSubscription()
-
-    // console.log(subscriptionPrices)
-    // console.log(depotRegions)
-    // const { state } = useAuthContext()
-    // console.log(state?.user)
-    // console.log(depotCompanies)
-    // console.log(subscriptionData)
 
     const subscriptionPlans = [
         {
@@ -161,14 +144,7 @@ const AdminSubscription = () => {
     const onDepotChange = (e: any) => {
         form.setFieldValue("depot.label", e.depotName)
     }
-    // const handleSubmit = () => {
-    //     form.onSubmit((values) => console.log(values))
-    // }
 
-    // console.log(submittedValues)
-    // console.log(JSON.parse(submittedValues))
-    // console.log(dayjs(form.values.endDate).diff(dayjs(form.values.startDate), "month"))
-    // console.log(subscriptionPrices?.subscriptionPrice?.pro)
     return (
         <Layout>
             <main className="md:p-6 p-6 mt-4 md:mt-14">
@@ -324,7 +300,6 @@ const AdminSubscription = () => {
                                         {...form.getInputProps(
                                             "totalAmountPaid"
                                         )}
-                                        // onChange={() => form.setFieldValue('totalAmountPaid', (Number(form.values.totalAmountPaid) * (dayjs(form.values.endDate).diff(dayjs(form.values.startDate), "month"))) )}
                                     />
                                 ) : (
                                     <TextInput
@@ -377,7 +352,6 @@ const AdminSubscription = () => {
                                 </Button>
                             </Group>
                         </form>
-                        {/* {submittedValues && <Code block>{submittedValues}</Code>} */}
                     </div>
                 </Modal>
             )}

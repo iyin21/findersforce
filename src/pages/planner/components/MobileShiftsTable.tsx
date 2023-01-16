@@ -6,9 +6,7 @@ import TimeEstimate from "./TimeEstimate"
 
 const MobileShiftsTable = ({ elements, status }: ShiftsTableInterface) => {
     const navigate = useNavigate()
-    const handleNavigate = (id: string, status: string) => {
-        navigate(`/planner/${id}`, { state: { status: status } })
-    }
+    
     return (
         <div className="mt-4">
             {elements?.map((element, index) => (
@@ -29,10 +27,9 @@ const MobileShiftsTable = ({ elements, status }: ShiftsTableInterface) => {
                                     size={20}
                                     style={{ color: "#889088" }}
                                     onClick={() =>
-                                        handleNavigate(
-                                            element?.jobListing?._id,
-                                            status
-                                        )
+                                        navigate(`/planner/${element?.jobListing?._id}`, {
+                                            state: { status: status, scheduleId: element?._id },
+                                        })
                                     }
                                 />
                             </div>
@@ -93,14 +90,24 @@ const MobileShiftsTable = ({ elements, status }: ShiftsTableInterface) => {
                                 <h6 className="text-black-50 text-3sm">
                                     HOURLY RATE
                                 </h6>
-                                <p className="text-2md mt-1">
-                                    {element?.jobListing?.jobRate?.currency}
-                                    {
-                                        element?.jobListing?.jobRate
-                                            ?.jobRatePerHourDisplayedToDepot
-                                    }{" "}
-                                    /hr
-                                </p>
+                                {element?.jobListing.jobMeetingPoint ===
+                                "DEPOT" ? (
+                                    <p className="text-2md mt-1">
+                                        {element?.jobListing.jobRate.currency}
+                                        {element?.jobListing?.jobRate
+                                            .jobRateDepotFirstDisplayedToDepot *
+                                            element?.jobListing
+                                                ?.shiftDurationInHours}
+                                    </p>
+                                ) : (
+                                    <p className="text-2md mt-1">
+                                        {element?.jobListing.jobRate.currency}
+                                        {element?.jobListing?.jobRate
+                                            .jobRateMeetOnsiteDisplayedToDepot *
+                                            element?.jobListing
+                                                ?.shiftDurationInHours}
+                                    </p>
+                                )}
                             </div>
                         </div>
                         {status === "ongoing" && (

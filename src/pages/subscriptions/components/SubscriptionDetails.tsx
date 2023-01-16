@@ -1,14 +1,14 @@
-import { SubscriptionTableInterface } from "../../../types/subscriptions/interface"
 import { Table } from "@mantine/core"
-import MobileSubscriptionTable from "./MobileSubscriptionTable"
+
 import Layout from "../../../components/Layout/index"
 import { AiOutlineArrowLeft } from "react-icons/ai"
 import dayjs from "dayjs"
 import { useGetAdminSubscriptions } from "../../../hooks/subscriptions/useSubscriptions.hooks"
 import { useLocation, useNavigate } from "react-router-dom"
 import ProfileImage from "../../../assets/profile.png"
+import MobileSubscriptionDetail from "./MobileSubscriptionDetails"
 
-const SubscriptionDetails = ({ elements }: SubscriptionTableInterface) => {
+const SubscriptionDetails = () => {
     const navigate = useNavigate()
     const location = useLocation()
     const companyId = location?.state?.companyId
@@ -45,7 +45,9 @@ const SubscriptionDetails = ({ elements }: SubscriptionTableInterface) => {
         { list: "DATE PAID" },
     ]
 
-    const element = subscriptionData?.results?.find((item) => item?.depotCompany?._id === companyId)
+    const element = subscriptionData?.results?.find(
+        (item) => item?.depotCompany?._id === companyId
+    )
     return (
         <>
             <Layout>
@@ -57,15 +59,21 @@ const SubscriptionDetails = ({ elements }: SubscriptionTableInterface) => {
                         />
                     </div>
                     <div className="lg:flex gap-4">
-                      <div>
-                        <img src={ProfileImage} alt="profile" />
-                      </div>
+                        <div>
+                            <img src={ProfileImage} alt="profile" />
+                        </div>
                         <div>
                             <h1 className="text-xl md:text-3xl font-creatoBold text-black-100 font-bold">
-                                {element?.depotCompany?.name}, <span className="font-creato font-normal text-black-80">{element?.depotCompany?.address}</span>
+                                {element?.depotCompany?.name},{" "}
+                                <span className="font-creato font-normal text-black-80">
+                                    {element?.depotCompany?.address}
+                                </span>
                             </h1>
                             <p className="text-black-60 text-2md md:text-lg font-normal font-creato">
-                            {dayjs(element?.paymentDate).format("MMM DD, YYYY")} | Subscription History
+                                {dayjs(element?.paymentDate).format(
+                                    "MMM DD, YYYY"
+                                )}{" "}
+                                | Subscription History
                             </p>
                         </div>
                         {/* <div className="relative lg:pb-4 bottom-0 lg:bottom-0">
@@ -73,10 +81,7 @@ const SubscriptionDetails = ({ elements }: SubscriptionTableInterface) => {
                         </div> */}
                     </div>
                 </div>
-                <div
-                    className="hidden lg:block overflow-x-hidden "
-                    data-testid="subscription"
-                >
+                <div className="hidden lg:block " data-testid="subscription">
                     <Table
                         style={{
                             backgroundColor: "#FFFFFF",
@@ -106,8 +111,8 @@ const SubscriptionDetails = ({ elements }: SubscriptionTableInterface) => {
                         <tbody className="cursor-pointer">{rows}</tbody>
                     </Table>
                 </div>
-                <div className="block lg:hidden">
-                    <MobileSubscriptionTable elements={elements} />
+                <div className="block lg:hidden p-6 mt-4">
+                    <MobileSubscriptionDetail />
                 </div>
             </Layout>
         </>

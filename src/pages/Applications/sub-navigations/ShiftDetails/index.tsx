@@ -9,6 +9,8 @@ import { CgSpinner } from "react-icons/cg"
 import relativeTime from "dayjs/plugin/relativeTime"
 import dayjs from "dayjs"
 import { useNavigate, useParams } from "react-router-dom"
+import { AiFillStar } from "react-icons/ai"
+// import { useAuthContext } from "../../../auth/context/authContext"
 dayjs.extend(relativeTime)
 
 const ShiftDetails = ({
@@ -20,10 +22,15 @@ const ShiftDetails = ({
 }) => {
     const { shiftIds } = useParams<string>()
     const navigate = useNavigate()
+    
+    // const {state} = useAuthContext()
+    // console.log(state.jwt?.token)
 
     const { data, isLoading } = useGetShiftHistory({
-        operativeId: shiftId || shiftIds,
+        operativeId: shiftId
     })
+    // console.log(data)
+    
 
     const item = data?.results.find(
         (item) =>
@@ -36,7 +43,7 @@ const ShiftDetails = ({
                     <CgSpinner className="animate-spin text-primary-90 text-4xl" />
                 </div>
             ) : (
-                <div className="pt-4 px-6">
+                <div className="pt-4 px-6 mt-6">
                     <span
                         onClick={() => {
                             !navigate ? setPhase(2) : navigate(-1)
@@ -49,35 +56,49 @@ const ShiftDetails = ({
                     <div className="mt-10 mb-6 flex flex-col md:flex-row justify-between">
                         <div className="flex">
                             <div>
-                                <img src={Avatar} alt="" />{" "}
+                                <img
+                                    src={
+                                        item?.operative.profileImageUrl ||
+                                        Avatar
+                                    }
+                                    className="rounded-full  h-14 w-14"
+                                    alt="profile"
+                                />
                             </div>
 
                             <div className="pl-4 ">
-                                <h5 className="font-bold">
+                                <h5 className="font-extrabold font-creatoBold text-2mxl">
                                     {" "}
                                     {item?.operative.firstName +
                                         " " +
-                                        item?.operative.lastName}
+                                        item?.operative.lastName} {}
                                 </h5>
                                 <p className="text-black-70">
-                                    Joined{" "}
-                                    {dayjs(item?.operative.createdAt).fromNow()}
+                                    <span className="font-bold font-creatoBold text-black-100">  <AiFillStar
+                                                size={20}
+                                                style={{ color: "#FED70A" }}
+                                                className="inline"
+                                            /> {item?.operative.averageRating} <span className="font-normal font-creato text-md text-black-50">({item?.operative.completedShifts} shifts)</span></span>
                                     <span className="text-black-10 pl-1">
                                         |
                                     </span>
-                                    <span className="text-green-100 pl-1 font-bold">
-                                        {item?.jobListing?.jobMatchPercentage}%
-                                        Match
+                                    <span className="pl-1">
+                                        {item?.jobListing.jobQualification.name}
                                     </span>
+                                    <span className="text-black-10 px-1">
+                                        |
+                                    </span>
+                                    Joined{" "}
+                                    {dayjs(item?.operative.createdAt).fromNow()}
                                 </p>
                             </div>
                         </div>
-                        <button className="bg-green-10 lg:p-6 mr-4 flex text-green-100 font-bold items-center lg:px-10 p-3 rounded rounded-tr-2xl mt-3 md:mt-0">
+                        <button className="bg-blue-10 lg:p-6 mr-4 flex text-blue-100 font-bold items-center lg:px-10 p-3 rounded rounded-tr-2xl mt-3 md:mt-0">
                             <img src={Message} alt="" className="mr-2" />
                             Message {item?.operative?.firstName}
                         </button>
                     </div>
-                    <ShiftTable elements={data?.results || []} />
+                    <ShiftTable elements={data?.results}  />
                 </div>
             )}
         </>

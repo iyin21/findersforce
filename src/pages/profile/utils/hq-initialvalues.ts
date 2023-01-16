@@ -7,5 +7,8 @@ export const HqProfileInitialValue = {
     regionAddress: "",
     accountType: "",
     email: [],
-    subscriptionPlan: ""
+    subscriptionPlan: "",
+    regional_manager: [],
+    shift_manager: [],
+    invitedRole: "",
 }

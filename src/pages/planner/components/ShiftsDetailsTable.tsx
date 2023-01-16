@@ -1,10 +1,9 @@
-import { Table, Tabs } from "@mantine/core"
+import { Alert, Table, Tabs } from "@mantine/core"
 import { ChangeEvent, useEffect, useState } from "react"
 import { BiDotsVerticalRounded } from "react-icons/bi"
 import { FaAngleRight } from "react-icons/fa"
 import Layout from "../../../components/Layout/index"
 import {
-    useGetOperativeRatingSummary,
     useGetShiftHistoryByJobListingId,
     useGetSingleSchedule,
     usePaymentEvidenceUpload,
@@ -17,11 +16,13 @@ import { CgSpinner } from "react-icons/cg"
 import Pagination from "../../../components/Pagination/pagination"
 import MobileShiftsDetailsTable from "./MobileShiftsDetailsTable"
 import { Button, Checkbox } from "../../../components"
-import { FiPlus } from "react-icons/fi"
+// import { FiPlus } from "react-icons/fi"
 import TimeEstimate from "./TimeEstimate"
 import PaymentEvidenceUpload from "../../../components/Modals/Planner/PaymentEvidenceUpload"
 import OperativeProfile from "../../../components/Modals/Planner/OperativeProfile"
 import Menu from "../../../components/Modals/Planner/Menu"
+import Cancel from "../../../components/Modals/Planner/Cancel"
+import { IoAlertCircle } from "react-icons/io5"
 
 const ShiftsDetailTable = () => {
     const { jobListingId } = useParams<string>()
@@ -29,7 +30,9 @@ const ShiftsDetailTable = () => {
     const location = useLocation()
 
     const queryStatus = location?.state?.status
+
     const scheduleId = location?.state?.scheduleId
+    // console.log(scheduleId)
 
     const { data: shiftsData, isLoading: isLoadingShiftsData } =
         useGetShiftHistoryByJobListingId({
@@ -44,6 +47,7 @@ const ShiftsDetailTable = () => {
     const { data, isError, mutate } = usePaymentEvidenceUpload({
         scheduleId: scheduleId,
     })
+    
 
     const [activeTab, setActiveTab] = useState<string | null>("unpaid")
     const [checkedShift, setCheckedShift] = useState<string[]>([])
@@ -55,14 +59,13 @@ const ShiftsDetailTable = () => {
     const [operativeId, setOperativeId] = useState("")
     const [, setError] = useState("")
     const [, setFileName] = useState("")
-    const [checkedOperative, setCheckedOperative] = useState("");
-    
+    const [checkedOperative, setCheckedOperative] = useState("")
+    const [openCancel, setOpenCancel] = useState(false)
 
     function handleFinishPayment() {
         setOpenPayment(!openPayment)
         setButtonState(!buttonState)
     }
-
 
     const handleActivePage = (pageNumber: number) => {
         setActivePage(pageNumber)
@@ -81,7 +84,7 @@ const ShiftsDetailTable = () => {
         const { value } = e.target
         const isChecked = e.target.checked
         if (isChecked) {
-            setCheckedShift([...checkedShift, value]);
+            setCheckedShift([...checkedShift, value])
             setCheckedOperative(value)
         } else {
             setCheckedShift(checkedShift.filter((item) => item !== value))
@@ -91,17 +94,47 @@ const ShiftsDetailTable = () => {
 
     const { data: checkedData } = useGetSingleSchedule({
         jobListingId: jobListingId,
-        operativeId: checkedOperative
+        operativeId: checkedOperative,
+    })
+
+    const amount: any = checkedData?.results?.map((item) => {
+        if (item?.jobListing.jobMeetingPoint === "DEPOT") {
+            return Number(
+                item?.jobListing?.jobRate?.jobRateDepotFirstDisplayedToDepot *
+                    item?.jobListing?.shiftDurationInHours *
+                    checkedShift?.length
+            )
+        } else {
+            return Number(
+                item?.jobListing?.jobRate?.jobRateMeetOnsiteDisplayedToDepot *
+                    item?.jobListing?.shiftDurationInHours *
+                    checkedShift?.length
+            )
+        }
+    })
+    const totalAmount: any = shiftsData?.results?.map((item) => {
+        if (item?.jobListing.jobMeetingPoint === "DEPOT") {
+            return Number(
+                item?.jobListing?.jobRate?.jobRateDepotFirstDisplayedToDepot *
+                    item?.jobListing?.shiftDurationInHours *
+                    shiftsData?.results.length
+            )
+        } else {
+            return Number(
+                item?.jobListing?.jobRate?.jobRateMeetOnsiteDisplayedToDepot *
+                    item?.jobListing?.shiftDurationInHours *
+                    shiftsData?.results.length
+            )
+        }
     })
 
 
-
-    const amount:any = checkedData?.results?.map((item) => {
-        return(Number(item?.jobListing?.jobRate?.jobRatePerHourDisplayedToDepot * item?.jobListing?.shiftDurationInHours * checkedShift?.length))
+    const duration: any = checkedData?.results?.map((item) => {
+        return Number(item?.jobListing?.shiftDurationInHours)
     })
-    
-
-    
+    const totalDuration: any = shiftsData?.results?.map((item) => {
+        return Number(item?.jobListing?.shiftDurationInHours)
+    })
 
     const handleDocumentUpload = (e: ChangeEvent<HTMLInputElement>) => {
         const uploadedFile = e.target.files?.[0]
@@ -142,17 +175,29 @@ const ShiftsDetailTable = () => {
                     </p>
                 </div>
             </td>
-            <td>{element?.jobListing?.jobType?.name}</td>
+            {/* <td>{element?.jobListing?.jobType?.name}</td> */}
             <td>{element?.jobListing?.jobLocation?.formattedAddress}</td>
             <td>
-                {dayjs(element?.jobListing?.shiftStartTime).format("h")} -{" "}
-                {dayjs(element?.jobListing.shiftEndTime).format("h A")}
+                {dayjs(element?.jobListing?.shiftStartTime).format("HH:mm")} -{" "}
+                {dayjs(element?.jobListing.shiftEndTime).format("HH:mm")}
             </td>
-            <td>
-                {element?.jobListing?.jobRate?.currency}
-                {element?.jobListing?.jobRate?.jobRatePerHourDisplayedToDepot}
-                /hr
-            </td>
+            {element?.jobListing.jobMeetingPoint === "DEPOT" ? (
+                <td>
+                    {element?.jobListing?.jobRate?.currency}
+                    {
+                        element?.jobListing?.jobRate
+                            ?.jobRateDepotFirstDisplayedToDepot
+                    }
+                </td>
+            ) : (
+                <td>
+                    {element?.jobListing?.jobRate?.currency}
+                    {
+                        element?.jobListing?.jobRate
+                            ?.jobRateMeetOnsiteDisplayedToDepot
+                    }
+                </td>
+            )}
             <td>
                 {element?.jobListing?.jobMeetingPoint === "SITE" ? (
                     <p className="text-black-100 bg-yellow-100 rounded-3xl text-center font-bold p-1 w-fit px-3 py-1 text-3sm font-creatoBlack">
@@ -164,7 +209,7 @@ const ShiftsDetailTable = () => {
                     </p>
                 )}
             </td>
-            <td>{dayjs(element?.clockInTime).format("h:mm A")}</td>
+            <td>{dayjs(element?.clockInTime).format("HH:mm")}</td>
             <td>
                 <BiDotsVerticalRounded
                     size={20}
@@ -184,7 +229,7 @@ const ShiftsDetailTable = () => {
     const paidRows = paidShifts?.map((element, index) => (
         <tr key={index}>
             <td>
-            <div
+                <div
                     className="flex items-center"
                     onClick={(e) => {
                         e.stopPropagation()
@@ -195,18 +240,8 @@ const ShiftsDetailTable = () => {
                         className="rounded-lg"
                         onChange={handleCheckedShift}
                         name={element?.operative?._id}
-                        checked={checkedShift.includes(
-                            (
-                                element?.jobListing?.jobRate
-                                    ?.jobRatePerHourDisplayedToDepot *
-                                element?.jobListing?.shiftDurationInHours
-                            ).toString()
-                        )}
-                        value={(
-                            element?.jobListing?.jobRate
-                                ?.jobRatePerHourDisplayedToDepot *
-                            element?.jobListing?.shiftDurationInHours
-                        ).toString()}
+                        checked={checkedShift.includes(element?.operative?._id)}
+                        value={element?.operative?._id}
                         data-testid="checkbox"
                     />
                     <label htmlFor={element?.operative?._id}>{index + 1}</label>
@@ -221,17 +256,29 @@ const ShiftsDetailTable = () => {
                     </p>
                 </div>
             </td>
-            <td>{element?.jobListing?.jobType?.name}</td>
+            {/* <td>{element?.jobListing?.jobType?.name}</td> */}
             <td>{element?.jobListing?.jobLocation?.formattedAddress}</td>
             <td>
-                {dayjs(element?.jobListing?.shiftStartTime).format("h")} -{" "}
-                {dayjs(element?.jobListing.shiftEndTime).format("h A")}
+                {dayjs(element?.jobListing?.shiftStartTime).format("HH:mm")} -{" "}
+                {dayjs(element?.jobListing.shiftEndTime).format("HH:mm")}
             </td>
-            <td>
-                {element?.jobListing?.jobRate?.currency}
-                {element?.jobListing?.jobRate?.jobRatePerHourDisplayedToDepot}
-                /hr
-            </td>
+            {element?.jobListing.jobMeetingPoint === "DEPOT" ? (
+                <td>
+                    {element?.jobListing?.jobRate?.currency}
+                    {
+                        element?.jobListing?.jobRate
+                            ?.jobRateDepotFirstDisplayedToDepot
+                    }
+                </td>
+            ) : (
+                <td>
+                    {element?.jobListing?.jobRate?.currency}
+                    {
+                        element?.jobListing?.jobRate
+                            ?.jobRateMeetOnsiteDisplayedToDepot
+                    }
+                </td>
+            )}
             <td>
                 {element?.jobListing?.jobMeetingPoint === "SITE" ? (
                     <p className="text-black-100 bg-yellow-100 rounded-3xl text-center font-bold p-1 w-fit px-3 py-1 text-3sm font-creatoBlack">
@@ -243,7 +290,7 @@ const ShiftsDetailTable = () => {
                     </p>
                 )}
             </td>
-            <td>{dayjs(element?.clockInTime).format("h:mm A")}</td>
+            <td>{dayjs(element?.clockInTime).format("HH:mm")}</td>
             <td>
                 <BiDotsVerticalRounded
                     size={20}
@@ -267,9 +314,7 @@ const ShiftsDetailTable = () => {
                         className="rounded-lg"
                         onChange={handleCheckedShift}
                         name={element?.operative?._id}
-                        checked={checkedShift.includes(
-                            element?.operative?._id
-                        )}
+                        checked={checkedShift.includes(element?.operative?._id)}
                         value={element?.operative?._id}
                         data-testid="checkbox"
                     />
@@ -285,17 +330,29 @@ const ShiftsDetailTable = () => {
                     </p>
                 </div>
             </td>
-            <td>{element?.jobListing?.jobType?.name}</td>
+            {/* <td>{element?.jobListing?.jobType?.name}</td> */}
             <td>{element?.jobListing?.jobLocation?.formattedAddress}</td>
             <td>
-                {dayjs(element?.jobListing?.shiftStartTime).format("h")} -{" "}
-                {dayjs(element?.jobListing.shiftEndTime).format("h A")}
+                {dayjs(element?.jobListing?.shiftStartTime).format("HH:mm")} -{" "}
+                {dayjs(element?.jobListing.shiftEndTime).format("HH:mm")}
             </td>
-            <td>
-                {element?.jobListing?.jobRate?.currency}
-                {element?.jobListing?.jobRate?.jobRatePerHourDisplayedToDepot}
-                /hr
-            </td>
+            {element?.jobListing.jobMeetingPoint === "DEPOT" ? (
+                <td>
+                    {element?.jobListing?.jobRate?.currency}
+                    {
+                        element?.jobListing?.jobRate
+                            ?.jobRateDepotFirstDisplayedToDepot
+                    }
+                </td>
+            ) : (
+                <td>
+                    {element?.jobListing?.jobRate?.currency}
+                    {
+                        element?.jobListing?.jobRate
+                            ?.jobRateMeetOnsiteDisplayedToDepot
+                    }
+                </td>
+            )}
             <td>
                 {element?.jobListing?.jobMeetingPoint === "SITE" ? (
                     <p className="text-black-100 bg-yellow-100 rounded-3xl text-center font-bold p-1 w-fit px-3 py-1 text-3sm font-creatoBlack">
@@ -307,7 +364,7 @@ const ShiftsDetailTable = () => {
                     </p>
                 )}
             </td>
-            <td>{dayjs(element?.clockInTime).format("h:mm A")}</td>
+            <td>{dayjs(element?.clockInTime).format("HH:mm ")}</td>
             <td>
                 <BiDotsVerticalRounded
                     size={20}
@@ -319,35 +376,27 @@ const ShiftsDetailTable = () => {
 
     const tableHeadActive = [
         { list: "NO" },
-        { list: "NAME" },
-        { list: "JOB TYPE" },
+        { list: "OPERATIVE" },
         { list: "LOCATION" },
         { list: "SCHEDULE" },
         { list: "RATE" },
         { list: "MODE" },
-        { list: "CLOCK-IN TIME" },
+        { list: "CLOCK-IN" },
     ]
 
     const tableHeadCancelled = [
         { list: "NO" },
-        { list: "NAME" },
-        { list: "JOB TYPE" },
+        { list: "OPERATIVE" },
         { list: "LOCATION" },
         { list: "SCHEDULE" },
         { list: "RATE" },
         { list: "MODE" },
-        { list: "CANCELLED TIME" },
+        { list: "CANCELLED" },
     ]
     const element = shiftsData?.results?.find(
         (item) => item?.jobListing?._id === jobListingId
     )
-    const singleElement = singleShift?.results?.find(
-        (item) => item?.jobListing?._id === jobListingId
-    )
 
-    const { data: operativeData } = useGetOperativeRatingSummary({
-        id: singleElement?.operative?._id,
-    })
     return (
         <>
             <Layout>
@@ -376,34 +425,19 @@ const ShiftsDetailTable = () => {
                                         |{" "}
                                         {dayjs(
                                             element?.jobListing?.shiftStartTime
-                                        ).format("h:mm A")}{" "}
+                                        ).format("HH:mm")}{" "}
                                         -{" "}
                                         {dayjs(
                                             element?.jobListing.shiftEndTime
-                                        ).format("h:mm A")}
+                                        ).format("HH:mm")}
                                     </p>
                                 </div>
-                                {queryStatus === "completed" && (
-                                    <div>
-                                        <Button
-                                            variant="green"
-                                            className="py-3 font-semibold font-creatoMedium"
-                                            style={{ backgroundColor: "black" }}
-                                            iconLeft={<FiPlus size={20} />}
-                                            data-testid="make_payment_btn"
-                                            iconRight={
-                                                <FaAngleRight size={20} />
-                                            }
-                                            onClick={() =>
-                                                setOpenPayment(!openPayment)
-                                            }
-                                        >
-                                            Make Payments
-                                        </Button>
-                                    </div>
-                                )}
+
                                 {queryStatus === "ongoing" && (
-                                    <div className="px-4">
+                                    <div className="">
+                                        <p className="bg-yellow-100 rounded-xl text-3sm font-bold font-creato mb-4 py-1 text-center">
+                                            ACTIVE SHIFT ENDS IN
+                                        </p>
                                         <TimeEstimate
                                             initialDate={
                                                 new Date(
@@ -415,13 +449,96 @@ const ShiftsDetailTable = () => {
                                 )}
                                 {queryStatus === "cancelled" && (
                                     <div className="flex items-center">
-                                        <p className="bg-red-100 rounded-xl px-3 text-white-100 font-creato">
+                                        <p className="bg-red-100 rounded-xl px-3 text-white-100 font-creato text-3sm py-1">
                                             SHIFTS CANCELLED
                                         </p>
                                     </div>
                                 )}
                             </div>
-                            
+                            {queryStatus === "completed" && (
+                                <div className="relative mt-4">
+                                    <Alert
+                                        icon={
+                                            <IoAlertCircle
+                                                size={26}
+                                                className="mt-8"
+                                            />
+                                        }
+                                        color="blue"
+                                        radius="md"
+                                    >
+                                        <div className="flex justifiy-between">
+                                            <p className="place-self-center">
+                                                Your depot has completed a total
+                                                of{" "}
+                                                <strong>
+                                                    {
+                                                        checkedData?.results
+                                                            ?.length || shiftsData?.results.length
+                                                    }{" "}
+                                                    shifts ({duration || totalDuration} hours){" "}
+                                                </strong>
+                                                ,generating a running invoivce
+                                                of <strong>£{amount || totalAmount}</strong>
+                                            </p>
+                                            {checkedData?.results.length !==
+                                            undefined ? (
+                                                <div className="mr-2 ml-auto">
+                                                    {" "}
+                                                    <Button
+                                                        variant="green"
+                                                        className="py-3 font-semibold font-creatoMedium"
+                                                        style={{
+                                                            backgroundColor:
+                                                                "black",
+                                                        }}
+                                                        // iconLeft={<FiPlus size={20} />}
+                                                        data-testid="make_payment_btn"
+                                                        iconRight={
+                                                            <FaAngleRight
+                                                                size={20}
+                                                            />
+                                                        }
+                                                        onClick={() =>
+                                                            setOpenPayment(
+                                                                !openPayment
+                                                            )
+                                                        }
+                                                    >
+                                                        Make Payments
+                                                    </Button>
+                                                </div>
+                                            ) : (
+                                                <div className="mr-2 ml-auto">
+                                                    {" "}
+                                                    <Button
+                                                        variant="green"
+                                                        className="py-3 font-semibold font-creatoMedium"
+                                                        style={{
+                                                            backgroundColor:
+                                                                "gray",
+                                                        }}
+                                                        // iconLeft={<FiPlus size={20} />}
+                                                        data-testid="make_payment_btn"
+                                                        iconRight={
+                                                            <FaAngleRight
+                                                                size={20}
+                                                            />
+                                                        }
+                                                        // onClick={() =>
+                                                        //     setOpenPayment(
+                                                        //         !openPayment
+                                                        //     )
+                                                        // }
+                                                    >
+                                                        Make Payments
+                                                    </Button>
+                                                </div>
+                                            )}
+                                        </div>
+                                    </Alert>
+                                </div>
+                            )}
                         </div>
                         <div className="hidden lg:block " data-testid="planner">
                             {queryStatus !== "completed" ? (
@@ -594,6 +711,8 @@ const ShiftsDetailTable = () => {
                         queryStatus={queryStatus}
                         openMenu={openMenu}
                         setOpenMenu={setOpenMenu}
+                        openCancel={openCancel}
+                        setOpenCancel={setOpenCancel}
                     />
                 )}
 
@@ -605,6 +724,7 @@ const ShiftsDetailTable = () => {
                         handleFinishPayment={handleFinishPayment}
                         handleDocumentUpload={handleDocumentUpload}
                         buttonState={buttonState}
+                        data={data}
                     />
                 )}
 
@@ -612,7 +732,14 @@ const ShiftsDetailTable = () => {
                     <OperativeProfile
                         openProfile={openProfile}
                         setOpenProfile={setOpenProfile}
-                        operativeData={operativeData}
+                        scheduleId={scheduleId}
+                    />
+                )}
+
+                {openCancel && (
+                    <Cancel
+                        openCancel={openCancel}
+                        setOpenCancel={setOpenCancel}
                         operativeId={operativeId}
                         jobListingId={jobListingId}
                     />
