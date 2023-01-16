@@ -52,6 +52,8 @@ const RateOperatives = () => {
         helpfulnessScore: helpfulnessScore,
     }
 
+    // console.log(checkedOperative)
+
     const ratingShiftsData = shiftsData?.results.filter(
         (item) => item?.depotHasRated === false
     )
@@ -159,21 +161,25 @@ const RateOperatives = () => {
                                         </p>
                                     </div>
                                 </div>
-                                <div>
-                                    <Button
-                                        variant="green"
-                                        className="py-3 font-semibold font-creatoMedium"
-                                        style={{
-                                            backgroundColor:
-                                                "rgba(77, 178, 93, 1)",
-                                        }}
-                                        iconLeft={<AiOutlineCheck size={20} />}
-                                        data-testid="submit_btn"
-                                        onClick={() => mutate(values)}
-                                    >
-                                        Submit
-                                    </Button>
-                                </div>
+                                {checkedOperative !== "" && (
+                                    <div>
+                                        <Button
+                                            variant="green"
+                                            className="py-3 font-semibold font-creatoMedium"
+                                            style={{
+                                                backgroundColor:
+                                                    "rgba(77, 178, 93, 1)",
+                                            }}
+                                            iconLeft={
+                                                <AiOutlineCheck size={20} />
+                                            }
+                                            data-testid="submit_btn"
+                                            onClick={() => mutate(values)}
+                                        >
+                                            Submit
+                                        </Button>
+                                    </div>
+                                )}
                             </div>
                         </div>
                         {ratingShiftsData?.length !== 0 ? (
@@ -233,13 +239,13 @@ const RateOperatives = () => {
                         ) : (
                             <div className="mx-4">
                                 <EmptyView
-                                title="You have rated all operatives on this shift."
-                                description=""
-                                buttonText="Post shift"
-                                handleButtonClick={() => {
-                                    navigate("/job-boards")
-                                }}
-                            />
+                                    title="You have rated all operatives on this shift."
+                                    description=""
+                                    buttonText="Post shift"
+                                    handleButtonClick={() => {
+                                        navigate("/job-boards")
+                                    }}
+                                />
                             </div>
                         )}
                     </>
