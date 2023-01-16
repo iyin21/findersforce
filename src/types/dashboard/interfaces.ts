@@ -31,12 +31,12 @@ export type ShiftCardProps = {
 }
 
 export type CardProps = {
-     title:string,
-     desc: string
-     amount:number | undefined,
-     icon: string,
-     subtitle: string | undefined
-     onClick: any
+    title: string
+    desc: string
+    amount: number | undefined
+    icon: string
+    subtitle: string | undefined
+    onClick: any
 }
 
 export interface DashboardResponse {
@@ -123,6 +123,29 @@ export interface Regions {
     averageRating: number
     shiftManagerCount: number
     regionalManagerCount: number
+    isTrial: boolean
+    regionalManagers: any[]
+    subscriptionPlanStatus: string
+    __v: number
+    lastSubscription: LastSubscription
+}
+
+interface LastSubscription {
+    createdAt: string
+    createdBy: string
+    depotCompany: string
+    depotRegion: string
+    endDate: string
+    paymentDate: string
+    paymentInvoice: string
+    paymentMethod: string
+    space: number
+    startDate: string
+    subscriptionPlan: string
+    totalAmountPaid: number
+    updatedAt: string
+    __v: number
+    _id: string
 }
 
 export interface Location {

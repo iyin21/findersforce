@@ -10,36 +10,51 @@ const login = (
     showError: (val: boolean) => void,
     setIsSubmitting: (val: boolean) => void,
     dispatch: (arg0: AuthActionType) => void,
-    navigate: (arg0: string, arg1: { replace: boolean }) => void
+    navigate: (
+        arg0: string,
+        arg1: { replace: boolean },
+        arg2?: { state: { email: string } }
+    ) => void
 ) => {
     axiosInstance
         .post("/auth/login", { email: email, password: password })
         .then(async (response) => {
             const user = response.data?.data?.user
-            const res = await axiosInstance.get(
-                "/user/profile",
-                {
+
+            if (user) {
+                const res = await axiosInstance.get("/user/profile", {
                     headers: {
                         Authorization: `Bearer ${response.data.data.jwt.token}`,
                     },
-                }
-            )
-
-            if (user.accountType === "DEPOT" || user?.accountType === "ADMIN") {
-                dispatch({
-                    type: "SET_USER_DATA",
-                    payload: {
-                        user: res.data.data,
-                        jwt: response.data.data.jwt,
-                    },
                 })
-                user?.accountType === admin ? navigate("/analytics", { replace: true }) : navigate(from, { replace: true })
+
+                if (
+                    user.accountType === "DEPOT" ||
+                    user?.accountType === "ADMIN"
+                ) {
+                    dispatch({
+                        type: "SET_USER_DATA",
+                        payload: {
+                            user: res.data.data,
+                            jwt: response.data.data.jwt,
+                        },
+                    })
+                    user?.accountType === admin
+                        ? navigate("/analytics", { replace: true })
+                        : navigate(from, { replace: true })
+                } else {
+                    showError(true)
+                    setErrorMsg(
+                        "Unauthorized! You have to be a Depot manager or an Admin to have access"
+                    )
+                    setIsSubmitting(false)
+                }
             } else {
-                showError(true)
-                setErrorMsg(
-                    "Unauthorized! You have to be a Depot manager or an Admin to have access"
+                navigate(
+                    "/auth/verify-2fa",
+                    { replace: false },
+                    { state: { email: email } }
                 )
-                setIsSubmitting(false)
             }
         })
         .catch((err) => {
