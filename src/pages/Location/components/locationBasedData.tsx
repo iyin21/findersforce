@@ -16,8 +16,8 @@ import { BsCalendar2Date } from "react-icons/bs"
 import { useGetAllManagers } from "../../../hooks/location/depot-hook"
 import { useGetShiftHistory } from "../../../hooks/planner/usePlanner.hooks"
 import { CgSpinner } from "react-icons/cg"
-import EmptyState from "../../../pages/Approvals/components/EmptyState"
 import dayjs from "dayjs"
+import EmptyState from "../../../components/EmptyStates/index"
 
 const LocationBasedData = () => {
     const [activeTab, setActiveTab] = useState<string | null>("analytics")
@@ -91,7 +91,8 @@ const LocationBasedData = () => {
                                 {address}
                             </h1>
                             <p className="text-black-60 text-2md md:text-lg font-normal font-creato">
-                                Added {dayjs(createdAt).format("MMM D, YYYY")} | {dayjs(createdAt).format("h:mm A")}
+                                Added {dayjs(createdAt).format("MMM D, YYYY")} |{" "}
+                                {dayjs(createdAt).format("h:mm A")}
                             </p>
                         </div>
                     </div>
@@ -230,7 +231,11 @@ const LocationBasedData = () => {
                             </Tabs.List>
 
                             <Tabs.Panel value="analytics" pt="xs">
-                                <Analytics value={value} setValue={setValue} regionId={locationId || ""}/>
+                                <Analytics
+                                    value={value}
+                                    setValue={setValue}
+                                    regionId={locationId || ""}
+                                />
                             </Tabs.Panel>
 
                             <Tabs.Panel value="managers" pt="xs">
@@ -238,7 +243,12 @@ const LocationBasedData = () => {
                                 allManagersData.length > 0 ? (
                                     <RolesTable elements={allManagersData} />
                                 ) : (
-                                    <EmptyState description="When a Manager accepts an invitation, they will show here." />
+                                    <EmptyState
+                                        title="This Depot has no active Managers"
+                                        description="This Depot has no active Managers"
+                                        buttonText="Add managers"
+                                        handleButtonClick={() => {}}
+                                    />
                                 )}
                             </Tabs.Panel>
 
@@ -249,7 +259,11 @@ const LocationBasedData = () => {
                                         elements={allShiftsData.results}
                                     />
                                 ) : (
-                                    <EmptyState description="When the Depot creates and posts a shift you will be able to manage it here." />
+                                    <EmptyState
+                                        handleButtonClick={() => {}}
+                                        title="This Depot has no posted shifts right now."
+                                        description="When the Depot creates and posts a shift you will be able to manage it here."
+                                    />
                                 )}
                             </Tabs.Panel>
 
@@ -260,7 +274,11 @@ const LocationBasedData = () => {
                                         elements={allActiveShiftsData?.results}
                                     />
                                 ) : (
-                                    <EmptyState description="When a shift starts, you can track it here." />
+                                    <EmptyState
+                                        handleButtonClick={() => {}}
+                                        title="This Depot has no active shifts right now."
+                                        description="When a shift starts, you can track it here."
+                                    />
                                 )}
                             </Tabs.Panel>
 
@@ -273,7 +291,12 @@ const LocationBasedData = () => {
                                         }
                                     />
                                 ) : (
-                                    <EmptyState description="When a shift is complete, you can review it here and pay wages." />
+                                    <EmptyState
+                                       buttonText="Post Shift"
+                                        handleButtonClick={() => {navigate("/job-boards")}}
+                                        title="This Depot has no completed shifts right now."
+                                        description="When a shift is complete, you can review it here and pay wages."
+                                    />
                                 )}
                             </Tabs.Panel>
                         </Tabs>
