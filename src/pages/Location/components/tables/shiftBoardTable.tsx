@@ -1,66 +1,38 @@
 import { Checkbox, Table } from "@mantine/core"
 import { IoIosArrowForward } from "react-icons/io"
 import { BiUpArrowAlt } from "react-icons/bi"
+import { Result } from "../../../../types/planner/interfaces"
 import MobileLocationShiftTable from "../mobile-tables/mobileLocationShiftTable"
+import dayjs from "dayjs"
 
-const ShiftBoard = () => {
-    const elements: any[] = [
-        {
-            _id: 1,
-            operative: {
-                firstName: "Shaquan",
-                lastName: "Roberts",
-            },
-        },
-        {
-            _id: 1,
-            operative: {
-                firstName: "Shaquan",
-                lastName: "Roberts",
-            },
-        },
-        {
-            _id: 1,
-            operative: {
-                firstName: "Shaquan",
-                lastName: "Roberts",
-            },
-        },
-        {
-            _id: 1,
-            operative: {
-                firstName: "Shaquan",
-                lastName: "Roberts",
-            },
-        },
-    ]
+const ShiftBoard = ({elements} : {elements: Result[]}) => {
     const rows = elements?.map((element, index) => (
         <tr key={index}>
+            <td>{index + 1}</td>
             <td>
                 <div className="flex items-center gap-2">
                     <Checkbox
                         id={element?._id}
                         className="rounded-lg"
                         name={element?.jobListing?.jobType?.name}
-                        // onChange={handleCheckedProduct}
-                        // checked={checkedProduct.includes(element?._id)}
                         value={element?.id}
                         data-testid="checkbox"
                     />
                 </div>
             </td>
-            <td>2-Way</td>
-            <td>Iolaire Road, New Invent...</td>
-            <td>Nov 15, 2022 | 9-11AM</td>
-            <td>$140/hr</td>
-            <td>2 hour(s)</td>
+            <td className="font-bold">{element?.jobListing?.listingId}</td>
+            <td>{element.jobListing.jobLocation.formattedAddress}</td>
+            <td>{dayjs(element.createdAt).format("MMM D, YYYY")} |{" "}
+                {dayjs(element.createdAt).format("h:mm A")}</td>
+            <td>{element.jobListing.jobRate.currency + " " + element.jobListing.jobRate.jobRatePerHourDisplayedToOp}/hr</td>
+            <td>{element.jobListing.shiftDurationInHours}</td>
             <td>
-                <span>134/</span>
-                <span className="text-black-30">200</span>
+                <span>{element.jobListing.applicationsCount}/</span>
+                <span className="text-black-30">{element.jobListing.numberOfOpsRequired}</span>
             </td>
             <td>
                 <p className="text-black-100 bg-yellow-100 rounded-3xl text-center font-bold p-1 w-fit px-3 py-1 text-3sm font-creatoBlack">
-                    MEET ONSITE
+                    {element.jobListing.jobMeetingPoint}
                 </p>
             </td>
             <td
@@ -78,10 +50,10 @@ const ShiftBoard = () => {
     ))
 
     const tableHeadUpcoming = [
-        { list: "TYPE" },
+        { list: "SHIFT" },
         { list: "LOCATION" },
         { list: "DATE" },
-        { list: "HOURLY RATE" },
+        { list: "RATE" },
         { list: "DURATION" },
         { list: "APPLICANTS" },
         { list: "MODE" },
@@ -90,7 +62,7 @@ const ShiftBoard = () => {
     return (
         <>
             <div
-                className="hidden lg:block overflow-x-hidden "
+                className="hidden lg:block overflow-x-hidden font-creato"
                 data-testid="planner"
             >
                 <Table
@@ -109,12 +81,19 @@ const ShiftBoard = () => {
                                 style={{
                                     borderBottom: "none",
                                 }}
+                            >
+                                <p className="text-black-30 ">{"NO"}</p>
+                            </th>
+                            <th
+                                style={{
+                                    borderBottom: "none",
+                                }}
                                 className="flex items-center gap-2 "
                             >
                                 <Checkbox />
                             </th>
                             {tableHeadUpcoming.map((item, index) =>
-                                item?.list === "HOURLY RATE" ? (
+                                item?.list === "RATE" ? (
                                     <>
                                         <th
                                             key={index}

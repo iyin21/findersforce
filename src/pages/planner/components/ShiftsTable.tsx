@@ -1,16 +1,20 @@
-import { Table } from "@mantine/core"
+import { Menu, Table } from "@mantine/core"
 // import {  AiOutlineArrowUp } from "react-icons/ai"
 import { IoIosArrowForward } from "react-icons/io"
-import { ShiftsTableInterface } from "../../../types/planner/interfaces"
+import { Result, ShiftsTableInterface } from "../../../types/planner/interfaces"
 // import ProfileImage from "../../../assets/ProfileImage.svg"
 import dayjs from "dayjs"
 import { useNavigate } from "react-router-dom"
 import MobileShiftsTable from "./MobileShiftsTable"
 import TimeEstimate from "./TimeEstimate"
+// import { BiDotsVerticalRounded } from "react-icons/bi"
+// import { Dispatch, SetStateAction, useState } from "react"
+import { IoEllipsisVerticalSharp } from "react-icons/io5"
 // import ShiftStar from "../../../assets/ShiftStar.svg"
 
 const ShiftsTable = ({ elements, status }: ShiftsTableInterface) => {
     const navigate = useNavigate()
+    // const [openMenu, setOpenMenu] = useState(false)
     // const handleNavigate = (id: string, status: string) => {
     //     navigate(`/planner/${id}`, { state: { status: status } })
     // }
@@ -34,8 +38,10 @@ const ShiftsTable = ({ elements, status }: ShiftsTableInterface) => {
 
     const rows = elements?.map((element, index) => (
         <tr key={index}>
-            <td>{index + 1}</td>
-            <td>{element?.jobListing?.listingId}</td>
+            <td>
+                {index + 1}
+            </td>
+            <td className="font-bold">{element?.jobListing?.listingId}</td>
             {/* {status !== "completed" && (<td>
           <div className="flex items-center gap-2">
             <img src={ProfileImage} alt="profile_image" />
@@ -46,20 +52,33 @@ const ShiftsTable = ({ elements, status }: ShiftsTableInterface) => {
             {status !== "ongoing" ? (
                 <td>
                     {dayjs(element?.jobListing?.jobDate).format("MMM D, YYYY")}{" "}
-                    | {dayjs(element?.jobListing?.shiftStartTime).format("h")} -{" "}
-                    {dayjs(element?.jobListing.shiftEndTime).format("h A")}
+                    |{" "}
+                    {dayjs(element?.jobListing?.shiftStartTime).format("HH:mm")}{" "}
+                    - {dayjs(element?.jobListing.shiftEndTime).format("HH:mm")}
                 </td>
             ) : (
                 <td>
-                    {dayjs(element?.jobListing?.shiftStartTime).format("h")} -{" "}
-                    {dayjs(element?.jobListing.shiftEndTime).format("h A")}
+                    {dayjs(element?.jobListing?.shiftStartTime).format("HH:mm")}{" "}
+                    - {dayjs(element?.jobListing.shiftEndTime).format("HH:mm")}
                 </td>
             )}
-            <td>
-                {element?.jobListing?.jobRate?.currency}
-                {element?.jobListing?.jobRate?.jobRatePerHourDisplayedToDepot}
-                /hr
-            </td>
+            {element?.jobListing.jobMeetingPoint === "DEPOT" ? (
+                <td>
+                    {element?.jobListing?.jobRate?.currency}
+                    {
+                        element?.jobListing?.jobRate
+                            ?.jobRateDepotFirstDisplayedToDepot
+                    }
+                </td>
+            ) : (
+                <td>
+                    {element?.jobListing?.jobRate?.currency}
+                    {
+                        element?.jobListing?.jobRate
+                            ?.jobRateMeetOnsiteDisplayedToDepot
+                    }
+                </td>
+            )}
             {/* {
           status === "cancelled" && (<td>{getDurationBeforeCancel(((new Date(element?.cancelTime).getTime()) - new Date(element?.clockInTime).getTime()))}</td>) 
         } */}
@@ -100,47 +119,56 @@ const ShiftsTable = ({ elements, status }: ShiftsTableInterface) => {
                 </td>
             )}
 
-            <td
-                role="gridcell"
-                className="cursor-pointer h-[60px] border-b border-neutral-5"
-                data-testid="shifts_table"
-            >
-                <IoIosArrowForward
-                    size={30}
-                    style={{ color: "#889088" }}
-                    onClick={() =>
-                        navigate(`/planner/${element?.jobListing?._id}`, {
-                            state: { status: status, scheduleId: element?._id },
-                        })
-                    }
-                />
-            </td>
+            {status === "completed" ? (
+                <td>
+                    <CustomMenu element={element} status={status} />
+                </td>
+            ) : (
+                <td
+                    role="gridcell"
+                    className="cursor-pointer h-[60px] border-b border-neutral-5"
+                    data-testid="shifts_table"
+                >
+                    <IoIosArrowForward
+                        size={30}
+                        style={{ color: "#889088" }}
+                        onClick={() =>
+                            navigate(`/planner/${element?.jobListing?._id}`, {
+                                state: {
+                                    status: status,
+                                    scheduleId: element?._id,
+                                },
+                            })
+                        }
+                    />
+                </td>
+            )}
         </tr>
     ))
 
     const tableHeadCancelled = [
         { list: "NO" },
-        { list: "SHIFTS ID" },
+        { list: "SHIFT" },
         { list: "LOCATION" },
         { list: "SCHEDULE" },
-        { list: "RATE" },
+        { list: "WAGES" },
         { list: "MODE" },
     ]
     const tableHeadActive = [
         { list: "NO" },
-        { list: "SHIFTS ID" },
+        { list: "SHIFT" },
         { list: "LOCATION" },
         { list: "SCHEDULE" },
-        { list: "RATE" },
+        { list: "WAGES" },
         { list: "MODE" },
         { list: "ENDS IN" },
     ]
     const tableHeadCompleted = [
         { list: "NO" },
-        { list: "SHIFTS ID" },
+        { list: "SHIFT" },
         { list: "LOCATION" },
         { list: "SCHEDULE" },
-        { list: "RATE" },
+        { list: "WAGES" },
         { list: "MODE" },
         { list: "STATUS" },
     ]
@@ -221,3 +249,56 @@ const ShiftsTable = ({ elements, status }: ShiftsTableInterface) => {
 }
 
 export default ShiftsTable
+
+export const CustomMenu = ({
+    element,
+    status,
+}: {
+    element: Result | undefined
+    status: string
+}) => {
+    const navigate = useNavigate()
+    const MenuItems = [
+        {
+            route: `/planner/${element?.jobListing?._id}`,
+            label: `View Shift`,
+        },
+        {
+            route: `/planner/rate-ops/${element?.jobListing?._id}`,
+            label: `Rate Operatives`,
+        },
+    ]
+    return (
+        <>
+            <Menu transition="fade">
+                <Menu.Target>
+                    <button type="button">
+                        <IoEllipsisVerticalSharp className="" />
+                    </button>
+                </Menu.Target>
+                <Menu.Dropdown>
+                    {MenuItems.map(({ route, label }) => {
+                        return (
+                            <Menu.Item
+                                component="a"
+                                className="p-4 hover:bg-accent-10 font-sans hover:text-primary-100"
+                                // href={route}
+                                key={label}
+                                onClick={() =>
+                                    navigate(`${route}`, {
+                                        state: {
+                                            status: status,
+                                            scheduleId: element?._id,
+                                        },
+                                    })
+                                }
+                            >
+                                {label}{" "}
+                            </Menu.Item>
+                        )
+                    })}
+                </Menu.Dropdown>
+            </Menu>
+        </>
+    )
+}

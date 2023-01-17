@@ -53,10 +53,10 @@ const JobSuccessful = ({
                 >
                     <GrClose size={30} />
                 </div>
-                <div className="text-center flex flex-col items-center">
+                <div className="text-center flex flex-col items-center font-creato">
                     <img src={SuccessImage} alt="successful" />
                     <h4 className="font-bold text-2mxl mt-5">
-                        Your job is live!{" "}
+                        Your Shift is Live!
                     </h4>
                     <p className="text-black-60 text-3md font-normal mt-2">
                         Operative will see your opening on their dashboard and

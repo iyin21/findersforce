@@ -12,6 +12,9 @@ import { useNavigate } from "react-router-dom"
 import { IoAlertCircle } from "react-icons/io5"
 import useAuthContext from "../../../hooks/auth-hooks/useAuth"
 import { useGetDepotRegions } from "../../../hooks/dashboard/useDashboard.hook"
+// import { Button } from "../../../components/index"
+// import { FiPlus } from "react-icons/fi"
+// import { FaAngleRight } from "react-icons/fa"
 
 const HqPlanner = () => {
     const [activeTab, setActiveTab] = useState<string | null>("active")
@@ -75,6 +78,7 @@ const HqPlanner = () => {
             jobMeetingPoint: completedShiftsFilter?.meetingPoint,
             regionId: selectValue,
         })
+    // console.log(ongoingShiftsData)
 
     const shiftsDuration: any = completedShiftsData?.results?.map((item) => {
         return item?.jobListing?.shiftDurationInHours
@@ -86,10 +90,19 @@ const HqPlanner = () => {
     }
 
     const shiftsAmount: any = completedShiftsData?.results?.map((item) => {
-        return (
-            Number(item?.jobListing?.jobRate?.jobRatePerHourDisplayedToDepot) *
-            Number(item?.jobListing?.shiftDurationInHours)
-        )
+        if (item?.jobListing?.jobMeetingPoint === "DEPOT") {
+            return (
+                Number(
+                    item?.jobListing?.jobRate?.jobRateDepotFirstDisplayedToDepot
+                ) * Number(item?.jobListing?.shiftDurationInHours)
+            )
+        } else {
+            return (
+                Number(
+                    item?.jobListing?.jobRate?.jobRateMeetOnsiteDisplayedToDepot
+                ) * Number(item?.jobListing?.shiftDurationInHours)
+            )
+        }
     })
     let totalAmount = 0
     for (let i = 0; i < shiftsAmount?.length; i++) {
@@ -137,14 +150,35 @@ const HqPlanner = () => {
                 {activeTab === "completed" && (
                     <div className="relative mt-4">
                         <Alert
-                            icon={<IoAlertCircle size={26} />}
-                            color="red"
+                            icon={<IoAlertCircle size={26} className="" />}
+                            color="blue"
                             radius="md"
                         >
-                            You have a total of {totalDuration} hours,{" "}
-                            {completedShiftsData?.results?.length} completed
-                            shift(s) to pay for, to the value of{" "}
-                            <strong>£{totalAmount}</strong>
+                            <div className="flex justifiy-between">
+                                <p className="place-self-center">
+                                    Your depot has completed a total of{" "}
+                                    <strong>
+                                        {completedShiftsData?.results?.length}{" "}
+                                        shifts ({totalDuration} hours){" "}
+                                    </strong>
+                                    ,generating a running invoivce of{" "}
+                                    <strong>£{totalAmount}</strong>
+                                </p>
+                                {/* <div className="mr-2 ml-auto">
+                                    {" "}
+                                    <Button
+                                        variant="green"
+                                        className="py-3 font-semibold font-creatoMedium"
+                                        style={{ backgroundColor: "black" }}
+                                        // iconLeft={<FiPlus size={20} />}
+                                        data-testid="make_payment_btn"
+                                        iconRight={<FaAngleRight size={20} />}
+                                        // onClick={() => setOpenPayment(!openPayment)}
+                                    >
+                                        Make Payments
+                                    </Button>
+                                </div> */}
+                            </div>
                         </Alert>
                     </div>
                 )}
@@ -256,8 +290,9 @@ const HqPlanner = () => {
                                         {ongoingShiftsData?.results?.length ===
                                         0 ? (
                                             <EmptyView
-                                                description="Ongoing Shifts will show here"
-                                                buttonText="Post a shift"
+                                                title="You have no active shifts right now."
+                                                description="When a shift starts, you can track it here."
+                                                buttonText="Post shift"
                                                 handleButtonClick={() => {
                                                     navigate("/job-boards")
                                                 }}
@@ -287,7 +322,8 @@ const HqPlanner = () => {
                                         {cancelledShiftsData?.results
                                             ?.length === 0 ? (
                                             <EmptyView
-                                                description="Cancelled Shifts will show here"
+                                                title="You have no cancelled shifts right now."
+                                                description="When a shift is cancelled, you can investigate it here."
                                                 buttonText="Post a shift"
                                                 handleButtonClick={() => {
                                                     navigate("/job-boards")
@@ -318,8 +354,9 @@ const HqPlanner = () => {
                                         {completedShiftsData?.results
                                             ?.length === 0 ? (
                                             <EmptyView
-                                                description="Completed Shifts will show here"
-                                                buttonText="Post a shift"
+                                                title="You have no completed shifts right now."
+                                                description="When a shift is complete, you can review it here and pay wages."
+                                                buttonText="Post shift"
                                                 handleButtonClick={() => {
                                                     navigate("/job-boards")
                                                 }}

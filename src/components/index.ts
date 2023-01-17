@@ -2,6 +2,7 @@ export { default as Button } from "./Core/Buttons/Button"
 export { default as Input } from "./Core/Input/Input"
 export { default as RadioButton } from "./Core/Radio/radio"
 export { default as FormControls } from "./Form/FormControls/form-controls"
+export { default as ToolTip } from "./ToolTip/tooltip"
 
 export { default as Pagination } from "./Pagination/pagination"
 

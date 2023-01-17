@@ -38,11 +38,11 @@ const ConfirmDelete = ({
                     <img src={WarningIcon} alt="warning" />
                 </div>
 
-                <div className="px-3 py-5">
+                <div className="px-3 py-5 font-creato">
                     <h3 className="text-2xl md:text-3xl font-bold text-center mb-3">
                         {title} {userName}?
                     </h3>
-                    <p className="text-black-90 text-md md:text-lg mx-auto w-4/5">
+                    <p className="text-black-90 text-md md:text-lg mx-auto md:w-[60%] px-3 md:px-0 text-center">
                         {description}
                     </p>
                 </div>
@@ -55,7 +55,7 @@ const ConfirmDelete = ({
                             handleDelete()
                         }}
                     >
-                        {isDeleting ? "Removing..." : "Remove"}
+                        {isDeleting ? "Deleting..." : "Delete"}
                     </Button>
                     <Button
                         variant="clear"
@@ -63,7 +63,7 @@ const ConfirmDelete = ({
                             setOpened(false)
                         }}
                     >
-                        Cancel
+                        Go Back
                     </Button>
                 </div>
             </Modal>

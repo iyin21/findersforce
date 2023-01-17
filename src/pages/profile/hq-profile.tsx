@@ -12,20 +12,92 @@ import { useInviteHQ } from "../../hooks/roles/use-roles"
 import { UseMutateFunction } from "react-query"
 import { AxiosError } from "axios"
 import { ProfileRequest } from "../../types/profile/interface"
+import { BiArrowBack } from "react-icons/bi"
 
 const HQProfile = () => {
     const [step, setStep] = useState(0)
-
+    const [LocationStateArray, setLocationStateArray] = useState([])
     const [openSuccessModal, setOpenSuccessModal] = useState(false)
 
     const { mutate: mutateUser, isSuccess, data } = useInviteHQ()
     const { mutate, isLoading, isError, data: profileData } = useCreateProfile()
+    // this duplicates the LocationStateArray session storage for regional manager data
+    const regionalData = LocationStateArray.map((i: any) => ({ ...i }))
+    // this duplicates the LocationStateArray session storage for shift manager data
+    const shiftData = LocationStateArray.map((i: any) => ({ ...i }))
+
+    // this deletes the regional manager email from the LocationStateArray session storage in order to separate the regional manager as the backend requires
+    const deleteRegionalManagerData = shiftData.map(function (item: any) {
+        delete item.regional_manager
+        return item
+    })
+    // this deletes the shift manager email from the LocationStateArray session storage in order to separate the regional manager as the backend requires
+    const deleteShiftManagerData = regionalData.map(function (item: any) {
+        delete item.shift_manager
+        return item
+    })
+
+    // this adds the invited role to the shift manager array in order to send to the backend
+    const addShiftInvitedRoleData = deleteRegionalManagerData.map((v: any) => ({
+        ...v,
+        invitedRole: "SHIFT_MANAGER",
+        companyId: profileData?.user?.depotCompany?._id,
+    }))
+
+    // this adds the invited role to the regional manager array in order to send to the backend
+    const addRegionalInvitedRoleData = deleteShiftManagerData.map((v: any) => ({
+        ...v,
+        invitedRole: "REGIONAL_MANAGER",
+        companyId: profileData?.user?.depotCompany?._id,
+    }))
+    // this changes the shift_manager array to email in order to send to the backend
+    const shiftManagerArray = addShiftInvitedRoleData.map((item: any) => {
+        return {
+            email: item.shift_manager,
+            invitedRole: item.invitedRole,
+            regionAddress: item.regionAddress,
+            companyId: profileData?.user?.depotCompany?._id,
+        }
+    })
+    // this changes the regional_manager array to email in order to send to the backend
+    const regionalManagerArray = addRegionalInvitedRoleData.map((item: any) => {
+        return {
+            email: item.regional_manager,
+            invitedRole: item.invitedRole,
+            regionAddress: item.regionAddress,
+            companyId: profileData?.user?.depotCompany?._id,
+        }
+    })
+
+    // this combines the shift manager and regional manager arrays into one array to send to the backend
+    const finalArray = shiftManagerArray.concat(regionalManagerArray)
+
+    // this functions gets the session storage and parses it
+    const getSessionStorage = async () => {
+        const locationArray: any =
+            window.sessionStorage.getItem("locationArray")
+        const parsedLocationArray = JSON.parse(locationArray)
+
+        setLocationStateArray(parsedLocationArray)
+    }
+
+    const handleSubmit = () => {
+        mutateUser({
+            jwt: profileData?.jwt?.token,
+            invitees: finalArray,
+        })
+    }
 
     useEffect(() => {
         if (isSuccess) {
             setOpenSuccessModal(true)
+            window.sessionStorage.removeItem("locationArray")
         }
     }, [data, isError])
+
+    useEffect(() => {
+        getSessionStorage()
+    }, [LocationStateArray])
 
     return (
         <div className="grid grid-cols-1 lg:grid-cols-2 text-white h-fit lg:bg-[black]">
@@ -45,13 +117,7 @@ const HQProfile = () => {
                     initialValues={HqProfileInitialValue}
                     data-testid="post_job_form"
                     onSubmit={(values) => {
-                        mutateUser({
-                            email: values.email,
-                            invitedRole: values.accountType,
-                            regionAddress: values.regionAddress,
-                            jwt: profileData?.jwt.token,
-                            companyId: profileData?.user?.depotCompany?._id,
-                        })
+                        handleSubmit()
                     }}
                     mutate={mutate}
                     isLoading={isLoading}
@@ -67,7 +133,11 @@ const HQProfile = () => {
                                 onSubmit={() => {}}
                                 validationSchema={validationSchema}
                             >
-                                <Component setStep={setStep} step={step} />
+                                <Component
+                                    setStep={setStep}
+                                    step={step}
+                                    LocationStateArray={LocationStateArray}
+                                />
                             </FormikStep>
                         )
                     )}
@@ -132,9 +202,44 @@ export function FormikStepper({ ...props }: TWizardProps) {
         })
     }
 
+    const handleBack = () => {
+        if (props.step > 0) {
+            props.setStep(props.step - 1)
+        }
+    }
+
     return (
         <div>
-            <Header step={props.step} title="Set up your Profile" />
+            {props?.step > 0 ? (
+                <div
+                    className="bg-black-5 p-2 w-fit rounded-lg relative z-20 mb-3"
+                    onClick={handleBack}
+                >
+                    {" "}
+                    <BiArrowBack size={30} />
+                </div>
+            ) : (
+                ""
+            )}
+
+            <Header
+                step={props.step}
+                title={
+                    props.step === 0
+                        ? "Set up your Profile"
+                        : "Register Depots" || props.step === 2
+                        ? "Confirm Depots"
+                        : ""
+                }
+                description={
+                    props.step === 0
+                        ? ""
+                        : "Add your depot location and corresponding managerial staff." ||
+                          props.step === 2
+                        ? "Are these depot details correct?"
+                        : ""
+                }
+            />
             <Formik
                 {...props}
                 validationSchema={currentChild.props.validationSchema}
@@ -156,28 +261,33 @@ export function FormikStepper({ ...props }: TWizardProps) {
 
                         <div className=" justify-between items-center">
                             <div className="">
-                                <Button
-                                    size="normal"
-                                    className="w-full mt-16"
-                                    variant="primary"
-                                    type="submit"
-                                    disabled={props.isLoading}
-                                    style={{
-                                        backgroundColor:
-                                            "rgba(254, 215, 10, 1)",
-                                    }}
-                                    onClick={() => {
-                                        props.step === 0
-                                            ? handleCreateProfile(values)
-                                            : ""
-                                    }}
-                                >
-                                    {isSubmitting
-                                        ? "Finishing..."
-                                        : isLastStep()
-                                        ? "Finish"
-                                        : "Next"}
-                                </Button>
+                                {props.step === 1 ? (
+                                    ""
+                                ) : (
+                                    <Button
+                                        size="normal"
+                                        className="w-full mt-16"
+                                        variant="primary"
+                                        type="submit"
+                                        disabled={props.isLoading}
+                                        style={{
+                                            backgroundColor:
+                                                "rgba(254, 215, 10, 1)",
+                                        }}
+                                        onClick={() => {
+                                            props.step === 0
+                                                ? handleCreateProfile(values)
+                                                : ""
+                                        }}
+                                    >
+                                        {isSubmitting
+                                            ? "Finishing..."
+                                            : isLastStep()
+                                            ? "Finish"
+                                            : "Next"}
+                                    </Button>
+                                )}
+
                                 {props.step === 1 && (
                                     <Button
                                         size="normal"

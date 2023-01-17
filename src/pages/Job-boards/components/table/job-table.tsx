@@ -52,27 +52,49 @@ const JobBoardTable = ({
                     }}
                 >
                     <Checkbox
-                        id={element?._id}
+                        id={element?.listingId}
                         className="rounded-lg"
                         name={element?.listingId}
                         onChange={handleCheckedJob}
                         checked={checkedJob.includes(element?._id)}
                         value={element?._id}
                         data-testid="checkbox"
-                    />
-                    <label htmlFor={element?.listingId} className="capitalize">
-                        {element?.listingId}
-                    </label>
+                    />{" "}
+                    <p className="px-2">{index + 1}</p>
+                    {!element?.listingId ? (
+                        <span className=" rounded-full bg-black-10 p-2 w-full h-full"></span>
+                    ) : (
+                        <label
+                            htmlFor={element?.listingId}
+                            className="capitalize"
+                        >
+                            {element?.listingId}
+                        </label>
+                    )}
                 </div>
             </td>
             <td>{element?.jobLocation?.formattedAddress}</td>
             <td>{dayjs(element?.jobDate).format("DD/MM/YYYY")}</td>
-            <td>{element?.jobRate?.jobRatePerHourDisplayedToDepot}</td>
+            <td>
+                {element?.jobRate?.currency}
+
+                {element?.jobMeetingPoint === "SITE" ? (
+                    <span>
+                        {element?.jobRate?.jobRateMeetOnsiteDisplayedToDepot}
+                    </span>
+                ) : (
+                    <span>
+                        {element?.jobRate?.jobRateDepotFirstDisplayedToDepot}
+                    </span>
+                )}
+
+                {element?.jobRate?.jobRatePerHourDisplayedToDepot}
+            </td>
             <td>{element?.shiftDurationInHours} hours</td>
-            {status === "active" && <td>{element?.applicationCount}</td>}
+            {status === "active" && <td>{element?.applicationsCount}</td>}
             <td>
                 {element?.jobMeetingPoint === "SITE" ? (
-                    <p className="text-black-100 bg-yellow-100 rounded-3xl text-center font-bold p-1 w-fit px-3 py-1 text-3sm font-creatoBlack">
+                    <p className="text-black-100 bg-yellow-100 rounded-3xl text-center font-bold p-1 w-fit px-3 py-1 text-3sm font-creatoMedium">
                         MEET ONSITE
                     </p>
                 ) : (
@@ -92,10 +114,10 @@ const JobBoardTable = ({
     ))
 
     const tableHead = [
-        { list: "Location" },
-        { list: "Date" },
-        { list: "Hourly Rate" },
-        { list: "Duration" },
+        { list: "LOCATION" },
+        { list: "DATE" },
+        { list: "WAGES" },
+        { list: "DURATION" },
     ]
 
     return (
@@ -120,7 +142,7 @@ const JobBoardTable = ({
                                 className="flex items-center gap-2 "
                             >
                                 <Checkbox />
-                                <p className="text-black-30 ">Type</p>
+                                <p className="text-black-30 "> SHIFT </p>
                             </th>
 
                             {tableHead.map((item, index) => (
@@ -142,7 +164,7 @@ const JobBoardTable = ({
                                     }}
                                     className="flex items-center gap-2 "
                                 >
-                                    <p className="text-black-30 ">Applicants</p>{" "}
+                                    <p className="text-black-30 ">APPLICANTS</p>{" "}
                                     <AiOutlineArrowUp color="rgba(15, 13, 0, 0.3)" />
                                 </th>
                             )}
@@ -151,10 +173,11 @@ const JobBoardTable = ({
                                     borderBottom: "none",
                                 }}
                             >
-                                <p className="text-black-30 ">Mode</p>
+                                <p className="text-black-30 ">MODE</p>
                             </th>
                         </tr>
                     </thead>
+
                     <tbody>{rows}</tbody>
                 </Table>
             </div>

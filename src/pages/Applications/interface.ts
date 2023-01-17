@@ -26,6 +26,12 @@ export interface Data {
     completedShfts: number
     certificates: Certificates[]
     jobMatchPercentage: number
+    operativeRatingSummary: {
+        avgAverageScore: Number
+        avgHelpfulnessScore: Number
+        avgProfessionalismScore: Number
+        avgPunctualityScore: Number
+    }
 }
 export interface Certificates {
     _id: string
@@ -53,6 +59,7 @@ export interface JobListing {
     jobAccessibleTo: string
     operativeIds: string[]
     numberOfOpsRequired: number
+    applicationsCount: number
     jobQualification: Job
     jobRate: JobRate
     jobDescription: string
@@ -82,6 +89,7 @@ export interface User {
     bio: string
     profileImageUrl: string
     createdAt: Date
+    completedShifts: number
 }
 
 export interface JobLocation {
@@ -110,6 +118,10 @@ export interface JobRate {
     _id: string
     currency: string
     jobQualification: string
+    jobRateDepotFirstDisplayedToDepot: number
+    jobRateDepotFirstDisplayedToOp: number
+    jobRateMeetOnsiteDisplayedToDepot: number
+    jobRateMeetOnsiteDisplayedToOp: number
     jobRatePerHourDisplayedToDepot: number
     jobRatePerHourDisplayedToOp: number
     depot: string
@@ -177,6 +189,7 @@ export interface Result {
     lastSeenLocationCoordinates: null
     opHasRated: boolean
     operative: {
+        completedShifts: number
         averageRating: number
         _id: string
         username: string

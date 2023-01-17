@@ -35,10 +35,10 @@ const PostJobTwo = ({ jobQualification }: PostJobTwoProps) => {
     }, [file])
 
     return (
-        <div className="p-3">
+        <div className="p-3 font-creato">
             <div className="mt-1">
                 <label className="text-3md font-semibold text-black-100 block mb-2">
-                    Required Qualification
+                    First Choice Qualification
                 </label>
                 <FormikControls
                     control="select"
@@ -62,7 +62,7 @@ const PostJobTwo = ({ jobQualification }: PostJobTwoProps) => {
             <div className=" mt-4 gap-6 border-b border-black-10 mb-4 pb-6">
                 <div>
                     <label className="text-3md font-semibold text-neutral-80 block mb-2">
-                        Number of Operatives needed
+                        Operative Quantity
                     </label>
                     <FormikControls
                         type="text"
@@ -79,14 +79,16 @@ const PostJobTwo = ({ jobQualification }: PostJobTwoProps) => {
 
             <div className="mt-3">
                 <label className="text-3md font-semibold text-neutral-80 block">
-                    Description
+                    Key Points
                 </label>{" "}
                 <span className="text-black-60 text-md">
-                    Give more context to the job description
+                    Provide your operative with a key points description of the
+                    task alongside any helpful info.
                 </span>
                 <textarea
-                    className="border border-black-10 rounded w-full p-3 outline-none mt-3"
+                    className="border border-black-10 rounded w-full p-3 outline-none mt-3 placeholder-black-10"
                     name="jobDescription"
+                    placeholder="Enter shift key points description..."
                     id="jobDescription"
                     cols={50}
                     rows={3}

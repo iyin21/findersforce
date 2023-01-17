@@ -1,34 +1,24 @@
-import Logout from "../../../assets/LogoutNavBar.svg"
-import SettingsCog from "../../../assets/SettingsCog.svg"
 import User from "../../../assets/User.svg"
-import Search from "../../../assets/Search.svg"
 import { Dispatch, SetStateAction, useEffect, useState } from "react"
 import { Indicator, Modal } from "@mantine/core"
 import addressLogo from "../../../assets/addressLogo.svg"
 import useUserNotification from "../../../hooks/notification-hook"
 import { showNotification } from "@mantine/notifications"
 import { CgSpinner } from "react-icons/cg"
-import useAuthContext from "../../../hooks/auth-hooks/useAuth"
 import { useNavigate } from "react-router-dom"
-import handleLogOut from "../../../hooks/auth-hooks/use-logout"
 import { HiMenuAlt2 } from "react-icons/hi"
 import dayjs from "dayjs"
 import { IoIosNotifications } from "react-icons/io"
+import Message from "../../../assets/NavbarMessage.svg"
 
 interface navInterface {
-    setOpenSideBar: Dispatch<SetStateAction<boolean>>;
+    setOpenSideBar: Dispatch<SetStateAction<boolean>>
     noTopNav?: boolean
 }
 
 const NavBar = ({ setOpenSideBar, noTopNav }: navInterface) => {
     const [opened, setOpened] = useState(false)
-    const { dispatch, state } = useAuthContext()
     const { data: userNotifications, error, isLoading } = useUserNotification()
-
-    const unreadNotification = userNotifications?.data?.map((notification) => {
-        if (!notification.readStatus) return notification
-    })
-
     const notifications = userNotifications?.data?.map((item, index) => {
         return (
             <div
@@ -85,24 +75,23 @@ const NavBar = ({ setOpenSideBar, noTopNav }: navInterface) => {
     }, [error])
     return (
         <>
-            <nav
-                className={`w-full  pt-6  ${
-                    !noTopNav && ""
-                } `}
-            >
-                
+            <nav className={`w-full  pt-6  ${!noTopNav && ""} `}>
                 {!noTopNav && (
                     <div className=" flex items-center justify-end gap-6 mr-4 lg:mr-12 ">
                         <div className=" md:hidden cursor-pointer mr-auto ml-6">
-                            <HiMenuAlt2 size={28} onClick={() => setOpenSideBar(true)} />
+                            <HiMenuAlt2
+                                size={28}
+                                onClick={() => setOpenSideBar(true)}
+                            />
                         </div>
+                        
                         <img
-                            src={Search}
-                            alt="search icon "
+                            src={User}
+                            alt="User icon"
                             className="cursor-pointer"
                         />
                         <Indicator
-                            label={unreadNotification?.length}
+                            label={userNotifications?.data?.length}
                             size={16}
                             color="#E94444"
                         >
@@ -111,32 +100,16 @@ const NavBar = ({ setOpenSideBar, noTopNav }: navInterface) => {
                                 data-testid="notification"
                                 onClick={() => setOpened((state) => !state)}
                                 size={22}
+                                color={
+                                    userNotifications?.data.length === 0
+                                        ? "rgba(15, 13, 0, 0.6)"
+                                        : "#FED70A"
+                                }
                             />
                         </Indicator>
-                        <img
-                            src={SettingsCog}
-                            alt="SettingsCog icon"
-                            className="cursor-pointer"
-                            onClick={() => navigate("/settings")}
-                        />
-                        <img
-                            src={User}
-                            alt="User icon"
-                            className="cursor-pointer"
-                        />
-                        <img
-                            src={Logout}
-                            alt="Logout icon"
-                            className="cursor-pointer"
-                            onClick={() =>
-                                handleLogOut(
-                                    state.jwt?.token,
-                                    showNotification,
-                                    dispatch,
-                                    navigate
-                                )
-                            }
-                        />
+                        
+                        <img src={Message} alt="messaging" onClick={() => navigate("/messaging")}/>
+                        
                     </div>
                 )}
             </nav>
