@@ -13,6 +13,7 @@ import { UseMutateFunction } from "react-query"
 import { AxiosError } from "axios"
 import { ProfileRequest } from "../../types/profile/interface"
 import { BiArrowBack } from "react-icons/bi"
+import videoBg from "../../assets/videoBg.mp4"
 
 const HQProfile = () => {
     const [step, setStep] = useState(0)
@@ -29,50 +30,60 @@ const HQProfile = () => {
     }, [data, isError])
 
     return (
-        <div className="grid grid-cols-1 lg:grid-cols-2 text-white h-fit lg:bg-[black]">
-            {openSuccessModal && (
-                <SuccessfulLogin
-                    opened={openSuccessModal}
-                    setOpened={setOpenSuccessModal}
-                />
-            )}
-            <div className="hidden lg:block">
-                {" "}
-                <LandingPageText />
-            </div>
-            <div className="my-4 md:my-8 lg:mr-8 bg-white-100 pt-12 pb-10 px-6 md:px-16 flex flex-col rounded-[10px]">
-                <FormikStepper
-                    // this is the initial values for the formik form
-                    initialValues={HqProfileInitialValue}
-                    data-testid="post_job_form"
-                    onSubmit={(values) => {
-                        mutateUser({
-                            email: values.email,
-                            invitedRole: values.accountType,
-                            regionAddress: values.regionAddress,
-                            jwt: profileData?.jwt.token,
-                            companyId: profileData?.user?.depotCompany?._id,
-                        })
-                    }}
-                    mutate={mutate}
-                    isLoading={isLoading}
-                    isError={isError}
-                    setStep={setStep}
-                    step={step}
-                >
-                    {ProfileFormFields.map(
-                        ({ validationSchema, Component, name }) => (
-                            <FormikStep
-                                key={name}
-                                name={name}
-                                onSubmit={() => {}}
-                                validationSchema={validationSchema}
-                            >
-                                <Component setStep={setStep} step={step} />
-                            </FormikStep>
-                        )
-                    )}
-                </FormikStepper>
+        <div>
+            <video
+                autoPlay
+                loop
+                muted
+                id="video"
+                className="hidden md:block h-screen w-full object-cover fixed"
+                src={videoBg}
+            ></video>
+            <div className="grid grid-cols-1 lg:grid-cols-2 text-white h-fit lg:bg-black-60 font-creato lg:absolute lg:top-0">
+                {openSuccessModal && (
+                    <SuccessfulLogin
+                        opened={openSuccessModal}
+                        setOpened={setOpenSuccessModal}
+                    />
+                )}
+                <div className="hidden lg:block">
+                    {" "}
+                    <LandingPageText />
+                </div>
+                <div className="my-4 md:my-8 lg:mr-8 bg-white-100 pt-12 pb-10 px-6 md:px-16 flex flex-col rounded-[10px]">
+                    <FormikStepper
+                        // this is the initial values for the formik form
+                        initialValues={HqProfileInitialValue}
+                        data-testid="post_job_form"
+                        onSubmit={(values) => {
+                            mutateUser({
+                                email: values.email,
+                                invitedRole: values.accountType,
+                                regionAddress: values.regionAddress,
+                                jwt: profileData?.jwt.token,
+                                companyId: profileData?.user?.depotCompany?._id,
+                            })
+                        }}
+                        mutate={mutate}
+                        isLoading={isLoading}
+                        isError={isError}
+                        setStep={setStep}
+                        step={step}
+                    >
+                        {ProfileFormFields.map(
+                            ({ validationSchema, Component, name }) => (
+                                <FormikStep
+                                    key={name}
+                                    name={name}
+                                    onSubmit={() => {}}
+                                    validationSchema={validationSchema}
+                                >
+                                    <Component setStep={setStep} step={step} />
+                                </FormikStep>
+                            )
+                        )}
+                    </FormikStepper>
+                </div>
             </div>
         </div>
     )

@@ -62,7 +62,7 @@ const ResetPassword = () => {
                 className="hidden md:block h-screen w-full object-cover fixed"
                 src={videoBg}
             ></video>
-        <div className="grid grid-cols-1 lg:grid-cols-2 text-white font-creato lg:absolute lg:top-0">
+        <div className="grid grid-cols-1 lg:grid-cols-2 text-white font-creato lg:bg-black-60 lg:absolute lg:top-0">
             <div className="hidden lg:block">
                 <LandingPageText />
             </div>
