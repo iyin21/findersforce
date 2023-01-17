@@ -48,6 +48,7 @@ function App() {
                 path="/auth/verify-2fa"
                 element={<TwoFactorAuthentication />}
             />
+            <Route path="/messaging" element={<Messaging />} />
 
             {/* private routes */}
             <Route element={<PersistLogin />}>
@@ -72,7 +73,7 @@ function App() {
                     <Route path="/roles&permission" element={<Roles />} />
                     <Route path="/support" element={<SupportMedium />} />
                     <Route path="/support/complaint" element={<Support />} />
-                    <Route path="/messaging" element={<Messaging />} />
+
                     <Route path="/subscription" element={<Subscription />} />
                     <Route
                         path="/subscription/:id"
