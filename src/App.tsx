@@ -33,6 +33,7 @@ import Layout from "./components/Layout"
 import AdminPayment from "./pages/Admin/Payments"
 import RateOperatives from "./pages/planner/components/RateOperatives"
 import TwoFactorAuthentication from "./pages/auth/two-2fa-verification"
+import Maps from "./pages/Map"
 
 function App() {
     return (
@@ -101,6 +102,7 @@ function App() {
                         }
                     />
                     <Route path="/payment" element={<AdminPayment />} />
+                    <Route path="/Maps" element={<Maps />} />
                 </Route>
             </Route>
         </Routes>
