@@ -8,32 +8,48 @@ import ShiftCard from "../../../pages/dashboard/components/ShiftCard"
 import Rating from "../../../pages/dashboard/components/rating/Rating"
 import LocationIcon from "../../../assets/LocationIcon.svg"
 import TaskIcon from "../../../assets/TaskIcon.svg"
+import CalenderIcon from "../../../assets/CalenderIcon.svg"
 import MessageIcon from "../../../assets/MessageIcon.svg"
 import Empty from "../../../assets/Empty.png"
 import ClockIcon from "../../../assets/ClockIcon.svg"
 import { useNavigate } from "react-router-dom"
 import { DateRangePicker } from "@mantine/dates"
 import { BsCalendar2Date } from "react-icons/bs"
+import { useGetDashboardAnalytics } from "../../../hooks/dashboard/useDashboard.hook"
+import { useGetShiftHistory } from "../../../hooks/planner/usePlanner.hooks"
+import dayjs from "dayjs"
 
-const ongoingShiftsData = {
-    results: [],
-}
-
-const upcomingShiftsData = {
-    results: [],
-}
 
 const Analytics = ({
     value,
     setValue,
+    regionId
 }: {
     value: [Date | null, Date | null]
     setValue: any
+    regionId: string
 }) => {
     const navigate = useNavigate()
     const handleNavigate = () => {
         navigate(`/planner`)
     }
+
+    const { data: dashboardAnalytics } = useGetDashboardAnalytics({
+        dateFrom: value?.[0],
+        dateTo: value?.[1],
+        regionId: regionId
+    })
+    
+    const { data: ongoingShiftsData } = useGetShiftHistory({
+        ongoing: true,
+        regionId: regionId
+    })
+
+    const { data: upcomingShiftsData } = useGetShiftHistory({
+        upcoming: true,
+        regionId: regionId
+    })
+
     return (
         <>
             <div>
@@ -53,31 +69,30 @@ const Analytics = ({
                     <section className="overflow-x-scroll lg:overflow-x-hidden my-5">
                         <div className="lg:flex justify-between grid grid-cols-3 lg:w-full w-[850px] my-8 gap-4">
                             <Card
-                                title={"AMOUNT PAID"}
-                                amount={0}
+                                title={"WAGES"}
+                                amount={dashboardAnalytics?.amountPaid?.total}
                                 icon={Money}
-                                // style={"bg-green-10 rounded-full p-4"}
-                                subtitle={`£ ${"0"}`}
-                                desc={""}
-                                onClick={() => {}}
+                                subtitle={`£ ${dashboardAnalytics?.amountPaid?.thisMonth}`}
+                                desc={"PAID"}
+                                onClick={() => handleNavigate()}
                             />
                             <Card
-                                title={"HOURS COMPLETED"}
-                                amount={0}
+                                title={"HOURS"}
+                                amount={dashboardAnalytics?.hoursCompleted
+                                    ?.total}
                                 icon={Time}
-                                // style={"bg-yellow-20 rounded-full p-4"}
-                                subtitle={`${"0"} hrs`}
-                                desc={""}
-                                onClick={() => {}}
+                                subtitle={`${dashboardAnalytics?.hoursCompleted?.thisMonth} hrs`}
+                                desc={"COMPLETED"}
+                                onClick={() => handleNavigate()}
                             />
                             <Card
-                                title={"OPERATIVES HIRED"}
-                                amount={0}
+                                title={"OPERATIVES"}
+                                amount={dashboardAnalytics?.operativesHired
+                                    ?.total}
                                 icon={Operative}
-                                // style={"bg-green-10 rounded-full p-4"}
-                                subtitle={`${"0"} operatives`}
-                                desc={""}
-                                onClick={() => {}}
+                                subtitle={`${dashboardAnalytics?.operativesHired?.thisMonth} ops`}
+                                desc={"HIRED"}
+                                onClick={() => navigate("/pending")}
                             />
                         </div>
                     </section>
@@ -117,13 +132,19 @@ const Analytics = ({
                                 </div>
                             ) : (
                                 <ShiftCard
-                                    profileImage={""}
-                                    firstName={""}
-                                    lastName={""}
+                                    profileImage={ongoingShiftsData?.results[0]
+                                        ?.operative?.profileImageUrl}
+                                    firstName={ ongoingShiftsData?.results[0]
+                                        ?.operative?.firstName}
+                                    lastName={ongoingShiftsData?.results[0]
+                                        ?.operative?.lastName}
                                     locationIcon={LocationIcon}
-                                    location={""}
+                                    location={ongoingShiftsData?.results[0]
+                                        ?.jobListing?.jobLocation
+                                        ?.formattedAddress}
                                     taskIcon={TaskIcon}
-                                    task={""}
+                                    task={ongoingShiftsData?.results[0]
+                                        ?.jobListing?.jobType?.name}
                                     messageIcon={MessageIcon}
                                     calenderIcon={""}
                                     date={""}
@@ -131,7 +152,10 @@ const Analytics = ({
                                     startTime={""}
                                     endTime={""}
                                     duration={""}
-                                    initialDate={new Date()}
+                                    initialDate={ new Date(
+                                        ongoingShiftsData?.results[0]?.jobListing?.shiftEndTime
+                                    )
+                                }
                                     status={"ongoing"}
                                 />
                             )}
@@ -169,21 +193,37 @@ const Analytics = ({
                                         (item, index) => (
                                             <ShiftCard
                                                 key={index}
-                                                profileImage={""}
-                                                firstName={""}
-                                                lastName={""}
-                                                calenderIcon={""}
-                                                date={""}
+                                                profileImage={
+                                                    item?.operative
+                                                        ?.profileImageUrl}
+                                                firstName={item?.operative
+                                                    ?.firstName}
+                                                lastName={item?.operative
+                                                    ?.lastName}
+                                                calenderIcon={CalenderIcon}
+                                                date={dayjs(
+                                                    item?.jobListing
+                                                        ?.jobDate
+                                                ).format("ddd, DD MMM, YY")}
                                                 clockIcon={ClockIcon}
                                                 locationIcon={LocationIcon}
-                                                location={""}
-                                                task={""}
+                                                location={item?.jobListing
+                                                    ?.jobLocation
+                                                    ?.formattedAddress}
+                                                task={item?.jobListing
+                                                    ?.jobType?.name}
                                                 messageIcon={MessageIcon}
-                                                startTime={""}
-                                                endTime={""}
-                                                duration={""}
+                                                startTime={dayjs(
+                                                    item?.jobListing
+                                                        ?.shiftStartTime
+                                                ).format("h:mm A")}
+                                                endTime={` - ${dayjs(
+                                                    item?.jobListing
+                                                        .shiftEndTime
+                                                ).format("h:mm A")}`}
+                                                duration={`(${item?.jobListing?.shiftDurationInHours}H)`}
                                                 status={"upcoming"}
-                                                taskIcon={undefined}
+                                                taskIcon={TaskIcon}
                                             />
                                         )
                                     )}

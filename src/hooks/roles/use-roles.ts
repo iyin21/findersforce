@@ -4,6 +4,7 @@ import { useMutation, useQuery } from "@tanstack/react-query"
 import { AxiosError, AxiosResponse } from "axios"
 import { showNotification } from "@mantine/notifications"
 import {
+    InviteHqInterface,
     InviteUserInterface,
     RoleResponse,
     RolesRequest,
@@ -66,31 +67,22 @@ export const useInviteShiftManger = () => {
     )
 }
 export const useInviteHQ = () => {
-    const createInvite = async (requestBody: InviteUserInterface) => {
-        const newFormData = new FormData()
-
-        newFormData.append("invitedRole", requestBody.invitedRole)
-
-        // @ts-ignore
-        newFormData.append("companyId", requestBody.companyId)
-
-        // @ts-ignore
-        newFormData.append("regionAddress", requestBody.regionAddress)
-
-        requestBody.email.map((item) => newFormData.append("email[]", item))
-
-        const { data } = await axiosInstance.post("/invitation", newFormData, {
-            headers: {
-                "Content-Type": "multipart/form-data",
-                Authorization: `${requestBody.jwt}`,
-            },
-        })
+    const createInvite = async (requestBody: InviteHqInterface) => {
+        const { data } = await axiosInstance.post(
+            "/invitation/multiple",
+            requestBody,
+            {
+                headers: {
+                    Authorization: `${requestBody.jwt}`,
+                },
+            }
+        )
         return data
     }
 
-    return useMutation<any, AxiosError, InviteUserInterface>(
+    return useMutation<any, AxiosError, InviteHqInterface>(
         ["inviteShiftManager"],
-        (requestBody: InviteUserInterface) => createInvite(requestBody),
+        (requestBody: InviteHqInterface) => createInvite(requestBody),
         {
             onSuccess: (data) => {
                 showNotification({

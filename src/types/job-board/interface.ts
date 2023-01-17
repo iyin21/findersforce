@@ -1,3 +1,5 @@
+import { ReactNode } from "react"
+
 export interface JobBoardRequest {
     isPublished: boolean
     signal?: AbortSignal
@@ -76,12 +78,21 @@ export interface JobBoardResponseInterface {
             _id: string
             name: string
         }
+        jobRate: {
+            currency: string
+            jobRatePerHourDisplayedToDepot: number
+            jobRatePerHourDisplayedToOp: number
+            jobRateDepotFirstDisplayedToDepot: number
+            jobRateMeetOnsiteDisplayedToDepot: number
+        }
+        jobMeetingPoint: string
     }
     additionalInfoImageUrls: string[]
     numberOfOpsRequired: number
     shiftStartTime: string
     shiftDurationInHours: number
     applicationCount: number
+    applicationsCount: number
     shiftEndTime: string
     companyName: string
     jobMeetingPoint: string
@@ -117,7 +128,7 @@ export interface JobInformationInterface {
     location: string | undefined
     shiftMode: string | undefined
     date: string | undefined
-    hourlyPay: number | undefined
+    hourlyPay: number | undefined | ReactNode
     noOfOperativesRequired: number | undefined
     requiredQualification: string | undefined
     currency: string | undefined
