@@ -33,7 +33,8 @@ import calendar from "dayjs/plugin/calendar"
 import AddMembersModal from "../../components/Modals/Messaging/addMemberModal"
 import { Overlay } from "@mantine/core"
 import ProfilePicture from "./components/profilePicture"
-import { Result } from "postcss"
+import ProfileDrawer from "./components/profileDrawer"
+
 //2.14.8
 dayjs.extend(calendar)
 
@@ -103,46 +104,6 @@ const Messaging = () => {
 
         if (phase === 3) {
             run()
-
-            // async function eventPrint(event: NewMessageEvent) {
-            //     const message = event.message
-            //     // const sender = await message.getSender()
-            //     // const sender2 = await message.getInputSender()
-            //     // const getChat = await message.getChat()
-            //     const id = message.chat?.id
-            //     // Checks if it's a private message (from user or bot)
-            //     if (event.isPrivate && id) {
-            //         // prints sender id
-            //         console.log("gcc", message)
-            //         console.log("ggg", event)
-            //         // console.log("inputChat", await message.getChat())
-            //         // if (sender) {
-            //         //     console.log("gigi", sender)
-            //         // }
-            //         // if (sender2) {
-            //         //     console.log("yfytd", sender2)
-            //         // }
-            //         // @ts-expect-error
-            //         console.log(getChat?.firstName + " " + getChat?.lastName)
-
-            //         console.log("chatid", chatId)
-            //         // @ts-expect-error
-            //         console.log("value",id.value);
-            //         // @ts-expect-error
-            //         if (chatId?.value === id.value) {
-            //             console.log("hey")
-            //             setChatHistory((chat) => [...chat, message])
-            //         }
-            //         else {
-            //             console.log("trial");
-            //             //// @ts-expect-error
-            //             //console.log("hjhj", dialog[0].message.chat?.id?.value)
-
-            //         }
-            //     }
-            // }
-            // // adds an event handler for new messages
-            // client.addEventHandler(eventPrint, new NewMessage({}))
         }
     }, [phase])
     useEffect(() => {
@@ -248,7 +209,7 @@ const Messaging = () => {
     const [openAddMember, setOpenAddMember] = useState(false)
     const [searchParam] = useState(["title"])
     const [searchQuery, setSearchQuery] = useState("")
-    const [fileResult, setFileResult]=useState<Api.Message>()
+    const [openProfileDrawer, setOpenProfileDrawer] = useState(false)
 
     const dialogData = dialog?.filter((item: Dialog) => {
         return searchParam.some((newItem) => {
@@ -330,11 +291,10 @@ const Messaging = () => {
     }
 
     const [visible, setVisible] = useState(false)
-    const handleFileResult=(item:Api.Message)=>{
-    
-            setChatHistory((chat) => [...chat, item])
-
+    const handleFileResult = (item: Api.Message) => {
+        setChatHistory((chat) => [...chat, item])
     }
+    
     return (
         <Layout pageTitle="Messaging" noTopNav>
             <FileModal
@@ -345,6 +305,18 @@ const Messaging = () => {
                 chat={activeChat}
                 uploadedFile={uploadedFile}
                 handleResult={handleFileResult}
+            />
+            <ProfileDrawer
+                openProfileDrawer={openProfileDrawer}
+                setOpenProfileDrawer={setOpenProfileDrawer}
+                client={newClient}
+                isGroup={
+                    //@ts-expect-error
+                    chatHistory&& chatHistory?.length>0 && chatHistory[0]._chat.className === "Chat" ? true : false
+                }
+                chatId={chatId}
+                activeChat={activeChat}
+
             />
             <div>
                 {isLoading || isFetchingDialog ? (
@@ -420,9 +392,7 @@ const Messaging = () => {
                                     </p>
                                 </div>
                                 <div className="absolute bottom-4 pl-4 text-black-40">
-                                    <p className="font-bold">
-                                        Telegram Desktop
-                                    </p>
+                                    <p className="font-bold">Telegram Web</p>
                                     <p className="font-normal">
                                         Version 4.1.1 -About
                                     </p>
@@ -563,7 +533,12 @@ const Messaging = () => {
                                             <MdCall size={30} />
                                             <HiVideoCamera size={30} />
                                             <BiSearch size={30} />
-                                            <AiOutlineMore size={30} />
+                                            <AiOutlineMore
+                                                size={30}
+                                                onClick={() =>
+                                                    setOpenProfileDrawer(true)
+                                                }
+                                            />
                                         </div>
                                     </div>
                                     <hr className="text-[#E7E7E7]" />
