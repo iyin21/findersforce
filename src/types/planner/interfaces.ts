@@ -139,3 +139,31 @@ export interface PaymentEvidenceUpload {
         uploadDate: Date
     }
 }
+
+export interface RateOperativeRequest {
+
+    operativeId: string,
+    scheduleId: string,
+    professionalismScore: number,
+    helpfulnessScore: number,
+    punctualityScore: number,
+    review?: string
+}
+export interface RateOperativeResponse{
+    status: string,
+    message: string,
+    data: {
+      rater: string,
+      operative: string,
+      schedule: string,
+      professionalismScore: number,
+      punctualityScore: number,
+      helpfulnessScore: number,
+      averageScore: number,
+      review: string,
+      _id: string,
+      createdAt: Date | string,
+      updatedAt: Date | string,
+      __v: 0
+    }
+}

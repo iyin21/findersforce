@@ -32,6 +32,7 @@ import Invoice from "./pages/invoice/index"
 import ShiftDetails from "./pages/Applications/sub-navigations/ShiftDetails"
 import Layout from "./components/Layout"
 import AdminPayment from "./pages/Admin/Payments"
+import RateOperatives from "./pages/planner/components/RateOperatives"
 import TwoFactorAuthentication from "./pages/auth/two-2fa-verification"
 
 function App() {
@@ -64,6 +65,10 @@ function App() {
                     <Route
                         path="/planner/:jobListingId"
                         element={<ShiftsDetailTable />}
+                    />
+                    <Route
+                        path="/planner/rate-ops/:jobListingId"
+                        element={<RateOperatives />}
                     />
                     <Route path="/roles&permission" element={<Roles />} />
                     <Route path="/support" element={<SupportMedium />} />
