@@ -38,7 +38,7 @@ const ApplicationJobTable = ({ elements }: ApplicationJobInterface) => {
     }
     const navigate = useNavigate()
     const handleNavigate = (id: string) => {
-        navigate(`/planner/${id}`)
+        navigate(`/pending`)
     }
 
     const rows = elements?.map((element, index) => (

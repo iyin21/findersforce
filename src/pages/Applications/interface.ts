@@ -59,6 +59,7 @@ export interface JobListing {
     jobAccessibleTo: string
     operativeIds: string[]
     numberOfOpsRequired: number
+    applicationsCount: number
     jobQualification: Job
     jobRate: JobRate
     jobDescription: string
@@ -121,6 +122,8 @@ export interface JobRate {
     jobRateDepotFirstDisplayedToOp: number
     jobRateMeetOnsiteDisplayedToDepot: number
     jobRateMeetOnsiteDisplayedToOp: number
+    jobRatePerHourDisplayedToDepot: number
+    jobRatePerHourDisplayedToOp: number
     depot: string
 }
 

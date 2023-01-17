@@ -91,7 +91,7 @@ const JobBoardTable = ({
                 {element?.jobRate?.jobRatePerHourDisplayedToDepot}
             </td>
             <td>{element?.shiftDurationInHours} hours</td>
-            {status === "active" && <td>{element?.applicationCount}</td>}
+            {status === "active" && <td>{element?.applicationsCount}</td>}
             <td>
                 {element?.jobMeetingPoint === "SITE" ? (
                     <p className="text-black-100 bg-yellow-100 rounded-3xl text-center font-bold p-1 w-fit px-3 py-1 text-3sm font-creatoMedium">

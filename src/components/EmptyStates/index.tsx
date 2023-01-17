@@ -4,8 +4,8 @@ import { IoMdAdd } from "react-icons/io"
 
 export interface EmptyStateInterface {
     description: string
-    buttonText: string
     handleButtonClick: () => void
+    buttonText?: string
     title?: string
 }
 
@@ -24,16 +24,18 @@ const EmptyState = ({
             <p className="text-black-70 text-3md font-creato mt-3">
                 {description}
             </p>
-            <div className="grid grid-cols-1 w-full md:w-auto md:flex md:flex-cols  justify-center md:flex-row items-center gap-2 md:gap-5 rounded p-2 border-accent-70 mt-5">
-                <Button
-                    iconLeft={<IoMdAdd />}
-                    variant="primary"
-                    className="font-creatoMedium px-6 py-4 w-full md:w-auto"
-                    onClick={() => handleButtonClick()}
-                >
-                    {buttonText}
-                </Button>
-            </div>
+            {buttonText !== undefined && (
+                <div className="grid grid-cols-1 w-full md:w-auto md:flex md:flex-cols  justify-center md:flex-row items-center gap-2 md:gap-5 rounded p-2 border-accent-70 mt-5">
+                    <Button
+                        iconLeft={<IoMdAdd />}
+                        variant="primary"
+                        className="font-creatoMedium px-6 py-4 w-full md:w-auto"
+                        onClick={() => handleButtonClick()}
+                    >
+                        {buttonText}
+                    </Button>
+                </div>
+            )}
         </div>
     )
 }
