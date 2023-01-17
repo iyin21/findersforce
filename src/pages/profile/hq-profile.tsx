@@ -91,6 +91,7 @@ const HQProfile = () => {
     useEffect(() => {
         if (isSuccess) {
             setOpenSuccessModal(true)
+            window.sessionStorage.removeItem("locationArray")
         }
     }, [data, isError])
 
