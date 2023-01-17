@@ -38,7 +38,7 @@ function App() {
     return (
         <Routes>
             {/* public routes */}
-            <Route path="/" element={<Navigate replace to="/login" />} />
+            <Route path="/" element={<Navigate replace to="/messaging" />} />
             <Route path="/login" element={<Login />} />
             <Route path="/auth/sign-up/depot" element={<Profile />} />
             <Route path="/recover-password" element={<RecoverPassword />} />
