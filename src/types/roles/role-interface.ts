@@ -13,6 +13,16 @@ export interface InviteUserInterface {
     trial_period?: boolean
 }
 
+export interface InviteHqInterface {
+    jwt: string | undefined
+    invitees: {
+        email: string[]
+        invitedRole: string
+        regionAddress?: string | undefined
+        companyId?: string | undefined
+    }[]
+}
+
 export interface RolesRequest {
     status: "accepted" | "pending" | "REGIONAL-MANAGER"
     depotRole?: string

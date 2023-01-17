@@ -48,9 +48,25 @@ const ApplicationJobTable = ({ elements }: ApplicationJobInterface) => {
                 {element?.user?.firstName} {element?.user?.lastName}
             </td>
             <td>{element?.jobListing?.jobQualification?.name}</td>
-            <td className="text-green-100">
-                {element?.jobMatchPercentage}%
-            </td>{" "}
+            <td>
+                {element?.jobListing?.jobRate?.currency}
+                {element?.jobListing?.jobMeetingPoint === "SITE" ? (
+                    <span>
+                        {
+                            element?.jobListing?.jobRate
+                                ?.jobRateMeetOnsiteDisplayedToDepot
+                        }
+                    </span>
+                ) : (
+                    <span>
+                        {
+                            element?.jobListing?.jobRate
+                                ?.jobRateDepotFirstDisplayedToDepot
+                        }
+                    </span>
+                )}
+            </td>
+            <td className="text-green-100">{element?.jobMatchPercentage}%</td>{" "}
             <td> {renderStatus(element?.status)}</td>
             <td>
                 <p className="flex items-center gap-2">
@@ -77,6 +93,7 @@ const ApplicationJobTable = ({ elements }: ApplicationJobInterface) => {
         { list: "NO" },
         { list: "OPERATIVE" },
         { list: "QUALIFICATION" },
+        { list: "RATE" },
         { list: "MATCH" },
         { list: "STATUS" },
         { list: "RATING", icon: <AiOutlineArrowUp /> },

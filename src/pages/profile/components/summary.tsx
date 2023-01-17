@@ -3,20 +3,22 @@ import { Button } from "../../../components"
 import { BsFillTrashFill } from "react-icons/bs"
 import { RiAddLine } from "react-icons/ri"
 import { MdLocationOn } from "react-icons/md"
-import { useEffect, useState } from "react"
 // import { useFormikContext } from "formik"
 
 interface profileSummary {
     setStep: React.Dispatch<React.SetStateAction<number>>
     step: number
+    LocationStateArray: never[]
 }
 
-const HQProfileSummary = ({ setStep, step }: profileSummary) => {
+const HQProfileSummary = ({
+    setStep,
+    step,
+    LocationStateArray,
+}: profileSummary) => {
     // const { setFieldValue, values } = useFormikContext<{
     //     regionAddress: string
     // }>()
-
-    const [LocationStateArray, setLocationStateArray] = useState([])
 
     const handleDelete = (index: number) => {
         const newArray: any = LocationStateArray.filter(
@@ -25,17 +27,10 @@ const HQProfileSummary = ({ setStep, step }: profileSummary) => {
         sessionStorage.setItem("locationArray", JSON.stringify(newArray))
     }
 
-    useEffect(() => {
-        const locationArray: any =
-            window.sessionStorage.getItem("locationArray")
-        const parsedLocationArray = JSON.parse(locationArray)
-        setLocationStateArray(parsedLocationArray)
-    }, [LocationStateArray])
-
     return (
         <>
             <div className="overflow-auto h-[500px]">
-                {LocationStateArray.map((item: any, index: number) => (
+                {LocationStateArray?.map((item: any, index: number) => (
                     <div
                         className="bg-yellow-10 px-6 py-6 rounded-lg mt-4"
                         key={index}
@@ -50,12 +45,6 @@ const HQProfileSummary = ({ setStep, step }: profileSummary) => {
                             </div>
 
                             <div className="flex gap-3 items-center">
-                                {/* <MdModeEdit
-                            size={25}
-                            onClick={() => {
-                                setStep(step - 1)
-                            }}
-                        /> */}
                                 <BsFillTrashFill
                                     size={25}
                                     color="#E94444"

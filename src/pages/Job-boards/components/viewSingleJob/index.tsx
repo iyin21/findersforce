@@ -163,8 +163,21 @@ const SingleJobBoard = () => {
                                     description={data?.jobDescription}
                                     jobType={data?.jobType?.name}
                                     hourlyPay={
-                                        data?.jobRate
-                                            ?.jobRatePerHourDisplayedToDepot
+                                        data?.jobMeetingPoint === "SITE" ? (
+                                            <span>
+                                                {
+                                                    data?.jobRate
+                                                        ?.jobRateMeetOnsiteDisplayedToDepot
+                                                }
+                                            </span>
+                                        ) : (
+                                            <span>
+                                                {
+                                                    data?.jobRate
+                                                        ?.jobRateDepotFirstDisplayedToDepot
+                                                }
+                                            </span>
+                                        )
                                     }
                                     currency={data?.jobRate?.currency}
                                     date={data?.jobDate}
