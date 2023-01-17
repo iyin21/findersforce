@@ -1,47 +1,35 @@
-import useAuthContext from "../auth-hooks/useAuth"
-// import axios from "axios"
-import { useQuery } from "@tanstack/react-query"
-import { AxiosError } from "axios"
 import { showNotification } from "@mantine/notifications"
-import useAxiosInstance from "../../services/useAxiosInstance"
+import { AxiosInstance } from "axios"
 
-interface disable2FaRequestResponse {
-    message: string
-    status: string
-    data: {
-        data: {
-            message: string
-            status: string
-        }
-    }
-}
-
-export default function useDisableTwoFactorRequest() {
-    const { state } = useAuthContext()
-    const axiosPrivate = useAxiosInstance()
-    // /** API methods */
-    const requestToDisable2fa = async () => {
-        const { data } = await axiosPrivate.get("/auth/disable-2fa-request", {
+const useDisable2FaRequest = (
+    token: string | undefined,
+    axiosInstance: AxiosInstance,
+    setOpen: (val: boolean) => void
+) => {
+    axiosInstance
+        .get("/auth/disable-2fa-request", {
             withCredentials: true,
             headers: {
-                Authorization: `${state?.jwt?.token}`,
+                Authorization: `${token}`,
                 "Content-Type": "application/json",
             },
         })
-        return data
-    }
-
-    return useQuery<string, AxiosError, disable2FaRequestResponse["data"]>(
-        ["disable2FaRequest"],
-        () => requestToDisable2fa(),
-        {
-            onError: (err) => {
-                showNotification({
-                    title: "Error",
-                    // @ts-ignore
-                    message: err.message || err?.response?.data?.error,
-                })
-            },
-        }
-    )
+        .then((res) => {
+            showNotification({
+                title: "Success",
+                color: "green",
+                // @ts-ignore
+                message: res.data.message,
+            })
+            setOpen(true)
+        })
+        .catch((error) => {
+            showNotification({
+                title: "Error",
+                color: "red",
+                message: error?.response.data.error || "Error occurred",
+            })
+        })
 }
+
+export default useDisable2FaRequest

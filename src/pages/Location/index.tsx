@@ -4,38 +4,51 @@ import { FiPlus } from "react-icons/fi"
 import LocationTable from "./components/tables/location-table"
 import { useState } from "react"
 import AddLocationModal from "../../components/Modals/Location/add-location-modal"
+import { useGetAllDepotRegions } from "../../hooks/location/depot-hook"
+import { CgSpinner } from "react-icons/cg"
+import EmptyState from "../../pages/Approvals/components/EmptyState"
 
 const Location = () => {
     const [opened, setOpened] = useState(false)
-
+    const { data, isLoading } = useGetAllDepotRegions()
+    
     return (
         <Layout pageTitle={"Location"}>
-            <div className="md:p-6 p-6 mt-4 md:mt-14">
+            <div className="md:p-6 p-6 mt-4 md:mt-14 font-creato">
                 <div className="flex justify-between items-center">
                     <div className="flex flex-col">
                         <h1
-                            className="text-2xl md:text-3xl font-creatoBold text-black-100 font-bold"
+                            className="text-2xl md:text-3xl font-creato text-black-100 font-bold"
                             data-testid="location_title"
                         >
-                            Location
+                            Depot
                         </h1>
                         <p className="text-black-60 text-2md md:text-lg font-normal font-creato">
-                            All of your organization`s location in one glance
+                            Access the activity across your entire Organisation
+                            with just one glance.
                         </p>
                     </div>
                     <Button
                         variant="primary"
-                        className="py-3 font-semibold font-creatoMedium ml-2 md:ml-0"
+                        className="py-3 font-semibold font-creato ml-2 md:ml-0"
                         iconLeft={<FiPlus size={20} />}
                         onClick={() => setOpened(true)}
                         data-testid="add_location_btn"
                     >
-                        Add new location
+                        Add Depot
                     </Button>
                 </div>
-                <LocationTable />
+                {isLoading ? (
+                    <div className="h-screen w-full flex mt-24 justify-center">
+                        <CgSpinner className="animate-spin text-primary-90 text-4xl" />
+                    </div>
+                ) : data?.data && data.data.length > 0 ? (
+                    <LocationTable elements={data.data} />
+                ) : (
+                    <EmptyState description="You are the only active depot in your Organisation." />
+                )}
             </div>
-            <AddLocationModal opened={opened} setOpened={setOpened}/>
+            <AddLocationModal opened={opened} setOpened={setOpened} />
         </Layout>
     )
 }
