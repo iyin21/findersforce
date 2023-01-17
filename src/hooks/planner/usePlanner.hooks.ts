@@ -1,6 +1,8 @@
 import { showNotification } from "@mantine/notifications"
 import {
     PaymentEvidenceUpload,
+    RateOperativeRequest,
+    RateOperativeResponse,
     ShiftByScheduleIdResponse,
     ShiftResponse,
 } from "../../types/planner/interfaces"
@@ -195,10 +197,43 @@ function usePaymentEvidenceUpload({ scheduleId }: { scheduleId: string }) {
     )
 }
 
+function useRateOperative() {
+    const {
+        state: { jwt },
+    } = useAuthContext();
+
+    const rateOperative = async (requestBody: RateOperativeRequest) => {
+        const config: AxiosRequestConfig = {
+            headers: {
+                Authorization: `Bearer ${jwt?.token}`,
+            },
+        };
+        const { data } = await axiosInstance.post("/rating/operative", requestBody, config);
+
+        return data;
+    };
+
+    return useMutation<RateOperativeResponse, AxiosError, RateOperativeRequest>(
+        ["RateOperativeRequest"],
+        (requestBody: RateOperativeRequest) => rateOperative(requestBody),
+        {
+            onSuccess: (data) => {
+                showNotification({
+                    title: "Success",
+                    message: data.message,
+                    color: "green",
+                });
+            },
+        },
+    );
+}
+
+
 export {
     useGetShiftHistory,
     useGetShiftHistoryByJobListingId,
     useGetSingleSchedule,
     usePaymentEvidenceUpload,
     useGetScheduleByScheduleId,
+    useRateOperative,
 }

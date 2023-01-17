@@ -17,17 +17,88 @@ import videoBg from "../../assets/videoBg.mp4"
 
 const HQProfile = () => {
     const [step, setStep] = useState(0)
-
+    const [LocationStateArray, setLocationStateArray] = useState([])
     const [openSuccessModal, setOpenSuccessModal] = useState(false)
 
     const { mutate: mutateUser, isSuccess, data } = useInviteHQ()
     const { mutate, isLoading, isError, data: profileData } = useCreateProfile()
+    // this duplicates the LocationStateArray session storage for regional manager data
+    const regionalData = LocationStateArray.map((i: any) => ({ ...i }))
+    // this duplicates the LocationStateArray session storage for shift manager data
+    const shiftData = LocationStateArray.map((i: any) => ({ ...i }))
+
+    // this deletes the regional manager email from the LocationStateArray session storage in order to separate the regional manager as the backend requires
+    const deleteRegionalManagerData = shiftData.map(function (item: any) {
+        delete item.regional_manager
+        return item
+    })
+    // this deletes the shift manager email from the LocationStateArray session storage in order to separate the regional manager as the backend requires
+    const deleteShiftManagerData = regionalData.map(function (item: any) {
+        delete item.shift_manager
+        return item
+    })
+
+    // this adds the invited role to the shift manager array in order to send to the backend
+    const addShiftInvitedRoleData = deleteRegionalManagerData.map((v: any) => ({
+        ...v,
+        invitedRole: "SHIFT_MANAGER",
+        companyId: profileData?.user?.depotCompany?._id,
+    }))
+
+    // this adds the invited role to the regional manager array in order to send to the backend
+    const addRegionalInvitedRoleData = deleteShiftManagerData.map((v: any) => ({
+        ...v,
+        invitedRole: "REGIONAL_MANAGER",
+        companyId: profileData?.user?.depotCompany?._id,
+    }))
+    // this changes the shift_manager array to email in order to send to the backend
+    const shiftManagerArray = addShiftInvitedRoleData.map((item: any) => {
+        return {
+            email: item.shift_manager,
+            invitedRole: item.invitedRole,
+            regionAddress: item.regionAddress,
+            companyId: profileData?.user?.depotCompany?._id,
+        }
+    })
+    // this changes the regional_manager array to email in order to send to the backend
+    const regionalManagerArray = addRegionalInvitedRoleData.map((item: any) => {
+        return {
+            email: item.regional_manager,
+            invitedRole: item.invitedRole,
+            regionAddress: item.regionAddress,
+            companyId: profileData?.user?.depotCompany?._id,
+        }
+    })
+
+    // this combines the shift manager and regional manager arrays into one array to send to the backend
+    const finalArray = shiftManagerArray.concat(regionalManagerArray)
+
+    // this functions gets the session storage and parses it
+    const getSessionStorage = async () => {
+        const locationArray: any =
+            window.sessionStorage.getItem("locationArray")
+        const parsedLocationArray = JSON.parse(locationArray)
+
+        setLocationStateArray(parsedLocationArray)
+    }
+
+    const handleSubmit = () => {
+        mutateUser({
+            jwt: profileData?.jwt?.token,
+            invitees: finalArray,
+        })
+    }
 
     useEffect(() => {
         if (isSuccess) {
             setOpenSuccessModal(true)
+            window.sessionStorage.removeItem("locationArray")
         }
     }, [data, isError])
+
+    useEffect(() => {
+        getSessionStorage()
+    }, [LocationStateArray])
 
     return (
         <div>
@@ -39,7 +110,7 @@ const HQProfile = () => {
                 className="hidden md:block h-screen w-full object-cover fixed"
                 src={videoBg}
             ></video>
-            <div className="grid grid-cols-1 lg:grid-cols-2 text-white h-fit lg:bg-black-60 font-creato lg:absolute lg:top-0">
+            <div className="grid grid-cols-1 lg:grid-cols-2 text-white h-fit lg:bg-black-60 lg:absolute lg:top-0">
                 {openSuccessModal && (
                     <SuccessfulLogin
                         opened={openSuccessModal}
@@ -56,13 +127,7 @@ const HQProfile = () => {
                         initialValues={HqProfileInitialValue}
                         data-testid="post_job_form"
                         onSubmit={(values) => {
-                            mutateUser({
-                                email: values.email,
-                                invitedRole: values.accountType,
-                                regionAddress: values.regionAddress,
-                                jwt: profileData?.jwt.token,
-                                companyId: profileData?.user?.depotCompany?._id,
-                            })
+                            handleSubmit()
                         }}
                         mutate={mutate}
                         isLoading={isLoading}
@@ -78,7 +143,11 @@ const HQProfile = () => {
                                     onSubmit={() => {}}
                                     validationSchema={validationSchema}
                                 >
-                                    <Component setStep={setStep} step={step} />
+                                    <Component
+                                        setStep={setStep}
+                                        step={step}
+                                        LocationStateArray={LocationStateArray}
+                                    />
                                 </FormikStep>
                             )
                         )}
@@ -154,7 +223,7 @@ export function FormikStepper({ ...props }: TWizardProps) {
         <div>
             {props?.step > 0 ? (
                 <div
-                    className="bg-black-5 p-2 w-fit rounded-lg relative z-20"
+                    className="bg-black-5 p-2 w-fit rounded-lg relative z-20 mb-3"
                     onClick={handleBack}
                 >
                     {" "}
@@ -187,8 +256,9 @@ export function FormikStepper({ ...props }: TWizardProps) {
                 validationSchema={currentChild.props.validationSchema}
                 onSubmit={(values, helpers) => {
                     helpers.setSubmitting(true)
-
-                    if (!isLastStep()) {
+                    if (props.isError === true) {
+                        props.setStep(0)
+                    } else if (!isLastStep()) {
                         props.setStep(props.step + 1)
                     } else {
                         props.onSubmit(values, helpers) as Promise<any>

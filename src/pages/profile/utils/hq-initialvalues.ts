@@ -10,5 +10,4 @@ export const HqProfileInitialValue = {
     subscriptionPlan: "",
     regional_manager: [],
     shift_manager: [],
-    invitedRole: "",
 }

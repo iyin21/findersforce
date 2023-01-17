@@ -115,15 +115,36 @@ const RmPlanner = () => {
                 </div>
                 {activeTab === "completed" && (
                     <div className="relative mt-4">
-                        <Alert
-                            icon={<IoAlertCircle size={26} />}
-                            color="red"
+                                                <Alert
+                            icon={<IoAlertCircle size={26} className="" />}
+                            color="blue"
                             radius="md"
                         >
-                            You have a total of {totalDuration} hours,{" "}
-                            {completedShiftsData?.results?.length} completed
-                            shift(s) to pay for, to the value of{" "}
-                            <strong>£{totalAmount}</strong>
+                            <div className="flex justifiy-between">
+                                <p className="place-self-center">
+                                    Your depot has completed a total of{" "}
+                                    <strong>
+                                        {completedShiftsData?.results?.length}{" "}
+                                        shifts ({totalDuration} hours){" "}
+                                    </strong>
+                                    ,generating a running invoivce of{" "}
+                                    <strong>£{totalAmount}</strong>
+                                </p>
+                                {/* <div className="mr-2 ml-auto">
+                                    {" "}
+                                    <Button
+                                        variant="green"
+                                        className="py-3 font-semibold font-creatoMedium"
+                                        style={{ backgroundColor: "black" }}
+                                        // iconLeft={<FiPlus size={20} />}
+                                        data-testid="make_payment_btn"
+                                        iconRight={<FaAngleRight size={20} />}
+                                        // onClick={() => setOpenPayment(!openPayment)}
+                                    >
+                                        Make Payments
+                                    </Button>
+                                </div> */}
+                            </div>
                         </Alert>
                     </div>
                 )}
