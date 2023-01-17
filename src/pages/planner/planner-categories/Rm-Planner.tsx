@@ -109,13 +109,14 @@ const RmPlanner = () => {
                             Planner
                         </h1>
                         <p className="text-black-60 text-2md md:text-lg font-normal font-creato">
-                            Operatives turn up for their shifts in one glance
+                            Monitor your Depot’s active shifts, view assigned
+                            Operatives & their pay status.
                         </p>
                     </div>
                 </div>
                 {activeTab === "completed" && (
                     <div className="relative mt-4">
-                                                <Alert
+                        <Alert
                             icon={<IoAlertCircle size={26} className="" />}
                             color="blue"
                             radius="md"

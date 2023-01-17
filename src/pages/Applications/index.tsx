@@ -1,6 +1,6 @@
 import { Tabs } from "@mantine/core"
 import ApplicationTable from "./components/application-table"
-import { useState } from "react"
+import { useMemo, useState } from "react"
 import { useGetApplications } from "./hooks/application.hook"
 import { CgSpinner } from "react-icons/cg"
 import ApplicationDetails from "./sub-navigations/ApplicationDetails"
@@ -11,9 +11,17 @@ import { useNavigate } from "react-router-dom"
 import Pagination from "../../components/Pagination/pagination"
 import { ApplicationFilterRequest } from "../../types/filter/filter"
 import Filter from "../../components/ApplicationFilter/index"
+import { useAuthContext } from "../../pages/auth/context/authContext"
+import { HQDepotType, RegionalManager } from "../../utils/user-types"
 
 const Applications = () => {
     const [activeTab, setActiveTab] = useState<string | null>("pending")
+
+    const { state } = useAuthContext()
+
+    const userState = useMemo(() => {
+        return state.user
+    }, [state.user])
 
     const [activePendingPage, setPendingPage] = useState(1)
     const [activeAcceptedPage, setAcceptedPage] = useState(1)
@@ -100,9 +108,19 @@ const Applications = () => {
                     <h5 className="font-bold lg:text-3xl text-2xl mb-2">
                         Applications
                     </h5>
-                    <p className="text-black-60 mb-2">
-                        Operatives who apply for shifts appear here
-                    </p>
+                    {userState?.depotRole === HQDepotType ? (
+                        <p className="text-black-60 mb-2">
+                            Review every Operative that has applied to your Organisation’s shift posts.
+                        </p>
+                    ) : userState?.depotRole === RegionalManager ? (
+                        <p className="text-black-60 mb-2">
+                            Review every Operative that has applied to your Depot’s shift posts.
+                        </p>
+                    ) : (
+                        <p className="text-black-60 mb-2">
+                            Review every Operative that has applied to your Depot’s shift posts.
+                        </p>
+                    )}
 
                     {isLoadingPendingData ||
                     isLoadingAcceptedData ||

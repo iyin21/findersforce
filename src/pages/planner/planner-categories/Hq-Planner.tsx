@@ -135,7 +135,8 @@ const HqPlanner = () => {
                             Planner
                         </h1>
                         <p className="text-black-60 text-2md md:text-lg font-normal font-creato">
-                            Operatives turn up for their shifts in one glance
+                            Monitor your Organisation’s active shifts, view
+                            assigned Operatives & pay wages.
                         </p>
                     </div>
                     <div>
