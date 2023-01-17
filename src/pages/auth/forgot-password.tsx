@@ -8,7 +8,7 @@ import { useForm } from "@mantine/form"
 import Button from "../../components/Core/Buttons/Button"
 import logo from "../../assets/FF-logo.svg"
 import forgotPassword from "../../hooks/auth-hooks/use-forgot-password"
-import videoBg from "../../assets/videoBg.mp4"
+import videoBg from "../../assets/video/videoBg.mp4"
 
 const RecoverPassword = () => {
     const userRef = React.useRef<HTMLInputElement>(

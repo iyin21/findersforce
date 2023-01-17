@@ -16,7 +16,7 @@ import {
 } from "./utils/passwordRequirement"
 import HQProfile from "./hq-profile"
 import { selectData } from "./utils/subscriptionSelectData"
-import videoBg from "../../assets/videoBg.mp4"
+import videoBg from "../../assets/video/videoBg.mp4"
 
 const Profile = () => {
     const [searchParams] = useSearchParams()

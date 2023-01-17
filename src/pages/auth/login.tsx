@@ -8,7 +8,7 @@ import { emailInputStyle, passwordInputStyle } from "./utils"
 import useAuthContext from "../../hooks/auth-hooks/useAuth"
 import logo from "../../assets/FF-logo.svg"
 import login from "../../hooks/auth-hooks/use-login"
-import videoBg from "../../assets/videoBg.mp4"
+import videoBg from "../../assets/video/videoBg.mp4"
 
 const Login = () => {
     const [error, showError] = React.useState(false)

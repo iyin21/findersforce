@@ -13,7 +13,7 @@ import { UseMutateFunction } from "react-query"
 import { AxiosError } from "axios"
 import { ProfileRequest } from "../../types/profile/interface"
 import { BiArrowBack } from "react-icons/bi"
-import videoBg from "../../assets/videoBg.mp4"
+import videoBg from "../../assets/video/videoBg.mp4"
 
 const HQProfile = () => {
     const [step, setStep] = useState(0)
