@@ -32,6 +32,8 @@ import Invoice from "./pages/invoice/index"
 import ShiftDetails from "./pages/Applications/sub-navigations/ShiftDetails"
 import Layout from "./components/Layout"
 import AdminPayment from "./pages/Admin/Payments"
+import RateOperatives from "./pages/planner/components/RateOperatives"
+import TwoFactorAuthentication from "./pages/auth/two-2fa-verification"
 
 function App() {
     return (
@@ -43,6 +45,10 @@ function App() {
             <Route path="/recover-password" element={<RecoverPassword />} />
             <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/verify-email" element={<VerifyEmailAddress />} />
+            <Route
+                path="/auth/verify-2fa"
+                element={<TwoFactorAuthentication />}
+            />
 
             {/* private routes */}
             <Route element={<PersistLogin />}>
@@ -59,6 +65,10 @@ function App() {
                     <Route
                         path="/planner/:jobListingId"
                         element={<ShiftsDetailTable />}
+                    />
+                    <Route
+                        path="/planner/rate-ops/:jobListingId"
+                        element={<RateOperatives />}
                     />
                     <Route path="/roles&permission" element={<Roles />} />
                     <Route path="/support" element={<SupportMedium />} />
@@ -79,7 +89,10 @@ function App() {
                     <Route path="/depots" element={<AdminDepot />} />
                     <Route path="/add-depots" element={<AddDepot />} />
                     <Route path="/depots/:depotId" element={<SingleDepot />} />
-                    <Route path="/subscription/invoice/:subscriptionId" element={<Invoice/>} />
+                    <Route
+                        path="/subscription/invoice/:subscriptionId"
+                        element={<Invoice />}
+                    />
                     <Route
                         path="/shifts/:shiftId"
                         element={

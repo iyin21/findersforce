@@ -23,8 +23,7 @@ import useAxiosInstance from "../../services/useAxiosInstance"
 import OtpContainer from "../../components/OtpContainer/otp-container"
 import useDisableTwoFactor from "../../hooks/settings/disable2fa-hook"
 import useEnableTwoFactor from "../../hooks/settings/enable2fa-hook"
-import useDisableTwoFactorRequest from "../../hooks/settings/disable-otp-request-hook"
-import { showNotification } from "@mantine/notifications"
+import useDisable2FaRequest from "../../hooks/settings/disable-otp-request-hook"
 import { BsCameraFill } from "react-icons/bs"
 import useProfileImageUpload from "../../hooks/settings/upload-profile-image"
 
@@ -151,15 +150,7 @@ const Settings = () => {
                 setChecked
             )
         } else {
-            const { data: response } = useDisableTwoFactorRequest()
-            if (response) {
-                showNotification({
-                    title: "Success",
-                    // @ts-ignore
-                    message: response.message,
-                })
-                setOpen(true)
-            }
+            useDisable2FaRequest(state.jwt?.token, protectedAxios, setOpen)
         }
     }
 
