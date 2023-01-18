@@ -1,4 +1,4 @@
-import { Button, SuccessfulLogin } from "../../components"
+import { BackButton, Button, SuccessfulLogin } from "../../components"
 import { Form, Formik, FormikConfig, FormikValues } from "formik"
 import React, { ReactNode, useEffect, useState } from "react"
 import { useNavigate, useSearchParams } from "react-router-dom"
@@ -12,7 +12,6 @@ import { useInviteHQ } from "../../hooks/roles/use-roles"
 import { UseMutateFunction } from "react-query"
 import { AxiosError } from "axios"
 import { ProfileRequest } from "../../types/profile/interface"
-import { BiArrowBack } from "react-icons/bi"
 
 const HQProfile = () => {
     const [step, setStep] = useState(0)
@@ -211,13 +210,7 @@ export function FormikStepper({ ...props }: TWizardProps) {
     return (
         <div>
             {props?.step > 0 ? (
-                <div
-                    className="bg-black-5 p-2 w-fit rounded-lg relative z-20 mb-3"
-                    onClick={handleBack}
-                >
-                    {" "}
-                    <BiArrowBack size={30} />
-                </div>
+                <BackButton handleBackButton={() => handleBack()} />
             ) : (
                 ""
             )}

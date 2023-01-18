@@ -34,6 +34,7 @@ import AdminPayment from "./pages/Admin/Payments"
 import RateOperatives from "./pages/planner/components/RateOperatives"
 import TwoFactorAuthentication from "./pages/auth/two-2fa-verification"
 import Maps from "./pages/Map"
+import ViewSingleActiveMap from "./pages/Map/components/viewSingleActiveMap/viewSingleActiveMap"
 
 function App() {
     return (
@@ -103,6 +104,10 @@ function App() {
                     />
                     <Route path="/payment" element={<AdminPayment />} />
                     <Route path="/Maps" element={<Maps />} />
+                    <Route
+                        path="/maps/:listingId"
+                        element={<ViewSingleActiveMap />}
+                    />
                 </Route>
             </Route>
         </Routes>
