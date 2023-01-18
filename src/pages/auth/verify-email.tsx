@@ -3,7 +3,7 @@ import backIcon from "../../assets/backIcon.svg"
 import LandingPageText from "../../components/Layout/landing-page-txt"
 import OtpContainer from "../../components/OtpContainer/otp-container"
 import logo from "../../assets/FF-logo.svg"
-import videoBg from "../../assets/videoBg.mp4"
+import videoBg from "../../assets/video/videoBg.mp4"
 import { useEffect, useState } from "react"
 import { resendOTP } from "../../hooks/auth-hooks/use-forgot-password"
 
@@ -56,7 +56,7 @@ const VerifyEmailAddress = () => {
                 className="hidden md:block h-screen w-full object-cover fixed"
                 src={videoBg}
             ></video>
-            <div className="grid grid-cols-1 lg:grid-cols-2 text-white font-creato lg:absolute lg:top-0">
+            <div className="grid grid-cols-1 lg:grid-cols-2 text-white font-creato lg:bg-black-60 lg:absolute lg:top-0">
                 <div className="hidden lg:block">
                     <LandingPageText />
                 </div>
