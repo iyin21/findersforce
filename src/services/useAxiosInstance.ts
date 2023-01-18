@@ -15,7 +15,9 @@ const useAxiosInstance = () => {
                     config.headers !== undefined &&
                     state.jwt !== null
                 ) {
+                    // @ts-ignore
                     if (!config.headers["Authorization"]) {
+                        // @ts-ignore
                         config.headers[
                             "Authorization"
                         ] = `Bearer ${state?.jwt.token}`

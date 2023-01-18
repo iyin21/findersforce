@@ -103,11 +103,7 @@ const JobBoardTable = ({
                     </p>
                 )}
             </td>
-            <td
-                role="gridcell"
-                className="cursor-pointer h-[60px] border-b border-neutral-5"
-                data-testid="job_board_table"
-            >
+            <td>
                 <IoIosArrowForward size={30} style={{ color: "#889088" }} />
             </td>
         </tr>

@@ -10,6 +10,7 @@ export { default as Checkbox } from "./Core/Checkbox/checkbox"
 export { default as DatePicker } from "./DatePicker/index"
 export { default as TimePicker } from "./TimePicker/index"
 export { default as Filter } from "./Filter/index"
+export { default as BackButton } from "./BackButton/index"
 
 // Modals
 export { default as AddUser } from "./Modals/AddUser"
