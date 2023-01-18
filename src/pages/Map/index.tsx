@@ -1,7 +1,7 @@
 import { Button } from "../../components"
 import Layout from "../../components/Layout"
 import viewMapIcon from "../../assets/svg/view_map.svg"
-import locationIcon from "../../assets/locationIcon.svg"
+import locationIcon from "../../assets/LocationIcon.svg"
 import { useState } from "react"
 import { useGetDepotRegions } from "../../hooks/dashboard/useDashboard.hook"
 import useAuthContext from "../../hooks/auth-hooks/useAuth"
