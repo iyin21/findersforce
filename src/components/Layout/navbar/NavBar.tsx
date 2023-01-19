@@ -1,7 +1,7 @@
 import User from "../../../assets/User.svg"
 import { Dispatch, SetStateAction, useEffect, useState } from "react"
 import { Indicator, Modal } from "@mantine/core"
-import addressLogo from "../../../assets/addressLogo.svg"
+import addressLogo from "../../../assets/svg/addressLogo.svg"
 import useUserNotification from "../../../hooks/notification-hook"
 import { showNotification } from "@mantine/notifications"
 import { CgSpinner } from "react-icons/cg"
@@ -84,7 +84,7 @@ const NavBar = ({ setOpenSideBar, noTopNav }: navInterface) => {
                                 onClick={() => setOpenSideBar(true)}
                             />
                         </div>
-                        
+
                         <img
                             src={User}
                             alt="User icon"
@@ -107,9 +107,12 @@ const NavBar = ({ setOpenSideBar, noTopNav }: navInterface) => {
                                 }
                             />
                         </Indicator>
-                        
-                        <img src={Message} alt="messaging" onClick={() => navigate("/messaging")}/>
-                        
+
+                        <img
+                            src={Message}
+                            alt="messaging"
+                            onClick={() => navigate("/messaging")}
+                        />
                     </div>
                 )}
             </nav>

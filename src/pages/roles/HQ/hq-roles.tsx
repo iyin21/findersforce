@@ -181,6 +181,7 @@ const HQRoles = () => {
         resendData,
         userId,
     ])
+
     return (
         <div>
             <div className="p-6 mt-8 md:mt-14">
@@ -316,7 +317,7 @@ const HQRoles = () => {
                             </Tabs.Tab>
                         </Tabs.List>
                         <Tabs.Panel value="regional">
-                            {!rMData?.data ? (
+                            {!rMData?.data || rMData.data.length === 0 ? (
                                 <EmptyState
                                     title="You have no active Depot Managers."
                                     description="When a Depot Manager accepts an invitation, they will show here."
@@ -351,7 +352,7 @@ const HQRoles = () => {
                             )}
                         </Tabs.Panel>
                         <Tabs.Panel value="shift_manager">
-                            {!sMData?.data ? (
+                            {!sMData?.data || sMData.data.length === 0 ? (
                                 <EmptyState
                                     title="You have no active Shift Managers."
                                     description="When a Shift Manager accepts an invitation, they will show here."
@@ -386,7 +387,8 @@ const HQRoles = () => {
                             )}
                         </Tabs.Panel>
                         <Tabs.Panel value="pending">
-                            {!pendingData?.data ? (
+                            {!pendingData?.data ||
+                            pendingData.data.length === 0 ? (
                                 <EmptyState
                                     title="You have no sent invitations."
                                     description="When you send an invitation, it will show here."

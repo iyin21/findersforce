@@ -9,7 +9,7 @@ import { useForm } from "@mantine/form"
 import logo from "../../assets/FF-logo.svg"
 import passwordLock from "../../assets/password-lock.svg"
 import useResetPassword from "../../hooks/auth-hooks/use-reset-password"
-import videoBg from "../../assets/videoBg.mp4"
+import videoBg from "../../assets/video/videoBg.mp4"
 
 const ResetPassword = () => {
     const [passwordChanged, setPasswordChanged] = React.useState(false)
@@ -62,7 +62,7 @@ const ResetPassword = () => {
                 className="hidden md:block h-screen w-full object-cover fixed"
                 src={videoBg}
             ></video>
-        <div className="grid grid-cols-1 lg:grid-cols-2 text-white font-creato lg:absolute lg:top-0">
+        <div className="grid grid-cols-1 lg:grid-cols-2 text-white font-creato lg:bg-black-60 lg:absolute lg:top-0">
             <div className="hidden lg:block">
                 <LandingPageText />
             </div>

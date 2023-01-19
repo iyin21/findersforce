@@ -8,7 +8,7 @@ import { emailInputStyle, passwordInputStyle } from "./utils"
 import useAuthContext from "../../hooks/auth-hooks/useAuth"
 import logo from "../../assets/FF-logo.svg"
 import login from "../../hooks/auth-hooks/use-login"
-import videoBg from "../../assets/videoBg.mp4"
+import videoBg from "../../assets/video/videoBg.mp4"
 
 const Login = () => {
     const [error, showError] = React.useState(false)
@@ -72,7 +72,7 @@ const Login = () => {
                 className="hidden md:block h-screen w-full object-cover fixed"
                 src={videoBg}
             ></video>
-            <div className="grid grid-cols-1 lg:grid-cols-2 text-white font-creato h-fit lg:absolute lg:top-0">
+            <div className="grid grid-cols-1 lg:grid-cols-2 text-white font-creato h-fit lg:bg-black-60 lg:absolute lg:top-0">
                 <div className="hidden lg:block">
                     <LandingPageText />
                 </div>
