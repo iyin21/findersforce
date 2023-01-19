@@ -1,69 +1,86 @@
 import dayjs from "dayjs"
-import {
-    useGetShiftHistoryByJobListingId,
-    useGetSingleSchedule,
-} from "../../../hooks/planner/usePlanner.hooks"
-import { useLocation, useParams } from "react-router-dom"
-import { useState } from "react"
-import OperativeProfile from "../../../components/Modals/Planner/OperativeProfile"
-import ProfileImage from "../../../assets/ProfileImage.svg"
+import ProfileImage from "../../../../assets/ProfileImage.svg"
 import { BiDotsVerticalRounded } from "react-icons/bi"
-import Menu from "../../../components/Modals/Planner/Menu"
 import { Checkbox, Tabs } from "@mantine/core"
-import Cancel from "../../../components/Modals/Planner/Cancel"
+import { Result } from "../../../../types/planner/interfaces"
 
-const MobileShiftsDetailsTable = () => {
-    const { jobListingId } = useParams<string>()
-
-    const location = useLocation()
-
-    const queryStatus = location?.state?.status
-    const scheduleId = location?.state?.scheduleId
+interface Props {
+    queryStatus: string
+    shiftsData: Result[] | undefined
+    handleOpenMenu: any
+    activeTab: string | null
+    setActiveTab:  (val: string) => void
+    unPaidShifts: Result[] | undefined
+    paidShifts: Result[] | undefined
+    checkedShift: any
+    handleCheckedShift: any
     
+    
+}
+const MobileShiftsDetailsTable = ({
+    queryStatus,
+    shiftsData,
+    handleOpenMenu,
+    activeTab,
+    setActiveTab,
+    unPaidShifts,
+    paidShifts,
+    checkedShift,
+    handleCheckedShift,
+}: Props) => {
+    // const { jobListingId } = useParams<string>()
 
-    const [openProfile, setOpenProfile] = useState(false)
-    const [operativeId, setOperativeId] = useState("")
-    const [openMenu, setOpenMenu] = useState(false)
-    const [activeTab, setActiveTab] = useState<string | null>("unpaid")
-    const [checkedShift, setCheckedShift] = useState<string[]>([])
+    // const location = useLocation()
 
-    const [openCancel, setOpenCancel] = useState(false)
+    // const queryStatus = location?.state?.status
+    // const scheduleId = location?.state?.scheduleId
 
-    const { data: shiftsData } = useGetShiftHistoryByJobListingId({
-        jobListingId,
-        queryStatus,
-    })
+    // const [openProfile, setOpenProfile] = useState(false)
+    // const [operativeId, setOperativeId] = useState("")
+    // const [openMenu, setOpenMenu] = useState(false)
+    // const [activeTab, setActiveTab] = useState<string | null>("unpaid")
+    // const [checkedShift, setCheckedShift] = useState<string[]>([])
 
-    const { data: singleShift } = useGetSingleSchedule({
-        jobListingId: jobListingId,
-    })
+    // const [openCancel, setOpenCancel] = useState(false)
 
-    const handleOpenMenu = (id: string) => {
-        setOperativeId(id)
-        setOpenMenu(!openMenu)
-    }
-    const handleCheckedShift = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { value } = e.target
-        const isChecked = e.target.checked
-        if (isChecked) {
-            setCheckedShift([...checkedShift, value])
-        } else {
-            setCheckedShift(checkedShift.filter((item) => item !== value))
-        }
-    }
+    // const { data: shiftsData } = useGetShiftHistoryByJobListingId({
+    //     jobListingId,
+    //     queryStatus,
+    // })
 
-    const paidShifts = singleShift?.results?.filter(
-        (shift) => shift?.jobListing?.fullyPaidByDepot === true
-    )
-    const unPaidShifts = singleShift?.results?.filter(
-        (shift) => shift?.jobListing?.fullyPaidByDepot === false
-    )
+    // const { data: singleShift } = useGetSingleSchedule({
+    //     jobListingId: jobListingId,
+    // })
+
+    // const { data: singleElement } = useGetScheduleByScheduleId({
+    //     scheduleId: scheduleId,
+    // })
+    // const handleOpenMenu = (id: string) => {
+    //     setOperativeId(id)
+    //     setOpenMenu(!openMenu)
+    // }
+    // const handleCheckedShift = (e: React.ChangeEvent<HTMLInputElement>) => {
+    //     const { value } = e.target
+    //     const isChecked = e.target.checked
+    //     if (isChecked) {
+    //         setCheckedShift([...checkedShift, value])
+    //     } else {
+    //         setCheckedShift(checkedShift.filter((item) => item !== value))
+    //     }
+    // }
+
+    // const paidShifts = singleShift?.results?.filter(
+    //     (shift) => shift?.jobListing?.fullyPaidByDepot === true
+    // )
+    // const unPaidShifts = singleShift?.results?.filter(
+    //     (shift) => shift?.jobListing?.fullyPaidByDepot === false
+    // )
 
     return (
         <>
             {queryStatus !== "completed" ? (
                 <div className="mt-4">
-                    {shiftsData?.results?.map((element, index) => (
+                    {shiftsData?.map((element, index) => (
                         <div className="rounded bg-black-5 mb-4" key={index}>
                             <div className="flex justify-between border-b border-black-20 p-4">
                                 <div className="flex items-center gap-2">
@@ -147,35 +164,30 @@ const MobileShiftsDetailsTable = () => {
                                         <h6 className="text-black-50 text-3sm">
                                             RATE
                                         </h6>
-                                        {element?.jobListing
-                                                    .jobMeetingPoint ===
-                                                "DEPOT" ? (
-                                                    <p className="text-2md mt-1">
-                                                        {
-                                                            element?.jobListing
-                                                                .jobRate
-                                                                .currency
-                                                        }
-                                                        {element?.jobListing
-                                                            ?.jobRate
-                                                            .jobRateDepotFirstDisplayedToDepot *
-                                                            element?.jobListing
-                                                                ?.shiftDurationInHours}
-                                                    </p>
-                                                ) : (
-                                                    <p className="text-2md mt-1">
-                                                        {
-                                                            element?.jobListing
-                                                                .jobRate
-                                                                .currency
-                                                        }
-                                                        {element?.jobListing
-                                                            ?.jobRate
-                                                            .jobRateMeetOnsiteDisplayedToDepot *
-                                                            element?.jobListing
-                                                                ?.shiftDurationInHours}
-                                                    </p>
-                                                )}
+                                        {element?.jobListing.jobMeetingPoint ===
+                                        "DEPOT" ? (
+                                            <p className="text-2md mt-1">
+                                                {
+                                                    element?.jobListing.jobRate
+                                                        .currency
+                                                }
+                                                {element?.jobListing?.jobRate
+                                                    .jobRateDepotFirstDisplayedToDepot *
+                                                    element?.jobListing
+                                                        ?.shiftDurationInHours}
+                                            </p>
+                                        ) : (
+                                            <p className="text-2md mt-1">
+                                                {
+                                                    element?.jobListing.jobRate
+                                                        .currency
+                                                }
+                                                {element?.jobListing?.jobRate
+                                                    .jobRateMeetOnsiteDisplayedToDepot *
+                                                    element?.jobListing
+                                                        ?.shiftDurationInHours}
+                                            </p>
+                                        )}
                                     </div>
                                     <div>
                                         <h6 className="text-black-50 text-3sm">
@@ -258,7 +270,7 @@ const MobileShiftsDetailsTable = () => {
                                                 className="rounded-lg"
                                                 onChange={handleCheckedShift}
                                                 name={element?.operative?._id}
-                                                checked={checkedShift.includes(
+                                                checked={checkedShift?.includes(
                                                     element?.operative?._id
                                                 )}
                                                 value={element?.operative?._id}
@@ -421,7 +433,7 @@ const MobileShiftsDetailsTable = () => {
                                                 className="rounded-lg"
                                                 onChange={handleCheckedShift}
                                                 name={element?.operative?._id}
-                                                checked={checkedShift.includes(
+                                                checked={checkedShift?.includes(
                                                     element?.operative?._id
                                                 )}
                                                 value={element?.operative?._id}
@@ -573,11 +585,13 @@ const MobileShiftsDetailsTable = () => {
                 </Tabs>
             )}
 
-            {openProfile && (
+            {/* {openProfile && (
                 <OperativeProfile
                     openProfile={openProfile}
                     setOpenProfile={setOpenProfile}
                     scheduleId={scheduleId}
+                    queryStatus={queryStatus}
+                    singleElement={singleElement}
                 />
             )}
             {openMenu && (
@@ -592,13 +606,13 @@ const MobileShiftsDetailsTable = () => {
                 />
             )}
             {openCancel && (
-                    <Cancel
-                        openCancel={openCancel}
-                        setOpenCancel={setOpenCancel}
-                        operativeId={operativeId}
-                        jobListingId={jobListingId}
-                    />
-                )}
+                <Cancel
+                    openCancel={openCancel}
+                    setOpenCancel={setOpenCancel}
+                    operativeId={operativeId}
+                    jobListingId={jobListingId}
+                />
+            )} */}
         </>
     )
 }

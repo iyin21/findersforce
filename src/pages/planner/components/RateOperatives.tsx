@@ -34,7 +34,7 @@ const RateOperatives = () => {
             queryStatus,
         })
     const { mutate } = useRateOperative()
-    // console.log(shiftsData)
+    
     const handleCheckedOperative = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { value } = e.target
         const isChecked = e.target.checked
@@ -82,7 +82,7 @@ const RateOperatives = () => {
             </td>
             <td>
                 <div className="flex items-center gap-2">
-                    <img src={Profile} alt="profile_image" />
+                    <img src={item?.operative.profileImageUrl ||Profile} alt="profile_image" className="rounded-full  h-8 w-8" />
                     <p>
                         {item?.operative?.firstName} {item?.operative?.lastName}
                     </p>
@@ -137,7 +137,7 @@ const RateOperatives = () => {
                             <div className="lg:flex justify-between">
                                 <div className="flex gap-8 w-full">
                                     <img
-                                        src={Profile}
+                                        src={ element?.depotCompany.logo|| Profile}
                                         alt="logo"
                                         className="rounded-full  h-14 w-14"
                                     />

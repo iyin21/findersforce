@@ -22,7 +22,7 @@ const PaymentEvidenceUpload = ({
     data,
 }: Props) => {
     const ref = useRef<HTMLInputElement | null>(null)
-
+    console.log(data)
     return (
         <Modal
             centered

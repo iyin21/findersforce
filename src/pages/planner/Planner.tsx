@@ -17,6 +17,7 @@ const Planner = () => {
     const userState = useMemo(() => {
         return state.user;
       }, [state.user]);
+      console.log(state.jwt?.token)
     
       switch (true) {
         case userState?.depotRole === RegionalManager:

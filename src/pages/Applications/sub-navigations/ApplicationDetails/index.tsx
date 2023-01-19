@@ -264,7 +264,7 @@ const ApplicationDetails = ({
                                             () => {
                                                 setShiftId(data?.user._id || "")
                                                 // setPhase(3)
-                                                navigate(`/applications/${data?.jobListing._id}`)
+                                                navigate(`/job-boards/${data?.jobListing._id}`)
                                             }
                                             
                                         }

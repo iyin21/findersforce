@@ -63,6 +63,19 @@ export interface Result {
         updatedAt: Date
         __v: number
     }
+    depotCompany: {
+        address: string
+        createdAt: Date
+        createdBy: Date
+        depot: string
+        id: string
+        logo: string
+        name: string
+        regionLimit: number
+        updatedAt: Date
+        __v: number
+        _id: string
+    }
     depotHasRated: boolean
     depotRating: null | DepotRating
     id: string
@@ -141,29 +154,28 @@ export interface PaymentEvidenceUpload {
 }
 
 export interface RateOperativeRequest {
-
-    operativeId: string,
-    scheduleId: string,
-    professionalismScore: number,
-    helpfulnessScore: number,
-    punctualityScore: number,
+    operativeId: string
+    scheduleId: string
+    professionalismScore: number
+    helpfulnessScore: number
+    punctualityScore: number
     review?: string
 }
-export interface RateOperativeResponse{
-    status: string,
-    message: string,
+export interface RateOperativeResponse {
+    status: string
+    message: string
     data: {
-      rater: string,
-      operative: string,
-      schedule: string,
-      professionalismScore: number,
-      punctualityScore: number,
-      helpfulnessScore: number,
-      averageScore: number,
-      review: string,
-      _id: string,
-      createdAt: Date | string,
-      updatedAt: Date | string,
-      __v: 0
+        rater: string
+        operative: string
+        schedule: string
+        professionalismScore: number
+        punctualityScore: number
+        helpfulnessScore: number
+        averageScore: number
+        review: string
+        _id: string
+        createdAt: Date | string
+        updatedAt: Date | string
+        __v: 0
     }
 }

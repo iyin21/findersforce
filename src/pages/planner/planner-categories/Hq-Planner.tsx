@@ -1,6 +1,6 @@
 import { Alert, Select, Tabs } from "@mantine/core"
 import { useState } from "react"
-import ShiftsTable from "../components/ShiftsTable"
+import ShiftsTable from "../components/table/ShiftsTable"
 import { useGetShiftHistory } from "../../../hooks/planner/usePlanner.hooks"
 import Pagination from "../../../components/Pagination/pagination"
 import { CgSpinner } from "react-icons/cg"
