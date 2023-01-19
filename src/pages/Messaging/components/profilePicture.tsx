@@ -1,14 +1,16 @@
 import { TelegramClient, Api } from "telegram"
 import { useEffect, useState, useCallback } from "react"
-const ProfilePicture=({
+const ProfilePicture = ({
     client,
     data,
-    
+    activeChat,
+    big,
 }: {
     client?: TelegramClient
     data: any
-    
-})=>{
+    activeChat?: string
+    big?: boolean
+}) => {
     const [image, setImage] = useState("")
     const base64_arraybuffer = async (data: Buffer | string) => {
         // Use a FileReader to generate a base64 data URI
@@ -27,12 +29,11 @@ const ProfilePicture=({
         return base64url.split(",", 2)[1]
     }
 
-    const handleProfilePicture =  useCallback(async() => {
-    
+    const handleProfilePicture = useCallback(async () => {
         await client?.connect()
         try {
             const buffer = await client?.downloadProfilePhoto(data)
-            
+
             //@ts-expect-error
             if (buffer?.byteLength > 0) {
                 // console.log("buff", buffer)
@@ -41,32 +42,30 @@ const ProfilePicture=({
 
                 setImage(imageBuffer)
             }
-        } catch (err: any) {
-    
-        }
-    },[data])
+        } catch (err: any) {}
+    }, [data])
 
     useEffect(() => {
         handleProfilePicture()
     }, [])
-    
-    return(
+
+    return (
         <img
-        width="30px"
-        height={50}
-        src={
-            image
-                ? `data:image/jpeg;base64,${image}`
-                : `https://ui-avatars.com/api/?name=${
-                      data.name
-                  }&background=rgba(67, 107, 46, 0.5)&color=fff`
-        }
-        alt=""
-        // width={24}
-        // height={22}
-        // alt=""
-        className="rounded-full"
-    />
+            width={big ? "50px" : "30px"}
+            height={big ? "70px" : "50px"}
+            src={
+                image
+                    ? `data:image/jpeg;base64,${image}`
+                    : `https://ui-avatars.com/api/?name=${
+                          activeChat ? activeChat : data.name
+                      }&background=rgba(67, 107, 46, 0.5)&color=fff`
+            }
+            alt=""
+            // width={24}
+            // height={22}
+            // alt=""
+            className="rounded-full"
+        />
     )
 }
-export default ProfilePicture;
+export default ProfilePicture

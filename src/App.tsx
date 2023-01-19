@@ -39,7 +39,7 @@ function App() {
     return (
         <Routes>
             {/* public routes */}
-            <Route path="/" element={<Navigate replace to="/messaging" />} />
+            <Route path="/" element={<Navigate replace to="/login" />} />
             <Route path="/login" element={<Login />} />
             <Route path="/auth/sign-up/depot" element={<Profile />} />
             <Route path="/recover-password" element={<RecoverPassword />} />
@@ -49,7 +49,7 @@ function App() {
                 path="/auth/verify-2fa"
                 element={<TwoFactorAuthentication />}
             />
-            <Route path="/messaging" element={<Messaging />} />
+
             {/* private routes */}
             <Route element={<PersistLogin />}>
                 <Route element={<RequireAuth />}>
@@ -73,7 +73,7 @@ function App() {
                     <Route path="/roles&permission" element={<Roles />} />
                     <Route path="/support" element={<SupportMedium />} />
                     <Route path="/support/complaint" element={<Support />} />
-
+                    <Route path="/messaging" element={<Messaging />} />
                     <Route path="/subscription" element={<Subscription />} />
                     <Route
                         path="/subscription/:id"

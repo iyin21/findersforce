@@ -55,7 +55,7 @@ const Messaging = () => {
 
     //Telegram
 
-    const apiId = import.meta.env.VITE_TELEGRAM_API_ID as number
+    const apiId = Number(import.meta.env.VITE_TELEGRAM_API_ID)
 
     const apiHash = import.meta.env.VITE_TELEGRAM_API_HASH
     const stringSession = new StringSession(
@@ -110,24 +110,17 @@ const Messaging = () => {
         async function eventPrint(event: any) {
             console.log("event", event)
             const message = event.message
-            console.log("chatkklid", chatId)
-            console.log(message, "message")
-            // const sender = await message.getSender()
-            // const sender2 = await message.getInputSender()
-            // const getChat = await message.getChat()
             const id = message.peerId.userId
 
             // Checks if it's a private message (from user or bot)
             if (event.isPrivate && id) {
                 // @ts-expect-error
                 if (chatId?.value === id.value) {
-                    console.log("hey")
+                
                     setChatHistory((chat) => [...chat, message])
                 } else {
-                    console.log("trial")
-                    //// @ts-expect-error
-                    //console.log("hjhj", dialog[0].message.chat?.id?.value)
-                    // const getDialogs = async () => {
+                    
+                    
                     const result = await client.getDialogs({})
                     if (result) {
                         setDialog(result)
@@ -166,6 +159,7 @@ const Messaging = () => {
 
     const handleShowMessages = async (value: string) => {
         setIsLoadingMessages(true)
+        console.log("hey")
         await client.connect()
 
         setActiveChat(value)
@@ -175,8 +169,7 @@ const Messaging = () => {
                 reverse: true,
             })
             if (result) {
-                console.log("result", result)
-                console.log("chatId", result[0].chat?.id)
+
                 setChatId(result[0].chat?.id)
 
                 setChatHistory(() => [
@@ -190,10 +183,11 @@ const Messaging = () => {
                 await newClient?.markAsRead(value, result[result.length - 1].id)
             }
         } finally {
+    
             setIsLoadingMessages(false)
         }
     }
-    console.log("jhhj", chatId)
+
     const [openMenu, setOpenMenu] = useState(false)
     const [message, setMessage] = useState("")
     const [activeIndex, setActiveIndex] = useState<number | null>(null)
@@ -294,7 +288,7 @@ const Messaging = () => {
     const handleFileResult = (item: Api.Message) => {
         setChatHistory((chat) => [...chat, item])
     }
-    
+
     return (
         <Layout pageTitle="Messaging" noTopNav>
             <FileModal
@@ -306,18 +300,25 @@ const Messaging = () => {
                 uploadedFile={uploadedFile}
                 handleResult={handleFileResult}
             />
-            <ProfileDrawer
-                openProfileDrawer={openProfileDrawer}
-                setOpenProfileDrawer={setOpenProfileDrawer}
-                client={newClient}
-                isGroup={
-                    //@ts-expect-error
-                    chatHistory&& chatHistory?.length>0 && chatHistory[0]._chat.className === "Chat" ? true : false
-                }
-                chatId={chatId}
-                activeChat={activeChat}
+            {openProfileDrawer && (
+                <ProfileDrawer
+                    openProfileDrawer={openProfileDrawer}
+                    setOpenProfileDrawer={setOpenProfileDrawer}
+                    client={newClient}
+                    isGroup={
+                      
+                        chatHistory &&
+                        chatHistory?.length > 0 &&
+                          //@ts-expect-error
+                        chatHistory[0]._chat.className === "Chat"
+                            ? true
+                            : false
+                    }
+                    chatId={chatId}
+                    activeChat={activeChat}
+                />
+            )}
 
-            />
             <div>
                 {isLoading || isFetchingDialog ? (
                     <div className="h-screen w-full flex mt-24 justify-center">
@@ -517,8 +518,12 @@ const Messaging = () => {
                                     ))}
                                 </div>
                             </div>
-                            {(chatHistory && chatHistory.length > 0) ||
-                            activeChat ? (
+                            {isLoadingMessages ? (
+                                <div className="h-screen w-full flex mt-24 justify-center">
+                                    <CgSpinner className="animate-spin text-primary-90 text-4xl" />
+                                </div>
+                            ) : (chatHistory && chatHistory.length > 0) ||
+                              activeChat ? (
                                 <div className="w-full pt-8">
                                     <div className="flex justify-between pl-4 pr-8 pb-2">
                                         <div>
@@ -530,9 +535,9 @@ const Messaging = () => {
                                             </p>
                                         </div>
                                         <div className="flex gap-6 text-black-40 cursor-pointer">
-                                            <MdCall size={30} />
+                                            {/* <MdCall size={30} />
                                             <HiVideoCamera size={30} />
-                                            <BiSearch size={30} />
+                                            <BiSearch size={30} /> */}
                                             <AiOutlineMore
                                                 size={30}
                                                 onClick={() =>
@@ -706,10 +711,6 @@ const Messaging = () => {
                                         </button>
                                     </div>
                                 </div>
-                            ) : isLoadingMessages ? (
-                                <div className="h-screen w-full flex mt-24 justify-center">
-                                    <CgSpinner className="animate-spin text-primary-90 text-4xl" />
-                                </div>
                             ) : (
                                 <div className="h-screen w-full flex mt-40 justify-center">
                                     <p>Select a chat to start messaging</p>
@@ -723,5 +724,4 @@ const Messaging = () => {
     )
 }
 
-
- export default Messaging
+export default Messaging
