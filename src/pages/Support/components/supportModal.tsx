@@ -1,6 +1,8 @@
 import { Modal, Select, Textarea, TextInput } from "@mantine/core"
-import { ChangeEvent, useRef, useState } from "react"
+import { showNotification } from "@mantine/notifications"
+import { ChangeEvent, useEffect, useRef, useState } from "react"
 import uploadIcon from "../../../assets/image.svg"
+import { useCreateComplaint } from "../hooks/support.hook"
 
 const operativeIssues = [
     {
@@ -65,13 +67,47 @@ const ComplaintModal = ({
 
     const fileInputRef = useRef<HTMLInputElement>(null)
     const [pictureName, setPictureName] = useState("")
+    const [image, setImage] = useState<string | Blob>("")
+
     const handleCompanyLogoUpload = (e: ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0]
 
         if (file) {
             setPictureName(file.name)
+            setImage(file)
         }
     }
+    const { data, mutate, isLoading } = useCreateComplaint()
+
+    useEffect(() => {
+        if (data) {
+            showNotification({
+                title: "Success",
+                message: data.message,
+                color: "green",
+            })
+            setOpened(false)
+        }
+    }, [data])
+
+    const handleSubmit = () => {
+        const formData = new FormData()
+        const complaintIssues = []
+        complaintIssues.push(issue || "")
+        complaintIssues.map((item) =>
+            formData.append("complaintIssues[]", item)
+        )
+        formData.append("complaintCategory", complaintAboutValue || "")
+
+        formData.append("description", moreInfo)
+
+        image !== "" ? formData.append("image", image) : null
+
+        mutate({
+            formData,
+        })
+    }
+
     return (
         <Modal
             opened={opened}
@@ -244,13 +280,10 @@ const ComplaintModal = ({
                     </span>
                     <button
                         className="bg-yellow-100 p-4 rounded rounded-tr-2xl flex items-center font-bold body-medium px-6"
-                        // onClick={() => handleReject({moreInfo: moreInfo, reason: value})}
-                        // disabled={
-                        //     isLoadingAcceptedData || isLoadingRejectedData
-                        // }
+                        onClick={() => handleSubmit()}
+                        disabled={isLoading}
                     >
-                        Log complaint
-                        {/* {isLoadingRejectedData ? "Loading.." : "Reject"} */}
+                        {isLoading ? "Loading.." : "Log complaint"}
                     </button>
                 </div>
             </div>

@@ -104,7 +104,7 @@ const AddLocationModal = ({ opened, setOpened }: prop) => {
 
     useEffect(() => {
         getSessionStorage()
-    }, [])
+    }, [LocationStateArray])
 
     return (
         <Modal
