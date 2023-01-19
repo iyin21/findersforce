@@ -4,7 +4,7 @@ import { AiFillStar } from "react-icons/ai"
 import { FaTimes } from "react-icons/fa"
 import Message from "../../../assets/Messaging.svg"
 import { Dispatch, SetStateAction } from "react"
-import { useGetScheduleByScheduleId,  } from "../../../hooks/planner/usePlanner.hooks"
+import { useGetScheduleByScheduleId } from "../../../hooks/planner/usePlanner.hooks"
 import relativeTime from "dayjs/plugin/relativeTime"
 import { IoLocationSharp } from "react-icons/io5"
 dayjs.extend(relativeTime)
@@ -13,7 +13,6 @@ interface Props {
     openProfile: boolean
     setOpenProfile: Dispatch<SetStateAction<boolean>>
     scheduleId: string
-    
 }
 
 const OperativeProfile = ({
@@ -21,12 +20,11 @@ const OperativeProfile = ({
     setOpenProfile,
     scheduleId,
 }: Props) => {
-    const { data: singleElement } = useGetScheduleByScheduleId( {
-        scheduleId: scheduleId
+    const { data: singleElement } = useGetScheduleByScheduleId({
+        scheduleId: scheduleId,
     })
     // console.log(singleElement?.cancelReason)
-    
-    
+
     return (
         <Modal
             centered
@@ -37,6 +35,7 @@ const OperativeProfile = ({
             overlayOpacity={0.55}
             overlayBlur={3}
             padding={0}
+            size="lg"
             transition="fade"
             transitionDuration={600}
             transitionTimingFunction="ease"
@@ -46,7 +45,7 @@ const OperativeProfile = ({
             //     },
             // })}
         >
-            <header className="bg-black-100 text-white-100 flex justify-between p-4">
+            <header className="bg-black-100 text-white-100 flex justify-between py-5 px-8 font-creato">
                 <div className="flex gap-4 place-items-center">
                     <div>
                         <p className="font-bold font-creato text-2xl">
@@ -61,36 +60,29 @@ const OperativeProfile = ({
                     />
                 </div>
             </header>
-            <div className="flex justify-between bg-yellow-10 mx-8 p-5 mt-8 mb-5  mx-auto rounded-lg">
+            <div className="flex justify-between bg-yellow-10 mx-8 p-5 mt-8 mb-5  mx-auto rounded-lg font-creato">
                 <div className="flex gap-4">
                     <img
-                        src={
-                            singleElement?.operative
-                                ?.profileImageUrl
-                        }
+                        src={singleElement?.operative?.profileImageUrl}
                         alt="profile"
-                        className="rounded-full  h-14 w-14"
+                        className="rounded-full  h-14 w-14 object-cover"
                     />
                     <div>
                         <p className="text-3sm text-black-50">OPERATIVE</p>
-                        <p className="font-extrabold font-creatoBold text-xl">
+                        <p className="font-extrabold font-creatoMedium text-xl">
                             {singleElement?.operative?.firstName}{" "}
                             {singleElement?.operative?.lastName}
                         </p>
-                        <p className="text-md font-creato">
+                        <p className="text-md font-creato mt-1">
                             Joined{" "}
                             {dayjs(
-                                singleElement?.operative
-                                    ?.createdAt
+                                singleElement?.operative?.createdAt
                             ).fromNow()}
                             <span className="text-black-50"> |</span>
                             <span className="text-green-100">
                                 {" "}
-                                {
-                                    singleElement?.jobListing
-                                        ?.jobMatchPercentage
-                                }
-                                % Match
+                                {singleElement?.jobListing?.jobMatchPercentage}%
+                                Match
                             </span>
                         </p>
                     </div>
@@ -101,26 +93,21 @@ const OperativeProfile = ({
                         alt="message icon"
                         className="inline p-1"
                     />
-                    <p className="inline font-bold font-creatoBold text-md">
-                        Message{" "}
-                        {singleElement?.operative?.firstName}
+                    <p className="inline font-bold font-creatoMedium text-md">
+                        Message {singleElement?.operative?.firstName}
                     </p>
                 </div>
             </div>
             <div className="flex justify-between p-5 bg-green-10 mx-8 rounded-lg">
-                {singleElement?.jobListing.jobMeetingPoint ===
-                "DEPOT" ? (
+                {singleElement?.jobListing?.jobMeetingPoint === "DEPOT" ? (
                     <div>
                         {" "}
                         <p className="text-black-50 text-2md mb-3">RATE</p>{" "}
                         <p className="font-medium font-creatoMedium text-3md">
+                            {singleElement?.jobListing?.jobRate.currency}{" "}
                             {
-                                singleElement?.jobListing.jobRate
-                                    .currency
-                            }{" "}
-                            {
-                                singleElement?.jobListing.jobRate
-                                    .jobRateDepotFirstDisplayedToDepot
+                                singleElement?.jobListing?.jobRate
+                                    ?.jobRateDepotFirstDisplayedToDepot
                             }
                         </p>{" "}
                     </div>
@@ -129,34 +116,28 @@ const OperativeProfile = ({
                         {" "}
                         <p className="text-black-50 text-2md mb-3">RATE</p>{" "}
                         <p className="font-medium font-creatoMedium text-3md">
+                            {singleElement?.jobListing?.jobRate?.currency}{" "}
                             {
-                                singleElement?.jobListing.jobRate
-                                    .currency
-                            }{" "}
-                            {
-                                singleElement?.jobListing.jobRate
-                                    .jobRateMeetOnsiteDisplayedToDepot
+                                singleElement?.jobListing?.jobRate
+                                    ?.jobRateMeetOnsiteDisplayedToDepot
                             }
                         </p>{" "}
                     </div>
                 )}
                 <div>
                     {" "}
-                    <p className="text-black-50 text-2md mb-3">HOURS WORKED</p>{" "}
+                    <p className="text-black-50 text-2md mb-3">
+                        HOURS WORKED
+                    </p>{" "}
                     <p className="font-medium font-creatoMedium text-3md">
-                        {
-                            singleElement?.jobListing
-                                .shiftDurationInHours
-                        }{" "}
-                        HRS (
+                        {singleElement?.jobListing?.shiftDurationInHours} HRS (
                         {dayjs(
-                            singleElement?.jobListing
-                                .shiftStartTime
-                        ).format("HH:mm")}{" "}
+                            singleElement?.jobListing?.shiftStartTime
+                        ).format("HH:mm a")}{" "}
                         -{" "}
-                        {dayjs(
-                            singleElement?.jobListing.shiftEndTime
-                        ).format("HH:mm")}
+                        {dayjs(singleElement?.jobListing?.shiftEndTime).format(
+                            "HH:mm a"
+                        )}
                         )
                     </p>{" "}
                 </div>
@@ -165,30 +146,26 @@ const OperativeProfile = ({
                     <p className="text-black-50 text-2md mb-3">
                         PAYMENT STATUS
                     </p>{" "}
-                    {singleElement?.jobListing
-                        .fullyPaidByDepot === true ? (
-                        <p className="font-medium font-creatoMedium text-3md bg-green-10 text-green-100  text-center rounded-lg">
+                    {singleElement?.jobListing?.fullyPaidByDepot === true ? (
+                        <p className="font-medium font-creatoMedium text-3md bg-green-10 text-green-100  text-center rounded-full py-1">
                             Paid
                         </p>
                     ) : (
-                        <p className="font-medium font-creatoMedium text-3md bg-red-10 text-red-100  text-center rounded-lg">
+                        <p className="font-medium font-creatoMedium text-3md bg-red-10 text-red-100  text-center rounded-full py-1">
                             Unpaid
                         </p>
                     )}
                 </div>
             </div>
-            
-            <p className=" px-8 pt-6 text-2md text-black-60">LOCATION</p>
+
+            <p className=" px-8 pt-6 text-2md text-black-60 mb-1">LOCATION</p>
             <p className="text-2md px-8 font-medium">
                 <IoLocationSharp
                     size={20}
                     style={{ color: "#E94444" }}
                     className="inline"
                 />{" "}
-                {
-                    singleElement?.jobListing?.jobLocation
-                        ?.formattedAddress
-                }
+                {singleElement?.jobListing?.jobLocation?.formattedAddress}
             </p>
             <section className="grid grid-cols-2 pb-4">
                 <div>
@@ -199,17 +176,16 @@ const OperativeProfile = ({
                         {singleElement?.jobListing?.jobType?.name}
                     </p>
                 </div>
-                <div>
+                <div className="flex flex-col items-center">
                     <p className=" px-8 pt-6 text-2md text-black-60">
                         SHIFT METHOD
                     </p>
-                    {singleElement?.jobListing.jobMeetingPoint ===
-                    "DEPOT" ? (
-                        <p className="text-2md ml-4 px-3 font-creatoMedium font-medium bg-yellow-100 rounded-3xl w-fit">
+                    {singleElement?.jobListing?.jobMeetingPoint === "DEPOT" ? (
+                        <p className="text-2md ml-4 px-3 font-creatoMedium font-medium bg-yellow-100 rounded-full w-fit py-1">
                             DEPOT FIRST
                         </p>
                     ) : (
-                        <p className="text-2md ml-4 px-3 font-creatoMedium font-medium bg-yellow-100 rounded-3xl w-fit">
+                        <p className="text-2md ml-4 px-3 font-creatoMedium font-medium bg-yellow-100 rounded-full py-1 mt-1 w-fit">
                             MEET ONSITE
                         </p>
                     )}
@@ -219,20 +195,17 @@ const OperativeProfile = ({
                         CERTIFICATION
                     </p>
                     <p className="text-2md px-8 font-creatoMedium font-medium">
-                        {
-                            singleElement?.jobListing
-                                ?.jobQualification?.name
-                        }
+                        {singleElement?.jobListing?.jobQualification?.name}
                     </p>
                 </div>
-                <div>
+                <div className="flex flex-col items-center">
                     <p className=" px-8 pt-6 text-2md text-black-60">
                         SHIFT DATE
                     </p>
                     <p className="text-2md px-8 font-creatoMedium font-medium">
-                        {dayjs(
-                            singleElement?.jobListing?.jobDate
-                        ).format("MMMM D, YYYY")}
+                        {dayjs(singleElement?.jobListing?.jobDate).format(
+                            "MMMM D, YYYY"
+                        )}
                     </p>
                 </div>
                 {/* <div>
@@ -257,33 +230,46 @@ const OperativeProfile = ({
                         )
                     </p>
                 </div> */}
-               
             </section>
             <div className="flex gap-4 bg-black-100 text-white-100 p-4 mt-3 mb-8 mx-8 rounded-lg">
                 <div className="w-1/2">
                     <div>
-                        <p className="text-2lg font-creato w-fit">Performance</p>
+                        <h6 className="text-2lg font-creato w-fit">
+                            Punctuality
+                        </h6>
                         <p>
                             <AiFillStar
                                 size={30}
                                 style={{ color: "#FED70A" }}
                                 className="inline"
                             />
-                            <span className="text-2xl font-extrabold font-creatoBold">{singleElement?.operative?.averageRating}</span> 
-                            <span className="text-3sm"> ({singleElement?.operative?.completedShifts} shifts)</span>
+                            <span className="text-2xl font-extrabold font-creatoBold">
+                                {singleElement?.operative?.averageRating}
+                            </span>
+                            <span className="text-3sm">
+                                {" "}
+                                ({
+                                    singleElement?.operative?.completedShifts
+                                }{" "}
+                                shifts)
+                            </span>
                         </p>
                     </div>
                 </div>
                 <div className="w-full">
-                    <div className="flex justify-between place-items-center">
+                    <div className="flex justify-between place-items-center mb-2">
                         <p className="text-md font-medium font-creatoMedium">
-                            Communication
+                            Professionalism
                         </p>
-                        {Number(singleElement?.operativeRatingSummary.avgProfessionalismScore) <= 2 ? (
+                        {Number(
+                            singleElement?.operativeRatingSummary
+                                ?.avgProfessionalismScore
+                        ) <= 2 ? (
                             <Progress
                                 value={
                                     (Number(
-                                        singleElement?.operativeRatingSummary.avgProfessionalismScore
+                                        singleElement?.operativeRatingSummary
+                                            ?.avgProfessionalismScore
                                     ) /
                                         5) *
                                     100
@@ -295,7 +281,8 @@ const OperativeProfile = ({
                             <Progress
                                 value={
                                     (Number(
-                                        singleElement?.operativeRatingSummary.avgProfessionalismScore
+                                        singleElement?.operativeRatingSummary
+                                            ?.avgProfessionalismScore
                                     ) /
                                         5) *
                                     100
@@ -305,15 +292,19 @@ const OperativeProfile = ({
                             />
                         )}
                     </div>
-                    <div className="flex justify-between place-items-center">
+                    <div className="flex justify-between place-items-center mb-2">
                         <p className="text-md font-medium font-creatoMedium">
-                            Organization
+                            Punctuality
                         </p>
-                        {Number(singleElement?.operativeRatingSummary.avgPunctualityScore) <= 2 ? (
+                        {Number(
+                            singleElement?.operativeRatingSummary
+                                ?.avgPunctualityScore
+                        ) <= 2 ? (
                             <Progress
                                 value={
                                     (Number(
-                                        singleElement?.operativeRatingSummary.avgPunctualityScore
+                                        singleElement?.operativeRatingSummary
+                                            ?.avgPunctualityScore
                                     ) /
                                         5) *
                                     100
@@ -325,7 +316,8 @@ const OperativeProfile = ({
                             <Progress
                                 value={
                                     (Number(
-                                        singleElement?.operativeRatingSummary.avgPunctualityScore
+                                        singleElement?.operativeRatingSummary
+                                            ?.avgPunctualityScore
                                     ) /
                                         5) *
                                     100
@@ -335,15 +327,19 @@ const OperativeProfile = ({
                             />
                         )}
                     </div>
-                    <div className="flex justify-between place-items-center">
+                    <div className="flex justify-between place-items-center mb-2">
                         <p className="text-md font-medium font-creatoMedium">
-                            Vibe
+                            Helpfulness
                         </p>
-                        {Number(singleElement?.operativeRatingSummary.avgHelpfulnessScore) <= 2 ? (
+                        {Number(
+                            singleElement?.operativeRatingSummary
+                                ?.avgHelpfulnessScore
+                        ) <= 2 ? (
                             <Progress
                                 value={
                                     (Number(
-                                        singleElement?.operativeRatingSummary.avgHelpfulnessScore
+                                        singleElement?.operativeRatingSummary
+                                            ?.avgHelpfulnessScore
                                     ) /
                                         5) *
                                     100
@@ -355,7 +351,8 @@ const OperativeProfile = ({
                             <Progress
                                 value={
                                     (Number(
-                                        singleElement?.operativeRatingSummary.avgHelpfulnessScore
+                                        singleElement?.operativeRatingSummary
+                                            ?.avgHelpfulnessScore
                                     ) /
                                         5) *
                                     100

@@ -1,17 +1,15 @@
-import TimeEstimate from "../../../../pages/planner/components/TimeEstimate"
-import { useNavigate } from "react-router-dom"
-import { BackButton, SearchBar } from "../../../../components"
 import Layout from "../../../../components/Layout"
-import { HiInformationCircle } from "react-icons/hi"
+import { BackButton, SearchBar } from "../../../../components"
+import { useNavigate } from "react-router-dom"
 import { IoIosArrowForward } from "react-icons/io"
 import { useEffect, useRef, useState } from "react"
-import OperativeProfile from "../../../../components/Modals/Planner/OperativeProfile"
+import { HiInformationCircle } from "react-icons/hi"
 import handleGoogleMaps from "../googleMap/GoogleMap"
 
-const ViewSingleActiveMap = () => {
-    const [activeDepot, setActiveDepot] = useState(0)
-    const [openShiftDetails, setOpenShiftDetails] = useState(false)
+const ViewAllMaps = () => {
     const navigate = useNavigate()
+    const [activeDepot, setActiveDepot] = useState(0)
+
     const handleNavigate = () => {
         navigate(`/maps`)
     }
@@ -24,43 +22,28 @@ const ViewSingleActiveMap = () => {
             handleGoogleMaps(mapRef, { lng, lat })
         }
     }, [lng, lat])
-
     return (
         <Layout>
-            {openShiftDetails && (
-                <OperativeProfile
-                    setOpenProfile={setOpenShiftDetails}
-                    openProfile={openShiftDetails}
-                    scheduleId=""
-                />
-            )}
             <BackButton handleBackButton={() => handleNavigate()} />
             <div className="md:p-6 p-6 mt-4 md:mt-6">
-                <div className="flex flex-col lg:flex-row lg:justify-between lg:items-center ">
-                    <div className="flex flex-col">
-                        <h1
-                            className="text-2xl md:text-3xl font-creatoMedium text-black-100 font-bold"
-                            data-testid="map_title"
-                        >
-                            2-WAY | LONDON | W1B 4JR
-                        </h1>
-                        <p className="text-black-60 text-2md md:text-lg font-normal font-creato">
-                            November 12, 2022 | 08:00 - 17:00
-                        </p>
-                    </div>
-                    <div className="flex flex-col">
-                        <p className="bg-yellow-100 rounded-full text-3sm font-bold font-creato mb-4 py-2 px-3 text-center">
-                            ACTIVE SHIFT ENDS IN
-                        </p>
-                        <TimeEstimate initialDate={new Date()} />
-                    </div>
+                <div className="flex flex-col">
+                    <h1
+                        className="text-2xl md:text-3xl font-creatoMedium text-black-100 font-bold"
+                        data-testid="map_title"
+                    >
+                        Maps
+                    </h1>
+                    <p className="text-black-60 text-2md md:text-lg font-normal font-creato">
+                        Find local Operatives for shifts & track your
+                        Organization’s assigned Operatives.
+                    </p>
                 </div>
 
                 <div className="flex flex-col lg:flex-row lg:justify-between lg:items-center mt-6 relative">
                     <div className="flex flex-col w-[35%]">
                         <p className="bg-yellow-10 rounded-full text-3sm font-bold font-creatoMedium mb-4 py-2 px-3 text-center flex items-center gap-3">
-                            <HiInformationCircle size={25} color="#FED70A" /> 13
-                            Assigned Operatives
+                            <HiInformationCircle size={25} color="#FED70A" />{" "}
+                            1,051 Operatives
                         </p>
                         <SearchBar
                             text="Search name..."
@@ -112,11 +95,11 @@ const ViewSingleActiveMap = () => {
                                                     ? "text-yellow-100 "
                                                     : "text-black-40 "
                                             }  mt-1 text-2md md:text-md font-normal font-creatoMedium flex items-center gap-1`}
-                                            onClick={() =>
-                                                setOpenShiftDetails(true)
-                                            }
+                                            onClick={() => {
+                                                // setOpenShiftDetails(true)
+                                            }}
                                         >
-                                            Shift Details{" "}
+                                            View Profile{" "}
                                             <IoIosArrowForward
                                                 size={15}
                                                 color={`${
@@ -132,17 +115,6 @@ const ViewSingleActiveMap = () => {
                         </div>
                     </div>
                     <div className="w-full h-[562px]  mx-8  relative">
-                        <div className="bg-black-100 w-fit mx-auto rounded-full px-3 py-2 absolute top-4 left-0 right-0 z-10 flex items-center gap-3 justify-center">
-                            <HiInformationCircle size={25} color="#FED70A" />{" "}
-                            <p className="text-white-100 text-md font-creatoMedium ">
-                                Kai Eyo is{" "}
-                                <span className="text-yellow-100">
-                                    {" "}
-                                    1000km{" "}
-                                </span>
-                                from the Shift Location
-                            </p>
-                        </div>
                         <div
                             id="map"
                             className="w-full h-[562px] bg-black-1 hidden lg:block mx-8 rounded-lg  "
@@ -155,4 +127,4 @@ const ViewSingleActiveMap = () => {
     )
 }
 
-export default ViewSingleActiveMap
+export default ViewAllMaps

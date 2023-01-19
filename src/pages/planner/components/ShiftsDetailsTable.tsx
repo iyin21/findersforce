@@ -47,7 +47,6 @@ const ShiftsDetailTable = () => {
     const { data, isError, mutate } = usePaymentEvidenceUpload({
         scheduleId: scheduleId,
     })
-    
 
     const [activeTab, setActiveTab] = useState<string | null>("unpaid")
     const [checkedShift, setCheckedShift] = useState<string[]>([])
@@ -127,7 +126,6 @@ const ShiftsDetailTable = () => {
             )
         }
     })
-
 
     const duration: any = checkedData?.results?.map((item) => {
         return Number(item?.jobListing?.shiftDurationInHours)
@@ -435,7 +433,7 @@ const ShiftsDetailTable = () => {
 
                                 {queryStatus === "ongoing" && (
                                     <div className="">
-                                        <p className="bg-yellow-100 rounded-xl text-3sm font-bold font-creato mb-4 py-1 text-center">
+                                        <p className="bg-yellow-100 rounded-full text-3sm font-bold font-creato mb-4 py-2 px-3 text-center">
                                             ACTIVE SHIFT ENDS IN
                                         </p>
                                         <TimeEstimate
@@ -472,14 +470,19 @@ const ShiftsDetailTable = () => {
                                                 Your depot has completed a total
                                                 of{" "}
                                                 <strong>
-                                                    {
-                                                        checkedData?.results
-                                                            ?.length || shiftsData?.results.length
-                                                    }{" "}
-                                                    shifts ({duration || totalDuration} hours){" "}
+                                                    {checkedData?.results
+                                                        ?.length ||
+                                                        shiftsData?.results
+                                                            .length}{" "}
+                                                    shifts (
+                                                    {duration || totalDuration}{" "}
+                                                    hours){" "}
                                                 </strong>
                                                 ,generating a running invoivce
-                                                of <strong>£{amount || totalAmount}</strong>
+                                                of{" "}
+                                                <strong>
+                                                    £{amount || totalAmount}
+                                                </strong>
                                             </p>
                                             {checkedData?.results.length !==
                                             undefined ? (
