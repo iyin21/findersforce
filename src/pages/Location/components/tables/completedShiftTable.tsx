@@ -26,19 +26,19 @@ const CompletedShiftTable = ({ elements }: { elements: Result[] }) => {
             <td>{element.jobListing.jobLocation.formattedAddress}</td>
             <td>{dayjs(element?.jobListing?.jobDate).format("MMM D, YYYY")}</td>
             <td>
-                {element?.jobListing.jobMeetingPoint === "onsite" ? (
+                {element?.jobListing.jobMeetingPoint === "SITE" ? (
                     <p className="text-black-100 bg-yellow-100 rounded-3xl text-center font-bold p-1 w-fit px-3 py-1 text-3sm font-creatoBlack">
                         MEET ONSITE
                     </p>
                 ) : (
                     <p className="text-yellow-100 border-yellow-100 border-2 rounded-3xl text-center font-bold p-1 w-fit px-3 py-1 text-3sm font-creatoBlack">
-                        {element?.jobListing.jobMeetingPoint.toUpperCase()}
+                        DEPOT FIRST
                     </p>
                 )}
             </td>
             <td>
                 {element?.jobListing?.jobRate?.currency}
-                {element?.jobListing?.jobRate?.jobRatePerHourDisplayedToDepot}
+                {element?.jobListing?.jobRate?.jobRateDepotFirstDisplayedToDepot}
                 /hr
             </td>
             <td>{element.jobListing.shiftDurationInHours}</td>

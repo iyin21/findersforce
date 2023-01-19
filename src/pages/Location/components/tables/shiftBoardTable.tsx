@@ -24,7 +24,7 @@ const ShiftBoard = ({elements} : {elements: Result[]}) => {
             <td>{element.jobListing.jobLocation.formattedAddress}</td>
             <td>{dayjs(element.createdAt).format("MMM D, YYYY")} |{" "}
                 {dayjs(element.createdAt).format("h:mm A")}</td>
-            <td>{element.jobListing.jobRate.currency + " " + element.jobListing.jobRate.jobRatePerHourDisplayedToOp}/hr</td>
+            <td>{element.jobListing.jobRate.currency + " " + element.jobListing.jobRate.jobRateDepotFirstDisplayedToOp}/hr</td>
             <td>{element.jobListing.shiftDurationInHours}</td>
             <td>
                 <span>{element.jobListing.applicationsCount}/</span>
