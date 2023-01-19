@@ -16,7 +16,7 @@ import { HQDepotType, RegionalManager } from "../../utils/user-types"
 
 const Applications = () => {
     const [activeTab, setActiveTab] = useState<string | null>("PENDING")
-    // console.log(activeTab)
+    
 
     const { state } = useAuthContext()
 

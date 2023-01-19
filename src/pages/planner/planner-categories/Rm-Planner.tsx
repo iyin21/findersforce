@@ -64,9 +64,6 @@ const RmPlanner = () => {
         })
 
     const navigate = useNavigate()
-    // const handleNavigate = () => {
-    //     navigate("/job-boards")
-    // }
 
     const shiftsDuration: any = completedShiftsData?.results?.map((item) => {
         return item?.jobListing?.shiftDurationInHours
@@ -131,20 +128,6 @@ const RmPlanner = () => {
                                     ,generating a running invoivce of{" "}
                                     <strong>£{totalAmount}</strong>
                                 </p>
-                                {/* <div className="mr-2 ml-auto">
-                                    {" "}
-                                    <Button
-                                        variant="green"
-                                        className="py-3 font-semibold font-creatoMedium"
-                                        style={{ backgroundColor: "black" }}
-                                        // iconLeft={<FiPlus size={20} />}
-                                        data-testid="make_payment_btn"
-                                        iconRight={<FaAngleRight size={20} />}
-                                        // onClick={() => setOpenPayment(!openPayment)}
-                                    >
-                                        Make Payments
-                                    </Button>
-                                </div> */}
                             </div>
                         </Alert>
                     </div>

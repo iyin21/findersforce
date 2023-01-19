@@ -9,7 +9,6 @@ import Filter from "../../../components/Filter/index"
 import { FilterRequest } from "../../../types/filter/filter"
 import EmptyView from "../../../components/EmptyStates/index"
 import { useNavigate } from "react-router-dom"
-// import { IoAlertCircle } from "react-icons/io5"
 
 const SmPlanner = () => {
     const [activeTab, setActiveTab] = useState<string | null>("active")
@@ -64,38 +63,6 @@ const SmPlanner = () => {
         })
 
     const navigate = useNavigate()
-    // const handleNavigate = () => {
-    //     navigate("/job-boards")
-    // }
-
-    // const shiftsDuration: any = completedShiftsData?.results?.map((item) => {
-    //     return item?.jobListing?.shiftDurationInHours
-    // })
-
-    // let totalDuration = 0
-    // for (let i = 0; i < shiftsDuration?.length; i++) {
-    //     totalDuration += Number(shiftsDuration[i])
-    // }
-
-    // const shiftsAmount: any = completedShiftsData?.results?.map((item) => {
-    //     if (item?.jobListing?.jobMeetingPoint === "DEPOT") {
-    //         return (
-    //             Number(
-    //                 item?.jobListing?.jobRate?.jobRateDepotFirstDisplayedToDepot
-    //             ) * Number(item?.jobListing?.shiftDurationInHours)
-    //         )
-    //     } else {
-    //         return (
-    //             Number(
-    //                 item?.jobListing?.jobRate?.jobRateMeetOnsiteDisplayedToDepot
-    //             ) * Number(item?.jobListing?.shiftDurationInHours)
-    //         )
-    //     }
-    // })
-    // let totalAmount = 0
-    // for (let i = 0; i < shiftsAmount?.length; i++) {
-    //     totalAmount += Number(shiftsAmount[i])
-    // }
 
     return (
         <Layout>
@@ -114,20 +81,6 @@ const SmPlanner = () => {
                         </p>
                     </div>
                 </div>
-                {activeTab === "completed" && (
-                    <div className="relative mt-4">
-                        {/* <Alert
-                            icon={<IoAlertCircle size={26} />}
-                            color="red"
-                            radius="md"
-                        >
-                            You have a total of {totalDuration} hours,{" "}
-                            {completedShiftsData?.results?.length} completed
-                            shift(s) to pay for, to the value of{" "}
-                            <strong>£{totalAmount}</strong>
-                        </Alert> */}
-                    </div>
-                )}
 
                 <div className="px-0 pt-10 md:pt-4">
                     {" "}

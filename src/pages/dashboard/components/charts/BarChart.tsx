@@ -1,8 +1,8 @@
-import CanceledShifts from "../../../assets/CanceledShifts.svg"
-import Arrow from "../../../assets/Arrow.svg"
-import UpperRightArrow from "../../../assets/UpperRightArrow.svg"
+import CanceledShifts from "../../../../assets/CanceledShifts.svg"
+import Arrow from "../../../../assets/Arrow.svg"
+import UpperRightArrow from "../../../../assets/UpperRightArrow.svg"
 import { Chart } from "react-google-charts"
-import { useGetDashboardAnalytics } from "../../../hooks/dashboard/useDashboard.hook"
+import { useGetDashboardAnalytics } from "../../../../hooks/dashboard/useDashboard.hook"
 import dayjs from "dayjs"
 import { useNavigate } from "react-router-dom"
 

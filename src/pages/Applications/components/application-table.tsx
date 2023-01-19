@@ -10,7 +10,6 @@ import { IoIosArrowForward } from "react-icons/io"
 import { useEffect, useState } from "react"
 
 interface Prop {
-    // status?: "pending" | "accepted" | "rejected" ;
     elements: Data[]
     setPhase: (val: number) => void
     setActiveTab: (val: string) => void
@@ -101,7 +100,6 @@ const ApplicationTable = ({
                         setPhase(2)
                         setActiveTab(item?.status)
                     }
-                    // navigate(`/applications/${item._id}`)
                 }
             >
                 <HiChevronRight size={30} style={{ color: "#889088" }} />

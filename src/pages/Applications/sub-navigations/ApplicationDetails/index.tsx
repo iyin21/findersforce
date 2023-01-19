@@ -23,8 +23,6 @@ import { Progress } from "@mantine/core"
 import { useNavigate } from "react-router-dom"
 
 interface Prop {
-    // status?: "pending" | "accepted" | "rejected" ;
-
     setPhase: (val: number) => void
     activeTab: string | null
     activeId: string
@@ -36,13 +34,12 @@ const ApplicationDetails = ({
     setShiftId,
     activeTab,
 }: Prop) => {
-    // const { applicationId } = useParams<{ applicationId: string }>()
     const navigate = useNavigate()
 
     const { data, isLoading } = useGetApplicationDetails({
         id: activeId || "",
     })
-    // console.log(data)
+
     const {
         data: acceptedData,
         isLoading: isLoadingAcceptedData,
@@ -143,15 +140,11 @@ const ApplicationDetails = ({
                                         |
                                     </span>
                                     <span
-                                        // href={`/applications/${applicationId}/${data?.user._id}`}
                                         className="pl-1 underline cursor-pointer"
-                                        onClick={
-                                            () => {
-                                                setShiftId(data?.user._id || "")
-                                                setPhase(3)
-                                            }
-                                            
-                                        }
+                                        onClick={() => {
+                                            setShiftId(data?.user._id || "")
+                                            setPhase(3)
+                                        }}
                                     >
                                         Shift History
                                     </span>
@@ -228,16 +221,13 @@ const ApplicationDetails = ({
                                     Message {data?.user.firstName}
                                 </button>
                                 <p
-                                    // href={`/applications/${applicationId}/${data?.user._id}`}
                                     className="flex ml-4 items-center font-bold cursor-pointer"
-                                    onClick={
-                                        () => {
-                                            setShiftId(data?.user._id || "")
-                                            // setPhase(3)
-                                            navigate(`/job-boards/${data?.jobListing._id}`)
-                                        }
-                                        
-                                    }
+                                    onClick={() => {
+                                        setShiftId(data?.user._id || "")
+                                        navigate(
+                                            `/job-boards/${data?.jobListing._id}`
+                                        )
+                                    }}
                                 >
                                     Shift Details
                                     <HiChevronRight size="25px" />{" "}
@@ -258,16 +248,13 @@ const ApplicationDetails = ({
                                         Message {data?.user.firstName}
                                     </button>
                                     <p
-                                        // href={`/applications/${applicationId}/${data?.user._id}`}
                                         className="flex ml-4 items-center font-bold cursor-pointer"
-                                        onClick={
-                                            () => {
-                                                setShiftId(data?.user._id || "")
-                                                // setPhase(3)
-                                                navigate(`/job-boards/${data?.jobListing._id}`)
-                                            }
-                                            
-                                        }
+                                        onClick={() => {
+                                            setShiftId(data?.user._id || "")
+                                            navigate(
+                                                `/job-boards/${data?.jobListing._id}`
+                                            )
+                                        }}
                                     >
                                         Shifts Details
                                         <HiChevronRight size="25px" />{" "}
@@ -564,8 +551,6 @@ const ApplicationDetails = ({
                                         key={index}
                                         className="flex items-start mb-4 justify-between"
                                     >
-                                        {/* <img src={Google} alt="" /> */}
-
                                         <div className="">
                                             <p className="font-bold body-normal">
                                                 {item.name}

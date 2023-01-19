@@ -17,7 +17,6 @@ import { CgSpinner } from "react-icons/cg"
 import Pagination from "../../../../components/Pagination/pagination"
 import MobileShiftsDetailsTable from "./MobileShiftsDetailsTable"
 import { Button, Checkbox, SuccessModal } from "../../../../components"
-// import { FiPlus } from "react-icons/fi"
 import TimeEstimate from "../TimeEstimate"
 import PaymentEvidenceUpload from "../../../../components/Modals/Planner/PaymentEvidenceUpload"
 import OperativeProfile from "../../../../components/Modals/Planner/OperativeProfile"
@@ -33,7 +32,6 @@ const ShiftsDetailTable = () => {
     const queryStatus = location?.state?.status
 
     const scheduleId = location?.state?.scheduleId
-    // console.log(scheduleId)
 
     const { data: shiftsData, isLoading: isLoadingShiftsData } =
         useGetShiftHistoryByJobListingId({
@@ -68,7 +66,6 @@ const ShiftsDetailTable = () => {
     }
     useEffect(() => {
         if (data && data.status === "success") {
-            // setButtonState(true)
             setOpenSuccessModal(true)
             setOpenPayment(false)
             setTimeout(() => {
@@ -78,7 +75,6 @@ const ShiftsDetailTable = () => {
         }
 
         if (isError) {
-            // console.log("error")
         }
     }, [data, isError])
 
@@ -176,7 +172,6 @@ const ShiftsDetailTable = () => {
                     </p>
                 </div>
             </td>
-            {/* <td>{element?.jobListing?.jobType?.name}</td> */}
             <td>{element?.jobListing?.jobLocation?.formattedAddress}</td>
             <td>
                 {dayjs(element?.jobListing?.shiftStartTime).format("HH:mm")} -{" "}
@@ -262,7 +257,6 @@ const ShiftsDetailTable = () => {
                     </p>
                 </div>
             </td>
-            {/* <td>{element?.jobListing?.jobType?.name}</td> */}
             <td>{element?.jobListing?.jobLocation?.formattedAddress}</td>
             <td>
                 {dayjs(element?.jobListing?.shiftStartTime).format("HH:mm")} -{" "}
@@ -336,7 +330,6 @@ const ShiftsDetailTable = () => {
                     </p>
                 </div>
             </td>
-            {/* <td>{element?.jobListing?.jobType?.name}</td> */}
             <td>{element?.jobListing?.jobLocation?.formattedAddress}</td>
             <td>
                 {dayjs(element?.jobListing?.shiftStartTime).format("HH:mm")} -{" "}
@@ -503,7 +496,6 @@ const ShiftsDetailTable = () => {
                                                             backgroundColor:
                                                                 "black",
                                                         }}
-                                                        // iconLeft={<FiPlus size={20} />}
                                                         data-testid="make_payment_btn"
                                                         iconRight={
                                                             <FaAngleRight
@@ -529,18 +521,12 @@ const ShiftsDetailTable = () => {
                                                             backgroundColor:
                                                                 "gray",
                                                         }}
-                                                        // iconLeft={<FiPlus size={20} />}
                                                         data-testid="make_payment_btn"
                                                         iconRight={
                                                             <FaAngleRight
                                                                 size={20}
                                                             />
                                                         }
-                                                        // onClick={() =>
-                                                        //     setOpenPayment(
-                                                        //         !openPayment
-                                                        //     )
-                                                        // }
                                                     >
                                                         Make Payments
                                                     </Button>
