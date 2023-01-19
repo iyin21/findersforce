@@ -1,5 +1,5 @@
-import TimeEstimate from "../../../pages/planner/components/TimeEstimate"
-import { ShiftCardProps } from "../../../types/dashboard/interfaces"
+import TimeEstimate from "../../../planner/components/TimeEstimate"
+import { ShiftCardProps } from "../../../../types/dashboard/interfaces"
 
 const Card:React.FC<ShiftCardProps> = ({profileImage,firstName, lastName,messageIcon,calenderIcon,date,clockIcon,startTime,endTime,duration,locationIcon,location,taskIcon,task,initialDate,status}) => {
 

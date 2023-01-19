@@ -23,10 +23,11 @@ const HqSubscription = () => {
                                 className="text-2xl md:text-3xl font-creatoBold text-black-100 font-bold"
                                 id="header"
                             >
-                                Subscriptions
+                                Plans
                             </h1>
                             <p className="text-black-60 text-2md md:text-lg font-normal font-creato">
-                                Monthly payment to FindersForce in one glance
+                                Keep track and upgrade the plans across your
+                                entire Organisation at any time.
                             </p>
                         </div>
                     </div>

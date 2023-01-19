@@ -1,53 +1,22 @@
 import { Menu, Table } from "@mantine/core"
-// import {  AiOutlineArrowUp } from "react-icons/ai"
 import { IoIosArrowForward } from "react-icons/io"
-import { Result, ShiftsTableInterface } from "../../../types/planner/interfaces"
-// import ProfileImage from "../../../assets/ProfileImage.svg"
+import {
+    Result,
+    ShiftsTableInterface,
+} from "../../../../types/planner/interfaces"
 import dayjs from "dayjs"
 import { useNavigate } from "react-router-dom"
 import MobileShiftsTable from "./MobileShiftsTable"
-import TimeEstimate from "./TimeEstimate"
-// import { BiDotsVerticalRounded } from "react-icons/bi"
-// import { Dispatch, SetStateAction, useState } from "react"
+import TimeEstimate from "../TimeEstimate"
 import { IoEllipsisVerticalSharp } from "react-icons/io5"
-// import ShiftStar from "../../../assets/ShiftStar.svg"
 
 const ShiftsTable = ({ elements, status }: ShiftsTableInterface) => {
     const navigate = useNavigate()
-    // const [openMenu, setOpenMenu] = useState(false)
-    // const handleNavigate = (id: string, status: string) => {
-    //     navigate(`/planner/${id}`, { state: { status: status } })
-    // }
-
-    // function getDurationBeforeCancel(millisec: number) {
-    //   let seconds = Number((millisec / 1000).toFixed(0));
-    //   let minutes = Math.floor(seconds / 60);
-    //   const hours = Math.floor(minutes / 60)
-    //   if (minutes > 59) {
-    //      let  hours = Math.floor(minutes / 60);
-    //       hours = (hours >= 10) ? hours : 0 + hours;
-    //       minutes = minutes - (hours * 60);
-    //       minutes = (minutes >= 10) ? minutes : 0 + minutes;
-    //   }
-
-    //   seconds = Math.floor(seconds % 60);
-    //   seconds = (seconds >= 10) ? seconds : 0 + seconds;
-
-    //       return `${hours}hr ${minutes}mins`;
-    // }
 
     const rows = elements?.map((element, index) => (
         <tr key={index}>
-            <td>
-                {index + 1}
-            </td>
+            <td>{index + 1}</td>
             <td className="font-bold">{element?.jobListing?.listingId}</td>
-            {/* {status !== "completed" && (<td>
-          <div className="flex items-center gap-2">
-            <img src={ProfileImage} alt="profile_image" />
-            <p>{element?.operative?.firstName} {element?.operative?.lastName}</p>
-          </div>
-        </td>)} */}
             <td>{element?.jobListing?.jobLocation?.formattedAddress}</td>
             {status !== "ongoing" ? (
                 <td>
@@ -79,9 +48,6 @@ const ShiftsTable = ({ elements, status }: ShiftsTableInterface) => {
                     }
                 </td>
             )}
-            {/* {
-          status === "cancelled" && (<td>{getDurationBeforeCancel(((new Date(element?.cancelTime).getTime()) - new Date(element?.clockInTime).getTime()))}</td>) 
-        } */}
 
             <td>
                 {element?.jobListing?.jobMeetingPoint === "SITE" ? (

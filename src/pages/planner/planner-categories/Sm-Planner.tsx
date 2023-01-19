@@ -1,6 +1,6 @@
-import {  Tabs } from "@mantine/core"
+import { Tabs } from "@mantine/core"
 import { useState } from "react"
-import ShiftsTable from "../components/ShiftsTable"
+import ShiftsTable from "../components/table/ShiftsTable"
 import { useGetShiftHistory } from "../../../hooks/planner/usePlanner.hooks"
 import Pagination from "../../../components/Pagination/pagination"
 import { CgSpinner } from "react-icons/cg"
@@ -9,7 +9,6 @@ import Filter from "../../../components/Filter/index"
 import { FilterRequest } from "../../../types/filter/filter"
 import EmptyView from "../../../components/EmptyStates/index"
 import { useNavigate } from "react-router-dom"
-// import { IoAlertCircle } from "react-icons/io5"
 
 const SmPlanner = () => {
     const [activeTab, setActiveTab] = useState<string | null>("active")
@@ -64,38 +63,6 @@ const SmPlanner = () => {
         })
 
     const navigate = useNavigate()
-    // const handleNavigate = () => {
-    //     navigate("/job-boards")
-    // }
-
-    // const shiftsDuration: any = completedShiftsData?.results?.map((item) => {
-    //     return item?.jobListing?.shiftDurationInHours
-    // })
-
-    // let totalDuration = 0
-    // for (let i = 0; i < shiftsDuration?.length; i++) {
-    //     totalDuration += Number(shiftsDuration[i])
-    // }
-
-    // const shiftsAmount: any = completedShiftsData?.results?.map((item) => {
-    //     if (item?.jobListing?.jobMeetingPoint === "DEPOT") {
-    //         return (
-    //             Number(
-    //                 item?.jobListing?.jobRate?.jobRateDepotFirstDisplayedToDepot
-    //             ) * Number(item?.jobListing?.shiftDurationInHours)
-    //         )
-    //     } else {
-    //         return (
-    //             Number(
-    //                 item?.jobListing?.jobRate?.jobRateMeetOnsiteDisplayedToDepot
-    //             ) * Number(item?.jobListing?.shiftDurationInHours)
-    //         )
-    //     }
-    // })
-    // let totalAmount = 0
-    // for (let i = 0; i < shiftsAmount?.length; i++) {
-    //     totalAmount += Number(shiftsAmount[i])
-    // }
 
     return (
         <Layout>
@@ -109,24 +76,11 @@ const SmPlanner = () => {
                             Planner
                         </h1>
                         <p className="text-black-60 text-2md md:text-lg font-normal font-creato">
-                            Operatives turn up for their shifts in one glance
+                            Monitor your Depot’s active shifts, view assigned
+                            Operatives & their pay status.
                         </p>
                     </div>
                 </div>
-                {activeTab === "completed" && (
-                    <div className="relative mt-4">
-                        {/* <Alert
-                            icon={<IoAlertCircle size={26} />}
-                            color="red"
-                            radius="md"
-                        >
-                            You have a total of {totalDuration} hours,{" "}
-                            {completedShiftsData?.results?.length} completed
-                            shift(s) to pay for, to the value of{" "}
-                            <strong>£{totalAmount}</strong>
-                        </Alert> */}
-                    </div>
-                )}
 
                 <div className="px-0 pt-10 md:pt-4">
                     {" "}
@@ -235,13 +189,13 @@ const SmPlanner = () => {
                                         {ongoingShiftsData?.results?.length ===
                                         0 ? (
                                             <EmptyView
-                                            title="You have no active shifts right now."
-                                            description="When a shift starts, you can track it here."
-                                            buttonText="Post shift"
-                                            handleButtonClick={() => {
-                                                navigate("/job-boards")
-                                            }}
-                                        />
+                                                title="You have no active shifts right now."
+                                                description="When a shift starts, you can track it here."
+                                                buttonText="Post shift"
+                                                handleButtonClick={() => {
+                                                    navigate("/job-boards")
+                                                }}
+                                            />
                                         ) : (
                                             <ShiftsTable
                                                 elements={
@@ -266,7 +220,7 @@ const SmPlanner = () => {
                                     <Tabs.Panel value="cancelled">
                                         {cancelledShiftsData?.results
                                             ?.length === 0 ? (
-                                                <EmptyView
+                                            <EmptyView
                                                 title="You have no cancelled shifts right now."
                                                 description="When a shift is cancelled, you can investigate it here."
                                                 buttonText="Post a shift"
@@ -298,7 +252,7 @@ const SmPlanner = () => {
                                     <Tabs.Panel value="completed">
                                         {completedShiftsData?.results
                                             ?.length === 0 ? (
-                                                <EmptyView
+                                            <EmptyView
                                                 title="You have no completed shifts right now."
                                                 description="When a shift is complete, you can review it here and pay wages."
                                                 buttonText="Post shift"
