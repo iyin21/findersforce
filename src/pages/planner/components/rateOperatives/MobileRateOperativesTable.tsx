@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction } from "react"
-import { Result } from "../../../types/planner/interfaces"
-import { Checkbox } from "../../../components/index"
-import Profile from "../../../assets/profile.png"
+import { Result } from "../../../../types/planner/interfaces"
+import { Checkbox } from "../../../../components/index"
+import Profile from "../../../../assets/profile.png"
 import {
     HelpfulnessStar,
     ProfessionalismStar,
@@ -28,7 +28,6 @@ const MobileRateOperativesTable = ({
     helpfulnessScore,
     setHelpfulnessScore,
 }: Props) => {
-//     console.log(shiftsData)
     return (
         <>
             {shiftsData?.map((item, index) => (
@@ -93,14 +92,12 @@ const MobileRateOperativesTable = ({
                                     PUNCTUALITY
                                 </h6>
                                 <div>
-                                    <td>
-                                        <PunctualityStar
-                                            punctualityScore={punctualityScore}
-                                            setPunctualityScore={
-                                                setPunctualityScore
-                                            }
-                                        />
-                                    </td>
+                                    <PunctualityStar
+                                        punctualityScore={punctualityScore}
+                                        setPunctualityScore={
+                                            setPunctualityScore
+                                        }
+                                    />
                                 </div>
                             </div>
                             <div>

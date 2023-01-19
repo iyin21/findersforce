@@ -1,4 +1,4 @@
-import { CardProps } from "../../../types/dashboard/interfaces"
+import { CardProps } from "../../../../types/dashboard/interfaces"
 
 const Card:React.FC<CardProps> = ({title,amount,icon,desc, subtitle, onClick}) => {
   return (

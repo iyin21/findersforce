@@ -70,7 +70,13 @@ const HQRoleTable = ({
                     {element?.depotRegion?.createdBy?.lastName}
                 </td>
             )}
-            {status === "pending" && <td>{element?.invitedRole}</td>}
+            {status === "pending" && (
+                <td>
+                    {element?.invitedRole === "REGIONAL-MANAGER"
+                        ? "DEPOT MANAGER"
+                        : "SHIFT MANAGER"}
+                </td>
+            )}
             <td>
                 {dayjs(element?.createdAt).format("MMM D, YYYY")} |{" "}
                 {dayjs(element?.createdAt).format("hh:mm a")}

@@ -2,24 +2,22 @@ import { Button } from "../../../components"
 import UploadIcon from "../../../assets/image.svg"
 import { Dispatch, SetStateAction, useRef } from "react"
 import { Modal } from "@mantine/core"
-import Pdf from "../../../assets/pdf.png"
+import { CgSpinner } from "react-icons/cg"
 interface Props {
     openPayment: boolean
     setOpenPayment: Dispatch<SetStateAction<boolean>>
     totalAmount: any
     handleDocumentUpload: (e: React.ChangeEvent<HTMLInputElement>) => void
-    handleFinishPayment: any
-    buttonState: boolean
     data: any
+    isLoading: any
 }
 const PaymentEvidenceUpload = ({
     openPayment,
     setOpenPayment,
     totalAmount,
     handleDocumentUpload,
-    handleFinishPayment,
-    buttonState,
     data,
+    isLoading,
 }: Props) => {
     const ref = useRef<HTMLInputElement | null>(null)
 
@@ -85,17 +83,15 @@ const PaymentEvidenceUpload = ({
                     </p>
                 </div>
                 <div className="border-dashed border-2 border-yellow-60 rounded-lg p-2 mt-4">
-                    {data?.status === "success" ? (
-                        <div className="mt-3 flex flex-row relative gap-6">
-                            <div className="relative ">
-                                <img
-                                    // @ts-ignore
-                                    src={Pdf}
-                                    alt="findersforce"
-                                    className="w-[100px] h-[100px] object-cover rounded-xl"
-                                />
+                    {isLoading ? (
+                        <>
+                            <div className="mt-3 flex flex-row relative gap-6">
+                                <div className=" w-full flex justify-center">
+                                    <CgSpinner className="animate-spin text-primary-90 text-4xl" />
+                                </div>
                             </div>
-                        </div>
+                            <p className=" text-black-90 flex justify-center">Uploading...</p>
+                        </>
                     ) : (
                         <div
                             className="bg-yellow-5 text-black-100 p-6 rounded gap-5 text-center"
@@ -128,37 +124,21 @@ const PaymentEvidenceUpload = ({
                     )}
                 </div>
                 <div className="flex justify-between  py-5 mx-auto mb-8">
-                    {!buttonState && (
-                        <Button onClick={() => setOpenPayment(!openPayment)}>
-                            Cancel
-                        </Button>
-                    )}
-                    {!buttonState ? (
-                        <Button
-                            variant="primary"
-                            className="text-white-100 "
-                            size="small"
-                            style={{
-                                backgroundColor: "rgba(0, 0, 0, 0.1)",
-                                cursor: "default",
-                            }}
-                        >
-                            Completed
-                        </Button>
-                    ) : (
-                        <Button
-                            variant="primary"
-                            className="text-white-100 ml-auto"
-                            size="small"
-                            style={{
-                                backgroundColor: "rgba(77, 178, 93, 1)",
-                                cursor: "pointer",
-                            }}
-                            onClick={(e) => handleFinishPayment(e)}
-                        >
-                            Completed
-                        </Button>
-                    )}
+                    <Button onClick={() => setOpenPayment(!openPayment)}>
+                        Cancel
+                    </Button>
+                    {/* <Button
+                        variant="primary"
+                        className="text-white-100 ml-auto"
+                        size="small"
+                        style={{
+                            backgroundColor: "rgba(77, 178, 93, 1)",
+                            cursor: "pointer",
+                        }}
+                        // onClick={(e) => handleFinishPayment(e)}
+                    >
+                        Completed
+                    </Button> */}
                 </div>
             </div>
         </Modal>

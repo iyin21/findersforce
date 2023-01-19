@@ -8,6 +8,7 @@ export interface ProfileResponse {
     companyName: string
     profileImageUrl: any
     twoFa_enabled?: boolean
+    depotCompany: string
     company: {
         _id: string
         name: string

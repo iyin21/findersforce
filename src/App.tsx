@@ -12,7 +12,7 @@ import JobBoards from "./pages/Job-boards"
 import SingleJobBoard from "./pages/Job-boards/components/viewSingleJob"
 import Support from "./pages/Support"
 import Planner from "./pages/planner/Planner"
-import ShiftsDetailTable from "./pages/planner/components/ShiftsDetailsTable"
+import ShiftsDetailTable from "./pages/planner/components/table/ShiftsDetailsTable"
 import Roles from "./pages/roles"
 import Messaging from "./pages/Messaging"
 import Settings from "./pages/Settings/index"
@@ -31,10 +31,11 @@ import Invoice from "./pages/invoice/index"
 import ShiftDetails from "./pages/Applications/sub-navigations/ShiftDetails"
 import Layout from "./components/Layout"
 import AdminPayment from "./pages/Admin/Payments"
-import RateOperatives from "./pages/planner/components/RateOperatives"
+import RateOperatives from "./pages/planner/components/rateOperatives/RateOperatives"
 import TwoFactorAuthentication from "./pages/auth/two-2fa-verification"
 import Maps from "./pages/Map"
 import ViewSingleActiveMap from "./pages/Map/components/viewSingleActiveMap/viewSingleActiveMap"
+import ViewAllMaps from "./pages/Map/components/viewAllMaps/viewAllMaps"
 
 function App() {
     return (
@@ -108,6 +109,7 @@ function App() {
                         path="/maps/:listingId"
                         element={<ViewSingleActiveMap />}
                     />
+                    <Route path="/view-all-maps" element={<ViewAllMaps />} />
                 </Route>
             </Route>
         </Routes>

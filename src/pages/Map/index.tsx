@@ -7,12 +7,14 @@ import { useGetDepotRegions } from "../../hooks/dashboard/useDashboard.hook"
 import useAuthContext from "../../hooks/auth-hooks/useAuth"
 import { Select } from "@mantine/core"
 import MapTable from "./components/table/map-table"
+import { useNavigate } from "react-router-dom"
 
 const Maps = () => {
     const { state } = useAuthContext()
 
     const [selectValue, setSelectValue] = useState<string | null>(null)
     const companyId = state?.user?.company?._id
+    const navigate = useNavigate()
 
     const { data: regionData } = useGetDepotRegions({
         id: companyId,
@@ -50,7 +52,9 @@ const Maps = () => {
                         <Button
                             className="py-3 font-semibold font-creatoMedium my-4 lg:my-0 bg-black-100 text-white-100"
                             iconLeft={<img src={viewMapIcon} alt="view maps" />}
-                            // onClick={() => setOpenJobPost(true)}
+                            onClick={() => {
+                                navigate("/view-all-maps")
+                            }}
                             data-testid="job_post_btn"
                         >
                             View Maps

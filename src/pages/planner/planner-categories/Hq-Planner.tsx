@@ -1,6 +1,6 @@
 import { Alert, Select, Tabs } from "@mantine/core"
 import { useState } from "react"
-import ShiftsTable from "../components/ShiftsTable"
+import ShiftsTable from "../components/table/ShiftsTable"
 import { useGetShiftHistory } from "../../../hooks/planner/usePlanner.hooks"
 import Pagination from "../../../components/Pagination/pagination"
 import { CgSpinner } from "react-icons/cg"
@@ -12,9 +12,6 @@ import { useNavigate } from "react-router-dom"
 import { IoAlertCircle } from "react-icons/io5"
 import useAuthContext from "../../../hooks/auth-hooks/useAuth"
 import { useGetDepotRegions } from "../../../hooks/dashboard/useDashboard.hook"
-// import { Button } from "../../../components/index"
-// import { FiPlus } from "react-icons/fi"
-// import { FaAngleRight } from "react-icons/fa"
 
 const HqPlanner = () => {
     const [activeTab, setActiveTab] = useState<string | null>("active")
@@ -78,7 +75,6 @@ const HqPlanner = () => {
             jobMeetingPoint: completedShiftsFilter?.meetingPoint,
             regionId: selectValue,
         })
-    // console.log(ongoingShiftsData)
 
     const shiftsDuration: any = completedShiftsData?.results?.map((item) => {
         return item?.jobListing?.shiftDurationInHours
@@ -135,7 +131,8 @@ const HqPlanner = () => {
                             Planner
                         </h1>
                         <p className="text-black-60 text-2md md:text-lg font-normal font-creato">
-                            Operatives turn up for their shifts in one glance
+                            Monitor your Organisation’s active shifts, view
+                            assigned Operatives & pay wages.
                         </p>
                     </div>
                     <div>
@@ -164,20 +161,6 @@ const HqPlanner = () => {
                                     ,generating a running invoivce of{" "}
                                     <strong>£{totalAmount}</strong>
                                 </p>
-                                {/* <div className="mr-2 ml-auto">
-                                    {" "}
-                                    <Button
-                                        variant="green"
-                                        className="py-3 font-semibold font-creatoMedium"
-                                        style={{ backgroundColor: "black" }}
-                                        // iconLeft={<FiPlus size={20} />}
-                                        data-testid="make_payment_btn"
-                                        iconRight={<FaAngleRight size={20} />}
-                                        // onClick={() => setOpenPayment(!openPayment)}
-                                    >
-                                        Make Payments
-                                    </Button>
-                                </div> */}
                             </div>
                         </Alert>
                     </div>

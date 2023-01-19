@@ -1,51 +1,41 @@
 import { Modal } from "@mantine/core"
-import {
-    Dispatch,
-    SetStateAction,
-    useEffect,
-    useState,
-    
-} from "react"
+import { Dispatch, SetStateAction, useEffect, useState } from "react"
 import Checkbox from "../../Core/Checkbox/checkbox"
 import { TelegramClient, Api } from "telegram"
 import { showNotification } from "@mantine/notifications"
 import ProfilePicture from "./profilePicture"
 import Input from "../../Core/Input/Input"
-import { AiOutlineSearch } from "react-icons/ai";
-
+import { AiOutlineSearch } from "react-icons/ai"
 
 export interface AddGroupModalProps {
     opened: boolean
     setOpened: Dispatch<SetStateAction<boolean>>
-    client: TelegramClient
-    groupName: string
-    groupPhoto: File | null
+    client?: TelegramClient
+    chatId?: bigInt.BigInteger
 }
-const AddMembersModal = ({
+const AddNewMembersModal = ({
     opened,
     setOpened,
     client,
-    groupName,
-    groupPhoto,
+    chatId,
 }: AddGroupModalProps) => {
     const [contacts, setContacts] = useState<Api.User[]>([])
-    const [checkedContact, setCheckedContact] = useState<Api.User[]>([])
-    const [userIds, setUserIds] = useState<string[]>([])
+    const [checkedContact, setCheckedContact] = useState<Api.User | null>(null)
     const [isLoading, setIsLoading] = useState(false)
-    const [isCreatingGroup, setIsCreatingGroup]=useState(false)
-    const [search, setSearch]= useState("");
-    const [searchParam]= useState(["firstName"])
+    const [isAddingMember, setIsAddingMember] = useState(false)
+    const [search, setSearch] = useState("")
+    const [searchParam] = useState(["firstName"])
     useEffect(() => {
         setIsLoading(true)
         const run = async function run() {
-            await client.connect()
+            await client?.connect()
             try {
-                const result = await client.invoke(
+                const result = await client?.invoke(
                     new Api.contacts.GetContacts({
                         //hash: 3457568,
                     })
                 )
-               // console.log("contact", result) // prints the result
+                // console.log("contact", result) // prints the result
                 //@ts-expect-error
                 setContacts(result?.users)
             } finally {
@@ -58,53 +48,34 @@ const AddMembersModal = ({
         e: React.ChangeEvent<HTMLInputElement>,
         value: Api.User
     ) => {
-        
         const isChecked = e.target.checked
         if (isChecked) {
-            setCheckedContact([...checkedContact, value])
-            if (value.phone) {
-                setUserIds([...userIds, value.phone])
-            }
+            setCheckedContact(value)
+            
 
             //setFieldValue("complaintIssue", [...checkedComplaint, value])
         } else {
-            setCheckedContact(checkedContact.filter((item) => item !== value))
-            setUserIds(userIds.filter((item) => item !== value.phone))
-           
+            setCheckedContact(null)
         }
     }
-    const handleUnSelect=(value: Api.User)=>{
-        setCheckedContact(checkedContact.filter((item) => item !== value))
-            setUserIds(userIds.filter((item) => item !== value.phone))
+    const handleUnSelect = () => {
+        setCheckedContact(null)
     }
-    const handleCreateGroup = async () => {
-        setIsCreatingGroup(true)
-        await client.connect() // This assumes you have already authenticated with .start()
+    const handleAddMwmber = async () => {
+        setIsAddingMember(true)
+        await client?.connect() // This assumes you have already authenticated with .start()
         try {
-            const result = await client.invoke(
-                new Api.messages.CreateChat({
-                    users: checkedContact,
-                    title: groupName,
+            const result = await client?.invoke(
+                new Api.messages.AddChatUser({
+                    //@ts-expect-error
+                    chatId: chatId?.value,
+                    userId: checkedContact || "",
+                    fwdLimit: 5000,
                 })
             )
             // console.log("groupresult", result)
-            if (result && groupPhoto) {
-                const result2=await client.invoke(
-                    new Api.messages.EditChatPhoto({
-                        //@ts-expect-error
-                      chatId: result.chats[0].id,
-                      //@ts-expect-error
-                      photo: await client.uploadFile({
-                        file: groupPhoto,
-                        workers: 1,
-                      }),
-                    })
-                  );
-                if(result2){
-                    setIsCreatingGroup(false)
-                }
-            } else {
-                setOpened(false)
+            if (result) {
+                console.log("groupresult", result)
             }
         } catch (err: any) {
             showNotification({
@@ -113,27 +84,28 @@ const AddMembersModal = ({
                     err.errorMessage || "An error occured, please try again",
                 color: "red",
             })
-        }finally{
+        } finally {
             showNotification({
                 title: "Success",
-                message:"Group created successfully",
+                message: "Member added successfully",
                 color: "green",
             })
-            
+
             setOpened(false)
         }
     }
-const searchedData = contacts.filter((item:Api.User) => {
+    const searchedData = contacts.filter((item: Api.User) => {
         return searchParam.some((newItem) => {
-          return (
-            // @ts-expect-error
-            item[newItem as keyof Api.User]
-              .toString()
-              .toLowerCase()
-              .indexOf(search.toLowerCase()) > -1
-          );
-        });
-      });
+            return (
+                // @ts-expect-error
+                item[newItem as keyof Api.User]
+                    .toString()
+                    .toLowerCase()
+                    .indexOf(search.toLowerCase()) > -1
+            )
+        })
+    })
+    console.log(checkedContact, "checcked")
     return (
         <Modal
             opened={opened}
@@ -155,38 +127,51 @@ const searchedData = contacts.filter((item:Api.User) => {
                 <div className="">
                     <div className="flex font-bold text-2lg items-center">
                         <h5 className="">Add members</h5>
-                        <p className="text-black-50 pl-4">{checkedContact.length}/20000</p>
+                        <p className="text-black-50 pl-4">/20000</p>
                     </div>
-                
+
                     <div className="flex flex-wrap mt-2">
-                        {checkedContact.map((item, index) => (
-                            <div
-                                className="rounded-[10px] bg-black-5 flex mr-4 mb-4 items-center"
-                                key={index}
-                            >
-                               
-                                <ProfilePicture client={client} data={item} showHover handleUnSelect={()=>handleUnSelect(item)} />
+                        {checkedContact && (
+                            <div className="rounded-[10px] bg-black-5 flex mr-4 mb-4 items-center">
+                                <ProfilePicture
+                                    client={client}
+                                    data={checkedContact}
+                                    showHover
+                                    handleUnSelect={() => handleUnSelect()}
+                                />
                                 <p className="px-2">
-                                    {item.username ||
-                                        item.firstName +
+                                    {checkedContact.username ||
+                                        checkedContact.firstName +
                                             " " +
-                                            (item?.lastName || "")}
+                                            (checkedContact?.lastName || "")}
                                 </p>
                             </div>
-                        ))}
+                        )}
                     </div>
-                    <Input control="" prefixIcon={<AiOutlineSearch color="rgba(15, 13, 0, 0.4)" size="16px"/>} className="w-full outline-none border-none input bg-transparent  md:h-8" placeholder="Search"  onChange={(e: React.ChangeEvent<HTMLInputElement>)=>setSearch(e.target.value)}/>
-                    
+                    <Input
+                        control=""
+                        prefixIcon={
+                            <AiOutlineSearch
+                                color="rgba(15, 13, 0, 0.4)"
+                                size="16px"
+                            />
+                        }
+                        className="w-full outline-none border-none input bg-transparent  md:h-8"
+                        placeholder="Search"
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                            setSearch(e.target.value)
+                        }
+                    />
+
                     <hr className="text-black-20  mb-4" />
                     <div className="h-[350px] overflow-y-auto">
                         {searchedData.map((item, index) => (
                             <Checkbox
                                 key={index}
                                 value={
-                                
                                     item.firstName +
-                                        " " +
-                                        (item?.lastName || "")
+                                    " " +
+                                    (item?.lastName || "")
                                 }
                                 label={
                                     <div
@@ -198,10 +183,9 @@ const searchedData = contacts.filter((item:Api.User) => {
                                             data={item}
                                         />
                                         <p className="px-2">
-                                            {
-                                                item.firstName +
-                                                    " " +
-                                                    (item?.lastName || "")}
+                                            {item.firstName +
+                                                " " +
+                                                (item?.lastName || "")}
                                         </p>
                                     </div>
                                 }
@@ -210,7 +194,7 @@ const searchedData = contacts.filter((item:Api.User) => {
                                 onChange={(
                                     e: React.ChangeEvent<HTMLInputElement>
                                 ) => handleChecked(e, item)}
-                                checked={checkedContact.includes(item)}
+                                checked={checkedContact === item}
                             />
                         ))}
                     </div>
@@ -224,11 +208,9 @@ const searchedData = contacts.filter((item:Api.User) => {
                         </p>
                         <p
                             className="pl-8 cursor-pointer"
-                            onClick={() =>
-                                checkedContact.length > 0 && handleCreateGroup()
-                            }
+                            onClick={() => checkedContact && handleAddMwmber()}
                         >
-                            {isCreatingGroup ? "Creating":"Create"}
+                            {isAddingMember ? "Adding" : "Add"}
                         </p>
                     </div>
                 </div>
@@ -236,4 +218,4 @@ const searchedData = contacts.filter((item:Api.User) => {
         </Modal>
     )
 }
-export default AddMembersModal
+export default AddNewMembersModal

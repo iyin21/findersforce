@@ -157,22 +157,20 @@ function useGetScheduleByScheduleId({ scheduleId }: { scheduleId: string }) {
         }
     )
 }
-function usePaymentEvidenceUpload({ scheduleId }: { scheduleId: string }) {
+function usePaymentEvidenceUpload() {
     const { state } = useAuthContext()
 
-    const uploadPaymentEvidence = async (requestBody: { file: File }) => {
+    const uploadPaymentEvidence = async (requestBody: { file: File , scheduleId: string}) => {
         const config: AxiosRequestConfig = {
             headers: {
                 Authorization: `Bearer ${state?.jwt?.token}`,
                 "content-type": "multipart/formdata",
             },
-            params: {
-                scheduleId,
-            },
         }
 
         const formData = new FormData()
         formData.append("paymentEvidence", requestBody.file)
+        formData.append("scheduleId", requestBody.scheduleId )
 
         const { data } = await axiosInstance.post(
             `/depot/payment-evidence`,
@@ -182,9 +180,9 @@ function usePaymentEvidenceUpload({ scheduleId }: { scheduleId: string }) {
         return data
     }
 
-    return useMutation<PaymentEvidenceUpload, AxiosError, { file: File }>(
+    return useMutation<PaymentEvidenceUpload, AxiosError, { file: File, scheduleId: string }>(
         ["uploadPaymentEvidence"],
-        (requestBody: { file: File }) => uploadPaymentEvidence(requestBody),
+        (requestBody: { file: File, scheduleId: string }) => uploadPaymentEvidence(requestBody),
         {
             onError: (err) => {
                 showNotification({
