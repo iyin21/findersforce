@@ -16,7 +16,7 @@ import { useLocation, useNavigate, useParams } from "react-router-dom"
 import { CgSpinner } from "react-icons/cg"
 import Pagination from "../../../../components/Pagination/pagination"
 import MobileShiftsDetailsTable from "./MobileShiftsDetailsTable"
-import { Button, Checkbox } from "../../../../components"
+import { Button, Checkbox, SuccessModal } from "../../../../components"
 // import { FiPlus } from "react-icons/fi"
 import TimeEstimate from "../TimeEstimate"
 import PaymentEvidenceUpload from "../../../../components/Modals/Planner/PaymentEvidenceUpload"
@@ -45,14 +45,13 @@ const ShiftsDetailTable = () => {
         jobListingId: jobListingId,
     })
 
-    const { data, isError, mutate } = usePaymentEvidenceUpload()
+    const { data, isError, mutate, isLoading } = usePaymentEvidenceUpload()
     const { data: singleElement } = useGetScheduleByScheduleId({
         scheduleId: scheduleId,
     })
 
     const [activeTab, setActiveTab] = useState<string | null>("unpaid")
     const [checkedShift, setCheckedShift] = useState<string[]>([])
-    const [buttonState, setButtonState] = useState(false)
     const [activePage, setActivePage] = useState(1)
     const [openProfile, setOpenProfile] = useState(false)
     const [openMenu, setOpenMenu] = useState(false)
@@ -62,18 +61,20 @@ const ShiftsDetailTable = () => {
     const [, setFileName] = useState("")
     const [checkedOperative, setCheckedOperative] = useState("")
     const [openCancel, setOpenCancel] = useState(false)
-
-    function handleFinishPayment() {
-        setOpenPayment(!openPayment)
-        setButtonState(!buttonState)
-    }
+    const [openSuccessModal, setOpenSuccessModal] = useState(false)
 
     const handleActivePage = (pageNumber: number) => {
         setActivePage(pageNumber)
     }
     useEffect(() => {
         if (data && data.status === "success") {
-            setButtonState(true)
+            // setButtonState(true)
+            setOpenSuccessModal(true)
+            setOpenPayment(false)
+            setTimeout(() => {
+                setOpenSuccessModal(false)
+                navigate("/planner")
+            }, 5000)
         }
 
         if (isError) {
@@ -741,10 +742,9 @@ const ShiftsDetailTable = () => {
                         openPayment={openPayment}
                         setOpenPayment={setOpenPayment}
                         totalAmount={amount}
-                        handleFinishPayment={handleFinishPayment}
                         handleDocumentUpload={handleDocumentUpload}
-                        buttonState={buttonState}
                         data={data}
+                        isLoading={isLoading}
                     />
                 )}
 
@@ -764,6 +764,19 @@ const ShiftsDetailTable = () => {
                         setOpenCancel={setOpenCancel}
                         operativeId={operativeId}
                         jobListingId={jobListingId}
+                    />
+                )}
+                {openSuccessModal && (
+                    <SuccessModal
+                        opened={openSuccessModal}
+                        setOpened={setOpenSuccessModal}
+                        handleBack={() => {
+                            setOpenSuccessModal(false)
+                        }}
+                        title="Payment evidence uploaded successfully "
+                        description="You have successfully uploaded proof of payment. We will review and confirm this payment shortly. Thanks
+                        "
+                        buttonText="Thanks!"
                     />
                 )}
             </Layout>
