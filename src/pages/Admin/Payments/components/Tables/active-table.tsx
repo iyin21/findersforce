@@ -1,6 +1,6 @@
 import { Table } from "@mantine/core"
 import { HiChevronRight } from "react-icons/hi"
-import AddressLogo from "../../../../../assets/addressLogo.svg"
+import AddressLogo from "../../../../../assets/svg/addressLogo.svg"
 import dayjs from "dayjs"
 import { IoIosArrowForward } from "react-icons/io"
 import { Result } from "../../../../../types/planner/interfaces"
@@ -41,12 +41,12 @@ const ActiveTable = ({ elements, setPhase, setShiftId }: Prop) => {
             <td>
                 {item.jobListing.jobMeetingPoint === "SITE" ? (
                     <span className="bg-yellow-100 px-3 py-1 text-3sm rounded-full text-3sm font-bold">
-                    {"MEET ONSITE"}
-                </span>
+                        {"MEET ONSITE"}
+                    </span>
                 ) : (
                     <span className="bg-yellow-100 px-3 py-1 text-3sm rounded-full text-3sm font-bold">
-                    {"DEPOT FIRST"}
-                </span>
+                        {"DEPOT FIRST"}
+                    </span>
                 )}
             </td>
             <td>
