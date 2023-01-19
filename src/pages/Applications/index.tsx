@@ -1,6 +1,6 @@
 import { Tabs } from "@mantine/core"
 import ApplicationTable from "./components/application-table"
-import { useState } from "react"
+import { useMemo, useState } from "react"
 import { useGetApplications } from "./hooks/application.hook"
 import { CgSpinner } from "react-icons/cg"
 import ApplicationDetails from "./sub-navigations/ApplicationDetails"
@@ -11,9 +11,18 @@ import { useNavigate } from "react-router-dom"
 import Pagination from "../../components/Pagination/pagination"
 import { ApplicationFilterRequest } from "../../types/filter/filter"
 import Filter from "../../components/ApplicationFilter/index"
+import { useAuthContext } from "../../pages/auth/context/authContext"
+import { HQDepotType, RegionalManager } from "../../utils/user-types"
 
 const Applications = () => {
-    const [activeTab, setActiveTab] = useState<string | null>("pending")
+    const [activeTab, setActiveTab] = useState<string | null>("PENDING")
+    
+
+    const { state } = useAuthContext()
+
+    const userState = useMemo(() => {
+        return state.user
+    }, [state.user])
 
     const [activePendingPage, setPendingPage] = useState(1)
     const [activeAcceptedPage, setAcceptedPage] = useState(1)
@@ -48,10 +57,10 @@ const Applications = () => {
             jobMatchPercentageMax: "",
         })
     const applyFilter = (filter: ApplicationFilterRequest) => {
-        if (activeTab === "pending") {
+        if (activeTab === "PENDING") {
             setPendingDataFilter(filter)
             setPendingPage(1)
-        } else if (activeTab === "accepted") {
+        } else if (activeTab === "WON") {
             setAcceptedDataFilter(filter)
             setAcceptedPage(1)
         } else {
@@ -100,9 +109,22 @@ const Applications = () => {
                     <h5 className="font-bold lg:text-3xl text-2xl mb-2">
                         Applications
                     </h5>
-                    <p className="text-black-60 mb-2">
-                        Operatives who apply for shifts appear here
-                    </p>
+                    {userState?.depotRole === HQDepotType ? (
+                        <p className="text-black-60 mb-2">
+                            Review every Operative that has applied to your
+                            Organisation’s shift posts.
+                        </p>
+                    ) : userState?.depotRole === RegionalManager ? (
+                        <p className="text-black-60 mb-2">
+                            Review every Operative that has applied to your
+                            Depot’s shift posts.
+                        </p>
+                    ) : (
+                        <p className="text-black-60 mb-2">
+                            Review every Operative that has applied to your
+                            Depot’s shift posts.
+                        </p>
+                    )}
 
                     {isLoadingPendingData ||
                     isLoadingAcceptedData ||
@@ -139,10 +161,10 @@ const Applications = () => {
                                 // variant="lg:default pills"
                             >
                                 <Tabs.List>
-                                    <Tabs.Tab value="pending">
+                                    <Tabs.Tab value="PENDING">
                                         <p
                                             className={
-                                                activeTab === "pending"
+                                                activeTab === "PENDING"
                                                     ? "text-yellow-100 text-lg font-creatoMedium active"
                                                     : `font-creatoMedium text-black-40 text-lg inactive`
                                             }
@@ -150,7 +172,7 @@ const Applications = () => {
                                             Applied
                                             <span
                                                 className={`{" ml-2 py-1 px-2 rounded text-white-100 "} ${
-                                                    activeTab === "pending"
+                                                    activeTab === "PENDING"
                                                         ? "bg-white lg:text-white-100 text-dark-green-500  lg:bg-red-100 text-3sm "
                                                         : "bg-gray-100 text-white-100 text-3sm"
                                                 }`}
@@ -160,10 +182,10 @@ const Applications = () => {
                                         </p>
                                     </Tabs.Tab>
 
-                                    <Tabs.Tab value="accepted">
+                                    <Tabs.Tab value="WON">
                                         <p
                                             className={
-                                                activeTab === "accepted"
+                                                activeTab === "WON"
                                                     ? "text-green-100 text-lg font-creatoMedium active"
                                                     : `font-creatoMedium text-black-40 text-lg inactive`
                                             }
@@ -171,7 +193,7 @@ const Applications = () => {
                                             Approved
                                             <span
                                                 className={`{" ml-2 py-1 px-2 rounded text-white-100 "} ${
-                                                    activeTab === "accepted"
+                                                    activeTab === "WON"
                                                         ? "bg-white lg:text-white-100 text-dark-green-500  lg:bg-red-100 text-3sm "
                                                         : "bg-gray-100 text-white-100 text-3sm"
                                                 }`}
@@ -180,10 +202,10 @@ const Applications = () => {
                                             </span>
                                         </p>
                                     </Tabs.Tab>
-                                    <Tabs.Tab value="rejected">
+                                    <Tabs.Tab value="LOST">
                                         <p
                                             className={
-                                                activeTab === "rejected"
+                                                activeTab === "LOST"
                                                     ? "text-red-100 text-lg font-creatoMedium active"
                                                     : `font-creatoMedium text-black-40 text-lg inactive`
                                             }
@@ -191,7 +213,7 @@ const Applications = () => {
                                             Passed
                                             <span
                                                 className={`{" ml-2 py-1 px-2 rounded text-white-100 "} ${
-                                                    activeTab === "rejected"
+                                                    activeTab === "LOST"
                                                         ? "bg-white lg:text-white-100 text-dark-green-500  lg:bg-red-100 text-3sm "
                                                         : "bg-gray-100 text-white-100 text-3sm"
                                                 }`}
@@ -201,7 +223,7 @@ const Applications = () => {
                                         </p>
                                     </Tabs.Tab>
                                 </Tabs.List>
-                                <Tabs.Panel value="pending">
+                                <Tabs.Panel value="PENDING">
                                     {pendingData?.data &&
                                     pendingData?.data?.length > 0 ? (
                                         <ApplicationTable
@@ -233,7 +255,7 @@ const Applications = () => {
                                         }
                                     />
                                 </Tabs.Panel>
-                                <Tabs.Panel value="accepted">
+                                <Tabs.Panel value="WON">
                                     {acceptedData?.data &&
                                     acceptedData?.data?.length > 0 ? (
                                         <ApplicationTable
@@ -265,7 +287,7 @@ const Applications = () => {
                                         }
                                     />
                                 </Tabs.Panel>
-                                <Tabs.Panel value="rejected">
+                                <Tabs.Panel value="LOST">
                                     {rejectedData?.data &&
                                     rejectedData?.data?.length > 0 ? (
                                         <ApplicationTable

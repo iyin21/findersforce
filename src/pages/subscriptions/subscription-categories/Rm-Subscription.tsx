@@ -7,7 +7,7 @@ import { FaFileExport } from "react-icons/fa"
 import { useGetAllSubscriptions } from "../../../hooks/subscriptions/useSubscriptions.hooks"
 
 const RmSubscription = () => {
-    const { data: subscriptionData } = useGetAllSubscriptions();
+    const { data: subscriptionData } = useGetAllSubscriptions()
     const applyFilter = (filter: ApplicationFilterRequest) => {}
     return (
         <Layout>
@@ -19,10 +19,11 @@ const RmSubscription = () => {
                                 className="text-2xl md:text-3xl font-creatoBold text-black-100 font-bold"
                                 id="header"
                             >
-                                Subscriptions
+                                Plans
                             </h1>
                             <p className="text-black-60 text-2md md:text-lg font-normal font-creato">
-                                Monthly payment to FindersForce in one glance
+                                Keep track and upgrade the plan for your Depot
+                                at any time.
                             </p>
                         </div>
                     </div>
@@ -57,9 +58,7 @@ const RmSubscription = () => {
                     </div>
                 </div>
                 <div className="px-0 pt-10 md:pt-4">
-                    <SubscriptionTable
-                        elements={subscriptionData?.results}
-                    />
+                    <SubscriptionTable elements={subscriptionData?.results} />
                 </div>
             </main>
         </Layout>

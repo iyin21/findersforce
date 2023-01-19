@@ -4,7 +4,6 @@ import { AiFillStar } from "react-icons/ai"
 import { FaTimes } from "react-icons/fa"
 import Message from "../../../assets/Messaging.svg"
 import { Dispatch, SetStateAction } from "react"
-import { useGetScheduleByScheduleId } from "../../../hooks/planner/usePlanner.hooks"
 import relativeTime from "dayjs/plugin/relativeTime"
 import { IoLocationSharp } from "react-icons/io5"
 dayjs.extend(relativeTime)
@@ -13,18 +12,17 @@ interface Props {
     openProfile: boolean
     setOpenProfile: Dispatch<SetStateAction<boolean>>
     scheduleId: string
+    queryStatus: string
+    singleElement: any
 }
 
 const OperativeProfile = ({
     openProfile,
     setOpenProfile,
     scheduleId,
+    queryStatus,
+    singleElement,
 }: Props) => {
-    const { data: singleElement } = useGetScheduleByScheduleId({
-        scheduleId: scheduleId,
-    })
-    // console.log(singleElement?.cancelReason)
-
     return (
         <Modal
             centered
@@ -39,11 +37,6 @@ const OperativeProfile = ({
             transition="fade"
             transitionDuration={600}
             transitionTimingFunction="ease"
-            // styles={() => ({
-            //     modal: {
-            //         width: "550px",
-            //     },
-            // })}
         >
             <header className="bg-black-100 text-white-100 flex justify-between py-5 px-8 font-creato">
                 <div className="flex gap-4 place-items-center">
@@ -81,6 +74,8 @@ const OperativeProfile = ({
                             <span className="text-black-50"> |</span>
                             <span className="text-green-100">
                                 {" "}
+                                {singleElement?.jobListing?.jobMatchPercentage}%
+                                Match
                                 {singleElement?.jobListing?.jobMatchPercentage}%
                                 Match
                             </span>
@@ -124,23 +119,32 @@ const OperativeProfile = ({
                         </p>{" "}
                     </div>
                 )}
-                <div>
-                    {" "}
-                    <p className="text-black-50 text-2md mb-3">
-                        HOURS WORKED
-                    </p>{" "}
-                    <p className="font-medium font-creatoMedium text-3md">
-                        {singleElement?.jobListing?.shiftDurationInHours} HRS (
-                        {dayjs(
-                            singleElement?.jobListing?.shiftStartTime
-                        ).format("HH:mm a")}{" "}
-                        -{" "}
-                        {dayjs(singleElement?.jobListing?.shiftEndTime).format(
-                            "HH:mm a"
-                        )}
-                        )
-                    </p>{" "}
-                </div>
+                {queryStatus === "cancelled" ? (
+                    <div>
+                        {" "}
+                        <p className="text-black-50 text-2md mb-3">
+                            HOURS WORKED
+                        </p>{" "}
+                        <p className="font-medium font-creatoMedium text-3md">
+                            {dayjs(singleElement?.clockInTime).format("HH:mm")}{" "}
+                            - {dayjs(singleElement?.cancelTime).format("HH:mm")}
+                        </p>{" "}
+                    </div>
+                ) : (
+                    <div>
+                        {" "}
+                        <p className="text-black-50 text-2md mb-3">
+                            HOURS WORKED
+                        </p>{" "}
+                        <p className="font-medium font-creatoMedium text-3md">
+                            {dayjs(singleElement?.clockInTime).format("HH:mm")}{" "}
+                            -{" "}
+                            {dayjs(
+                                singleElement?.jobListing.shiftEndTime
+                            ).format("HH:mm")}
+                        </p>{" "}
+                    </div>
+                )}
                 <div>
                     {" "}
                     <p className="text-black-50 text-2md mb-3">
@@ -165,6 +169,7 @@ const OperativeProfile = ({
                     style={{ color: "#E94444" }}
                     className="inline"
                 />{" "}
+                {singleElement?.jobListing?.jobLocation?.formattedAddress}
                 {singleElement?.jobListing?.jobLocation?.formattedAddress}
             </p>
             <section className="grid grid-cols-2 pb-4">
@@ -196,6 +201,7 @@ const OperativeProfile = ({
                     </p>
                     <p className="text-2md px-8 font-creatoMedium font-medium">
                         {singleElement?.jobListing?.jobQualification?.name}
+                        {singleElement?.jobListing?.jobQualification?.name}
                     </p>
                 </div>
                 <div className="flex flex-col items-center">
@@ -203,6 +209,9 @@ const OperativeProfile = ({
                         SHIFT DATE
                     </p>
                     <p className="text-2md px-8 font-creatoMedium font-medium">
+                        {dayjs(singleElement?.jobListing?.jobDate).format(
+                            "MMMM D, YYYY"
+                        )}
                         {dayjs(singleElement?.jobListing?.jobDate).format(
                             "MMMM D, YYYY"
                         )}
@@ -243,6 +252,16 @@ const OperativeProfile = ({
                                 style={{ color: "#FED70A" }}
                                 className="inline"
                             />
+                            <span className="text-2xl font-extrabold font-creatoBold">
+                                {singleElement?.operative?.averageRating}
+                            </span>
+                            <span className="text-3sm">
+                                {" "}
+                                ({
+                                    singleElement?.operative?.completedShifts
+                                }{" "}
+                                shifts)
+                            </span>
                             <span className="text-2xl font-extrabold font-creatoBold">
                                 {singleElement?.operative?.averageRating}
                             </span>

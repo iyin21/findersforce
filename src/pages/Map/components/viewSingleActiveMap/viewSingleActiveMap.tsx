@@ -32,6 +32,8 @@ const ViewSingleActiveMap = () => {
                     setOpenProfile={setOpenShiftDetails}
                     openProfile={openShiftDetails}
                     scheduleId=""
+                    queryStatus=""
+                    singleElement={""}
                 />
             )}
             <BackButton handleBackButton={() => handleNavigate()} />

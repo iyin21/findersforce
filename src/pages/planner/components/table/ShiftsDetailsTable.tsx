@@ -2,26 +2,26 @@ import { Alert, Table, Tabs } from "@mantine/core"
 import { ChangeEvent, useEffect, useState } from "react"
 import { BiDotsVerticalRounded } from "react-icons/bi"
 import { FaAngleRight } from "react-icons/fa"
-import Layout from "../../../components/Layout/index"
+import Layout from "../../../../components/Layout/index"
 import {
+    useGetScheduleByScheduleId,
     useGetShiftHistoryByJobListingId,
     useGetSingleSchedule,
     usePaymentEvidenceUpload,
-} from "../../../hooks/planner/usePlanner.hooks"
+} from "../../../../hooks/planner/usePlanner.hooks"
 import dayjs from "dayjs"
 import { AiOutlineArrowLeft } from "react-icons/ai"
-import ProfileImage from "../../../assets/ProfileImage.svg"
+import ProfileImage from "../../../../assets/ProfileImage.svg"
 import { useLocation, useNavigate, useParams } from "react-router-dom"
 import { CgSpinner } from "react-icons/cg"
-import Pagination from "../../../components/Pagination/pagination"
+import Pagination from "../../../../components/Pagination/pagination"
 import MobileShiftsDetailsTable from "./MobileShiftsDetailsTable"
-import { Button, Checkbox } from "../../../components"
-// import { FiPlus } from "react-icons/fi"
-import TimeEstimate from "./TimeEstimate"
-import PaymentEvidenceUpload from "../../../components/Modals/Planner/PaymentEvidenceUpload"
-import OperativeProfile from "../../../components/Modals/Planner/OperativeProfile"
-import Menu from "../../../components/Modals/Planner/Menu"
-import Cancel from "../../../components/Modals/Planner/Cancel"
+import { Button, Checkbox, SuccessModal } from "../../../../components"
+import TimeEstimate from "../TimeEstimate"
+import PaymentEvidenceUpload from "../../../../components/Modals/Planner/PaymentEvidenceUpload"
+import OperativeProfile from "../../../../components/Modals/Planner/OperativeProfile"
+import Menu from "../../../../components/Modals/Planner/Menu"
+import Cancel from "../../../../components/Modals/Planner/Cancel"
 import { IoAlertCircle } from "react-icons/io5"
 
 const ShiftsDetailTable = () => {
@@ -32,7 +32,6 @@ const ShiftsDetailTable = () => {
     const queryStatus = location?.state?.status
 
     const scheduleId = location?.state?.scheduleId
-    // console.log(scheduleId)
 
     const { data: shiftsData, isLoading: isLoadingShiftsData } =
         useGetShiftHistoryByJobListingId({
@@ -44,13 +43,13 @@ const ShiftsDetailTable = () => {
         jobListingId: jobListingId,
     })
 
-    const { data, isError, mutate } = usePaymentEvidenceUpload({
+    const { data, isError, mutate, isLoading } = usePaymentEvidenceUpload()
+    const { data: singleElement } = useGetScheduleByScheduleId({
         scheduleId: scheduleId,
     })
 
     const [activeTab, setActiveTab] = useState<string | null>("unpaid")
     const [checkedShift, setCheckedShift] = useState<string[]>([])
-    const [buttonState, setButtonState] = useState(false)
     const [activePage, setActivePage] = useState(1)
     const [openProfile, setOpenProfile] = useState(false)
     const [openMenu, setOpenMenu] = useState(false)
@@ -60,22 +59,22 @@ const ShiftsDetailTable = () => {
     const [, setFileName] = useState("")
     const [checkedOperative, setCheckedOperative] = useState("")
     const [openCancel, setOpenCancel] = useState(false)
-
-    function handleFinishPayment() {
-        setOpenPayment(!openPayment)
-        setButtonState(!buttonState)
-    }
+    const [openSuccessModal, setOpenSuccessModal] = useState(false)
 
     const handleActivePage = (pageNumber: number) => {
         setActivePage(pageNumber)
     }
     useEffect(() => {
         if (data && data.status === "success") {
-            setButtonState(true)
+            setOpenSuccessModal(true)
+            setOpenPayment(false)
+            setTimeout(() => {
+                setOpenSuccessModal(false)
+                navigate("/planner")
+            }, 5000)
         }
 
         if (isError) {
-            // console.log("error")
         }
     }, [data, isError])
 
@@ -93,7 +92,7 @@ const ShiftsDetailTable = () => {
 
     const { data: checkedData } = useGetSingleSchedule({
         jobListingId: jobListingId,
-        operativeId: checkedOperative,
+        operativeId: checkedOperative || undefined,
     })
 
     const amount: any = checkedData?.results?.map((item) => {
@@ -152,7 +151,7 @@ const ShiftsDetailTable = () => {
             }
 
             setFileName(uploadedFile.name)
-            mutate({ file: uploadedFile })
+            mutate({ file: uploadedFile, scheduleId: scheduleId })
         }
     }
 
@@ -173,7 +172,6 @@ const ShiftsDetailTable = () => {
                     </p>
                 </div>
             </td>
-            {/* <td>{element?.jobListing?.jobType?.name}</td> */}
             <td>{element?.jobListing?.jobLocation?.formattedAddress}</td>
             <td>
                 {dayjs(element?.jobListing?.shiftStartTime).format("HH:mm")} -{" "}
@@ -207,7 +205,12 @@ const ShiftsDetailTable = () => {
                     </p>
                 )}
             </td>
-            <td>{dayjs(element?.clockInTime).format("HH:mm")}</td>
+            {queryStatus === "ongoing" && (
+                <td>{dayjs(element?.clockInTime).format("HH:mm")}</td>
+            )}
+            {queryStatus === "cancelled" && (
+                <td>{dayjs(element?.cancelTime).format("HH:mm")}</td>
+            )}
             <td>
                 <BiDotsVerticalRounded
                     size={20}
@@ -254,7 +257,6 @@ const ShiftsDetailTable = () => {
                     </p>
                 </div>
             </td>
-            {/* <td>{element?.jobListing?.jobType?.name}</td> */}
             <td>{element?.jobListing?.jobLocation?.formattedAddress}</td>
             <td>
                 {dayjs(element?.jobListing?.shiftStartTime).format("HH:mm")} -{" "}
@@ -328,7 +330,6 @@ const ShiftsDetailTable = () => {
                     </p>
                 </div>
             </td>
-            {/* <td>{element?.jobListing?.jobType?.name}</td> */}
             <td>{element?.jobListing?.jobLocation?.formattedAddress}</td>
             <td>
                 {dayjs(element?.jobListing?.shiftStartTime).format("HH:mm")} -{" "}
@@ -495,7 +496,6 @@ const ShiftsDetailTable = () => {
                                                             backgroundColor:
                                                                 "black",
                                                         }}
-                                                        // iconLeft={<FiPlus size={20} />}
                                                         data-testid="make_payment_btn"
                                                         iconRight={
                                                             <FaAngleRight
@@ -521,18 +521,12 @@ const ShiftsDetailTable = () => {
                                                             backgroundColor:
                                                                 "gray",
                                                         }}
-                                                        // iconLeft={<FiPlus size={20} />}
                                                         data-testid="make_payment_btn"
                                                         iconRight={
                                                             <FaAngleRight
                                                                 size={20}
                                                             />
                                                         }
-                                                        // onClick={() =>
-                                                        //     setOpenPayment(
-                                                        //         !openPayment
-                                                        //     )
-                                                        // }
                                                     >
                                                         Make Payments
                                                     </Button>
@@ -691,7 +685,17 @@ const ShiftsDetailTable = () => {
                             )}
                         </div>
                         <div className="block lg:hidden p-6 mt-4">
-                            <MobileShiftsDetailsTable />
+                            <MobileShiftsDetailsTable
+                                queryStatus={queryStatus}
+                                shiftsData={shiftsData?.results}
+                                handleOpenMenu={handleOpenMenu}
+                                activeTab={activeTab}
+                                setActiveTab={setActiveTab}
+                                unPaidShifts={unPaidShifts}
+                                paidShifts={paidShifts}
+                                checkedShift={checkedShift}
+                                handleCheckedShift={handleCheckedShift}
+                            />
                         </div>
                         <Pagination
                             page={activePage}
@@ -724,10 +728,9 @@ const ShiftsDetailTable = () => {
                         openPayment={openPayment}
                         setOpenPayment={setOpenPayment}
                         totalAmount={amount}
-                        handleFinishPayment={handleFinishPayment}
                         handleDocumentUpload={handleDocumentUpload}
-                        buttonState={buttonState}
                         data={data}
+                        isLoading={isLoading}
                     />
                 )}
 
@@ -736,6 +739,8 @@ const ShiftsDetailTable = () => {
                         openProfile={openProfile}
                         setOpenProfile={setOpenProfile}
                         scheduleId={scheduleId}
+                        queryStatus={queryStatus}
+                        singleElement={singleElement}
                     />
                 )}
 
@@ -745,6 +750,19 @@ const ShiftsDetailTable = () => {
                         setOpenCancel={setOpenCancel}
                         operativeId={operativeId}
                         jobListingId={jobListingId}
+                    />
+                )}
+                {openSuccessModal && (
+                    <SuccessModal
+                        opened={openSuccessModal}
+                        setOpened={setOpenSuccessModal}
+                        handleBack={() => {
+                            setOpenSuccessModal(false)
+                        }}
+                        title="Payment evidence uploaded successfully "
+                        description="You have successfully uploaded proof of payment. We will review and confirm this payment shortly. Thanks
+                        "
+                        buttonText="Thanks!"
                     />
                 )}
             </Layout>
