@@ -12,6 +12,8 @@ interface FileModalProps {
     client?: TelegramClient
     chat: string
     uploadedFile: Api.InputFile | null | Api.InputFileBig
+
+    handleResult: (result: Api.Message) => void
 }
 const FileModal = ({
     opened,
@@ -20,6 +22,7 @@ const FileModal = ({
     client,
     chat,
     uploadedFile,
+    handleResult,
 }: FileModalProps) => {
     const [caption, setCaption] = useState("")
     const [isSending, setIsSending] = useState(false)
@@ -46,6 +49,8 @@ const FileModal = ({
                 if (result) {
                     // console.log("result2", result)
                     setIsSending(false)
+                    //setResult(result)
+                    handleResult(result)
                     setOpened(false)
                     setCaption("")
                 }

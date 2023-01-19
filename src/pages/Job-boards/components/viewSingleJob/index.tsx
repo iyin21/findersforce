@@ -4,9 +4,9 @@ import { HiPencil } from "react-icons/hi"
 import { BsTrashFill } from "react-icons/bs"
 import Button from "../../../../components/Core/Buttons/Button"
 import JobInformation from "./components/job-information"
-import { BiArrowBack, BiFilter } from "react-icons/bi"
+import { BiFilter } from "react-icons/bi"
 import EmptyApplication from "../../../../components/EmptyApplication"
-import { Link, useNavigate, useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import {
     useDeleteJobList,
     useGetJobListingById,
@@ -17,7 +17,7 @@ import { showNotification } from "@mantine/notifications"
 import ApplicationJobTable from "./components/application-table"
 import Layout from "../../../../components/Layout"
 import PostJob from "../../../../components/Modals/PostJob"
-import { Pagination } from "../../../../components"
+import { BackButton, Pagination } from "../../../../components"
 
 const SingleJobBoard = () => {
     const { jobBoardId } = useParams<string>()
@@ -67,15 +67,12 @@ const SingleJobBoard = () => {
             })
         }
     }, [deletedJob])
-
+    const handleNavigate = () => {
+        navigate(`/job-boards`)
+    }
     return (
         <Layout pageTitle="single shift">
-            <div className="bg-black-10 p-2 w-fit mx-4 rounded-lg relative z-20">
-                <Link to={"/job-boards"}>
-                    {" "}
-                    <BiArrowBack size={30} />
-                </Link>
-            </div>
+            <BackButton handleBackButton={() => handleNavigate()} />
             <div className="md:p-6 p-6">
                 <div className="relative md:pb-4 bottom-4 hidden md:block md:bottom-0">
                     {activeTab === "first" ? (
