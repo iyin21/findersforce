@@ -104,12 +104,12 @@ const RMProfile = () => {
                 firstName,
                 lastName,
                 accountType,
-                selectValue,
                 setIsSubmitting,
                 setErrorMsg,
                 showError,
                 setOpened,
-                courseLink
+                courseLink,
+                selectValue
             )
         } else showErrorText(true)
     }
@@ -188,33 +188,35 @@ const RMProfile = () => {
                             />
                         </div>
                         {accountType === "REGIONAL-MANAGER" && (
-                            <TextInput
-                                placeholder="Provide your video link"
-                                label="Depot Video Link"
-                                aria-label="Depot Video Link"
-                                id="courseLink"
-                                type="text"
-                                withAsterisk
-                                required
-                                size="md"
-                                ref={userRef}
-                                onFocusCapture={() => {
-                                    showErrorText(false)
-                                    showError(false)
-                                }}
-                                {...profileForm.getInputProps("courseLink")}
-                                styles={() => emailInputStyle}
-                            />
+                            <>
+                                <TextInput
+                                    placeholder="Provide your video link"
+                                    label="Depot Video Link"
+                                    aria-label="Depot Video Link"
+                                    id="courseLink"
+                                    type="text"
+                                    withAsterisk
+                                    required
+                                    size="md"
+                                    ref={userRef}
+                                    onFocusCapture={() => {
+                                        showErrorText(false)
+                                        showError(false)
+                                    }}
+                                    {...profileForm.getInputProps("courseLink")}
+                                    styles={() => emailInputStyle}
+                                />
+                                <Select
+                                    label="Choose subscription plan"
+                                    placeholder="Pick one"
+                                    value={selectValue}
+                                    onChange={setSelectValue}
+                                    required
+                                    data={selectData}
+                                    styles={() => emailInputStyle}
+                                />
+                            </>
                         )}
-                        <Select
-                            label="Choose subscription plan"
-                            placeholder="Pick one"
-                            value={selectValue}
-                            onChange={setSelectValue}
-                            required
-                            data={selectData}
-                            styles={() => emailInputStyle}
-                        />
                         <div
                             onFocusCapture={() => {
                                 showErrorText(false)
