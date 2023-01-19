@@ -80,6 +80,7 @@ export const adminRoute: SidebarRoutes[] = [
     { icon: GeoTracking, title: "Geotracking", route: "/geotracking" },
     { icon: Messaging, title: "Messaging", route: "/messaging" },
     { icon: AdminSupport, title: "Support", route: "/admin-support" },
+    { icon: Messaging, title: "Messaging", route: "/messaging" },
     { icon: AllUsers, title: "All users", route: "/all-users" },
     {
         icon: AdminRolesPermission,

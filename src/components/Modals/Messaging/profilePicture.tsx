@@ -9,7 +9,7 @@ const ProfilePicture = ({
     showHover,
     handleUnSelect,
 }: {
-    client: TelegramClient
+    client?: TelegramClient
     data: any
     className?: string
     showHover?: boolean
@@ -36,9 +36,9 @@ const ProfilePicture = ({
     }
 
     const handleProfilePicture =  useCallback(async() => {
-        await client.connect()
+        await client?.connect()
         try {
-            const buffer = await client.downloadProfilePhoto(data)
+            const buffer = await client?.downloadProfilePhoto(data)
             //@ts-expect-error
             if (buffer?.byteLength > 0) {
                 //console.log("buff", buffer)
