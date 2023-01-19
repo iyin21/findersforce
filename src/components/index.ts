@@ -11,6 +11,7 @@ export { default as DatePicker } from "./DatePicker/index"
 export { default as TimePicker } from "./TimePicker/index"
 export { default as Filter } from "./Filter/index"
 export { default as BackButton } from "./BackButton/index"
+export { default as SearchBar } from "./SearchBar/index"
 
 // Modals
 export { default as AddUser } from "./Modals/AddUser"

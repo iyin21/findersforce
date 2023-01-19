@@ -35,6 +35,7 @@ import RateOperatives from "./pages/planner/components/rateOperatives/RateOperat
 import TwoFactorAuthentication from "./pages/auth/two-2fa-verification"
 import Maps from "./pages/Map"
 import ViewSingleActiveMap from "./pages/Map/components/viewSingleActiveMap/viewSingleActiveMap"
+import ViewAllMaps from "./pages/Map/components/viewAllMaps/viewAllMaps"
 
 function App() {
     return (
@@ -108,6 +109,7 @@ function App() {
                         path="/maps/:listingId"
                         element={<ViewSingleActiveMap />}
                     />
+                    <Route path="/view-all-maps" element={<ViewAllMaps />} />
                 </Route>
             </Route>
         </Routes>
