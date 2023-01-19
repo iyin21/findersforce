@@ -9,13 +9,11 @@ interface Props {
     shiftsData: Result[] | undefined
     handleOpenMenu: any
     activeTab: string | null
-    setActiveTab:  (val: string) => void
+    setActiveTab: (val: string) => void
     unPaidShifts: Result[] | undefined
     paidShifts: Result[] | undefined
     checkedShift: any
     handleCheckedShift: any
-    
-    
 }
 const MobileShiftsDetailsTable = ({
     queryStatus,
@@ -28,54 +26,6 @@ const MobileShiftsDetailsTable = ({
     checkedShift,
     handleCheckedShift,
 }: Props) => {
-    // const { jobListingId } = useParams<string>()
-
-    // const location = useLocation()
-
-    // const queryStatus = location?.state?.status
-    // const scheduleId = location?.state?.scheduleId
-
-    // const [openProfile, setOpenProfile] = useState(false)
-    // const [operativeId, setOperativeId] = useState("")
-    // const [openMenu, setOpenMenu] = useState(false)
-    // const [activeTab, setActiveTab] = useState<string | null>("unpaid")
-    // const [checkedShift, setCheckedShift] = useState<string[]>([])
-
-    // const [openCancel, setOpenCancel] = useState(false)
-
-    // const { data: shiftsData } = useGetShiftHistoryByJobListingId({
-    //     jobListingId,
-    //     queryStatus,
-    // })
-
-    // const { data: singleShift } = useGetSingleSchedule({
-    //     jobListingId: jobListingId,
-    // })
-
-    // const { data: singleElement } = useGetScheduleByScheduleId({
-    //     scheduleId: scheduleId,
-    // })
-    // const handleOpenMenu = (id: string) => {
-    //     setOperativeId(id)
-    //     setOpenMenu(!openMenu)
-    // }
-    // const handleCheckedShift = (e: React.ChangeEvent<HTMLInputElement>) => {
-    //     const { value } = e.target
-    //     const isChecked = e.target.checked
-    //     if (isChecked) {
-    //         setCheckedShift([...checkedShift, value])
-    //     } else {
-    //         setCheckedShift(checkedShift.filter((item) => item !== value))
-    //     }
-    // }
-
-    // const paidShifts = singleShift?.results?.filter(
-    //     (shift) => shift?.jobListing?.fullyPaidByDepot === true
-    // )
-    // const unPaidShifts = singleShift?.results?.filter(
-    //     (shift) => shift?.jobListing?.fullyPaidByDepot === false
-    // )
-
     return (
         <>
             {queryStatus !== "completed" ? (
@@ -584,35 +534,6 @@ const MobileShiftsDetailsTable = ({
                     </Tabs.Panel>
                 </Tabs>
             )}
-
-            {/* {openProfile && (
-                <OperativeProfile
-                    openProfile={openProfile}
-                    setOpenProfile={setOpenProfile}
-                    scheduleId={scheduleId}
-                    queryStatus={queryStatus}
-                    singleElement={singleElement}
-                />
-            )}
-            {openMenu && (
-                <Menu
-                    openProfile={openProfile}
-                    setOpenProfile={setOpenProfile}
-                    queryStatus={queryStatus}
-                    openMenu={openMenu}
-                    setOpenMenu={setOpenMenu}
-                    openCancel={openCancel}
-                    setOpenCancel={setOpenCancel}
-                />
-            )}
-            {openCancel && (
-                <Cancel
-                    openCancel={openCancel}
-                    setOpenCancel={setOpenCancel}
-                    operativeId={operativeId}
-                    jobListingId={jobListingId}
-                />
-            )} */}
         </>
     )
 }
