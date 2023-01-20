@@ -154,7 +154,7 @@ const ApplicationTable = ({
                     }}
                 >
                     <thead>
-                        {activeTab === "pending" && (
+                        {activeTab === "PENDING" && (
                             <tr>
                                 {pendingTableHead.map((item, index) =>
                                     item === "match" ? (
@@ -314,7 +314,7 @@ const ApplicationTable = ({
                             </tr>
                         )}
 
-                        {activeTab === "accepted" && (
+                        {activeTab === "WON" && (
                             <tr>
                                 {approvedTableHead.map((item, index) =>
                                     item === "match" ? (
@@ -473,7 +473,7 @@ const ApplicationTable = ({
                                 )}
                             </tr>
                         )}
-                        {activeTab === "rejected" && (
+                        {activeTab === "LOST" && (
                             <tr>
                                 {passedTableHead.map((item, index) =>
                                     item === "match" ? (
