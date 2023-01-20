@@ -68,7 +68,7 @@ const ApplicationTable = ({
 
             <td>{item?.jobListing?.listingId}</td>
             <td>{item?.jobListing?.jobQualification?.name}</td>
-            {item?.jobListing.jobMeetingPoint === "DEPOT" ? (<td>{item?.jobListing?.jobRate?.jobRateDepotFirstDisplayedToDepot}</td>) : (<td>{item?.jobListing?.jobRate?.jobRateMeetOnsiteDisplayedToDepot}</td>)}
+            {item?.jobListing.jobMeetingPoint === "DEPOT" ? (<td> {item?.jobListing?.jobRate.currency}{item?.jobListing?.jobRate?.jobRateDepotFirstDisplayedToDepot}</td>) : (<td>{item?.jobListing?.jobRate.currency}{item?.jobListing?.jobRate?.jobRateMeetOnsiteDisplayedToDepot}</td>)}
             <td className="text-green-100 font-medium">
                 {item?.jobMatchPercentage}%
             </td>
