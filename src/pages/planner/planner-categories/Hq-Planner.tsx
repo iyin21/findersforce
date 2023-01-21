@@ -89,13 +89,13 @@ const HqPlanner = () => {
         if (item?.jobListing?.jobMeetingPoint === "DEPOT") {
             return (
                 Number(
-                    item?.jobListing?.jobRate?.jobRateDepotFirstDisplayedToDepot
+                    item?.jobListing?.amountPaidByDepot
                 ) * Number(item?.jobListing?.shiftDurationInHours)
             )
         } else {
             return (
                 Number(
-                    item?.jobListing?.jobRate?.jobRateMeetOnsiteDisplayedToDepot
+                    item?.jobListing?.amountPaidByDepot
                 ) * Number(item?.jobListing?.shiftDurationInHours)
             )
         }

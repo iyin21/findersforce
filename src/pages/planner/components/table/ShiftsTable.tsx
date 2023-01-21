@@ -13,6 +13,7 @@ import { IoEllipsisVerticalSharp } from "react-icons/io5"
 const ShiftsTable = ({ elements, status }: ShiftsTableInterface) => {
     const navigate = useNavigate()
 
+
     const rows = elements?.map((element, index) => (
         <tr key={index}>
             <td>{index + 1}</td>
@@ -34,18 +35,12 @@ const ShiftsTable = ({ elements, status }: ShiftsTableInterface) => {
             {element?.jobListing.jobMeetingPoint === "DEPOT" ? (
                 <td>
                     {element?.jobListing?.jobRate?.currency}
-                    {
-                        element?.jobListing?.jobRate
-                            ?.jobRateDepotFirstDisplayedToDepot
-                    }
+                    {element?.jobListing?.amountPaidByDepot * element?.jobListing?.numberOfOpsRequired }
                 </td>
             ) : (
                 <td>
                     {element?.jobListing?.jobRate?.currency}
-                    {
-                        element?.jobListing?.jobRate
-                            ?.jobRateMeetOnsiteDisplayedToDepot
-                    }
+                    {element?.jobListing?.amountPaidByDepot * element?.jobListing?.numberOfOpsRequired}
                 </td>
             )}
 
