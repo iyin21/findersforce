@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction } from "react"
 import { Result } from "../../../../types/planner/interfaces"
 import { Checkbox } from "../../../../components/index"
-import Profile from "../../../../assets/Profile.png"
+import Profile from "../../../../assets/profile.png"
 import {
     HelpfulnessStar,
     ProfessionalismStar,

@@ -46,7 +46,7 @@ const TimeEstimate = ({ initialDate }: { initialDate: Date }) => {
         return () => clearInterval(timer)
     }, [initialDate])
     return (
-        <div className="bg-black-100 text-yellow-100 rounded-xl px-2">
+        <div className="bg-black-100 text-yellow-100 rounded-xl px-3 py-1">
             <div className=" flex items-center gap-4 justify-center  ">
                 <div className="flex flex-col items-center text">
                     <p aria-label="hours-left" className={timerStyles.time}>

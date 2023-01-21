@@ -428,7 +428,7 @@ const ShiftsDetailTable = () => {
 
                                 {queryStatus === "ongoing" && (
                                     <div className="">
-                                        <p className="bg-yellow-100 rounded-xl text-3sm font-bold font-creato mb-4 py-1 text-center">
+                                        <p className="bg-yellow-100 rounded-full text-3sm font-bold font-creato mb-4 py-2 px-3 text-center">
                                             ACTIVE SHIFT ENDS IN
                                         </p>
                                         <TimeEstimate
