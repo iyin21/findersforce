@@ -162,7 +162,7 @@ export default function ImageMessage({
                         />
                     ) : (
                         <div className="relative rounded">
-                            <div className="items-center  ml-32 bg-black-100 absolute mt-4 rounded-full p-4">
+                            <div className="items-center  ml-20 bg-black-100 absolute mt-4 rounded-full p-4">
                                 {isDownloading ? (
                                     <CgSpinner className="animate-spin text-white-100 text-xl" />
                                 ) : (
