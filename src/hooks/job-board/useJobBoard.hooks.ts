@@ -299,10 +299,11 @@ function useCreateJobList() {
                 // this appends all the data of the formdata to the newFormData
                 newFormData.append(key, values[key])
                 // this deletes the operative ids that is not array from the newFormData
+                newFormData.delete("operativeIds[]")
                 newFormData.delete("operativeIds")
                 // this appends the operative id that is an array to the newFormData that will be sent to the backend. This will only work on posting to HQ selected operatives
                 values.operativeIds?.map((item: string) =>
-                    newFormData.append("operativeIds", item)
+                    newFormData.append("operativeIds[]", item)
                 )
             }
         })

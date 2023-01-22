@@ -1,17 +1,17 @@
 import {
     useGetShiftHistoryByJobListingId,
     useRateOperative,
-} from "../../../hooks/planner/usePlanner.hooks"
+} from "../../../../hooks/planner/usePlanner.hooks"
 import { AiFillStar, AiOutlineArrowLeft, AiOutlineCheck } from "react-icons/ai"
 import { useLocation, useNavigate, useParams } from "react-router-dom"
-import Layout from "../../../components/Layout/index"
+import Layout from "../../../../components/Layout/index"
 import { CgSpinner } from "react-icons/cg"
-import Profile from "../../../assets/profile.png"
-import { Button, Checkbox } from "../../../components/index"
+import Profile from "../../../../assets/profile.png"
+import { Button, Checkbox } from "../../../../components/index"
 import { Table } from "@mantine/core"
 import { Dispatch, SetStateAction, useState } from "react"
-import MobileRateOperativesTable from "./MobileRateOperativesTable"
-import EmptyView from "../../../components/EmptyStates/index"
+import MobileRateOperativesTable from "../rateOperatives/MobileRateOperativesTable"
+import EmptyView from "../../../../components/EmptyStates/index"
 
 const RateOperatives = () => {
     const { jobListingId } = useParams<string>()
@@ -25,16 +25,13 @@ const RateOperatives = () => {
     const [professionalismScore, setProfessionalismScore] = useState(0)
     const [punctualityScore, setPunctualityScore] = useState(0)
     const [helpfulnessScore, setHelpfulnessScore] = useState(0)
-    //     console.log(checkedOperative)
-    //     console.log(scheduleId)
-
     const { data: shiftsData, isLoading: isLoadingShiftsData } =
         useGetShiftHistoryByJobListingId({
             jobListingId,
             queryStatus,
         })
     const { mutate } = useRateOperative()
-    // console.log(shiftsData)
+
     const handleCheckedOperative = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { value } = e.target
         const isChecked = e.target.checked
@@ -52,13 +49,9 @@ const RateOperatives = () => {
         helpfulnessScore: helpfulnessScore,
     }
 
-    // console.log(checkedOperative)
-
     const ratingShiftsData = shiftsData?.results.filter(
         (item) => item?.depotHasRated === false
     )
-    // console.log(ratingShiftsData)
-    //     console.log(values)
     const row = ratingShiftsData?.map((item, index) => (
         <tr key={index}>
             <td>
@@ -73,7 +66,6 @@ const RateOperatives = () => {
                         className="rounded-lg"
                         onChange={handleCheckedOperative}
                         name={item?.operative?._id}
-                        //         checked={checkedShift.includes(item?.operative?._id)}
                         value={item?.operative?._id}
                         data-testid="checkbox"
                     />
@@ -82,7 +74,11 @@ const RateOperatives = () => {
             </td>
             <td>
                 <div className="flex items-center gap-2">
-                    <img src={Profile} alt="profile_image" />
+                    <img
+                        src={item?.operative.profileImageUrl || Profile}
+                        alt="profile_image"
+                        className="rounded-full  h-8 w-8"
+                    />
                     <p>
                         {item?.operative?.firstName} {item?.operative?.lastName}
                     </p>
@@ -127,7 +123,7 @@ const RateOperatives = () => {
                     </div>
                 ) : (
                     <>
-                        <div className="md:p-6 p-6 mt-4 md:mt-14 font-creato">
+                        <div className="md:p-6 p-6 mt-4 md:mt-14 font-creato overflow-x-hidden">
                             <div className="bg-gray-80 w-fit p-3 rounded-lg cursor-pointer mb-4">
                                 <AiOutlineArrowLeft
                                     size={20}
@@ -135,17 +131,20 @@ const RateOperatives = () => {
                                 />
                             </div>
                             <div className="lg:flex justify-between">
-                                <div className="flex gap-8 w-full">
+                                <div className="flex gap-4 w-full">
                                     <img
-                                        src={Profile}
+                                        src={
+                                            element?.depotCompany.logo ||
+                                            Profile
+                                        }
                                         alt="logo"
-                                        className="rounded-full  h-14 w-14"
+                                        className="rounded-full  h-10 w-10"
                                     />
                                     <div>
                                         <p className="text-black-50  text-md">
                                             RATE YOUR OPERATIVE
                                         </p>
-                                        <p className="text-2xl font-extrabold font-creatoBold">
+                                        <p className="text-2xl font-extrabold font-creatoBold w-fit">
                                             {element?.jobListing.jobType.name}{" "}
                                             <span className="text-black-50">
                                                 |
@@ -210,7 +209,7 @@ const RateOperatives = () => {
                                                 )}
                                             </tr>
                                         </thead>
-                                        <tbody> {row} </tbody>
+                                        <tbody>{row}</tbody>
                                     </Table>
                                 </div>
                                 <div className="block lg:hidden p-6 mt-4">
@@ -268,7 +267,6 @@ export const ProfessionalismStar = ({
         <div>
             {[...Array(5)].map((item, index) => {
                 index += 1
-                // console.log(professionalismScore, "professionalism")
                 return (
                     <button
                         type="button"
@@ -304,7 +302,6 @@ export const PunctualityStar = ({
         <div>
             {[...Array(5)].map((item, index) => {
                 index += 1
-                // console.log(punctualityScore, "punctuality")
                 return (
                     <button
                         type="button"
@@ -341,7 +338,6 @@ export const HelpfulnessStar = ({
         <div>
             {[...Array(5)].map((item, index) => {
                 index += 1
-                // console.log(helpfulnessScore, "helpfulness")
                 return (
                     <button
                         type="button"

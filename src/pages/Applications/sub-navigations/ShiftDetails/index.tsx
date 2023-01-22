@@ -2,15 +2,12 @@ import Avatar from "../../assets/avatar.png"
 import { HiArrowLeft } from "react-icons/hi"
 import Message from "../../assets/message.svg"
 import ShiftTable from "./components/shift-table"
-// import { useParams } from "react-router-dom"
 import { useGetShiftHistory } from "../../hooks/application.hook"
 import { CgSpinner } from "react-icons/cg"
-// import Layout from "../../components/layout/Layout"
 import relativeTime from "dayjs/plugin/relativeTime"
 import dayjs from "dayjs"
 import { useNavigate, useParams } from "react-router-dom"
 import { AiFillStar } from "react-icons/ai"
-// import { useAuthContext } from "../../../auth/context/authContext"
 dayjs.extend(relativeTime)
 
 const ShiftDetails = ({
@@ -22,15 +19,10 @@ const ShiftDetails = ({
 }) => {
     const { shiftIds } = useParams<string>()
     const navigate = useNavigate()
-    
-    // const {state} = useAuthContext()
-    // console.log(state.jwt?.token)
 
     const { data, isLoading } = useGetShiftHistory({
-        operativeId: shiftId
+        operativeId: shiftId,
     })
-    // console.log(data)
-    
 
     const item = data?.results.find(
         (item) =>
@@ -71,14 +63,23 @@ const ShiftDetails = ({
                                     {" "}
                                     {item?.operative.firstName +
                                         " " +
-                                        item?.operative.lastName} {}
+                                        item?.operative.lastName}{" "}
+                                    {}
                                 </h5>
                                 <p className="text-black-70">
-                                    <span className="font-bold font-creatoBold text-black-100">  <AiFillStar
-                                                size={20}
-                                                style={{ color: "#FED70A" }}
-                                                className="inline"
-                                            /> {item?.operative.averageRating} <span className="font-normal font-creato text-md text-black-50">({item?.operative.completedShifts} shifts)</span></span>
+                                    <span className="font-bold font-creatoBold text-black-100">
+                                        {" "}
+                                        <AiFillStar
+                                            size={20}
+                                            style={{ color: "#FED70A" }}
+                                            className="inline"
+                                        />{" "}
+                                        {item?.operative.averageRating}{" "}
+                                        <span className="font-normal font-creato text-md text-black-50">
+                                            ({item?.operative.completedShifts}{" "}
+                                            shifts)
+                                        </span>
+                                    </span>
                                     <span className="text-black-10 pl-1">
                                         |
                                     </span>
@@ -98,7 +99,7 @@ const ShiftDetails = ({
                             Message {item?.operative?.firstName}
                         </button>
                     </div>
-                    <ShiftTable elements={data?.results}  />
+                    <ShiftTable elements={data?.results} />
                 </div>
             )}
         </>

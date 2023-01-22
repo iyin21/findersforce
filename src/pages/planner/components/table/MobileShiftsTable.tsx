@@ -1,9 +1,9 @@
 import dayjs from "dayjs"
 import { IoIosArrowForward } from "react-icons/io"
 import { useNavigate } from "react-router-dom"
-import { ShiftsTableInterface } from "../../../types/planner/interfaces"
+import { ShiftsTableInterface } from "../../../../types/planner/interfaces"
 import { CustomMenu } from "./ShiftsTable"
-import TimeEstimate from "./TimeEstimate"
+import TimeEstimate from "../TimeEstimate"
 
 const MobileShiftsTable = ({ elements, status }: ShiftsTableInterface) => {
     const navigate = useNavigate()
