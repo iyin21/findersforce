@@ -2,6 +2,7 @@ import { Table } from "@mantine/core"
 import { IoIosArrowForward } from "react-icons/io"
 import { useNavigate } from "react-router-dom"
 import TimeEstimate from "../../../planner/components/TimeEstimate"
+import MobileMapTable from "./mobile-map-table"
 
 export interface MapTableInterface {
     elements: {
@@ -82,6 +83,10 @@ const MapTable = ({ elements }: MapTableInterface) => {
                     </thead>
                     <tbody>{rows}</tbody>
                 </Table>
+            </div>
+
+            <div className="block lg:hidden">
+                <MobileMapTable elements={elements} />
             </div>
         </div>
     )

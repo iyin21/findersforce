@@ -68,7 +68,7 @@ const SendCode = ({
                     />
                 </div>
 
-                <h5 className="font-normal text-3xl mb-4">
+                <h5 className="font-normal md:text-3xl mb-4">
                     Sign in to telegram
                 </h5>
                 <Formik

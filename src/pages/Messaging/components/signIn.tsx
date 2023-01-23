@@ -64,9 +64,9 @@ const SignIn = ({
                         height="150px"
                     />
                 </div>
-                <h5 className="font-normal text-3xl mb-4">{phone}</h5>
+                <h5 className="font-normal md:text-3xl mb-4">{phone}</h5>
                 <p>Please enter the code you`ve just</p>
-                <p className="mb-10">received in your previous telegram app.</p>
+                <p className="mb-10">received in your previous telegram app or SMS.</p>
                 <Formik
                     initialValues={{
                         code: "",

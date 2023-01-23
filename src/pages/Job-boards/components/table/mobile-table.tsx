@@ -33,7 +33,7 @@ const MobileJobTable = ({
                     key={index}
                     onClick={() => handleNavigate(element?._id, element)}
                 >
-                    <div className="flex justify-between border-b border-black-20 p-4">
+                    <div className="flex justify-between items-center border-b border-black-20 p-4">
                         <div
                             className="flex items-center"
                             onClick={(e) => {
@@ -58,13 +58,11 @@ const MobileJobTable = ({
                             </label>
                         </div>
 
-                        <div className="flex items-center gap-2">
-                            <div className="">
-                                <IoIosArrowForward
-                                    size={20}
-                                    style={{ color: "#889088" }}
-                                />
-                            </div>
+                        <div className="">
+                            <IoIosArrowForward
+                                size={20}
+                                style={{ color: "#889088" }}
+                            />
                         </div>
                     </div>
                     <div className="p-4">
