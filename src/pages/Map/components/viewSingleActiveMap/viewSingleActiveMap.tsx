@@ -50,7 +50,7 @@ const ViewSingleActiveMap = () => {
                             November 12, 2022 | 08:00 - 17:00
                         </p>
                     </div>
-                    <div className="flex flex-col">
+                    <div className="flex flex-col mt-2 lg:mt-2">
                         <p className="bg-yellow-100 rounded-full text-3sm font-bold font-creato mb-4 py-2 px-3 text-center">
                             ACTIVE SHIFT ENDS IN
                         </p>
@@ -59,7 +59,7 @@ const ViewSingleActiveMap = () => {
                 </div>
 
                 <div className="flex flex-col lg:flex-row lg:justify-between lg:items-center mt-6 relative">
-                    <div className="flex flex-col w-[35%]">
+                    <div className="flex flex-col lg:w-[35%]">
                         <p className="bg-yellow-10 rounded-full text-3sm font-bold font-creatoMedium mb-4 py-2 px-3 text-center flex items-center gap-3">
                             <HiInformationCircle size={25} color="#FED70A" /> 13
                             Assigned Operatives
@@ -133,7 +133,7 @@ const ViewSingleActiveMap = () => {
                             ))}
                         </div>
                     </div>
-                    <div className="w-full h-[562px]  mx-8  relative">
+                    <div className="w-full h-[562px]  lg:mx-8  relative">
                         <div className="bg-black-100 w-fit mx-auto rounded-full px-3 py-2 absolute top-4 left-0 right-0 z-10 flex items-center gap-3 justify-center">
                             <HiInformationCircle size={25} color="#FED70A" />{" "}
                             <p className="text-white-100 text-md font-creatoMedium ">
@@ -147,7 +147,7 @@ const ViewSingleActiveMap = () => {
                         </div>
                         <div
                             id="map"
-                            className="w-full h-[562px] bg-black-1 hidden lg:block mx-8 rounded-lg  "
+                            className="w-full h-[562px] bg-black-1  lg:block lg:mx-8 rounded-lg  "
                             ref={mapRef}
                         ></div>
                     </div>

@@ -26,7 +26,6 @@ import Approvals from "./pages/Approvals"
 import AdminDepot from "./pages/Admin/Depots"
 import AddDepot from "./pages/Admin/Depots/components/AddDepot/add-depot"
 import SingleDepot from "./pages/Admin/Depots/components/ViewSingleDepot"
-// eslint-disable-next-line no-unused-vars
 import Invoice from "./pages/invoice/index"
 import ShiftDetails from "./pages/Applications/sub-navigations/ShiftDetails"
 import Layout from "./components/Layout"
