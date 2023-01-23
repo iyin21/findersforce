@@ -476,7 +476,7 @@ const ShiftsDetailTable = () => {
                                                 ,generating a running invoivce
                                                 of{" "}
                                                 <strong>
-                                                    £{amount || totalAmount}
+                                                    £{ totalAmount || amount}
                                                 </strong>
                                             </p>
                                             {checkedData?.results.length !==

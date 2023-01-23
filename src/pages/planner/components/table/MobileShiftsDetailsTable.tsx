@@ -256,19 +256,19 @@ const MobileShiftsDetailsTable = ({
                                         </div>
                                     </div>
                                     <div className="p-4">
+                                        <div>
+                                            <h6 className="text-black-50 text-3sm">
+                                                LOCATION
+                                            </h6>
+                                            <p>
+                                                {
+                                                    element?.jobListing
+                                                        ?.jobLocation
+                                                        ?.formattedAddress
+                                                }
+                                            </p>
+                                        </div>
                                         <div className="flex justify-between mt-3">
-                                            <div>
-                                                <h6 className="text-black-50 text-3sm">
-                                                    LOCATION
-                                                </h6>
-                                                <p>
-                                                    {
-                                                        element?.jobListing
-                                                            ?.jobLocation
-                                                            ?.formattedAddress
-                                                    }
-                                                </p>
-                                            </div>
                                             <div>
                                                 <h6 className="text-black-50 text-3sm">
                                                     NAME

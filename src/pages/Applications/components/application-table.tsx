@@ -93,17 +93,17 @@ const ApplicationTable = ({
                     <span className="pl-1">{item?.user?.averageRating}</span>
                 </p>
             </td>
-            {activeTab === "pending" ? (
+            {activeTab === "PENDING" ? (
                 <td>
                     {dayjs(item?.createdAt).format("MMM D, YYYY")} |{" "}
                     {dayjs(item?.createdAt).format("h:mm A")}
                 </td>
-            ) : activeTab === "accepted" ? (
+            ) : activeTab === "WON" ? (
                 <td>{dayjs(item?.createdAt).format("MMM D, YYYY")}</td>
             ) : (
                 <td>{dayjs(item?.createdAt).format("MMM D, YYYY")}</td>
             )}
-            {activeTab !== "pending" && (
+            {activeTab !== "PENDING" && (
                 <td>{dayjs(item?.updatedAt).format("MMM D, YYYY")}</td>
             )}
             <td
