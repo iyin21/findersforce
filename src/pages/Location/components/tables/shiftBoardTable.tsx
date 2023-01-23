@@ -5,7 +5,7 @@ import { Result } from "../../../../types/planner/interfaces"
 import MobileLocationShiftTable from "../mobile-tables/mobileLocationShiftTable"
 import dayjs from "dayjs"
 
-const ShiftBoard = ({elements} : {elements: Result[]}) => {
+const ShiftBoard = ({ elements }: { elements: Result[] }) => {
     const rows = elements?.map((element, index) => (
         <tr key={index}>
             <td>{index + 1}</td>
@@ -22,18 +22,33 @@ const ShiftBoard = ({elements} : {elements: Result[]}) => {
             </td>
             <td className="font-bold">{element?.jobListing?.listingId}</td>
             <td>{element.jobListing.jobLocation.formattedAddress}</td>
-            <td>{dayjs(element.createdAt).format("MMM D, YYYY")} |{" "}
-                {dayjs(element.createdAt).format("h:mm A")}</td>
-            <td>{element.jobListing.jobRate.currency + " " + element.jobListing.jobRate.jobRateDepotFirstDisplayedToOp}/hr</td>
+            <td>
+                {dayjs(element.createdAt).format("MMM D, YYYY")} |{" "}
+                {dayjs(element.createdAt).format("h:mm A")}
+            </td>
+            <td>
+                {element.jobListing.jobRate.currency +
+                    " " +
+                    element.jobListing.jobRate.jobRateDepotFirstDisplayedToOp}
+                /hr
+            </td>
             <td>{element.jobListing.shiftDurationInHours}</td>
             <td>
                 <span>{element.jobListing.applicationsCount}/</span>
-                <span className="text-black-30">{element.jobListing.numberOfOpsRequired}</span>
+                <span className="text-black-30">
+                    {element.jobListing.numberOfOpsRequired}
+                </span>
             </td>
             <td>
-                <p className="text-black-100 bg-yellow-100 rounded-3xl text-center font-bold p-1 w-fit px-3 py-1 text-3sm font-creatoBlack">
-                    {element.jobListing.jobMeetingPoint}
-                </p>
+                {element?.jobListing?.jobMeetingPoint === "SITE" ? (
+                    <p className="text-black-100 bg-yellow-100 rounded-3xl text-center font-bold p-1 w-fit px-3 py-1 text-3sm font-creatoBlack">
+                        MEET ONSITE
+                    </p>
+                ) : (
+                    <p className="text-black-100 bg-white-10 rounded-3xl text-center font-bold p-1 border-2 border-black-100 text-3sm w-fit px-3 py-1">
+                        DEPOT FIRST
+                    </p>
+                )}
             </td>
             <td
                 role="gridcell"
