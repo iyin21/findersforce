@@ -95,6 +95,10 @@ const AddLocationModal = ({ opened, setOpened }: prop) => {
     }
 
     useEffect(() => {
+        window.sessionStorage.setItem("locationArray", JSON.stringify([]))
+    }, [])
+
+    useEffect(() => {
         if (isSuccess) {
             setOpened(false)
             setOpenSuccessModal(true)
