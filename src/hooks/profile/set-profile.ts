@@ -29,7 +29,6 @@ const setProfile = (
         delete requestBody.courseLink
         delete requestBody.subscriptionPlan
     }
-    accountType === "SHIFT-MANAGER" ? delete requestBody.courseLink : null
     axiosInstance
         .post(
             "/invitation/accept",
