@@ -54,6 +54,8 @@ export interface JobListing {
     jobDate: Date
     shiftStartTime: any
     shiftEndTime: any
+    amountPaidByDepot: number
+    amountPaidToOperative: number
     shiftDurationInHours: number
     jobMeetingPoint: string
     jobAccessibleTo: string

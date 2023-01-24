@@ -25,16 +25,19 @@ const ShiftTable = ({ elements }: Prop) => {
                     </span>
                 </p>
             </td>
-            {item?.shiftEnded === true && (<td>
-                <p className="text-white-100 bg-green-100 pl-1.5 py-1 rounded-full w-20">
-                    completed
-                </p>
-            </td>)} 
-            {item?.cancelStatus === true && (<td>
-                <p className="text-white-100 bg-red-100 pl-1.5 py-1 rounded-full w-20">
-                    cancelled
-                </p>
-            </td>)} 
+            {item?.cancelStatus === true ? (
+                <td>
+                    <p className="text-white-100 bg-red-100 px-2 rounded-full w-fit">
+                        cancelled
+                    </p>
+                </td>
+            ) : (
+                <td>
+                    <p className="text-white-100 bg-green-100 px-2 rounded-full w-fit">
+                        completed
+                    </p>
+                </td>
+            )}
         </tr>
     ))
 
@@ -140,21 +143,24 @@ const ShiftTable = ({ elements }: Prop) => {
                                     <h6 className="text-black-50 text-3sm">
                                         AMOUNT
                                     </h6>
-                                    {item?.jobListing.jobMeetingPoint === "DEPOT" ? (<p className="text-2md mt-1">
-                                        {item?.jobListing.jobRate.currency}
-                                        {item?.jobListing?.jobRate
-                                            .jobRateDepotFirstDisplayedToDepot *
-                                            item?.jobListing
-                                                ?.shiftDurationInHours}
-                                        
-                                    </p>) : (<p className="text-2md mt-1">
-                                        {item?.jobListing.jobRate.currency}
-                                        {item?.jobListing?.jobRate
-                                            .jobRateMeetOnsiteDisplayedToDepot *
-                                            item?.jobListing
-                                                ?.shiftDurationInHours}
-                                        
-                                    </p>)}
+                                    {item?.jobListing.jobMeetingPoint ===
+                                    "DEPOT" ? (
+                                        <p className="text-2md mt-1">
+                                            {item?.jobListing.jobRate.currency}
+                                            {item?.jobListing?.jobRate
+                                                .jobRateDepotFirstDisplayedToDepot *
+                                                item?.jobListing
+                                                    ?.shiftDurationInHours}
+                                        </p>
+                                    ) : (
+                                        <p className="text-2md mt-1">
+                                            {item?.jobListing.jobRate.currency}
+                                            {item?.jobListing?.jobRate
+                                                .jobRateMeetOnsiteDisplayedToDepot *
+                                                item?.jobListing
+                                                    ?.shiftDurationInHours}
+                                        </p>
+                                    )}
                                 </div>
 
                                 <div className="mt-4">

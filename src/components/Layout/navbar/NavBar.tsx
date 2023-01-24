@@ -110,6 +110,7 @@ const NavBar = ({ setOpenSideBar, noTopNav }: navInterface) => {
 
                         <img
                             src={Message}
+                            className="cursor-pointer"
                             alt="messaging"
                             onClick={() => navigate("/messaging")}
                         />

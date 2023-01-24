@@ -6,6 +6,7 @@ import Message from "../../../assets/Messaging.svg"
 import { Dispatch, SetStateAction } from "react"
 import relativeTime from "dayjs/plugin/relativeTime"
 import { IoLocationSharp } from "react-icons/io5"
+import { useNavigate } from "react-router-dom"
 dayjs.extend(relativeTime)
 
 interface Props {
@@ -23,6 +24,7 @@ const OperativeProfile = ({
     queryStatus,
     singleElement,
 }: Props) => {
+    const navigate = useNavigate()
     return (
         <Modal
             centered
@@ -76,8 +78,6 @@ const OperativeProfile = ({
                                 {" "}
                                 {singleElement?.jobListing?.jobMatchPercentage}%
                                 Match
-                                {singleElement?.jobListing?.jobMatchPercentage}%
-                                Match
                             </span>
                         </p>
                     </div>
@@ -88,12 +88,12 @@ const OperativeProfile = ({
                         alt="message icon"
                         className="inline p-1"
                     />
-                    <p className="inline font-bold font-creatoMedium text-md">
+                    <p className="inline font-bold font-creatoMedium text-md cursor-pointer" onClick={()=> navigate("/messaging")}>
                         Message {singleElement?.operative?.firstName}
                     </p>
                 </div>
             </div>
-            <div className="flex justify-between p-5 bg-green-10 mx-8 rounded-lg">
+            <div className="flex justify-between p-5 bg-green-10 mx-4 rounded-lg">
                 {singleElement?.jobListing?.jobMeetingPoint === "DEPOT" ? (
                     <div>
                         {" "}
@@ -170,7 +170,6 @@ const OperativeProfile = ({
                     className="inline"
                 />{" "}
                 {singleElement?.jobListing?.jobLocation?.formattedAddress}
-                {singleElement?.jobListing?.jobLocation?.formattedAddress}
             </p>
             <section className="grid grid-cols-2 pb-4">
                 <div>
@@ -201,7 +200,6 @@ const OperativeProfile = ({
                     </p>
                     <p className="text-2md px-8 font-creatoMedium font-medium">
                         {singleElement?.jobListing?.jobQualification?.name}
-                        {singleElement?.jobListing?.jobQualification?.name}
                     </p>
                 </div>
                 <div className="flex flex-col items-center">
@@ -209,9 +207,6 @@ const OperativeProfile = ({
                         SHIFT DATE
                     </p>
                     <p className="text-2md px-8 font-creatoMedium font-medium">
-                        {dayjs(singleElement?.jobListing?.jobDate).format(
-                            "MMMM D, YYYY"
-                        )}
                         {dayjs(singleElement?.jobListing?.jobDate).format(
                             "MMMM D, YYYY"
                         )}
@@ -240,11 +235,11 @@ const OperativeProfile = ({
                     </p>
                 </div> */}
             </section>
-            <div className="flex gap-4 bg-black-100 text-white-100 p-4 mt-3 mb-8 mx-8 rounded-lg">
+            <div className="flex gap-2 bg-black-100 text-white-100 p-2 mt-3 mb-8 mx-4 rounded-lg">
                 <div className="w-1/2">
                     <div>
-                        <h6 className="text-2lg font-creato w-fit">
-                            Punctuality
+                        <h6 className="text-lg font-creato w-fit">
+                            Performance
                         </h6>
                         <p>
                             <AiFillStar
@@ -252,16 +247,6 @@ const OperativeProfile = ({
                                 style={{ color: "#FED70A" }}
                                 className="inline"
                             />
-                            <span className="text-2xl font-extrabold font-creatoBold">
-                                {singleElement?.operative?.averageRating}
-                            </span>
-                            <span className="text-3sm">
-                                {" "}
-                                ({
-                                    singleElement?.operative?.completedShifts
-                                }{" "}
-                                shifts)
-                            </span>
                             <span className="text-2xl font-extrabold font-creatoBold">
                                 {singleElement?.operative?.averageRating}
                             </span>

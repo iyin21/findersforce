@@ -107,7 +107,7 @@ const ApplicationDetails = ({
                                     className="rounded-full  h-14 w-14"
                                     alt="profile"
                                 />
-                                <button className="bg-green-10 p-2 lg:mr-4 flex text-green-100 font-bold items-center  rounded rounded-tr-2xl lg:hidden block">
+                                <button className="bg-blue-10 p-2 lg:mr-4 flex text-blue-100 font-bold items-center  rounded rounded-tr-2xl lg:hidden block">
                                     <img
                                         src={Message}
                                         alt=""
@@ -116,6 +116,18 @@ const ApplicationDetails = ({
                                     Message
                                 </button>
                             </div>
+                            <p
+                                className="flex ml-4 items-center font-bold cursor-pointer my-4 lg:hidden"
+                                onClick={() => {
+                                    setShiftId(data?.user._id || "")
+                                    navigate(
+                                        `/job-boards/${data?.jobListing._id}`
+                                    )
+                                }}
+                            >
+                                View Shifts Details
+                                <HiChevronRight size="25px" />{" "}
+                            </p>
 
                             <div className="lg:pl-4 ">
                                 <div className="flex justify-between mt-2 lg:mt-0">
@@ -379,20 +391,20 @@ const ApplicationDetails = ({
                                     </div>
                                 )}
                             </div>
-                            <div className=" bg-black-100 p-6 rounded-[10px] justify-between  mt-4 text-white-100">
-                                <p className="font-bold font creatoBold text-2lg">
+                            <div className=" bg-black-100 p-3 rounded-[10px] justify-between  mt-4 text-white-100">
+                                <p className="font-bold font creatoBold text-lg">
                                     Performance
                                 </p>
-                                <div className="flex gap-8 justify-between">
+                                <div className="flex gap-4 justify-between">
                                     <div className="text-white-100">
-                                        <p className="text-2xl font-extrabold font-creatoBold">
+                                        <p className="text-xl font-extrabold font-creatoBold">
                                             <AiFillStar
                                                 size={30}
                                                 style={{ color: "#FED70A" }}
                                                 className="inline"
                                             />{" "}
                                             {data?.user.averageRating}{" "}
-                                            <span className="font-normal text-md">
+                                            <span className="font-normal text-sm">
                                                 ({data?.completedShfts} shifts)
                                             </span>{" "}
                                         </p>
