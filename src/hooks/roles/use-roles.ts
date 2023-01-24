@@ -66,14 +66,14 @@ export const useInviteShiftManger = () => {
         }
     )
 }
-export const useInviteHQ = () => {
+export const useInviteHQ = ({ jwt }: { jwt?: string | undefined }) => {
     const createInvite = async (requestBody: InviteHqInterface) => {
         const { data } = await axiosInstance.post(
             "/invitation/multiple",
             requestBody,
             {
                 headers: {
-                    Authorization: `${requestBody.jwt}`,
+                    Authorization: `${jwt}`,
                 },
             }
         )
@@ -84,13 +84,13 @@ export const useInviteHQ = () => {
         ["inviteShiftManager"],
         (requestBody: InviteHqInterface) => createInvite(requestBody),
         {
-            onSuccess: (data) => {
-                showNotification({
-                    message: data?.message || data?.message,
-                    title: "Success",
-                    color: "green",
-                })
-            },
+            // onSuccess: (data) => {
+            //     showNotification({
+            //         message: data?.message || data?.message,
+            //         title: "Success",
+            //         color: "green",
+            //     })
+            // },
             onError: (err: AxiosError) => {
                 showNotification({
                     message:

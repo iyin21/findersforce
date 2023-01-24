@@ -72,13 +72,6 @@ const PostJob = ({
             setNewJobId(data?._id)
         }
 
-        if (isUpdated) {
-            showNotification({
-                message: data?.message,
-                title: "Success",
-                color: "green",
-            })
-        }
         if (isUpdateError) {
             showNotification({
                 message: data?.message,
@@ -146,6 +139,7 @@ const PostJob = ({
                 }}
                 setOpened={setOpened}
                 createJob={createJob}
+                updateJob={updateJob}
                 isCreating={isCreating}
                 isUpdating={isUpdating}
                 draftStatus={draftStatus}
@@ -187,6 +181,7 @@ export function FormikStep({ children }: FormikStepProps): any {
 interface TWizardProps extends FormikConfig<FormikValues> {
     setOpened: Dispatch<SetStateAction<boolean>>
     createJob: (values: FormikValues) => void
+    updateJob: (values: FormikValues) => void
     isCreating: boolean
     isUpdating: boolean
     draftStatus: string
@@ -234,6 +229,20 @@ export function FormikStepper({ ...props }: TWizardProps) {
             isPublished: false,
         }
         props.createJob(jobObject)
+    }
+
+    const handleUpdateJobListing = (values: FormikValues) => {
+        const jobObject = {
+            ...values,
+            jobTypeId: props.jobType?.filter(
+                (item) => item?.name === values?.jobTypeId
+            )[0]?._id,
+            jobQualificationId: props.jobQualification?.filter(
+                (item) => item.name === values?.jobQualificationId
+            )[0]?._id,
+            isPublished: true,
+        }
+        props.updateJob(jobObject)
     }
 
     // this function handles the post to all operatives create job mutation for HQ managers
@@ -342,14 +351,38 @@ export function FormikStepper({ ...props }: TWizardProps) {
                                 {state?.user?.depotRole === HQDepotType ? (
                                     <div>
                                         {step === 2 ? (
-                                            <Dropdown
-                                                setOpenPostAll={
-                                                    setOpenedPostAll
-                                                }
-                                                setOpenPostDirect={
-                                                    setOpenedPostDirect
-                                                }
-                                            />
+                                            <div>
+                                                {props.draftStatus ===
+                                                "edit" ? (
+                                                    <Button
+                                                        type="button"
+                                                        variant="primary"
+                                                        style={{
+                                                            backgroundColor:
+                                                                "rgba(254, 215, 10, 1)",
+                                                        }}
+                                                        disabled={isSubmitting}
+                                                        onClick={() => {
+                                                            handleUpdateJobListing(
+                                                                values
+                                                            )
+                                                        }}
+                                                    >
+                                                        {props.isUpdating
+                                                            ? "Updating"
+                                                            : "Update"}
+                                                    </Button>
+                                                ) : (
+                                                    <Dropdown
+                                                        setOpenPostAll={
+                                                            setOpenedPostAll
+                                                        }
+                                                        setOpenPostDirect={
+                                                            setOpenedPostDirect
+                                                        }
+                                                    />
+                                                )}
+                                            </div>
                                         ) : (
                                             <Button
                                                 size="normal"
@@ -371,30 +404,56 @@ export function FormikStepper({ ...props }: TWizardProps) {
                                         )}
                                     </div>
                                 ) : (
-                                    <Button
-                                        size="normal"
-                                        className="w-full my-5"
-                                        variant="primary"
-                                        type="submit"
-                                        disabled={isSubmitting}
-                                        onClick={() => {
-                                            setFieldValue("isPublished", true)
-                                            setFieldValue(
-                                                "jobAccessibleTo",
-                                                "ALL_OPERATIVES"
-                                            )
-                                        }}
-                                        style={{
-                                            backgroundColor:
-                                                "rgba(254, 215, 10, 1)",
-                                        }}
-                                    >
-                                        {props.isCreating
-                                            ? "Posting..."
-                                            : isLastStep()
-                                            ? "Post"
-                                            : "Next"}
-                                    </Button>
+                                    <div>
+                                        {props.draftStatus === "edit" ? (
+                                            <Button
+                                                type="button"
+                                                variant="primary"
+                                                style={{
+                                                    backgroundColor:
+                                                        "rgba(254, 215, 10, 1)",
+                                                }}
+                                                disabled={isSubmitting}
+                                                onClick={() => {
+                                                    handleUpdateJobListing(
+                                                        values
+                                                    )
+                                                }}
+                                            >
+                                                {props.isUpdating
+                                                    ? "Updating"
+                                                    : "Update"}
+                                            </Button>
+                                        ) : (
+                                            <Button
+                                                size="normal"
+                                                className="w-full my-5"
+                                                variant="primary"
+                                                type="submit"
+                                                disabled={isSubmitting}
+                                                onClick={() => {
+                                                    setFieldValue(
+                                                        "isPublished",
+                                                        true
+                                                    )
+                                                    setFieldValue(
+                                                        "jobAccessibleTo",
+                                                        "ALL_OPERATIVES"
+                                                    )
+                                                }}
+                                                style={{
+                                                    backgroundColor:
+                                                        "rgba(254, 215, 10, 1)",
+                                                }}
+                                            >
+                                                {props.isCreating
+                                                    ? "Posting..."
+                                                    : isLastStep()
+                                                    ? "Post"
+                                                    : "Next"}
+                                            </Button>
+                                        )}
+                                    </div>
                                 )}
                             </div>
                         </div>

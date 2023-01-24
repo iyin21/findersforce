@@ -24,3 +24,15 @@ export interface ProfileRequest {
     courseLink: string
     subscriptionPlan: string
 }
+
+export interface InviteProfileResponse {
+    jwt: {
+        token: string
+    }
+    user: {
+        depotCompany: {
+            _id: string
+            name: string
+        }
+    }
+}

@@ -14,7 +14,7 @@ const TimeEstimate = ({ initialDate }: { initialDate: Date }) => {
     })
 
     const calculateTimeLeft = () => {
-        const countDownTime = new Date(initialDate).getTime()
+        // const countDownTime = new Date(initialDate).getTime()
         const currentDate = new Date().getTime()
         const timeLeft = new Date(initialDate).getTime() - currentDate
         const timeLeftInHours = Math.floor(
@@ -25,7 +25,7 @@ const TimeEstimate = ({ initialDate }: { initialDate: Date }) => {
         )
         const timeLeftInSeconds = Math.floor((timeLeft % (1000 * 60)) / 1000)
 
-        if (countDownTime < currentDate || timeLeft) {
+        if (timeLeft < 0) {
             setTimeLeft({
                 hours: 0,
                 minutes: 0,

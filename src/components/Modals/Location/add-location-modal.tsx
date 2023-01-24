@@ -9,6 +9,9 @@ import { useEffect, useState } from "react"
 import { ManagerInitialValue } from "./utils/initialValues"
 import ManagerFormFields from "./utils/manager-form-field"
 import useAuthContext from "../../../hooks/auth-hooks/useAuth"
+import { AxiosError } from "axios"
+import { MutateOptions } from "react-query"
+import { InviteHqInterface } from "types/roles/role-interface"
 
 interface prop {
     opened: boolean
@@ -20,7 +23,13 @@ const AddLocationModal = ({ opened, setOpened }: prop) => {
     const [LocationStateArray, setLocationStateArray] = useState([])
     const [openSuccessModal, setOpenSuccessModal] = useState(false)
 
-    const { mutate: mutateUser, isSuccess, data } = useInviteHQ()
+    const {
+        mutate: mutateUser,
+        isSuccess,
+        data,
+    } = useInviteHQ({
+        jwt: state?.jwt?.token,
+    })
     // this duplicates the LocationStateArray session storage for regional manager data
     const regionalData = LocationStateArray?.map((i: any) => ({ ...i }))
     // this duplicates the LocationStateArray session storage for shift manager data
@@ -89,7 +98,6 @@ const AddLocationModal = ({ opened, setOpened }: prop) => {
 
     const handleSubmit = () => {
         mutateUser({
-            jwt: state?.jwt?.token,
             invitees: finalArray,
         })
     }
@@ -156,6 +164,23 @@ const AddLocationModal = ({ opened, setOpened }: prop) => {
                                     setStep={setStep}
                                     step={step}
                                     LocationStateArray={LocationStateArray}
+                                    profileData={undefined}
+                                    mutateUser={function (
+                                        variables: InviteHqInterface,
+                                        options?:
+                                            | MutateOptions<
+                                                  any,
+                                                  AxiosError<unknown, any>,
+                                                  InviteHqInterface,
+                                                  unknown
+                                              >
+                                            | undefined
+                                    ): void {
+                                        throw new Error(
+                                            "Function not implemented."
+                                        )
+                                    }}
+                                    isInviteLoading={false}
                                 />
                             </FormikStep>
                         )

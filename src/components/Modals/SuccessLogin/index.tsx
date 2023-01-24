@@ -21,21 +21,17 @@ const SuccessfulLogin = ({ opened, setOpened }: SuccessLoginProps) => {
                 closeOnEscape={false}
                 overlayOpacity={0.55}
                 overlayBlur={3}
-                sx={{
-                    borderRadius: "10px",
-                    width: "350px",
-                    margin: "0 auto",
-                }}
+                size="md"
             >
-                <div className="flex flex-col items-center">
+                <div className="flex flex-col items-center font-creato">
                     <img src={successIcon} alt="success" className="pt-7"></img>
                     <h1 className="font-extrabold text-[28px] text-[#050001] pt-2">
-                        You are all set!
+                        Setup Completed!
                     </h1>
                     <span className="text-[#0F0D00B2] opacity-70 text-[14px]">
-                        Please proceed to log in
+                        Unlock your depot’s true potential.
                     </span>
-                    <NavLink to="/login" className="w-[183px] pt-7">
+                    <NavLink to="/login" className="pt-7">
                         <Button
                             variant="primary"
                             style={{
@@ -43,7 +39,7 @@ const SuccessfulLogin = ({ opened, setOpened }: SuccessLoginProps) => {
                             }}
                             className="text-black-100 bg-yellow-100 font-bold text-base w-full text-center py-6 rounded-l rounded-tr-2xl rounded-br"
                         >
-                            Get In
+                            Enter Finders Force
                         </Button>
                     </NavLink>
                 </div>
