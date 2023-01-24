@@ -55,6 +55,17 @@ const MobileShiftsDetailsTable = ({
                                 </div>
                             </div>
                             <div className="p-4">
+                                <div>
+                                    <h6 className="text-black-50 text-3sm">
+                                        LOCATION
+                                    </h6>
+                                    <p>
+                                        {
+                                            element?.jobListing?.jobLocation
+                                                ?.formattedAddress
+                                        }
+                                    </p>
+                                </div>
                                 <div className="flex justify-between mt-3">
                                     <div>
                                         <h6 className="text-black-50 text-3sm">
@@ -62,8 +73,13 @@ const MobileShiftsDetailsTable = ({
                                         </h6>
                                         <div className="flex items-center">
                                             <img
-                                                src={ProfileImage}
+                                                src={
+                                                    element?.operative
+                                                        ?.profileImageUrl ||
+                                                    ProfileImage
+                                                }
                                                 alt="profile_image"
+                                                className="inline rounded-full p-2 w-[50px] h-[50px]"
                                             />
                                             <p className="text-2md mt-1">
                                                 {element?.operative?.firstName}{" "}
@@ -84,14 +100,15 @@ const MobileShiftsDetailsTable = ({
                                 <div className="flex justify-between mt-3">
                                     <div>
                                         <h6 className="text-black-50 text-3sm">
-                                            LOCATION
+                                            CLOCK-IN TIME
                                         </h6>
-                                        <p>
-                                            {
-                                                element?.jobListing?.jobLocation
-                                                    ?.formattedAddress
-                                            }
-                                        </p>
+                                        <div className="flex items-center gap-1">
+                                            <p className="text-2md mt-1">
+                                                {dayjs(
+                                                    element?.clockInTime
+                                                ).format("HH:mm")}
+                                            </p>
+                                        </div>
                                     </div>
                                     <div>
                                         <h6 className="text-black-50 text-3sm">
@@ -101,11 +118,11 @@ const MobileShiftsDetailsTable = ({
                                             {dayjs(
                                                 element?.jobListing
                                                     ?.shiftStartTime
-                                            ).format("h")}{" "}
+                                            ).format("HH:mm")}{" "}
                                             -{" "}
                                             {dayjs(
                                                 element?.jobListing.shiftEndTime
-                                            ).format("h A")}
+                                            ).format("HH:mm")}
                                         </p>
                                     </div>
                                 </div>
@@ -121,10 +138,10 @@ const MobileShiftsDetailsTable = ({
                                                     element?.jobListing.jobRate
                                                         .currency
                                                 }
-                                                {element?.jobListing?.jobRate
-                                                    .jobRateDepotFirstDisplayedToDepot *
+                                                {
                                                     element?.jobListing
-                                                        ?.shiftDurationInHours}
+                                                        ?.amountPaidByDepot
+                                                }
                                             </p>
                                         ) : (
                                             <p className="text-2md mt-1">
@@ -132,24 +149,12 @@ const MobileShiftsDetailsTable = ({
                                                     element?.jobListing.jobRate
                                                         .currency
                                                 }
-                                                {element?.jobListing?.jobRate
-                                                    .jobRateMeetOnsiteDisplayedToDepot *
+                                                {
                                                     element?.jobListing
-                                                        ?.shiftDurationInHours}
+                                                        ?.amountPaidByDepot
+                                                }
                                             </p>
                                         )}
-                                    </div>
-                                    <div>
-                                        <h6 className="text-black-50 text-3sm">
-                                            CLOCK-IN TIME
-                                        </h6>
-                                        <div className="flex items-center gap-1">
-                                            <p className="text-2md mt-1">
-                                                {dayjs(
-                                                    element?.clockInTime
-                                                ).format("h:mm A")}
-                                            </p>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -251,6 +256,18 @@ const MobileShiftsDetailsTable = ({
                                         </div>
                                     </div>
                                     <div className="p-4">
+                                        <div>
+                                            <h6 className="text-black-50 text-3sm">
+                                                LOCATION
+                                            </h6>
+                                            <p>
+                                                {
+                                                    element?.jobListing
+                                                        ?.jobLocation
+                                                        ?.formattedAddress
+                                                }
+                                            </p>
+                                        </div>
                                         <div className="flex justify-between mt-3">
                                             <div>
                                                 <h6 className="text-black-50 text-3sm">
@@ -258,8 +275,13 @@ const MobileShiftsDetailsTable = ({
                                                 </h6>
                                                 <div className="flex items-center">
                                                     <img
-                                                        src={ProfileImage}
+                                                        src={
+                                                            element?.operative
+                                                                ?.profileImageUrl ||
+                                                            ProfileImage
+                                                        }
                                                         alt="profile_image"
+                                                        className="inline rounded-full p-2 w-[50px] h-[50px]"
                                                     />
                                                     <p className="text-2md mt-1">
                                                         {
@@ -289,15 +311,15 @@ const MobileShiftsDetailsTable = ({
                                         <div className="flex justify-between mt-3">
                                             <div>
                                                 <h6 className="text-black-50 text-3sm">
-                                                    LOCATION
+                                                    CLOCK-IN TIME
                                                 </h6>
-                                                <p>
-                                                    {
-                                                        element?.jobListing
-                                                            ?.jobLocation
-                                                            ?.formattedAddress
-                                                    }
-                                                </p>
+                                                <div className="flex items-center gap-1">
+                                                    <p className="text-2md mt-1">
+                                                        {dayjs(
+                                                            element?.clockInTime
+                                                        ).format("HH:mm")}
+                                                    </p>
+                                                </div>
                                             </div>
                                             <div>
                                                 <h6 className="text-black-50 text-3sm">
@@ -307,12 +329,12 @@ const MobileShiftsDetailsTable = ({
                                                     {dayjs(
                                                         element?.jobListing
                                                             ?.shiftStartTime
-                                                    ).format("h")}{" "}
+                                                    ).format("HH:mm")}{" "}
                                                     -{" "}
                                                     {dayjs(
                                                         element?.jobListing
                                                             .shiftEndTime
-                                                    ).format("h A")}
+                                                    ).format("HH:mm")}
                                                 </p>
                                             </div>
                                         </div>
@@ -330,11 +352,10 @@ const MobileShiftsDetailsTable = ({
                                                                 .jobRate
                                                                 .currency
                                                         }
-                                                        {element?.jobListing
-                                                            ?.jobRate
-                                                            .jobRateDepotFirstDisplayedToDepot *
+                                                        {
                                                             element?.jobListing
-                                                                ?.shiftDurationInHours}
+                                                                ?.amountPaidByDepot
+                                                        }
                                                     </p>
                                                 ) : (
                                                     <p className="text-2md mt-1">
@@ -343,25 +364,12 @@ const MobileShiftsDetailsTable = ({
                                                                 .jobRate
                                                                 .currency
                                                         }
-                                                        {element?.jobListing
-                                                            ?.jobRate
-                                                            .jobRateMeetOnsiteDisplayedToDepot *
+                                                        {
                                                             element?.jobListing
-                                                                ?.shiftDurationInHours}
+                                                                ?.amountPaidByDepot
+                                                        }
                                                     </p>
                                                 )}
-                                            </div>
-                                            <div>
-                                                <h6 className="text-black-50 text-3sm">
-                                                    CLOCK-IN TIME
-                                                </h6>
-                                                <div className="flex items-center gap-1">
-                                                    <p className="text-2md mt-1">
-                                                        {dayjs(
-                                                            element?.clockInTime
-                                                        ).format("h:mm A")}
-                                                    </p>
-                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -414,6 +422,18 @@ const MobileShiftsDetailsTable = ({
                                         </div>
                                     </div>
                                     <div className="p-4">
+                                        <div>
+                                            <h6 className="text-black-50 text-3sm">
+                                                LOCATION
+                                            </h6>
+                                            <p>
+                                                {
+                                                    element?.jobListing
+                                                        ?.jobLocation
+                                                        ?.formattedAddress
+                                                }
+                                            </p>
+                                        </div>
                                         <div className="flex justify-between mt-3">
                                             <div>
                                                 <h6 className="text-black-50 text-3sm">
@@ -421,8 +441,13 @@ const MobileShiftsDetailsTable = ({
                                                 </h6>
                                                 <div className="flex items-center">
                                                     <img
-                                                        src={ProfileImage}
+                                                        src={
+                                                            element?.operative
+                                                                ?.profileImageUrl ||
+                                                            ProfileImage
+                                                        }
                                                         alt="profile_image"
+                                                        className="inline rounded-full p-2 w-[50px] h-[50px]"
                                                     />
                                                     <p className="text-2md mt-1">
                                                         {
@@ -452,15 +477,15 @@ const MobileShiftsDetailsTable = ({
                                         <div className="flex justify-between mt-3">
                                             <div>
                                                 <h6 className="text-black-50 text-3sm">
-                                                    LOCATION
+                                                    CLOCK-IN TIME
                                                 </h6>
-                                                <p>
-                                                    {
-                                                        element?.jobListing
-                                                            ?.jobLocation
-                                                            ?.formattedAddress
-                                                    }
-                                                </p>
+                                                <div className="flex items-center gap-1">
+                                                    <p className="text-2md mt-1">
+                                                        {dayjs(
+                                                            element?.clockInTime
+                                                        ).format("HH:mm")}
+                                                    </p>
+                                                </div>
                                             </div>
                                             <div>
                                                 <h6 className="text-black-50 text-3sm">
@@ -470,12 +495,12 @@ const MobileShiftsDetailsTable = ({
                                                     {dayjs(
                                                         element?.jobListing
                                                             ?.shiftStartTime
-                                                    ).format("h")}{" "}
+                                                    ).format("HH:mm")}{" "}
                                                     -{" "}
                                                     {dayjs(
                                                         element?.jobListing
                                                             .shiftEndTime
-                                                    ).format("h A")}
+                                                    ).format("HH:mm")}
                                                 </p>
                                             </div>
                                         </div>
@@ -493,11 +518,10 @@ const MobileShiftsDetailsTable = ({
                                                                 .jobRate
                                                                 .currency
                                                         }
-                                                        {element?.jobListing
-                                                            ?.jobRate
-                                                            .jobRateDepotFirstDisplayedToDepot *
+                                                        {
                                                             element?.jobListing
-                                                                ?.shiftDurationInHours}
+                                                                ?.amountPaidByDepot
+                                                        }
                                                     </p>
                                                 ) : (
                                                     <p className="text-2md mt-1">
@@ -506,25 +530,12 @@ const MobileShiftsDetailsTable = ({
                                                                 .jobRate
                                                                 .currency
                                                         }
-                                                        {element?.jobListing
-                                                            ?.jobRate
-                                                            .jobRateMeetOnsiteDisplayedToDepot *
+                                                        {
                                                             element?.jobListing
-                                                                ?.shiftDurationInHours}
+                                                                ?.amountPaidByDepot
+                                                        }
                                                     </p>
                                                 )}
-                                            </div>
-                                            <div>
-                                                <h6 className="text-black-50 text-3sm">
-                                                    CLOCK-IN TIME
-                                                </h6>
-                                                <div className="flex items-center gap-1">
-                                                    <p className="text-2md mt-1">
-                                                        {dayjs(
-                                                            element?.clockInTime
-                                                        ).format("h:mm A")}
-                                                    </p>
-                                                </div>
                                             </div>
                                         </div>
                                     </div>

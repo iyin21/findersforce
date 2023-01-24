@@ -97,45 +97,48 @@ const MobileShiftsTable = ({ elements, status }: ShiftsTableInterface) => {
                                 </div>
                             ) : (
                                 <div>
-                                    {dayjs(
-                                        element?.jobListing?.shiftStartTime
-                                    ).format("h")}{" "}
-                                    -{" "}
-                                    {dayjs(
-                                        element?.jobListing.shiftEndTime
-                                    ).format("h A")}
+                                    <h6 className="text-black-50 text-3sm">
+                                        SCHEDULE
+                                    </h6>
+                                    <p className="text-2md mt-1">
+                                        {dayjs(
+                                            element?.jobListing?.shiftStartTime
+                                        ).format("HH:mm")}{" "}
+                                        -{" "}
+                                        {dayjs(
+                                            element?.jobListing.shiftEndTime
+                                        ).format("HH:mm")}
+                                    </p>
                                 </div>
                             )}
                         </div>
 
-                        <div className="flex justify-between mt-3">
+                        <div className="flex justify-between mt-3 mb-2">
                             <div>
                                 <h6 className="text-black-50 text-3sm">
-                                    HOURLY RATE
+                                    WAGES
                                 </h6>
                                 {element?.jobListing.jobMeetingPoint ===
                                 "DEPOT" ? (
                                     <p className="text-2md mt-1">
                                         {element?.jobListing.jobRate.currency}
-                                        {element?.jobListing?.jobRate
-                                            .jobRateDepotFirstDisplayedToDepot *
-                                            element?.jobListing
-                                                ?.shiftDurationInHours}
+                                        {element?.jobListing
+                                            ?.amountPaidByDepot *
+                                            element?.jobListing?.numberOfOpsRequired}
                                     </p>
                                 ) : (
                                     <p className="text-2md mt-1">
                                         {element?.jobListing.jobRate.currency}
-                                        {element?.jobListing?.jobRate
-                                            .jobRateMeetOnsiteDisplayedToDepot *
-                                            element?.jobListing
-                                                ?.shiftDurationInHours}
+                                        {element?.jobListing
+                                            ?.amountPaidByDepot *
+                                            element?.jobListing?.numberOfOpsRequired}
                                     </p>
                                 )}
                             </div>
                         </div>
                         {status === "ongoing" && (
                             <div>
-                                <h6 className="text-black-50 text-3sm">
+                                <h6 className="text-black-50 text-3sm text-center mb-2">
                                     ENDS_IN
                                 </h6>
                                 <TimeEstimate

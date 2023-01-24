@@ -12,6 +12,7 @@ import { axiosInstance } from "../../services/api.service"
 import useAuthContext from "../auth-hooks/useAuth"
 
 function useGetShiftHistory({
+    upcoming,
     ongoing,
     completed,
     cancelled,
@@ -29,6 +30,7 @@ function useGetShiftHistory({
     const getShiftHistory = async () => {
         const { data } = await axiosInstance.get(`/schedule`, {
             params: {
+                upcoming,
                 ongoing,
                 completed,
                 cancelled,
@@ -45,7 +47,7 @@ function useGetShiftHistory({
     return useQuery<unknown, AxiosError, ShiftResponse["data"]>(
         [
             "shiftHistory",
-            { ongoing, completed, cancelled, jobMeetingPoint, regionId },
+            { upcoming, ongoing, completed, cancelled, jobMeetingPoint, regionId },
         ],
         getShiftHistory,
 

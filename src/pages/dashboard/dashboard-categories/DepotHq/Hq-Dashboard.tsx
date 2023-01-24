@@ -38,7 +38,6 @@ const DepotHqDashboard = () => {
     const { data: regionData } = useGetDepotRegions({
         id: companyId,
     })
-    // console.log(regionData)
 
     const currentDate = new Date()
     currentDate.setDate(currentDate.getDate() - 7)
@@ -300,7 +299,7 @@ const DepotHqDashboard = () => {
                                                     date={dayjs(
                                                         item?.jobListing
                                                             ?.jobDate
-                                                    ).format("ddd, DD MMM, YY")}
+                                                    ).format("DD MMM, YY")}
                                                     clockIcon={ClockIcon}
                                                     locationIcon={LocationIcon}
                                                     location={
