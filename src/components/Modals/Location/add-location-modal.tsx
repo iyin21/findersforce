@@ -50,7 +50,7 @@ const AddLocationModal = ({ opened, setOpened }: prop) => {
     const addShiftInvitedRoleData = deleteRegionalManagerData?.map(
         (v: any) => ({
             ...v,
-            invitedRole: "SHIFT_MANAGER",
+            invitedRole: "SHIFT-MANAGER",
             companyId: state?.user?.company?._id,
         })
     )
@@ -59,7 +59,7 @@ const AddLocationModal = ({ opened, setOpened }: prop) => {
     const addRegionalInvitedRoleData = deleteShiftManagerData?.map(
         (v: any) => ({
             ...v,
-            invitedRole: "REGIONAL_MANAGER",
+            invitedRole: "REGIONAL-MANAGER",
             companyId: state?.user?.company?._id,
         })
     )
@@ -251,7 +251,7 @@ export function FormikStepper({ ...props }: TWizardProps) {
                     {currentChild}
 
                     <div className=" justify-between items-center">
-                        {isLastStep() && (
+                        {/* {!isLastStep() && (
                             <Button
                                 size="normal"
                                 className="w-full mt-16"
@@ -264,9 +264,9 @@ export function FormikStepper({ ...props }: TWizardProps) {
                                     props.step === 0
                                 }}
                             >
-                                {isLastStep() ? "Finish" : "Next"}
+                                {"Next"}
                             </Button>
-                        )}
+                        )} */}
 
                         <div className="">
                             <Button

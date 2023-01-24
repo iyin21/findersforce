@@ -1,4 +1,4 @@
-import { Modal } from "@mantine/core"
+import { Modal, Select, SelectItem } from "@mantine/core"
 import { Form, Formik } from "formik"
 import { Dispatch, SetStateAction, useState } from "react"
 import { IoClose } from "react-icons/io5"
@@ -8,8 +8,9 @@ import { ReactMultiEmail } from "react-multi-email"
 import "react-multi-email/dist/style.css"
 
 import { useProfile } from "../../../hooks/profile/use-profile"
-import GoogleAutoComplete from "../../../components/GoogleAutoComplete"
+// import GoogleAutoComplete from "../../../components/GoogleAutoComplete"
 import RadioButton from "../../../components/Core/Radio/radio"
+import { useGetAllDepotRegions } from "../../../hooks/location/depot-hook"
 
 export interface AddUserInterface {
     opened: boolean
@@ -27,6 +28,21 @@ const HQAddUser = ({
     const [emails, setEmails] = useState<string[]>([])
 
     const { data } = useProfile()
+    const { data: allDepotRegions } = useGetAllDepotRegions()
+    const [managerLocation, setLocation] = useState<string | null>(null)
+
+    const locations = allDepotRegions?.data.map((item) => {
+        return item.location.formattedAddress
+    })
+    const locationsDict:
+        | (string | SelectItem)[]
+        | { value: string; label: string }[] = []
+    locations?.forEach((element) => {
+        locationsDict.push({
+            value: element,
+            label: element,
+        })
+    })
 
     return (
         <div>
@@ -64,15 +80,35 @@ const HQAddUser = ({
                             mutateInvite({
                                 invitedRole: values.invitedRole,
                                 email: emails,
-                                regionAddress: values.regionAddress,
+                                regionAddress: managerLocation,
                                 companyId: data?.company?._id,
                             })
                         }}
                     >
                         {({ errors, setFieldValue, values }) => (
                             <Form className="font-creato">
-                                <GoogleAutoComplete fieldName="regionAddress" />
-
+                                {/* <GoogleAutoComplete fieldName="regionAddress" /> */}
+                                <Select
+                                    label="Location"
+                                    placeholder="Select Location"
+                                    value={managerLocation}
+                                    onChange={setLocation}
+                                    data={locationsDict}
+                                    styles={() => ({
+                                        label: {
+                                            fontSize: "15px",
+                                            fontWeight: 700,
+                                            paddingTop: "12px",
+                                        },
+                                        input: {
+                                            height: 60,
+                                            fontWeight: 400,
+                                            fontSize: "15px",
+                                            borderRadius: 10,
+                                            marginTop: 5,
+                                        },
+                                    })}
+                                />
                                 <div className="mt-10">
                                     <label className="text-3md font-semibold text-neutral-80 block mb-2">
                                         Select access
