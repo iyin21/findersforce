@@ -45,9 +45,9 @@ const NavBar = ({ setOpenSideBar, noTopNav }: navInterface) => {
                             : ""
                     }}
                 >
-                    {item?.eventId.user.profileImageUrl !== null ? (
+                    {item?.eventId?.user?.profileImageUrl !== null ? (
                         <img
-                            src={item?.eventId.user.profileImageUrl}
+                            src={item?.eventId?.user?.profileImageUrl}
                             alt="ops profile"
                             className="rounded-full w-[45px] h-[45px]"
                         />
@@ -58,7 +58,7 @@ const NavBar = ({ setOpenSideBar, noTopNav }: navInterface) => {
                     <div className="ml-2 md:ml-4 my-2">
                         <span className="text-lg py-[19px]">{item.title}</span>
                         <p className="text-sm md:text-3sm opacity-60 pr-1">
-                            {item?.description?.substring(0, 95).concat("...")}
+                            {item?.description?.substring(0, 95)?.concat("...")}
                         </p>
                     </div>
 
