@@ -1,7 +1,7 @@
 import { Table } from "@mantine/core"
 import dayjs from "dayjs"
 import { RiDeleteBin5Line } from "react-icons/ri"
-import AllManagersResponse from "types/location/interface"
+import AllManagersResponse from "../../../../types/location/interface"
 import MobileLocationRoleTable from "../mobile-tables/mobilelocationRoleTable"
 
 const RolesTable = ( {elements}: {elements: AllManagersResponse["data"]}) => {

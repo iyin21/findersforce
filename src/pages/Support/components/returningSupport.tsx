@@ -2,9 +2,10 @@ import { Tabs } from "@mantine/core"
 import { useState, useEffect } from "react"
 import SupportCard from "./supportCard"
 import { useGetComplaints } from "../hooks/support.hook"
-import EmptyState from "./emptyState"
-import SupportModal from "../../../components/Modals/SupportModal"
+import EmptyState from "../../../components/EmptyStates/index"
 import { CgSpinner } from "react-icons/cg"
+import { useAuthContext } from "../../../pages/auth/context/authContext"
+import ComplaintModal from "./supportModal"
 
 interface Props {
     // status?: "pending" | "accepted" | "rejected" ;
@@ -16,7 +17,8 @@ interface Props {
 }
 const ReturningSupport = ({ setPhase, setActiveId, handleRefetch }: Props) => {
     const [activeTab, setActiveTab] = useState<string | null>("pending")
-    const [openModal, setOpenModal] = useState(false)
+    const [opened, setOpened] = useState(false)
+    const { state } = useAuthContext()
 
     const {
         data: pendingData,
@@ -26,11 +28,11 @@ const ReturningSupport = ({ setPhase, setActiveId, handleRefetch }: Props) => {
     const {
         data: inProgressData,
         isLoading: isLoadingInProgressData,
-        //refetch: refetchInProgress,
+        // refetch: refetchInProgress,
     } = useGetComplaints({ status: "IN PROGRESS" })
     const {
         data: resolvedData,
-        //refetch: refetchResolved,
+        // refetch: refetchResolved,
         isLoading: isLoadingResolvedData,
     } = useGetComplaints({ status: "RESOLVED" })
 
@@ -42,9 +44,13 @@ const ReturningSupport = ({ setPhase, setActiveId, handleRefetch }: Props) => {
 
     return (
         <div className="mt-8 px-6">
-            {/* {openModal && (
-                <SupportModal setOpened={setOpenModal} opened={openModal} onDone={()=>{}}/>
-            )} */}
+            {opened && (
+                <ComplaintModal
+                    opened={opened}
+                    setOpened={setOpened}
+                    email={state.user?.email || " "}
+                />
+            )}
             {isLoadingPendingData ||
             isLoadingInProgressData ||
             isLoadingResolvedData ? (
@@ -69,7 +75,15 @@ const ReturningSupport = ({ setPhase, setActiveId, handleRefetch }: Props) => {
                                     : "text-black-60"
                             }`}
                         >
-                            Pending
+                            <span
+                                className={`${
+                                    activeTab === "pending"
+                                        ? "text-red-100 font-bold"
+                                        : "text-black-60"
+                                }`}
+                            >
+                                Pending
+                            </span>
                             <span className="bg-red-100 rounded ml-2 py-0.5 px-1 text-white-100 text-sm">
                                 {pendingData?.data.length}
                             </span>
@@ -83,7 +97,16 @@ const ReturningSupport = ({ setPhase, setActiveId, handleRefetch }: Props) => {
                                     : "text-black-60"
                             }`}
                         >
-                            In Progress
+                            <span
+                                className={`${
+                                    activeTab === "inProgress"
+                                        ? "text-yellow-100 font-bold"
+                                        : "text-black-60"
+                                }`}
+                            >
+                                In Progress
+                            </span>
+
                             <span className="bg-red-100 rounded ml-2 py-0.5 px-1 text-white-100 text-sm">
                                 {inProgressData?.data.length}
                             </span>
@@ -96,7 +119,17 @@ const ReturningSupport = ({ setPhase, setActiveId, handleRefetch }: Props) => {
                                     : "text-black-60"
                             }`}
                         >
-                            Resolved
+                            <span
+                                className={`${
+                                    activeTab === "resolved"
+                                        ? "text-green-100 font-bold"
+                                        : "text-black-60"
+                                }`}
+                            >
+                                {" "}
+                                Resolved
+                            </span>
+
                             <span className="bg-red-100 rounded ml-2 py-0.5 px-1 text-white-100 text-sm">
                                 {resolvedData?.data.length}
                             </span>
@@ -112,6 +145,7 @@ const ReturningSupport = ({ setPhase, setActiveId, handleRefetch }: Props) => {
                                     ticketID={item.complaintId}
                                     comments={item.messageCount}
                                     createdAt={item.createdAt}
+                                    supportState={activeTab || ""}
                                     handleClick={
                                         () => {
                                             setActiveId(item._id)
@@ -123,9 +157,12 @@ const ReturningSupport = ({ setPhase, setActiveId, handleRefetch }: Props) => {
                             ))
                         ) : (
                             <EmptyState
-                                //handleClick={() => setOpenModal(true)}
-                                showSendComplaintButton={false}
-                                description="Formal complaint pending by FindersForce support team will show here"
+                                buttonText="Log complaint"
+                                title="No complaints pending."
+                                description="If ever you submit a complaint, it will show here once it’s under investigation.If ever you submit a complaint, it will show here once you have sent it."
+                                handleButtonClick={() => {
+                                    setOpened(true)
+                                }}
                             />
                         )}
                     </Tabs.Panel>
@@ -139,6 +176,7 @@ const ReturningSupport = ({ setPhase, setActiveId, handleRefetch }: Props) => {
                                     ticketID={item.complaintId}
                                     comments={item.messageCount}
                                     createdAt={item.createdAt}
+                                    supportState={activeTab || ""}
                                     handleClick={() => {
                                         setActiveId(item._id)
                                         setPhase(2)
@@ -147,9 +185,12 @@ const ReturningSupport = ({ setPhase, setActiveId, handleRefetch }: Props) => {
                             ))
                         ) : (
                             <EmptyState
-                                //handleClick={() => setOpenModal(true)}
-                                showSendComplaintButton={false}
-                                description="Formal complaint being reviewed by FindersForce support team will show here."
+                                buttonText="Log complaint"
+                                title="No complaints in progress."
+                                description="If ever you submit a complaint, it will show here once it’s under investigation."
+                                handleButtonClick={() => {
+                                    setOpened(true)
+                                }}
                             />
                         )}
                     </Tabs.Panel>
@@ -163,6 +204,7 @@ const ReturningSupport = ({ setPhase, setActiveId, handleRefetch }: Props) => {
                                     ticketID={item.complaintId}
                                     comments={item.messageCount}
                                     createdAt={item.createdAt}
+                                    supportState={activeTab || ""}
                                     handleClick={() => {
                                         setActiveId(item._id)
                                         setPhase(2)
@@ -171,9 +213,12 @@ const ReturningSupport = ({ setPhase, setActiveId, handleRefetch }: Props) => {
                             ))
                         ) : (
                             <EmptyState
-                                handleClick={() => setOpenModal(true)}
-                                showSendComplaintButton={false}
-                                description=" Formal complaint resolved by FindersForce support team will show here"
+                                buttonText="Log complaint"
+                                title="No complaints resolved."
+                                description="If ever you submit a complaint, it will show here once it has been resolved."
+                                handleButtonClick={() => {
+                                    setOpened(true)
+                                }}
                             />
                         )}
                     </Tabs.Panel>

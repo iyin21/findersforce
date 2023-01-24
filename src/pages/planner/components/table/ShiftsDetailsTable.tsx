@@ -98,13 +98,13 @@ const ShiftsDetailTable = () => {
     const amount: any = checkedData?.results?.map((item) => {
         if (item?.jobListing.jobMeetingPoint === "DEPOT") {
             return Number(
-                item?.jobListing?.jobRate?.jobRateDepotFirstDisplayedToDepot *
+                item?.jobListing?.amountPaidByDepot *
                     item?.jobListing?.shiftDurationInHours *
                     checkedShift?.length
             )
         } else {
             return Number(
-                item?.jobListing?.jobRate?.jobRateMeetOnsiteDisplayedToDepot *
+                item?.jobListing?.amountPaidByDepot *
                     item?.jobListing?.shiftDurationInHours *
                     checkedShift?.length
             )
@@ -113,13 +113,13 @@ const ShiftsDetailTable = () => {
     const totalAmount: any = shiftsData?.results?.map((item) => {
         if (item?.jobListing.jobMeetingPoint === "DEPOT") {
             return Number(
-                item?.jobListing?.jobRate?.jobRateDepotFirstDisplayedToDepot *
+                item?.jobListing?.amountPaidByDepot *
                     item?.jobListing?.shiftDurationInHours *
                     shiftsData?.results.length
             )
         } else {
             return Number(
-                item?.jobListing?.jobRate?.jobRateMeetOnsiteDisplayedToDepot *
+                item?.jobListing?.amountPaidByDepot *
                     item?.jobListing?.shiftDurationInHours *
                     shiftsData?.results.length
             )
@@ -181,16 +181,14 @@ const ShiftsDetailTable = () => {
                 <td>
                     {element?.jobListing?.jobRate?.currency}
                     {
-                        element?.jobListing?.jobRate
-                            ?.jobRateDepotFirstDisplayedToDepot
+                        element?.jobListing?.amountPaidByDepot
                     }
                 </td>
             ) : (
                 <td>
                     {element?.jobListing?.jobRate?.currency}
                     {
-                        element?.jobListing?.jobRate
-                            ?.jobRateMeetOnsiteDisplayedToDepot
+                        element?.jobListing?.amountPaidByDepot
                     }
                 </td>
             )}
@@ -266,16 +264,14 @@ const ShiftsDetailTable = () => {
                 <td>
                     {element?.jobListing?.jobRate?.currency}
                     {
-                        element?.jobListing?.jobRate
-                            ?.jobRateDepotFirstDisplayedToDepot
+                        element?.jobListing?.amountPaidByDepot
                     }
                 </td>
             ) : (
                 <td>
                     {element?.jobListing?.jobRate?.currency}
                     {
-                        element?.jobListing?.jobRate
-                            ?.jobRateMeetOnsiteDisplayedToDepot
+                        element?.jobListing?.amountPaidByDepot
                     }
                 </td>
             )}
@@ -339,16 +335,14 @@ const ShiftsDetailTable = () => {
                 <td>
                     {element?.jobListing?.jobRate?.currency}
                     {
-                        element?.jobListing?.jobRate
-                            ?.jobRateDepotFirstDisplayedToDepot
+                        element?.jobListing?.amountPaidByDepot
                     }
                 </td>
             ) : (
                 <td>
                     {element?.jobListing?.jobRate?.currency}
                     {
-                        element?.jobListing?.jobRate
-                            ?.jobRateMeetOnsiteDisplayedToDepot
+                        element?.jobListing?.amountPaidByDepot
                     }
                 </td>
             )}
@@ -482,7 +476,7 @@ const ShiftsDetailTable = () => {
                                                 ,generating a running invoivce
                                                 of{" "}
                                                 <strong>
-                                                    £{amount || totalAmount}
+                                                    £{ totalAmount || amount}
                                                 </strong>
                                             </p>
                                             {checkedData?.results.length !==

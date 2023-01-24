@@ -254,7 +254,7 @@ const ShiftManagerDashboard = () => {
                                                     date={dayjs(
                                                         item?.jobListing
                                                             ?.jobDate
-                                                    ).format("ddd, DD MMM, YY")}
+                                                    ).format("DD MMM, YY")}
                                                     clockIcon={ClockIcon}
                                                     locationIcon={LocationIcon}
                                                     location={

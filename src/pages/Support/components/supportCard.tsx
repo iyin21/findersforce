@@ -7,7 +7,7 @@ interface ComplaintProps {
     ticketID: string
     createdAt: Date
     comments: number
-
+    supportState: string
     handleClick: () => void
 }
 const SupportCard = ({
@@ -16,6 +16,7 @@ const SupportCard = ({
     ticketID,
     createdAt,
     comments,
+    supportState,
     handleClick,
 }: ComplaintProps) => {
     return (
@@ -38,18 +39,28 @@ const SupportCard = ({
                 />
             </div>
             <hr className="text-black-5 mb-2" />
-            <p className="text-md px-4 py-2 hidden lg:block">Ticket ID: {ticketID}</p>
+            <p className="text-md px-4 py-2 hidden lg:block">
+                Ticket ID: {ticketID}
+            </p>
             <div className="flex justify-between block lg:hidden items-end px-4 mb-2">
                 <div>
                     <h6 className="text-black-50 text-3sm">Ticket ID</h6>
                     <p className="text-2md mt-1">{ticketID}</p>
                 </div>
-                <h6 className="text-black-50 text-3sm"> Date: {dayjs(createdAt).format("DD MMMM YYYY")}</h6>
+                <h6 className="text-black-50 text-3sm">
+                    {" "}
+                    Date: {dayjs(createdAt).format("DD MMMM YYYY")}
+                </h6>
             </div>
             <p className="px-4 pb-2 text-md">{description}</p>
-            <p className="text-green-100 px-4 text-md">
-                {comments} comment{comments > 1 && "s"}
-            </p>
+            {supportState !== "pending" && (
+                <div className="flex items-center justify-between">
+                <p className="text-green-100 px-4 text-md">
+                    {comments} comment{comments > 1 && "s"}
+                </p>
+                <p className="text-md px-4 italic">Awaiting Admin Reply</p>
+            </div>
+            )}
         </div>
     )
 }

@@ -50,7 +50,7 @@ const Support = () => {
                                 Support
                             </h5>
                             <p className="text-black-60">
-                                Send a formal complaint
+                            Enable Finders Force to conduct full investigations on your Organisations behalf.
                             </p>
                         </div>
                         {allData && allData?.data.length > 0 && (

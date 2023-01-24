@@ -52,7 +52,7 @@ const RegionalManagerSidebar = () => {
                             className={({ isActive }) =>
                                 isActive
                                     ? `flex p-4    ${styles.active}`
-                                    : "flex p-4 text-white-10"
+                                    : "flex p-4 text-white-50"
                             }
                         >
                             <item.icon />

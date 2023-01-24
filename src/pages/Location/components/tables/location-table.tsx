@@ -8,48 +8,6 @@ import { useNavigate } from "react-router-dom"
 import { RegionsResponse } from "../../../../types/dashboard/interfaces"
 import MobileLocationTable from "../mobile-tables/mobile-location-table"
 
-// interface Prop {
-// status?: "pending" | "accepted" | "rejected" ;
-//    elements: Data[]
-//    setPhase: (val: number) => void
-
-//    setActiveId: (val: string) => void
-// }
-const elementss = [
-    {
-        _id: "123456789",
-        location: "Birmingham, United Kingdom",
-        user: {
-            username: "Shaquan Roberts",
-            firstName: "Shaquan",
-            lastName: "Roberts",
-        },
-        numberOfShiftManagers: 12,
-        createdAt: "2022-08-25T08:53:12.211Z",
-    },
-    {
-        _id: "123456789",
-        location: "Birmingham, United Kingdom",
-        user: {
-            username: "Shaquan Roberts",
-            firstName: "Shaquan",
-            lastName: "Roberts",
-        },
-        numberOfShiftManagers: 12,
-        createdAt: "2022-08-25T08:53:12.211Z",
-    },
-    {
-        _id: "123456789",
-        location: "Birmingham, United Kingdom",
-        user: {
-            username: "Shaquan Roberts",
-            firstName: "Shaquan",
-            lastName: "Roberts",
-        },
-        numberOfShiftManagers: 12,
-        createdAt: "2022-08-25T08:53:12.211Z",
-    },
-]
 const LocationTable = ({ elements }: { elements: RegionsResponse["data"] }) => {
     const navigate = useNavigate()
     const rows = elements.map((item, index) => (
@@ -159,7 +117,7 @@ const LocationTable = ({ elements }: { elements: RegionsResponse["data"] }) => {
                 </Table>
             </div>
             <div className="block lg:hidden">
-                <MobileLocationTable elements={elementss} />
+                <MobileLocationTable elements={elements} />
             </div>
         </>
     )

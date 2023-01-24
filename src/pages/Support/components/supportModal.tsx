@@ -1,8 +1,10 @@
 import { Modal, Select, Textarea, TextInput } from "@mantine/core"
-import { ChangeEvent, useRef, useState } from "react"
+import { showNotification } from "@mantine/notifications"
+import { ChangeEvent, useEffect, useRef, useState } from "react"
 import uploadIcon from "../../../assets/image.svg"
+import { useCreateComplaint } from "../hooks/support.hook"
 
-const operativeIssues = [
+const operativeAndStaffIssues = [
     {
         value: "Unsupportive / Unhelpful",
         label: "Unsupportive / Unhelpful",
@@ -29,19 +31,49 @@ const operativeIssues = [
     },
 ]
 
-const platformIssues = [
+const softwareIssues = [
     {
-        value: "Glitches",
-        label: "Glitches",
+        value: "Feature not working",
+        label: "Feature not working",
     },
     {
-        value: "Difficulty posting a job",
-        label: "Difficulty posting a job",
+        value: "Feature is unreliable",
+        label: "Feature is unreliable",
     },
     {
-        value: "Difficulty making payment",
-        label: "Difficulty making payment",
+        value: "Process is confusing",
+        label: "Process is confusing",
     },
+    {
+        value: "Data showing is incorrect",
+        label: "Data showing is incorrect",
+    },
+    {
+        value: "Feature request",
+        label: "Feature request",
+    },
+    {
+        value: "Other",
+        label: "Other",
+    },
+]
+
+const subscriptionIssues = [
+    {
+        value: "Element not derived",
+        label: "Element not derived",
+    },
+    {
+        value: "Element redundant/not working",
+        label: "Element redundant/not working",
+    },
+    {
+        value: "Other",
+        label: "Other",
+    },
+]
+
+const otherIssue = [
     {
         value: "Other",
         label: "Other",
@@ -65,13 +97,47 @@ const ComplaintModal = ({
 
     const fileInputRef = useRef<HTMLInputElement>(null)
     const [pictureName, setPictureName] = useState("")
+    const [image, setImage] = useState<string | Blob>("")
+
     const handleCompanyLogoUpload = (e: ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0]
 
         if (file) {
             setPictureName(file.name)
+            setImage(file)
         }
     }
+    const { data, mutate, isLoading } = useCreateComplaint()
+
+    useEffect(() => {
+        if (data) {
+            showNotification({
+                title: "Success",
+                message: data.message,
+                color: "green",
+            })
+            setOpened(false)
+        }
+    }, [data])
+
+    const handleSubmit = () => {
+        const formData = new FormData()
+        const complaintIssues = []
+        complaintIssues.push(issue || "")
+        complaintIssues.map((item) =>
+            formData.append("complaintIssues[]", item)
+        )
+        formData.append("complaintCategory", complaintAboutValue || "")
+
+        formData.append("description", moreInfo)
+
+        image !== "" ? formData.append("image", image) : null
+
+        mutate({
+            formData,
+        })
+    }
+
     return (
         <Modal
             opened={opened}
@@ -124,12 +190,24 @@ const ComplaintModal = ({
                     onChange={setComplaintValue}
                     data={[
                         {
-                            value: "Operatives",
-                            label: "Operatives",
+                            value: "Agency operative",
+                            label: "Agency operative",
                         },
                         {
-                            value: "Platform use",
-                            label: " Platform use",
+                            value: "Findersforce staff",
+                            label: "Findersforce staff",
+                        },
+                        {
+                            value: "Finders Force Software",
+                            label: "Finders Force Software",
+                        },
+                        {
+                            value: "Findersforce subscription plan",
+                            label: "Findersforce subscription plan",
+                        },
+                        {
+                            value: "Other",
+                            label: "Other",
                         },
                     ]}
                     styles={() => ({
@@ -155,9 +233,16 @@ const ComplaintModal = ({
                     disabled={complaintAboutValue === null ? true : false}
                     onChange={setIssue}
                     data={
-                        complaintAboutValue === "Operatives"
-                            ? operativeIssues
-                            : platformIssues
+                        complaintAboutValue === "Agency operative"
+                            ? operativeAndStaffIssues
+                            : complaintAboutValue === "Findersforce staff"
+                            ? operativeAndStaffIssues
+                            : complaintAboutValue === "Finders Force Software"
+                            ? softwareIssues
+                            : complaintAboutValue ===
+                              "Findersforce subscription plan"
+                            ? subscriptionIssues
+                            : otherIssue
                     }
                     styles={() => ({
                         label: {
@@ -244,13 +329,10 @@ const ComplaintModal = ({
                     </span>
                     <button
                         className="bg-yellow-100 p-4 rounded rounded-tr-2xl flex items-center font-bold body-medium px-6"
-                        // onClick={() => handleReject({moreInfo: moreInfo, reason: value})}
-                        // disabled={
-                        //     isLoadingAcceptedData || isLoadingRejectedData
-                        // }
+                        onClick={() => handleSubmit()}
+                        disabled={isLoading}
                     >
-                        Log complaint
-                        {/* {isLoadingRejectedData ? "Loading.." : "Reject"} */}
+                        {isLoading ? "Loading.." : "Log complaint"}
                     </button>
                 </div>
             </div>
