@@ -28,4 +28,9 @@ export interface NotificationData {
     updatedAt: Date | string
     __v: number
     readStatus: boolean
+    eventId: {
+        user: {
+            profileImageUrl: string | null
+        }
+    }
 }

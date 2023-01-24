@@ -18,7 +18,8 @@ import { useGetShiftHistory } from "../../../hooks/planner/usePlanner.hooks"
 import { CgSpinner } from "react-icons/cg"
 import dayjs from "dayjs"
 import EmptyState from "../../../components/EmptyStates/index"
-import AddManagerModal from "../../../components/Modals/Location/add-manager"
+import { useInviteShiftManger } from "../../../hooks/roles/use-roles"
+import HQAddUser from "../../../components/Modals/AddUser/hq-add-user"
 
 const LocationBasedData = () => {
     const [activeTab, setActiveTab] = useState<string | null>("analytics")
@@ -51,10 +52,19 @@ const LocationBasedData = () => {
         regionId: locationId,
         completed: true,
     })
+    const { mutate: MutateInvite, isLoading: isInviting } =
+        useInviteShiftManger()
     return (
         <Layout pageTitle="Location">
             <div className="absolute md:top-4 pl-6 z-30">
-                <AddManagerModal openModal={open} setOpenModal={setOpen} />
+                {open && (
+                    <HQAddUser
+                        opened={open}
+                        setOpened={setOpen}
+                        isInviting={isInviting}
+                        mutateInvite={MutateInvite}
+                    />
+                )}
                 <div className="flex">
                     <div
                         className="hidden lg:block bg-black-10 w-fit h-fit rounded mb-8 cursor-pointer"
@@ -258,7 +268,9 @@ const LocationBasedData = () => {
                                         title="This Depot has no active Managers"
                                         description="This Depot has no active Managers"
                                         buttonText="Add managers"
-                                        handleButtonClick={() => {setOpen(true)}}
+                                        handleButtonClick={() => {
+                                            setOpen(true)
+                                        }}
                                     />
                                 )}
                             </Tabs.Panel>
