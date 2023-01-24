@@ -385,7 +385,16 @@ function useUpdateJobList({ id }: { id: string | undefined }) {
 
     return useMutation<any, AxiosError, FormikValues>(
         ["updateJobList", id],
-        (FormikValues) => updateJobListRequest(FormikValues)
+        (FormikValues) => updateJobListRequest(FormikValues),
+        {
+            onSuccess: (data) => {
+                showNotification({
+                    message: data?.message || data?.message,
+                    title: "Success",
+                    color: "green",
+                })
+            },
+        }
     )
 }
 

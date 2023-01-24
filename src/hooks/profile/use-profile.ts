@@ -1,7 +1,11 @@
 import { showNotification } from "@mantine/notifications"
 import { useMutation, useQuery } from "@tanstack/react-query"
 import { AxiosError } from "axios"
-import { ProfileRequest, ProfileResponse } from "../../types/profile/interface"
+import {
+    InviteProfileResponse,
+    ProfileRequest,
+    ProfileResponse,
+} from "../../types/profile/interface"
 import useAuthContext from "../../hooks/auth-hooks/useAuth"
 import { axiosInstance } from "../../services/api.service"
 
@@ -29,18 +33,6 @@ export const useProfile = () => {
             },
         }
     )
-}
-
-interface InviteProfileResponse {
-    jwt: {
-        token: string
-    }
-    user: {
-        depotCompany: {
-            _id: string
-            name: string
-        }
-    }
 }
 
 export const useCreateProfile = () => {

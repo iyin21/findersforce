@@ -1,12 +1,12 @@
 import { Table } from "@mantine/core"
 import { Checkbox } from "../../../../components/index"
 import { IoIosArrowForward } from "react-icons/io"
-import { AiOutlineArrowUp } from "react-icons/ai"
+import { AiOutlineArrowDown, AiOutlineArrowUp } from "react-icons/ai"
 import { useNavigate } from "react-router-dom"
 import MobileJobTable from "./mobile-table"
 import { JobBoardResponseInterface } from "../../../../types/job-board/interface"
 import dayjs from "dayjs"
-import { Dispatch, SetStateAction } from "react"
+import { Dispatch, SetStateAction, useState } from "react"
 
 export interface JobBoardInterface {
     status: "active" | "draft"
@@ -41,6 +41,56 @@ const JobBoardTable = ({
         }
     }
 
+    const [orderState, setOrderState] = useState(false)
+    const [wagesOrderState, setWagesOrderState] = useState(false)
+
+    const descending = () => {
+        setOrderState((state) => !state)
+        elements?.sort((a, b) => {
+            return a.applicationsCount > b.applicationsCount
+                ? -1
+                : a.applicationsCount < b.applicationsCount
+                ? 1
+                : 0
+        })
+    }
+    const ascending = () => {
+        setOrderState((state) => !state)
+        elements?.sort((a, b) => {
+            return a.applicationsCount > b.applicationsCount
+                ? 1
+                : a.applicationsCount < b.applicationsCount
+                ? -1
+                : 0
+        })
+    }
+
+    const ascendingWages = () => {
+        setWagesOrderState((state) => !state)
+        elements?.sort((a, b) => {
+            return a.jobRate?.jobRateMeetOnsiteDisplayedToDepot >
+                b.jobRate?.jobRateMeetOnsiteDisplayedToDepot
+                ? 1
+                : a.jobRate?.jobRateMeetOnsiteDisplayedToDepot <
+                  b.jobRate?.jobRateMeetOnsiteDisplayedToDepot
+                ? -1
+                : 0
+        })
+    }
+
+    const descendingWages = () => {
+        setWagesOrderState((state) => !state)
+        elements?.sort((a, b) => {
+            return a.jobRate?.jobRateMeetOnsiteDisplayedToDepot >
+                b.jobRate?.jobRateMeetOnsiteDisplayedToDepot
+                ? -1
+                : a.jobRate?.jobRateMeetOnsiteDisplayedToDepot <
+                  b.jobRate?.jobRateMeetOnsiteDisplayedToDepot
+                ? 1
+                : 0
+        })
+    }
+
     const rows = elements?.map((element, index) => (
         <tr key={index} onClick={() => handleNavigate(element?._id, element)}>
             <td>
@@ -51,6 +101,7 @@ const JobBoardTable = ({
                         setDeleteId(element?._id)
                     }}
                 >
+                    <p className="pr-2">{index + 1}</p>
                     <Checkbox
                         id={element?.listingId}
                         className="rounded-lg"
@@ -60,7 +111,6 @@ const JobBoardTable = ({
                         value={element?._id}
                         data-testid="checkbox"
                     />{" "}
-                    <p className="px-2">{index + 1}</p>
                     {!element?.listingId ? (
                         <span className=" rounded-full bg-black-10 p-2 w-full h-full"></span>
                     ) : (
@@ -74,7 +124,10 @@ const JobBoardTable = ({
                 </div>
             </td>
             <td>{element?.jobLocation?.formattedAddress}</td>
-            <td>{dayjs(element?.jobDate).format("DD/MM/YYYY")}</td>
+            <td>
+                {dayjs(element?.jobDate).format("DD/MM/YYYY")} |{" "}
+                {dayjs(element?.jobDate).format("hh:mm ")}
+            </td>
             <td>
                 {element?.jobRate?.currency}
 
@@ -90,7 +143,7 @@ const JobBoardTable = ({
 
                 {element?.jobRate?.jobRatePerHourDisplayedToDepot}
             </td>
-            <td>{element?.shiftDurationInHours} hours</td>
+            {/* <td>{element?.shiftDurationInHours} hours</td> */}
             {status === "active" && <td>{element?.applicationsCount}</td>}
             <td>
                 {element?.jobMeetingPoint === "SITE" ? (
@@ -112,8 +165,8 @@ const JobBoardTable = ({
     const tableHead = [
         { list: "LOCATION" },
         { list: "DATE" },
-        { list: "WAGES" },
-        { list: "DURATION" },
+        // { list: "WAGES" },
+        // { list: "DURATION" },
     ]
 
     return (
@@ -154,15 +207,51 @@ const JobBoardTable = ({
                                 </th>
                             ))}
                             {status === "active" && (
-                                <th
-                                    style={{
-                                        borderBottom: "none",
-                                    }}
-                                    className="flex items-center gap-2 "
-                                >
-                                    <p className="text-black-30 ">APPLICANTS</p>{" "}
-                                    <AiOutlineArrowUp color="rgba(15, 13, 0, 0.3)" />
-                                </th>
+                                <>
+                                    <th
+                                        style={{
+                                            borderBottom: "none",
+                                        }}
+                                        onClick={() => {
+                                            wagesOrderState
+                                                ? ascendingWages()
+                                                : descendingWages()
+                                        }}
+                                    >
+                                        <div className="flex items-center gap-2 ">
+                                            <p className="text-black-30 ">
+                                                WAGES
+                                            </p>{" "}
+                                            {wagesOrderState ? (
+                                                <AiOutlineArrowDown color="rgba(15, 13, 0, 0.3)" />
+                                            ) : (
+                                                <AiOutlineArrowUp color="rgba(15, 13, 0, 0.3)" />
+                                            )}
+                                        </div>
+                                    </th>
+
+                                    <th
+                                        style={{
+                                            borderBottom: "none",
+                                        }}
+                                        onClick={() => {
+                                            orderState
+                                                ? ascending()
+                                                : descending()
+                                        }}
+                                    >
+                                        <div className="flex items-center gap-2 ">
+                                            <p className="text-black-30 ">
+                                                APPLICANTS
+                                            </p>{" "}
+                                            {orderState ? (
+                                                <AiOutlineArrowDown color="rgba(15, 13, 0, 0.3)" />
+                                            ) : (
+                                                <AiOutlineArrowUp color="rgba(15, 13, 0, 0.3)" />
+                                            )}
+                                        </div>
+                                    </th>
+                                </>
                             )}
                             <th
                                 style={{

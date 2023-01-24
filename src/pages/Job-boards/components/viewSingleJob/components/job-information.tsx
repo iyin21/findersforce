@@ -26,13 +26,13 @@ const JobInformation = ({
 
                     <div className="mt-10">
                         <h6 className="text-black-40 text-2md mb-4">IMAGES</h6>
-                        <div className="flex gap-4">
+                        <div className="flex flex-col lg:flex-row lg:flex-wrap gap-4">
                             {additionalInfoImageUrls &&
                                 additionalInfoImageUrls.map((image, index) => (
                                     <img
                                         src={image}
                                         alt={image}
-                                        className="w-[20%] h-[100px] object-cover rounded"
+                                        className="lg:w-[20%] h-[100px] object-cover rounded"
                                         key={index}
                                     />
                                 ))}
@@ -42,7 +42,7 @@ const JobInformation = ({
             </div>
             <div className="grid gap-y-6 grid-cols-2 md:py-10 md:px-4  grid-rows-2 border-t pt-6 md:border-t-0 md:border-l md:pl-6 border-black-10 mt-6 md:mt-0 font-creato">
                 <h6 className="text-black-40 text-2md">Shift Title</h6>
-                <p className="text-lg font-semibold text-black-90">
+                <p className="text-lg font-semibold text-black-90 overflow-auto">
                     {listingId}
                 </p>
                 <h6 className="text-black-40 text-2md">Shift Type</h6>

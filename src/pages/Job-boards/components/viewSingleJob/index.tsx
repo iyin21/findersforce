@@ -32,7 +32,11 @@ const SingleJobBoard = () => {
     }
 
     const navigate = useNavigate()
-    const { data, isLoading: isLoadingSingleData } = useGetJobListingById({
+    const {
+        data,
+        isLoading: isLoadingSingleData,
+        refetch: refetchJobListing,
+    } = useGetJobListingById({
         id: jobBoardId,
     })
 
@@ -54,6 +58,7 @@ const SingleJobBoard = () => {
 
     useEffect(() => {
         if (isSuccess) {
+            refetchJobListing()
             showNotification({
                 title: "Success",
                 message: "Job List deleted successfully",
@@ -61,20 +66,32 @@ const SingleJobBoard = () => {
             navigate("/job-boards")
         }
         if (openSuccess && newJobId) {
+            refetchJobListing()
             showNotification({
                 title: "Success",
                 message: "Job Listed successfully",
             })
         }
+        refetchJobListing()
     }, [deletedJob])
     const handleNavigate = () => {
         navigate(`/job-boards`)
     }
     return (
         <Layout pageTitle="single shift">
+            {openJobPost && (
+                <PostJob
+                    opened={openJobPost}
+                    setOpened={setOpenJobPost}
+                    setOpenSuccess={setOpenSuccess}
+                    setNewJobId={setNewJobId}
+                    draftStatus={"edit"}
+                    singleDraftData={data}
+                />
+            )}
             <BackButton handleBackButton={() => handleNavigate()} />
             <div className="md:p-6 p-6">
-                <div className="relative md:pb-4 bottom-4 hidden md:block md:bottom-0">
+                <div className="relative md:pb-4 bottom-4 hidden lg:block md:bottom-0">
                     {activeTab === "first" ? (
                         <div className="flex justify-between absolute right-0 ">
                             {" "}
@@ -224,16 +241,6 @@ const SingleJobBoard = () => {
                     </div>
                 )}
             </div>
-            {openJobPost && (
-                <PostJob
-                    opened={openJobPost}
-                    setOpened={setOpenJobPost}
-                    setOpenSuccess={setOpenSuccess}
-                    setNewJobId={setNewJobId}
-                    draftStatus={"draft"}
-                    singleDraftData={data}
-                />
-            )}
         </Layout>
     )
 }
