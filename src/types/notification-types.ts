@@ -32,5 +32,8 @@ export interface NotificationData {
         user: {
             profileImageUrl: string | null
         }
+        operative: {
+            profileImageUrl: string | null
+        }
     }
 }

@@ -7,10 +7,11 @@ import {
     ProfileResponse,
 } from "../../types/profile/interface"
 import useAuthContext from "../../hooks/auth-hooks/useAuth"
-import { axiosInstance } from "../../services/api.service"
+import useAxiosInstance from "../../services/useAxiosInstance"
 
 export const useProfile = () => {
     const { state } = useAuthContext()
+    const axiosInstance = useAxiosInstance()
 
     const getProfile = async () => {
         const { data } = await axiosInstance.get("/user/profile", {
@@ -37,6 +38,7 @@ export const useProfile = () => {
 
 export const useCreateProfile = () => {
     const { state } = useAuthContext()
+    const axiosInstance = useAxiosInstance()
 
     const createProfileRequest = async (requestBody: ProfileRequest) => {
         const { data } = await axiosInstance.post(

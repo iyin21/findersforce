@@ -2,12 +2,13 @@ import { showNotification } from "@mantine/notifications"
 import { useMutation, useQuery } from "@tanstack/react-query"
 import { AxiosError, AxiosRequestConfig } from "axios"
 import { RegionsResponse } from "../../types/dashboard/interfaces"
-import { axiosInstance } from "../../services/api.service"
 import { CreateSubscriptionRequest, CreateSubscriptionResponse, DepotCompanyResponse, SubscriptionPrice, SubscriptionResponse } from "../../types/subscriptions/interface"
 import useAuthContext from "../auth-hooks/useAuth"
+import useAxiosInstance from "../../services/useAxiosInstance"
 
 function useGetAllSubscriptions() {
     const { state } = useAuthContext()
+    const axiosInstance = useAxiosInstance()
     const getSubscriptions = async () => {
         const { data } = await axiosInstance.get(`/depot/subscription`, {
             headers: {
@@ -34,6 +35,7 @@ function useGetAllSubscriptions() {
 
 function useGetSubscriptionPrice() {
     const { state } = useAuthContext()
+    const axiosInstance = useAxiosInstance()
     const getSubscriptionPrice = async () => {
         const { data } = await axiosInstance.get(`/admin/subscription/price`, {
             headers: {
@@ -60,6 +62,7 @@ function useGetSubscriptionPrice() {
 
 function useGetAdminSubscriptions({ companyId }: { companyId?: string }) {
     const { state } = useAuthContext()
+    const axiosInstance = useAxiosInstance()
     const getAdminSubscriptions = async () => {
         const { data } = await axiosInstance.get(`/admin/subscription`, {
             params: { companyId },
@@ -91,6 +94,7 @@ function useGetSingleSubscriptions({
     subscriptionId: string
 }) {
     const { state } = useAuthContext()
+    const axiosInstance = useAxiosInstance()
     const getSingleSubscription = async (subscriptionId: string) => {
         const { data } = await axiosInstance.get(
             `/depot/subscription?subscriptionId=${subscriptionId}`,
@@ -128,6 +132,7 @@ function useGetSingleSubscriptions({
 
 function useGetDepotCompanies() {
     const { state } = useAuthContext()
+    const axiosInstance = useAxiosInstance()
     const getDepotCompanies = async () => {
         const { data } = await axiosInstance.get(`/admin/depot-companies`, {
             headers: {
@@ -154,6 +159,7 @@ function useGetDepotCompanies() {
 
 function useGetDepotRegions({id}: {id: string}) {
     const { state } = useAuthContext()
+    const axiosInstance = useAxiosInstance()
     const getDepotRegions = async () => {
         const { data } = await axiosInstance.get(`/depot/company/${id}/regions`, {
             headers: {
@@ -183,6 +189,7 @@ function useCreateSubscription() {
     const {
         state: { jwt },
     } = useAuthContext();
+    const axiosInstance = useAxiosInstance()
 
     const createSubscription = async (requestBody: CreateSubscriptionRequest) => {
         const config: AxiosRequestConfig = {

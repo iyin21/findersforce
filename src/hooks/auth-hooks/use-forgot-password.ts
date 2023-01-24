@@ -1,5 +1,5 @@
 import { showNotification } from "@mantine/notifications"
-import { axiosInstance } from "../../services/api.service"
+import { axiosBaseInstance } from "../../services/api.service"
 
 const forgotPassword = (
     email: string,
@@ -8,7 +8,7 @@ const forgotPassword = (
     setErrorMsg: (msg: string) => void,
     showError: (val: boolean) => void
 ) => {
-    axiosInstance
+    axiosBaseInstance
         .post(
             "/auth/request-password-reset",
             { email: email },
@@ -35,7 +35,7 @@ const forgotPassword = (
 export default forgotPassword
 
 export const resendOTP = (email: string) => {
-    axiosInstance
+    axiosBaseInstance
         .post(
             "/auth/request-password-reset",
             { email: email },

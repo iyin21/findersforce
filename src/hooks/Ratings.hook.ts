@@ -1,11 +1,11 @@
 import { showNotification } from "@mantine/notifications";
+import useAxiosInstance from "../services/useAxiosInstance";
 import { AxiosError } from "axios";
 import { useQuery } from "react-query";
-import { axiosInstance } from "../services/api.service"
 import { IDepotRating } from "../types/dashboard/interfaces";
 
 function useRating ({ id }: { id: string }) {
-    
+    const axiosInstance = useAxiosInstance()
     const fetchDepotRating = async (id: string) => {
         const { data } = await axiosInstance.get (`/rating/depot/:631f05557c24da7374b20642/summary`, {
             headers: {

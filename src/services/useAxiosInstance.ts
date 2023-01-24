@@ -1,4 +1,4 @@
-import { axiosInstance } from "./api.service"
+import { axiosBaseInstance } from "./api.service"
 import { useEffect } from "react"
 import useRefreshToken from "../hooks/auth-hooks/use-refresh-tokens"
 import useAuthContext from "../hooks/auth-hooks/useAuth"
@@ -8,7 +8,7 @@ const useAxiosInstance = () => {
     const refresh = useRefreshToken()
 
     useEffect(() => {
-        const requestIntercept = axiosInstance.interceptors.request.use(
+        const requestIntercept = axiosBaseInstance.interceptors.request.use(
             (config) => {
                 if (
                     config &&
@@ -29,7 +29,7 @@ const useAxiosInstance = () => {
             (error: any) => Promise.reject(error)
         )
 
-        const responseIntercept = axiosInstance.interceptors.response.use(
+        const responseIntercept = axiosBaseInstance.interceptors.response.use(
             (response: any) => response,
             async (error: { config: any; response: { status: number } }) => {
                 const prevRequest = error?.config
@@ -39,19 +39,19 @@ const useAxiosInstance = () => {
                     prevRequest.headers[
                         "Authorization"
                     ] = `Bearer ${newAccessToken}`
-                    return axiosInstance(prevRequest)
+                    return axiosBaseInstance(prevRequest)
                 }
                 return Promise.reject(error)
             }
         )
 
         return () => {
-            axiosInstance.interceptors.request.eject(requestIntercept)
-            axiosInstance.interceptors.response.eject(responseIntercept)
+            axiosBaseInstance.interceptors.request.eject(requestIntercept)
+            axiosBaseInstance.interceptors.response.eject(responseIntercept)
         }
     }, [state.jwt?.token, refresh])
 
-    return axiosInstance
+    return axiosBaseInstance
 }
 
 export default useAxiosInstance

@@ -1,6 +1,6 @@
 import { AuthActionType } from "types/auth/auth-interfaces"
 import { admin } from "../../utils/user-types"
-import { axiosInstance } from "../../services/api.service"
+import { axiosBaseInstance } from "../../services/api.service"
 
 const loginWith2Fa = (
     otp: string,
@@ -11,12 +11,12 @@ const loginWith2Fa = (
     dispatch: (arg0: AuthActionType) => void,
     navigate: (arg0: string, arg1: { replace: boolean }) => void
 ) => {
-    axiosInstance
+    axiosBaseInstance
         .post("/auth/verify-2fa/email", { code: otp })
         .then(async (response) => {
             const user = response.data?.data?.user
 
-            const res = await axiosInstance.get("/user/profile", {
+            const res = await axiosBaseInstance.get("/user/profile", {
                 headers: {
                     Authorization: `Bearer ${response.data.data.jwt.token}`,
                 },
