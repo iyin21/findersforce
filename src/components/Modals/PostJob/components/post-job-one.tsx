@@ -8,6 +8,7 @@ import GoogleAutoComplete from "../../../../components/GoogleAutoComplete"
 import DatePicker from "react-datepicker"
 
 import "react-datepicker/dist/react-datepicker.css"
+import { useState } from "react"
 
 interface PostJobOneProps {
     jobType: JobBoardByIdResponse[] | undefined
@@ -22,6 +23,8 @@ const PostJobOne = ({ jobType }: PostJobOneProps) => {
         jobTypeId: string
         shiftDurationInHours: string
     }>()
+    const [startDate, setStartDate] = useState(new Date())
+    const [minutes, setMinutes] = useState(0)
 
     // this handles the job date and updates it's formik value
     const handleUpdateDate = (date: any) => {
@@ -39,7 +42,13 @@ const PostJobOne = ({ jobType }: PostJobOneProps) => {
             new Date(values.shiftStartTime).getTime() - new Date(time).getTime()
         )
         const hours = Math.floor(duration / 1000 / 60 / 60)
+        const minutes = Math.floor(
+            (duration % (1000 * 60 * 60)) / (1000 * 60 + 1)
+        )
         setFieldValue("shiftDurationInHours", hours.toString())
+        setMinutes(minutes + 1)
+
+        // console.log(minutes.toString())
     }
 
     // this sets the meeting point for the depot
@@ -52,6 +61,8 @@ const PostJobOne = ({ jobType }: PostJobOneProps) => {
     const jobTime = new Date(shiftTime)
     const toTime = Number(values.shiftDurationInHours)
     jobTime.setHours(jobTime.getHours() + toTime)
+
+    // console.log(toTime)
 
     return (
         <div className="p-3 font-creato">
@@ -151,12 +162,17 @@ const PostJobOne = ({ jobType }: PostJobOneProps) => {
                         Finish
                     </label>
                     <DatePicker
-                        onChange={(date) => handleUpdateToTime(date)}
+                        onChange={(date: Date) => {
+                            setStartDate(date)
+                            handleUpdateToTime(date)
+                        }}
                         showTimeSelect
                         showTimeSelectOnly
                         // @ts-ignore
                         selected={
-                            values?.shiftStartTime ? new Date(jobTime) : null
+                            values?.shiftStartTime
+                                ? new Date(jobTime) || startDate
+                                : null
                         }
                         timeCaption="Time"
                         dateFormat="h:mm aa"
@@ -169,7 +185,10 @@ const PostJobOne = ({ jobType }: PostJobOneProps) => {
             <div className="flex items-center gap-2 mt-4 px-2 p-4 rounded-md bg-green-10 border-l-4 border-green-100">
                 <FiClock color="#4DB25D" size={20} />
                 <p className=" text-sm md:text-lg">
-                    This shift will last for <strong>{toTime} hour(s)</strong>{" "}
+                    This shift will last for{" "}
+                    <strong>
+                        {toTime} hour(s) {minutes} minutes
+                    </strong>{" "}
                 </p>
             </div>
         </div>

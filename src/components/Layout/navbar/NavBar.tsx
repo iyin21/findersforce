@@ -66,7 +66,7 @@ const NavBar = ({ setOpenSideBar, noTopNav }: navInterface) => {
                     <div className="ml-2 md:ml-4 my-2">
                         <span className="text-lg py-[19px]">{item.title}</span>
                         <p className="text-sm md:text-3sm opacity-60 pr-1">
-                            {item?.description?.substring(0, 95).concat("...")}
+                            {item?.description?.substring(0, 95)?.concat("...")}
                         </p>
                     </div>
 
