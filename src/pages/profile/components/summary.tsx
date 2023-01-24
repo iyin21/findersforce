@@ -19,6 +19,7 @@ interface profileSummary {
         unknown
     >
     isInviteLoading: boolean
+    LocationStateArray?: never[]
 }
 
 const HQProfileSummary = ({

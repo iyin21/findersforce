@@ -66,7 +66,7 @@ export const useInviteShiftManger = () => {
         }
     )
 }
-export const useInviteHQ = ({ jwt }: { jwt: string | undefined }) => {
+export const useInviteHQ = ({ jwt }: { jwt?: string | undefined }) => {
     const createInvite = async (requestBody: InviteHqInterface) => {
         const { data } = await axiosInstance.post(
             "/invitation/multiple",
