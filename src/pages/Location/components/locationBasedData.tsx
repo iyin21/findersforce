@@ -18,6 +18,7 @@ import { useGetShiftHistory } from "../../../hooks/planner/usePlanner.hooks"
 import { CgSpinner } from "react-icons/cg"
 import dayjs from "dayjs"
 import EmptyState from "../../../components/EmptyStates/index"
+import AddManagerModal from "../../../components/Modals/Location/add-manager"
 
 const LocationBasedData = () => {
     const [activeTab, setActiveTab] = useState<string | null>("analytics")
@@ -26,6 +27,7 @@ const LocationBasedData = () => {
     const location = useLocation()
     const address = location.state?.address
     const createdAt = location.state?.created
+    const [open, setOpen] = useState(false)
     const { locationId } = useParams()
     currentDate.setDate(currentDate.getDate() - 7)
 
@@ -52,6 +54,7 @@ const LocationBasedData = () => {
     return (
         <Layout pageTitle="Location">
             <div className="absolute md:top-4 pl-6 z-30">
+                <AddManagerModal openModal={open} setOpenModal={setOpen} />
                 <div className="flex">
                     <div
                         className="hidden lg:block bg-black-10 w-fit h-fit rounded mb-8 cursor-pointer"
@@ -101,7 +104,15 @@ const LocationBasedData = () => {
                             variant="primary"
                             className="py-3 font-semibold font-creatoMedium"
                             iconLeft={<FiPlus size={20} />}
-                            onClick={() => {}}
+                            onClick={
+                                activeTab === "managers"
+                                    ? () => {
+                                          setOpen(true)
+                                      }
+                                    : () => {
+                                          navigate("/job-boards")
+                                      }
+                            }
                             data-testid="add_location_btn"
                         >
                             {activeTab === "managers" ? (
@@ -247,7 +258,7 @@ const LocationBasedData = () => {
                                         title="This Depot has no active Managers"
                                         description="This Depot has no active Managers"
                                         buttonText="Add managers"
-                                        handleButtonClick={() => {}}
+                                        handleButtonClick={() => {setOpen(true)}}
                                     />
                                 )}
                             </Tabs.Panel>
@@ -292,8 +303,10 @@ const LocationBasedData = () => {
                                     />
                                 ) : (
                                     <EmptyState
-                                       buttonText="Post Shift"
-                                        handleButtonClick={() => {navigate("/job-boards")}}
+                                        buttonText="Post Shift"
+                                        handleButtonClick={() => {
+                                            navigate("/job-boards")
+                                        }}
                                         title="This Depot has no completed shifts right now."
                                         description="When a shift is complete, you can review it here and pay wages."
                                     />

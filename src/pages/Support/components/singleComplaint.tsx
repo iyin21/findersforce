@@ -53,7 +53,7 @@ const SingleComplaint = ({ setPhase, activeId }: SingleComplaintProp) => {
                 <div className="mt-2 pr-6">
                     <span
                         onClick={() => setPhase(1)}
-                        className="p-3 rounded inline-flex items-center justify-center bg-black-10 cursor-pointer ml-6"
+                        className="absolute top-12 p-3 rounded inline-flex items-center justify-center bg-black-10 cursor-pointer ml-6"
                         aria-hidden="true"
                     >
                         <HiArrowLeft className="text-2lg" />

@@ -244,6 +244,7 @@ const Settings = () => {
                                         alt="company logo"
                                         width={122}
                                         height={122}
+                                        className="rounded-full"
                                     />
                                 ) : (
                                     <img
@@ -251,6 +252,7 @@ const Settings = () => {
                                         alt="company logo"
                                         width={122}
                                         height={122}
+                                        className="rounded-full"
                                     />
                                 )}
                             </div>

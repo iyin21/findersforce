@@ -5,9 +5,10 @@ interface IHeadProps {
     step: number
     title: string
     description?: string
+    totalStep?: number
 }
 
-const Header = ({ step, title, description }: IHeadProps) => {
+const Header = ({ step, title, description, totalStep = 3 }: IHeadProps) => {
     return (
         <div className="flex justify-between items-center mb-4 font-creato">
             <div>
@@ -31,7 +32,7 @@ const Header = ({ step, title, description }: IHeadProps) => {
                             {" "}
                             {step + 1}
                         </span>{" "}
-                        <span className="text-black-20 text-2lg">/3</span>
+                        <span className="text-black-20 text-2lg">/{totalStep}</span>
                     </div>
                 }
                 sections={[

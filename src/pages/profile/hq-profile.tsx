@@ -22,36 +22,36 @@ const HQProfile = () => {
     const { mutate: mutateUser, isSuccess, data } = useInviteHQ()
     const { mutate, isLoading, isError, data: profileData } = useCreateProfile()
     // this duplicates the LocationStateArray session storage for regional manager data
-    const regionalData = LocationStateArray.map((i: any) => ({ ...i }))
+    const regionalData = LocationStateArray?.map((i: any) => ({ ...i }))
     // this duplicates the LocationStateArray session storage for shift manager data
-    const shiftData = LocationStateArray.map((i: any) => ({ ...i }))
+    const shiftData = LocationStateArray?.map((i: any) => ({ ...i }))
 
     // this deletes the regional manager email from the LocationStateArray session storage in order to separate the regional manager as the backend requires
-    const deleteRegionalManagerData = shiftData.map(function (item: any) {
+    const deleteRegionalManagerData = shiftData?.map(function (item: any) {
         delete item.regional_manager
         return item
     })
     // this deletes the shift manager email from the LocationStateArray session storage in order to separate the regional manager as the backend requires
-    const deleteShiftManagerData = regionalData.map(function (item: any) {
+    const deleteShiftManagerData = regionalData?.map(function (item: any) {
         delete item.shift_manager
         return item
     })
 
     // this adds the invited role to the shift manager array in order to send to the backend
-    const addShiftInvitedRoleData = deleteRegionalManagerData.map((v: any) => ({
+    const addShiftInvitedRoleData = deleteRegionalManagerData?.map((v: any) => ({
         ...v,
         invitedRole: "SHIFT_MANAGER",
         companyId: profileData?.user?.depotCompany?._id,
     }))
 
     // this adds the invited role to the regional manager array in order to send to the backend
-    const addRegionalInvitedRoleData = deleteShiftManagerData.map((v: any) => ({
+    const addRegionalInvitedRoleData = deleteShiftManagerData?.map((v: any) => ({
         ...v,
         invitedRole: "REGIONAL_MANAGER",
         companyId: profileData?.user?.depotCompany?._id,
     }))
     // this changes the shift_manager array to email in order to send to the backend
-    const shiftManagerArray = addShiftInvitedRoleData.map((item: any) => {
+    const shiftManagerArray = addShiftInvitedRoleData?.map((item: any) => {
         return {
             email: item.shift_manager,
             invitedRole: item.invitedRole,
@@ -60,7 +60,7 @@ const HQProfile = () => {
         }
     })
     // this changes the regional_manager array to email in order to send to the backend
-    const regionalManagerArray = addRegionalInvitedRoleData.map((item: any) => {
+    const regionalManagerArray = addRegionalInvitedRoleData?.map((item: any) => {
         return {
             email: item.regional_manager,
             invitedRole: item.invitedRole,
@@ -70,7 +70,7 @@ const HQProfile = () => {
     })
 
     // this combines the shift manager and regional manager arrays into one array to send to the backend
-    const finalArray = shiftManagerArray.concat(regionalManagerArray)
+    const finalArray = shiftManagerArray?.concat(regionalManagerArray)
 
     // this functions gets the session storage and parses it
     const getSessionStorage = async () => {
