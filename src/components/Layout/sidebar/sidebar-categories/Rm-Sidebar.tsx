@@ -22,7 +22,7 @@ const RegionalManagerSidebar = () => {
             </div>
 
             <section className="flex items-center p-3 rounded-lg ml-1 mb-4 mr-1 bg-ash-10">
-                {data?.profileImageUrl === null ? (
+                {data?.company?.logo === null ? (
                     <img
                         className="inline rounded-full p-2"
                         src={ProfileImage}
@@ -31,7 +31,7 @@ const RegionalManagerSidebar = () => {
                 ) : (
                     <img
                         className="inline rounded-full p-2  w-[50px] h-[50px]"
-                        src={data?.profileImageUrl}
+                        src={data?.company?.logo}
                         alt="profileImage"
                     />
                 )}

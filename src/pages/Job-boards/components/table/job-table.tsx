@@ -68,11 +68,9 @@ const JobBoardTable = ({
     const ascendingWages = () => {
         setWagesOrderState((state) => !state)
         elements?.sort((a, b) => {
-            return a.jobRate?.jobRateMeetOnsiteDisplayedToDepot >
-                b.jobRate?.jobRateMeetOnsiteDisplayedToDepot
+            return a.amountPaidByDepot > b.amountPaidByDepot
                 ? 1
-                : a.jobRate?.jobRateMeetOnsiteDisplayedToDepot <
-                  b.jobRate?.jobRateMeetOnsiteDisplayedToDepot
+                : a.amountPaidByDepot < b.amountPaidByDepot
                 ? -1
                 : 0
         })
@@ -81,11 +79,9 @@ const JobBoardTable = ({
     const descendingWages = () => {
         setWagesOrderState((state) => !state)
         elements?.sort((a, b) => {
-            return a.jobRate?.jobRateMeetOnsiteDisplayedToDepot >
-                b.jobRate?.jobRateMeetOnsiteDisplayedToDepot
+            return a.amountPaidByDepot > b.amountPaidByDepot
                 ? -1
-                : a.jobRate?.jobRateMeetOnsiteDisplayedToDepot <
-                  b.jobRate?.jobRateMeetOnsiteDisplayedToDepot
+                : a.amountPaidByDepot < b.amountPaidByDepot
                 ? 1
                 : 0
         })
@@ -131,19 +127,8 @@ const JobBoardTable = ({
             <td>
                 {element?.jobRate?.currency}
 
-                {element?.jobMeetingPoint === "SITE" ? (
-                    <span>
-                        {element?.jobRate?.jobRateMeetOnsiteDisplayedToDepot}
-                    </span>
-                ) : (
-                    <span>
-                        {element?.jobRate?.jobRateDepotFirstDisplayedToDepot}
-                    </span>
-                )}
-
-                {element?.jobRate?.jobRatePerHourDisplayedToDepot}
+                {element?.amountPaidByDepot}
             </td>
-            {/* <td>{element?.shiftDurationInHours} hours</td> */}
             {status === "active" && <td>{element?.applicationsCount}</td>}
             <td>
                 {element?.jobMeetingPoint === "SITE" ? (

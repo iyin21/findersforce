@@ -12,6 +12,7 @@ export interface ProfileResponse {
     company: {
         _id: string
         name: string
+        logo: string
     }
 }
 

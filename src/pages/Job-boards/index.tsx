@@ -143,7 +143,7 @@ const JobBoards = () => {
                 color: "green",
             })
         }
-        if (openSuccess && newJobId !== "") {
+        if (openSuccess === true && newJobId !== "") {
             refetchActiveJobList()
             refetchDraftJobList()
         }
