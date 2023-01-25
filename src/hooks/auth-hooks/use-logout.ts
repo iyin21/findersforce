@@ -1,4 +1,4 @@
-import { axiosInstance } from "../../services/api.service"
+import { axiosBaseInstance } from "../../services/api.service"
 import { AuthActionType } from "types/auth/auth-interfaces"
 
 const handleLogOut = async (
@@ -7,7 +7,7 @@ const handleLogOut = async (
     dispatch: (arg0: AuthActionType) => void,
     navigate: (arg0: string) => void
 ) => {
-    const data = await axiosInstance.post(
+    const data = await axiosBaseInstance.post(
         "/auth/logout",
         {
             withCredentials: true,
