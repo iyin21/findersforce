@@ -1,4 +1,4 @@
-import { axiosInstance } from "../../services/api.service"
+import { axiosBaseInstance } from "../../services/api.service"
 
 const setProfile = (
     password: string,
@@ -29,7 +29,7 @@ const setProfile = (
         delete requestBody.courseLink
         delete requestBody.subscriptionPlan
     }
-    axiosInstance
+    axiosBaseInstance
         .post(
             "/invitation/accept",
             requestBody

@@ -1,4 +1,3 @@
-import { axiosInstance } from "../../services/api.service"
 import useAuthContext from "../../hooks/auth-hooks/useAuth"
 import { useMutation, useQuery } from "@tanstack/react-query"
 import { AxiosError, AxiosResponse } from "axios"
@@ -9,10 +8,11 @@ import {
     RoleResponse,
     RolesRequest,
 } from "../../types/roles/role-interface"
+import useAxiosInstance from "../../services/useAxiosInstance"
 
 export const useInviteShiftManger = () => {
     const { state } = useAuthContext()
-
+    const axiosInstance = useAxiosInstance()
     const createInvite = async (requestBody: InviteUserInterface) => {
         const newFormData = new FormData()
 
@@ -67,6 +67,7 @@ export const useInviteShiftManger = () => {
     )
 }
 export const useInviteHQ = ({ jwt }: { jwt?: string | undefined }) => {
+    const axiosInstance = useAxiosInstance()
     const createInvite = async (requestBody: InviteHqInterface) => {
         const { data } = await axiosInstance.post(
             "/invitation/multiple",
@@ -108,7 +109,7 @@ export const useInviteHQ = ({ jwt }: { jwt?: string | undefined }) => {
 
 function useGetRoles({ status, signal, page, limit, depotRole }: RolesRequest) {
     const { state } = useAuthContext()
-
+    const axiosInstance = useAxiosInstance()
     /** API methods */
     const getRoles = async () => {
         const { data } = await axiosInstance.get("/depot", {
@@ -143,7 +144,7 @@ function useGetRoles({ status, signal, page, limit, depotRole }: RolesRequest) {
 
 function useDeleteUser({ userId }: { userId: string | undefined }) {
     const { state } = useAuthContext()
-
+    const axiosInstance = useAxiosInstance()
     /** API methods */
     const deleteUser = async () => {
         const { data } = await axiosInstance.patch(
@@ -163,7 +164,7 @@ function useDeleteUser({ userId }: { userId: string | undefined }) {
 
 function useResendInvite({ userId }: { userId: string | undefined }) {
     const { state } = useAuthContext()
-
+    const axiosInstance = useAxiosInstance()
     /** API methods */
     const resendInvite = async () => {
         const { data } = await axiosInstance.post(
@@ -183,7 +184,7 @@ function useResendInvite({ userId }: { userId: string | undefined }) {
 
 function useRevokeInvite({ userId }: { userId: string | undefined }) {
     const { state } = useAuthContext()
-
+    const axiosInstance = useAxiosInstance()
     /** API methods */
     const revokeInvite = async () => {
         const { data } = await axiosInstance.patch(

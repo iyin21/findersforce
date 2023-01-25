@@ -1,15 +1,15 @@
-import { axiosInstance } from "../../services/api.service"
+import { axiosBaseInstance } from "../../services/api.service"
 import useAuthContext from "./useAuth"
 
 const useRefreshToken = () => {
     const { dispatch } = useAuthContext()
 
     const refresh = async () => {
-        const response = await axiosInstance("/auth/refresh-token", {
-            method: "POST",
+        const response = await axiosBaseInstance("/auth/refresh-token", {
+            method: "GET",
         })
 
-        const res = await axiosInstance.get(
+        const res = await axiosBaseInstance.get(
             "/user/profile",
             {
                 headers: {

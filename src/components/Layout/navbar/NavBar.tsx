@@ -9,7 +9,7 @@ import { HiMenuAlt2 } from "react-icons/hi"
 import dayjs from "dayjs"
 import { IoIosNotifications } from "react-icons/io"
 import Message from "../../../assets/NavbarMessage.svg"
-import { CgProfile } from "react-icons/cg"
+import userDp from "../../../assets/images/user-dp.png"
 
 interface navInterface {
     setOpenSideBar: Dispatch<SetStateAction<boolean>>
@@ -45,14 +45,22 @@ const NavBar = ({ setOpenSideBar, noTopNav }: navInterface) => {
                             : ""
                     }}
                 >
-                    {item?.eventId?.user?.profileImageUrl !== null ? (
+                    {item.eventId ? (
                         <img
-                            src={item?.eventId?.user?.profileImageUrl}
+                            src={
+                                item?.eventId?.user?.profileImageUrl ||
+                                item.eventId?.operative?.profileImageUrl ||
+                                userDp
+                            }
                             alt="ops profile"
                             className="rounded-full w-[45px] h-[45px]"
                         />
                     ) : (
-                        <CgProfile size={48} />
+                        <img
+                            src={userDp}
+                            alt="ops profile"
+                            className="rounded-full w-[45px] h-[45px]"
+                        />
                     )}
 
                     <div className="ml-2 md:ml-4 my-2">

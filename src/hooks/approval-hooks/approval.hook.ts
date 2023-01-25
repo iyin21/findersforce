@@ -1,9 +1,9 @@
-import { axiosInstance } from "../../services/api.service"
 import { showNotification } from "@mantine/notifications"
 import { AxiosError, AxiosRequestConfig } from "axios"
 import { AllUsersResponse } from "../../types/approval/approval-interface"
 import useAuthContext from "../auth-hooks/useAuth"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
+import useAxiosInstance from "../../services/useAxiosInstance"
 interface ApprovalRequest {
     docStatus: string
 }
@@ -15,6 +15,7 @@ interface UpdateOperativeRequest {
 
 function useGetAllOperativeUsers({ docStatus }: ApprovalRequest) {
     const { state } = useAuthContext()
+    const axiosInstance = useAxiosInstance()
     const getAllUsers = async () => {
         const { data } = await axiosInstance.get(
             "/admin/user?accountType=OPERATIVE",
@@ -47,6 +48,7 @@ function useGetAllOperativeUsers({ docStatus }: ApprovalRequest) {
 
 function useGetOperativeDetails({ id }: { id: string | undefined }) {
     const { state } = useAuthContext()
+    const axiosInstance = useAxiosInstance()
     const getOperativeDetails = async () => {
         const { data } = await axiosInstance.get(`/admin/user?userId=${id}`, {
             headers: {
@@ -75,6 +77,7 @@ function useGetOperativeDetails({ id }: { id: string | undefined }) {
 
 function useUpdateOperative({ id }: { id: string }) {
     const { state } = useAuthContext()
+    const axiosInstance = useAxiosInstance()
     // Get QueryClient from the context
     const queryClient = useQueryClient()
 

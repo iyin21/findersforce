@@ -1,13 +1,14 @@
-import { axiosInstance } from "../../services/api.service"
 import { showNotification } from "@mantine/notifications"
 import { AxiosError } from "axios"
 import useAuthContext from "../auth-hooks/useAuth"
 import { useQuery } from "@tanstack/react-query"
 import { RegionsResponse } from "../../types/dashboard/interfaces"
 import AllManagersResponse from "types/location/interface"
+import useAxiosInstance from "../../services/useAxiosInstance"
 
 function useGetAllDepotRegions() {
     const { state } = useAuthContext()
+    const axiosInstance = useAxiosInstance()
     const getDepotRegions = async () => {
         const { data } = await axiosInstance.get(
             `/depot/company/${state.user?.company._id}/regions`,
@@ -40,6 +41,7 @@ function useGetAllDepotRegions() {
 
 function useGetAllManagers() {
     const { state } = useAuthContext()
+    const axiosInstance = useAxiosInstance()
     const getAllManagers = async () => {
         const { data } = await axiosInstance.get(
             "/depot?status=accepted&depotRole=MANAGER",
