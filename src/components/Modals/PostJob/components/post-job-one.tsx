@@ -45,10 +45,11 @@ const PostJobOne = ({ jobType }: PostJobOneProps) => {
         const minutes = Math.floor(
             (duration % (1000 * 60 * 60)) / (1000 * 60 + 1)
         )
-        setFieldValue("shiftDurationInHours", hours.toString())
-        setMinutes(minutes + 1)
 
-        // console.log(minutes.toString())
+        const fixedMinutes = (minutes / 60).toFixed(1)
+        const fixedHours = hours + Number(fixedMinutes)
+        setFieldValue("shiftDurationInHours", fixedHours.toString())
+        setMinutes(minutes)
     }
 
     // this sets the meeting point for the depot
@@ -60,9 +61,9 @@ const PostJobOne = ({ jobType }: PostJobOneProps) => {
     const shiftTime = new Date(values?.shiftStartTime)
     const jobTime = new Date(shiftTime)
     const toTime = Number(values.shiftDurationInHours)
-    jobTime.setHours(jobTime.getHours() + toTime)
 
-    // console.log(toTime)
+    jobTime.setHours(jobTime.getHours() + toTime)
+    jobTime.setMinutes(jobTime.getMinutes() + minutes)
 
     return (
         <div className="p-3 font-creato">
@@ -187,7 +188,8 @@ const PostJobOne = ({ jobType }: PostJobOneProps) => {
                 <p className=" text-sm md:text-lg">
                     This shift will last for{" "}
                     <strong>
-                        {toTime} hour(s) {minutes} minutes
+                        {toTime} hour(s)
+                        {/* {minutes} minutes */}
                     </strong>{" "}
                 </p>
             </div>
