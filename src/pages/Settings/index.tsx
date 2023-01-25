@@ -11,7 +11,7 @@ import {
 import { ChangeEvent, useEffect, useRef, useState } from "react"
 import InputText from "./components/textInput"
 import { useProfile } from "../../hooks/profile/use-profile"
-import CompanyLogo from "../../assets/companyLogo.svg"
+import userDp from "../../assets/images/user-dp.png"
 import { FaChevronRight } from "react-icons/fa"
 import CancelIcon from "../../assets/cancel.svg"
 import Button from "../../components/Core/Buttons/Button"
@@ -240,8 +240,8 @@ const Settings = () => {
                                 </div>
                                 {data?.profileImageUrl === null ? (
                                     <img
-                                        src={CompanyLogo}
-                                        alt="company logo"
+                                        src={userDp}
+                                        alt="user dp"
                                         width={122}
                                         height={122}
                                         className="rounded-full"
@@ -249,7 +249,7 @@ const Settings = () => {
                                 ) : (
                                     <img
                                         src={data?.profileImageUrl}
-                                        alt="company logo"
+                                        alt="user dp"
                                         width={122}
                                         height={122}
                                         className="rounded-full"

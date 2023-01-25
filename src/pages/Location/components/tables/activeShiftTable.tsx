@@ -6,7 +6,17 @@ import MobileLocationActiveShiftTable from "../mobile-tables/mobileLocationActiv
 import dayjs from "dayjs"
 import { Result } from "../../../../types/planner/interfaces"
 
-const ActiveShift = ({ elements }: { elements: Result[] }) => {
+const ActiveShift = ({
+    elements,
+    setPhase,
+    setScheduleId,
+    setJobListingId,
+}: {
+    elements: Result[]
+    setPhase: (val: number) => void
+    setJobListingId: (val: string) => void
+    setScheduleId: (val: string) => void
+}) => {
     const rows = elements?.map((element, index) => (
         <tr key={index}>
             <td className="font-bold">{element?.jobListing?.listingId}</td>
@@ -44,7 +54,11 @@ const ActiveShift = ({ elements }: { elements: Result[] }) => {
                 <IoIosArrowForward
                     size={30}
                     style={{ color: "#889088" }}
-                    onClick={() => {}}
+                    onClick={() => {
+                        setPhase(2)
+                        setJobListingId(element.jobListing._id)
+                        setScheduleId(element._id)
+                    }}
                 />
             </td>
         </tr>
