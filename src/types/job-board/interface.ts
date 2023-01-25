@@ -45,6 +45,7 @@ export interface JobBoardResponseInterface {
     jobAccessibleTo: string
     createdAt: string
     listingId: string
+    amountPaidByDepot: number
     jobLocation: {
         formattedAddress: string
         street: string
