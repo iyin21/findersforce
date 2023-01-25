@@ -9,7 +9,7 @@ import { HiMenuAlt2 } from "react-icons/hi"
 import dayjs from "dayjs"
 import { IoIosNotifications } from "react-icons/io"
 import Message from "../../../assets/NavbarMessage.svg"
-import userDp from "../../../assets/user-dp.png"
+import userDp from "../../../assets/images/user-dp.png"
 
 interface navInterface {
     setOpenSideBar: Dispatch<SetStateAction<boolean>>
