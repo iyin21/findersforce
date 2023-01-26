@@ -36,6 +36,8 @@ import { Overlay } from "@mantine/core"
 import ProfilePicture from "./components/profilePicture"
 import ProfileDrawer from "./components/profileDrawer"
 import useWindowSize from "../../hooks/useWindowSize"
+import { AudioRecorder } from "react-audio-voice-recorder"
+import { BsMic } from "react-icons/bs"
 //2.14.8
 dayjs.extend(calendar)
 
@@ -75,6 +77,7 @@ const Messaging = () => {
     //         setDialog(result)
     //     }
     // }
+    // 1BAAWdmVzdGEud2ViLnRlbGVncmFtLm9yZwBQvXUXHKzRJ18HG14aNiNf2+7D7TppVsHLei1kMG0YYMiZXHFJhE53ZtTLTbyjSHLa2ZPBR76hFrcHFP1Xlwkt3GadJGg0j6lxl0icEDjkKdfCxcRdTh9ClCDgt2MZFpCaSO/e4vWdMQBHiF/oao2KNycC7csFEFNppWoqThcvlkqo1zgOp7x9mUykH1AxyZWpIzZ7Sh2jYETxJLoLpjCkNDVGCbDi/Cur0pVtFYuwFV6ivn6CAwtQOv4LNwIHJqb3OpXLptYcWnpGctEvBsBVQtOPRP/J1pUHDrFgc63UdLVOyknCnSQQjFCnhyaZZUfNfso9Ij7xex/H2+3Ol+ICTA==
     useEffect(() => {
         const run = async () => {
             setIsFetchingDialog(true)
@@ -87,6 +90,7 @@ const Messaging = () => {
                 }
                 const result = await client.getDialogs({})
                 if (result) {
+                    console.log("dialog", result)
                     setDialog(result)
                     setNewClient(client)
                 }
@@ -100,15 +104,22 @@ const Messaging = () => {
         }
     }, [phase])
     useEffect(() => {
-        async function eventPrint(event: any) {
+        async function eventPrint(event: NewMessageEvent) {
             console.log("event", event)
             const message = event.message
-            const id = message.peerId.userId
-
+            // @ts-expect-error
+            const id = message.peerId.userId || message.peerId.chatId
+            //console.log("id", chatId?.value)
+            const sender = await message.getSender()
+            console.log("sender", sender)
             // Checks if it's a private message (from user or bot)
-            if (event.isPrivate && id) {
+            if (id && sender) {
+                // @ts-expect-error
+                console.log(chatId?.value, id.value)
                 // @ts-expect-error
                 if (chatId?.value === id.value) {
+                    // @ts-expect-error
+                    console.log(chatId?.value, id.value)
                     setChatHistory((chat) => [...chat, message])
                 } else {
                     const result = await client.getDialogs({})
@@ -133,6 +144,7 @@ const Messaging = () => {
 
             try {
                 if (!(await client.checkAuthorization())) {
+                    sessionStorage.removeItem("session")
                     setPhase(1)
                 } else {
                     setPhase(3)
@@ -159,6 +171,8 @@ const Messaging = () => {
                 reverse: true,
             })
             if (result) {
+                console.log("result", result)
+
                 setChatId(result[0].chat?.id)
 
                 setChatHistory(() => [
@@ -194,15 +208,17 @@ const Messaging = () => {
     const [openProfileDrawer, setOpenProfileDrawer] = useState(false)
 
     const dialogData = dialog?.filter((item: Dialog) => {
-        return searchParam.some((newItem) => {
-            return (
-                // @ts-expect-error
-                item[newItem as keyof Dialog]
-                    .toString()
-                    .toLowerCase()
-                    .indexOf(searchQuery.toLowerCase()) > -1
-            )
-        })
+        if (item.title !== "") {
+            return searchParam.some((newItem) => {
+                return (
+                    // @ts-expect-error
+                    item[newItem as keyof Dialog]
+                        ?.toString()
+                        ?.toLowerCase()
+                        ?.indexOf(searchQuery.toLowerCase()) > -1
+                )
+            })
+        }
     })
 
     const handleSendMessage = async () => {
@@ -276,7 +292,7 @@ const Messaging = () => {
     const handleFileResult = (item: Api.Message) => {
         setChatHistory((chat) => [...chat, item])
     }
-    
+    //1BAAWdmVzdGEud2ViLnRlbGVncmFtLm9yZwBQxkIl8TahRZacr3NEIgdDXE2+6lYgHOun5q1Wvn5H6ckDa8AARc31/lKU4MvSv4AQT0CXuF6gaB8P69oGNLBd11/t8XdETYCq/L6Tof7uT1JBEj8BjnJBiUzEJen9v4Jk552i9egL5VLpWY7kARlvZt8LyVfOuYb1izqt11Oy0dgDzMj75z7p6J9MPwm8faA69yrZ8jxFfm0JdP6993/ggobnUiTVsIQqCTB+W198jeEG2YG57L1ZKaaYNr39UbApJzgvFSljgOm4pBov7Iqt0fibKNGUCZJ+0Vt+mK4ute6LR0ZLjcEtYIPyCAZkySkwA/iKcX920cCanJfhdOgdwA==
     const window = useWindowSize()
     return (
         <Layout pageTitle="Messaging" noTopNav>
@@ -358,7 +374,11 @@ const Messaging = () => {
                                 <div className="pl-4 pt-4">
                                     <img src={CompanyLogo} alt="" />
                                     <h5 className="font-bold text-2lg">
-                                        {me?.firstName + " " + me?.lastName}
+                                        {me?.firstName +
+                                            " " +
+                                            (me?.lastName === null
+                                                ? ""
+                                                : me?.lastName)}
                                     </h5>
                                     <p className="text-black-40 pt-2">
                                         +{me?.phone}
@@ -391,7 +411,7 @@ const Messaging = () => {
 
                         <div className="lg:flex justify-between  h-[90%] w-[100%]">
                             {(window.width > 1024 || !showMobileChat) && (
-                                <div className="border-r-2 h-screen border-[#E7E7E7] lg:w-[35%] pt-8">
+                                <div className="border-r-2 h-screen border-[#E7E7E7] lg:w-[30%] pt-8">
                                     <div className="flex pl-4 items-center">
                                         <div
                                             onClick={() => setOpenMenu(true)}
@@ -526,7 +546,7 @@ const Messaging = () => {
                                     ) : (chatHistory &&
                                           chatHistory.length > 0) ||
                                       activeChat ? (
-                                        <div className="lg:w-[65%] pt-8">
+                                        <div className="lg:w-[70%] pt-8">
                                             <div className="flex justify-between pl-4 pr-8 pb-2">
                                                 <div className="flex">
                                                     {window.width < 1024 && (
@@ -544,7 +564,14 @@ const Messaging = () => {
                                                             {activeChat}
                                                         </p>
                                                         <p className="text-neutral-100 body-extra-small pt-1 font-bold">
-                                                            46 Members
+                                                            {
+                                                                
+                                                                chatHistory &&
+                                                                chatHistory?.length &&
+                                                                //@ts-expect-error
+                                                                chatHistory[0].chat.participantsCount >0? `${chatHistory[0]?.chat.participantsCount} Members`
+                                                                    : ""
+                                                            }
                                                         </p>
                                                     </div>
                                                 </div>
@@ -597,8 +624,11 @@ const Messaging = () => {
                                                             }`}
                                                         >
                                                             {item.media ? (
-                                                                <div>
-                                                                    <div className="bg-black-5 mt-8 ml-10 rounded-tl-[20px] rounded-tr-[20px] p-4 ">
+                                                                <div className="   max-w-fit">
+                                                                    {/* lg:w-[250px] w-[200px] */}
+                                                                    <div
+                                                                        className={`w-[200px] bg-black-5 mt-8  rounded-tl-[20px] rounded-tr-[20px] p-4`}
+                                                                    >
                                                                         <p
                                                                             className={`${
                                                                                 (item
@@ -631,7 +661,7 @@ const Messaging = () => {
                                                                             item
                                                                         }
                                                                     />
-                                                                    <div className="bg-black-5 ml-10 rounded-br-[20px] rounded-bl-[20px] p-4 ">
+                                                                    <div className="bg-black-5 rounded-br-[20px] rounded-bl-[20px] p-4 w-[200px]">
                                                                         <p className="mt-2 text-black-90 text-md">
                                                                             {
                                                                                 item.text
@@ -718,38 +748,42 @@ const Messaging = () => {
                                                         ref={ref}
                                                     />
                                                 </div>
-                                                <div className="flex justify-between w-full lg:w-[50%] md:w-[70%]">
-                                                <input
-                                                    type="text"
-                                                    placeholder="Write a message"
-                                                    className="focus:outline-none mr-6 "
-                                                    value={message}
-                                                    onChange={(e) =>
-                                                        setMessage(
-                                                            e.currentTarget
-                                                                .value
-                                                        )
-                                                    }
-                                                />
-                                                {/* p
+                                                <div className="flex justify-between w-full lg:w-[55%] md:w-[70%]">
+                                                    <input
+                                                        type="text"
+                                                        placeholder="Write a message"
+                                                        className="focus:outline-none mr-6 "
+                                                        value={message}
+                                                        onChange={(e) =>
+                                                            setMessage(
+                                                                e.currentTarget
+                                                                    .value
+                                                            )
+                                                        }
+                                                    />
+                                                    {/* p
                                     <img src={SendImg} alt="" /> */}
-                                                <button
-                                                    className=" border-none mr-6  lg:mr-20 md:mr-32 "
-                                                    onClick={() =>
-                                                        message &&
-                                                        handleSendMessage()
-                                                    }
-                                                    //disabled={isLoading}
-                                                >
-                                                    {isLoadingSendMessage ? (
-                                                        <CgSpinner className="animate-spin text-primary-90 text-3xl" />
-                                                    ) : (
-                                                        <img
-                                                            src={SendImg}
-                                                            alt=""
-                                                        />
-                                                    )}
-                                                </button>
+                                                    <button
+                                                        className=" border-none mr-6  lg:mr-20 md:mr-32 "
+                                                        onClick={() =>
+                                                            message &&
+                                                            handleSendMessage()
+                                                        }
+                                                        //disabled={isLoading}
+                                                    >
+                                                        {isLoadingSendMessage ? (
+                                                            <CgSpinner className="animate-spin text-primary-90 text-3xl" />
+                                                        ) : (
+                                                            
+                                                                <img
+                                                                    src={
+                                                                        SendImg
+                                                                    }
+                                                                    alt=""
+                                                                />
+                                                                
+                                                        )}
+                                                    </button>
                                                 </div>
                                             </div>
                                         </div>

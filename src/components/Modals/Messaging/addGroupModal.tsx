@@ -103,8 +103,8 @@ const AddGroup = ({ opened, setOpened, setOpenAddMember, setGroupPhoto, setGroup
                     </div>
                     {/* <Input control="" className="border-b-2 border-t-none border-blue-100" /> */}
                     <div className="flex justify-end mt-8 font-bold">
-                        <p>Cancel</p>
-                        <p className="pl-4" onClick={()=>groupTitle &&handleNext()}>Next</p>
+                        <p className="cursor-pointer" onClick={()=>setOpened(false)}>Cancel</p>
+                        <p className="pl-4 cursor-pointer" onClick={()=>groupTitle &&handleNext()}>Next</p>
                     </div>
                 </div>
             </div>

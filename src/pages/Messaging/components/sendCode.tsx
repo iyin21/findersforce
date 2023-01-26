@@ -1,7 +1,7 @@
 import { Formik, Form, FormikValues } from "formik"
 import TelegramLogo from "../assets/telegramLogo.svg"
 import { useState, Dispatch, SetStateAction } from "react"
-import { TelegramClient } from "telegram"
+import { TelegramClient, Api } from "telegram"
 import FormikControls from "../../../components/Form/FormControls/form-controls"
 import { showNotification } from "@mantine/notifications"
 import { validateTelegramLoginRequest } from "../utils/validateTelegramLoginRequest"
@@ -32,14 +32,23 @@ const SendCode = ({
 
         // const { phoneCodeHash, isCodeViaApp }
         try {
-            const result = await client.sendCode(
-                {
+            const result = await client.invoke(new Api.auth.SendCode(
+                {   
                     apiId: apiId,
                     apiHash: apiHash,
+                    phoneNumber:values.phoneNumber,
+                      settings:new Api.CodeSettings({
+        allowFlashcall: true,
+        currentNumber: true,
+        allowAppHash: true,
+        allowMissedCall: true,
+        //logoutTokens: [Buffer.from("arbitrary data here")],
+      }),  
                 },
-                values.phoneNumber
+                
+                
                 // forceSMS
-            )
+            ))
             if (result) {
                 setNewClient(client)
                 setPhoneCodeHash(result.phoneCodeHash)

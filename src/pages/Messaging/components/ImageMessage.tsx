@@ -10,6 +10,7 @@ import { CgSpinner } from "react-icons/cg"
 import ImageModal from "./ImageModal"
 import { AiFillFile } from "react-icons/ai"
 import { showNotification } from "@mantine/notifications"
+import useWindowSize from "../../../hooks/useWindowSize"
 
 export default function ImageMessage({
     data,
@@ -106,6 +107,7 @@ export default function ImageMessage({
 
     // @ts-expect-erro
     // console.log("file", item.file?.size?.value)
+    const windows = useWindowSize()
     return (
         <>
             <ImageModal
@@ -115,7 +117,7 @@ export default function ImageMessage({
             />
             {data.className === "MessageMediaDocument" && item.file ? (
                 <a
-                    className="flex items-center ml-10 bg-black-5 w-[300px] pl-4"
+                    className="flex items-center bg-black-5  w-[200px] pl-4"
                     onClick={() => handleDocumentContent()}
                     href={window.URL.createObjectURL(
                         new Blob([document as Buffer], {
@@ -141,14 +143,14 @@ export default function ImageMessage({
                         src={data.webpage.embedUrl}
                         className="ml-10"
                         height="300"
-                        width="300"
+                        width="200px"
                         allow="fullscreen"
                         title="webpage"
                     ></iframe>
                 </div>
             ) : (
                 <div
-                    className="rounded-[20px] cursor-pointer   ml-10 "
+                    className="rounded-[20px] cursor-pointer    "
                     onClick={() =>
                         image ? setOpenImageModal(true) : handleClick()
                     }
@@ -157,7 +159,7 @@ export default function ImageMessage({
                         <img
                             src={`data:image/jpeg;base64,${image}`}
                             height={100}
-                            width={300}
+                            width="200px"
                             alt=""
                         />
                     ) : (
@@ -175,7 +177,7 @@ export default function ImageMessage({
                             <img
                                 src={`data:image/png;base64,${thumbnailImg}`}
                                 height={100}
-                                width={300}
+                                width="200px"
                                 alt=""
                             />
                         </div>

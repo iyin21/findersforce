@@ -11385,13 +11385,6 @@ node-libs-browser@^2.2.1:
     util "^0.11.0"
     vm-browserify "^1.0.1"
 
-node-localstorage@^2.2.1:
-  version "2.2.1"
-  resolved "https://registry.yarnpkg.com/node-localstorage/-/node-localstorage-2.2.1.tgz#869723550a4883e426cb391d2df0b563a51c7c1c"
-  integrity sha512-vv8fJuOUCCvSPjDjBLlMqYMHob4aGjkmrkaE42/mZr0VT+ZAU10jRF8oTnX9+pgU9/vYJ8P7YT3Vd6ajkmzSCw==
-  dependencies:
-    write-file-atomic "^1.1.4"
-
 node-releases@^2.0.6:
   version "2.0.8"
   resolved "https://registry.yarnpkg.com/node-releases/-/node-releases-2.0.8.tgz#0f349cdc8fcfa39a92ac0be9bc48b7706292b9ae"
@@ -12560,6 +12553,11 @@ react-addons-pure-render-mixin@^15.6.2:
   dependencies:
     object-assign "^4.1.0"
 
+react-audio-voice-recorder@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/react-audio-voice-recorder/-/react-audio-voice-recorder-1.0.4.tgz#08604becb7a1d038ddd14b5d6274dd1f5d419d27"
+  integrity sha512-NqMQqZZIau8cmzKUsf43s8rWF5lJPPebj+o6tkcX83dv2lLDdJL+jUFspynMSEZq+/T8NJYH2QUqqDAv9XF4Xw==
+
 react-datepicker@^4.8.0:
   version "4.8.0"
   resolved "https://registry.yarnpkg.com/react-datepicker/-/react-datepicker-4.8.0.tgz#11b8918d085a1ce4781eee4c8e4641b3cd592010"
@@ -12870,9 +12868,9 @@ readdirp@~3.6.0:
     picomatch "^2.2.1"
 
 real-cancellable-promise@^1.1.1:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/real-cancellable-promise/-/real-cancellable-promise-1.1.1.tgz#be793502f7ed8067936d95dc040a2d2a2a1944a7"
-  integrity sha512-vxanUX4Aff5sRX6Rb1CSeCDWhO20L0hKQXWTLOYbtRo9WYFMjlhEBX0E75iz3+7ucrmFdPpDolwLC7L65P7hag==
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/real-cancellable-promise/-/real-cancellable-promise-1.1.2.tgz#af9f7b68ae6828f71af5346132cf427eb859745a"
+  integrity sha512-eq/nAAVW+hj29x292W6yOkeEJ2F/pABnYC5cUfivOsIvSvF/Z0V2tWiyPK73+ay9DZ27CKp7Q+JkCwzmbwE75Q==
 
 redent@^1.0.0:
   version "1.0.0"
@@ -13610,16 +13608,6 @@ slice-ansi@^5.0.0:
     ansi-styles "^6.0.0"
     is-fullwidth-code-point "^4.0.0"
 
-slide@^1.1.5:
-  version "1.1.6"
-  resolved "https://registry.yarnpkg.com/slide/-/slide-1.1.6.tgz#56eb027d65b4d2dce6cb2e2d32c4d4afc9e1d707"
-  integrity sha512-NwrtjCg+lZoqhFU8fOwl4ay2ei8PaqCBOUV3/ektPY9trO1yQ1oXEfmHAhKArUVUr/hOHvy5f6AdP17dCM0zMw==
-
-smart-buffer@^4.2.0:
-  version "4.2.0"
-  resolved "https://registry.yarnpkg.com/smart-buffer/-/smart-buffer-4.2.0.tgz#6e1d71fa4f18c05f7d0ff216dd16a481d0e8d9ae"
-  integrity sha512-94hK0Hh8rPqQl2xXc3HsaBoOXKV20MToPkcXvwbISWLEs+64sBq5kFgn2kJDHb1Pry9yrP0dxrCI9RRci7RXKg==
-
 snapdragon-node@^2.0.1:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/snapdragon-node/-/snapdragon-node-2.1.1.tgz#6c175f86ff14bdb0724563e8f3c1b021a286853b"
@@ -13649,14 +13637,6 @@ snapdragon@^0.8.1:
     source-map "^0.5.6"
     source-map-resolve "^0.5.0"
     use "^3.1.0"
-
-socks@^2.6.2:
-  version "2.7.1"
-  resolved "https://registry.yarnpkg.com/socks/-/socks-2.7.1.tgz#d8e651247178fde79c0663043e07240196857d55"
-  integrity sha512-7maUZy1N7uo6+WVEX6psASxtNlKaNVMlGQKkG/63nEDdLOWNbiUMoLK7X4uYoLhQstau72mLgfEWcXcwsaHbYQ==
-  dependencies:
-    ip "^2.0.0"
-    smart-buffer "^4.2.0"
 
 source-list-map@^2.0.0:
   version "2.0.1"
@@ -14222,10 +14202,10 @@ tdweb@^1.8.0:
     localforage "^1.7.3"
     uuid "^3.3.2"
 
-telegram@^2.15.4:
-  version "2.15.5"
-  resolved "https://registry.yarnpkg.com/telegram/-/telegram-2.15.5.tgz#0eeba38366320922201404ae5d86f306b197b6fd"
-  integrity sha512-8xYhZ5FpdvGaGijhiV5wEcxNbiWa0NykBCC7/rhcjbQI91WYwkSFMQFBEoQTn24+w9jBA2Fzi0kNzX8N5Zs3Mw==
+telegram@2.15.4:
+  version "2.15.4"
+  resolved "https://registry.yarnpkg.com/telegram/-/telegram-2.15.4.tgz#d8beff42b9445788dc4997be51402a4d762caf37"
+  integrity sha512-dQ6gyY31PaiTzQ6xbTBXKvblYdNN/hXlx5uadMPV/5ydEI+r048IsxZD/Qz47obFTs2rDxUWN47zfYhqd8sP0w==
   dependencies:
     "@cryptography/aes" "^0.1.1"
     async-mutex "^0.3.0"
@@ -14233,11 +14213,9 @@ telegram@^2.15.4:
     buffer "^6.0.3"
     htmlparser2 "^6.1.0"
     mime "^3.0.0"
-    node-localstorage "^2.2.1"
     pako "^2.0.3"
     path-browserify "^1.0.1"
     real-cancellable-promise "^1.1.1"
-    socks "^2.6.2"
     store2 "^2.13.0"
     ts-custom-error "^3.2.0"
     websocket "^1.0.34"
@@ -15502,15 +15480,6 @@ wrappy@1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/wrappy/-/wrappy-1.0.2.tgz#b5243d8f3ec1aa35f1364605bc0d1036e30ab69f"
   integrity sha512-l4Sp/DRseor9wL6EvV2+TuQn63dMkPjZ/sp9XkghTEbV9KlPS1xUsZ3u7/IQO4wxtcFB4bgpQPRcR3QCvezPcQ==
-
-write-file-atomic@^1.1.4:
-  version "1.3.4"
-  resolved "https://registry.yarnpkg.com/write-file-atomic/-/write-file-atomic-1.3.4.tgz#f807a4f0b1d9e913ae7a48112e6cc3af1991b45f"
-  integrity sha512-SdrHoC/yVBPpV0Xq/mUZQIpW2sWXAShb/V4pomcJXh92RuaO+f3UTWItiR3Px+pLnV2PvC2/bfn5cwr5X6Vfxw==
-  dependencies:
-    graceful-fs "^4.1.11"
-    imurmurhash "^0.1.4"
-    slide "^1.1.5"
 
 write-file-atomic@^3.0.0:
   version "3.0.3"
