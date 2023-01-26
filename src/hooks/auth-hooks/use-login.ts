@@ -1,6 +1,6 @@
 import { AuthActionType } from "types/auth/auth-interfaces"
 import { admin } from "../../utils/user-types"
-import { axiosInstance } from "../../services/api.service"
+import { axiosBaseInstance } from "../../services/api.service"
 
 const login = (
     email: string,
@@ -16,13 +16,13 @@ const login = (
         arg2?: { state: { email: string } }
     ) => void
 ) => {
-    axiosInstance
+    axiosBaseInstance
         .post("/auth/login", { email: email, password: password })
         .then(async (response) => {
             const user = response.data?.data?.user
 
             if (user) {
-                const res = await axiosInstance.get("/user/profile", {
+                const res = await axiosBaseInstance.get("/user/profile", {
                     headers: {
                         Authorization: `Bearer ${response.data.data.jwt.token}`,
                     },

@@ -1,4 +1,3 @@
-import { axiosInstance } from "../../../services/api.service"
 import { showNotification } from "@mantine/notifications"
 import { AxiosError, AxiosRequestConfig } from "axios"
 // import { useQuery, useMutation } from "react-query"
@@ -9,6 +8,7 @@ import {
 } from "../types"
 import useAuthContext from "../../../hooks/auth-hooks/useAuth"
 import { useMutation, useQuery } from "@tanstack/react-query"
+import useAxiosInstance from "../../../services/useAxiosInstance"
 // import { FormikValues } from "formik"
 
 interface UpdateComplaintCommentRequest {
@@ -23,6 +23,7 @@ interface UpdateComplaintCommentRequest {
 
 function useGetAllComplaints() {
     const { state } = useAuthContext()
+    const axiosInstance = useAxiosInstance()
     const getAllComplaints = async () => {
         const { data } = await axiosInstance.get("/complaints", {
             headers: {
@@ -52,6 +53,7 @@ function useGetComplaints({ status }: { status: string }) {
     // const { auth } =  useAuth()
     // console.log(auth)
     const { state } = useAuthContext()
+    const axiosInstance = useAxiosInstance()
     const getComplaints = async () => {
         const { data } = await axiosInstance.get("/complaints", {
             params: { status },
@@ -81,6 +83,7 @@ function useGetComplaints({ status }: { status: string }) {
 
 function useGetSingleComplaint({ id }: { id: string }) {
     const { state } = useAuthContext()
+    const axiosInstance = useAxiosInstance()
     const getSingleComplaint = async () => {
         const { data } = await axiosInstance.get(`/complaints/${id}`, {
             headers: {
@@ -109,7 +112,7 @@ function useGetSingleComplaint({ id }: { id: string }) {
 
 function useCreateComplaint() {
     const { state } = useAuthContext()
-
+    const axiosInstance = useAxiosInstance()
     const createComplaint = async ({ formData }: { formData: FormData }) => {
         const config: AxiosRequestConfig = {
             headers: {
@@ -163,6 +166,7 @@ function useCreateComplaint() {
 
 function useUpdateComplaintComment({ id }: { id: string }) {
     const { state } = useAuthContext()
+    const axiosInstance = useAxiosInstance()
 
     const updateComplaintComment = async ({
         message,

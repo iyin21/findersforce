@@ -8,10 +8,11 @@ import {
 } from "../../types/planner/interfaces"
 import { useMutation, useQuery } from "@tanstack/react-query"
 import { AxiosError, AxiosRequestConfig } from "axios"
-import { axiosInstance } from "../../services/api.service"
 import useAuthContext from "../auth-hooks/useAuth"
+import useAxiosInstance from "../../services/useAxiosInstance"
 
 function useGetShiftHistory({
+    upcoming,
     ongoing,
     completed,
     cancelled,
@@ -26,9 +27,11 @@ function useGetShiftHistory({
     regionId?: string | undefined | null
 }) {
     const { state } = useAuthContext()
+    const axiosInstance = useAxiosInstance()
     const getShiftHistory = async () => {
         const { data } = await axiosInstance.get(`/schedule`, {
             params: {
+                upcoming,
                 ongoing,
                 completed,
                 cancelled,
@@ -45,7 +48,7 @@ function useGetShiftHistory({
     return useQuery<unknown, AxiosError, ShiftResponse["data"]>(
         [
             "shiftHistory",
-            { ongoing, completed, cancelled, jobMeetingPoint, regionId },
+            { upcoming, ongoing, completed, cancelled, jobMeetingPoint, regionId },
         ],
         getShiftHistory,
 
@@ -69,6 +72,7 @@ function useGetShiftHistoryByJobListingId({
     queryStatus?: string
 }) {
     const { state } = useAuthContext()
+    const axiosInstance = useAxiosInstance()
     const getShiftHistoryByJobListingId = async () => {
         const { data } = await axiosInstance.get(
             `/schedule?jobListingId=${jobListingId}&${queryStatus}=true`,
@@ -105,6 +109,7 @@ function useGetSingleSchedule({
     operativeId?: string
 }) {
     const { state } = useAuthContext()
+    const axiosInstance = useAxiosInstance()
     const getSingleSchedule = async () => {
         const { data } = await axiosInstance.get(`/schedule`, {
             params: { jobListingId, operativeId },
@@ -133,6 +138,7 @@ function useGetSingleSchedule({
 
 function useGetScheduleByScheduleId({ scheduleId }: { scheduleId: string }) {
     const { state } = useAuthContext()
+    const axiosInstance = useAxiosInstance()
     const getOperativeRatingSummary = async () => {
         const { data } = await axiosInstance.get(`/schedule/${scheduleId}`, {
             headers: {
@@ -159,6 +165,7 @@ function useGetScheduleByScheduleId({ scheduleId }: { scheduleId: string }) {
 }
 function usePaymentEvidenceUpload() {
     const { state } = useAuthContext()
+    const axiosInstance = useAxiosInstance()
 
     const uploadPaymentEvidence = async (requestBody: { file: File , scheduleId: string}) => {
         const config: AxiosRequestConfig = {
@@ -199,6 +206,7 @@ function useRateOperative() {
     const {
         state: { jwt },
     } = useAuthContext();
+    const axiosInstance = useAxiosInstance()
 
     const rateOperative = async (requestBody: RateOperativeRequest) => {
         const config: AxiosRequestConfig = {

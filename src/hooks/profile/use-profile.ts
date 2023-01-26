@@ -1,12 +1,17 @@
 import { showNotification } from "@mantine/notifications"
 import { useMutation, useQuery } from "@tanstack/react-query"
 import { AxiosError } from "axios"
-import { ProfileRequest, ProfileResponse } from "../../types/profile/interface"
+import {
+    InviteProfileResponse,
+    ProfileRequest,
+    ProfileResponse,
+} from "../../types/profile/interface"
 import useAuthContext from "../../hooks/auth-hooks/useAuth"
-import { axiosInstance } from "../../services/api.service"
+import useAxiosInstance from "../../services/useAxiosInstance"
 
 export const useProfile = () => {
     const { state } = useAuthContext()
+    const axiosInstance = useAxiosInstance()
 
     const getProfile = async () => {
         const { data } = await axiosInstance.get("/user/profile", {
@@ -31,20 +36,9 @@ export const useProfile = () => {
     )
 }
 
-interface InviteProfileResponse {
-    jwt: {
-        token: string
-    }
-    user: {
-        depotCompany: {
-            _id: string
-            name: string
-        }
-    }
-}
-
 export const useCreateProfile = () => {
     const { state } = useAuthContext()
+    const axiosInstance = useAxiosInstance()
 
     const createProfileRequest = async (requestBody: ProfileRequest) => {
         const { data } = await axiosInstance.post(

@@ -1,5 +1,4 @@
 import { showNotification } from "@mantine/notifications"
-import { axiosInstance } from "../../services/api.service"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { AxiosError } from "axios"
 import useAuthContext from "../auth-hooks/useAuth"
@@ -7,6 +6,7 @@ import {
     PaymentResponse,
     TransactionResponse,
 } from "../../types/payment/interface"
+import useAxiosInstance from "../../services/useAxiosInstance"
 
 interface updatePaymentRequest {
     transactionIds: string[]
@@ -18,6 +18,7 @@ function useGetTransactionHistoryByJobListingId({
     jobListingId?: string
 }) {
     const { state } = useAuthContext()
+    const axiosInstance = useAxiosInstance()
     const getTransactionHistoryByJobListingId = async () => {
         const { data } = await axiosInstance.get(
             `/admin/transaction?jobListingId=${jobListingId}`,
@@ -48,6 +49,7 @@ function useGetTransactionHistoryByJobListingId({
 
 function useUpdatePaymentHistory() {
     const { state } = useAuthContext()
+    const axiosInstance = useAxiosInstance()
     const queryClient = useQueryClient()
 
     const updatePaymentHistory = async ({

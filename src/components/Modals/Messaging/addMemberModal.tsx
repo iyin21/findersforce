@@ -35,7 +35,7 @@ const AddMembersModal = ({
             try {
                 const result = await client.invoke(
                     new Api.contacts.GetContacts({
-                        //hash: 3457568,
+                        // hash: 3457568,
                     })
                 )
                 // console.log("contact", result) // prints the result
@@ -58,7 +58,7 @@ const AddMembersModal = ({
                 setUserIds([...userIds, value.phone])
             }
 
-            //setFieldValue("complaintIssue", [...checkedComplaint, value])
+            // setFieldValue("complaintIssue", [...checkedComplaint, value])
         } else {
             setCheckedContact(checkedContact.filter((item) => item !== value))
             setUserIds(userIds.filter((item) => item !== value.phone))
@@ -216,7 +216,7 @@ const AddMembersModal = ({
                                         </p>
                                     </div>
                                 }
-                                //{item.username|| item.firstName+" "+(item?.lastName||"")}
+                                // {item.username|| item.firstName+" "+(item?.lastName||"")}
                                 id={item.firstName}
                                 onChange={(
                                     e: React.ChangeEvent<HTMLInputElement>

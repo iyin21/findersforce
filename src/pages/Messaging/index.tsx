@@ -3,9 +3,9 @@ import { FcMenu } from "react-icons/fc"
 import { Input } from "../../components"
 
 import CompanyLogo from "./assets/companyLogo.svg"
-//import { MdCall } from "react-icons/md"
-//import { HiVideoCamera } from "react-icons/hi"
-//import { BiSearch } from "react-icons/bi"
+// import { MdCall } from "react-icons/md"
+// import { HiVideoCamera } from "react-icons/hi"
+// import { BiSearch } from "react-icons/bi"
 import { AiOutlineMore } from "react-icons/ai"
 import { useState, useCallback, ChangeEvent } from "react"
 import SendImg from "../Support/assets/images/send.svg"
@@ -36,8 +36,8 @@ import { Overlay } from "@mantine/core"
 import ProfilePicture from "./components/profilePicture"
 import ProfileDrawer from "./components/profileDrawer"
 import useWindowSize from "../../hooks/useWindowSize"
-import { AudioRecorder } from "react-audio-voice-recorder"
-import { BsMic } from "react-icons/bs"
+//import { AudioRecorder } from "react-audio-voice-recorder"
+//import { BsMic } from "react-icons/bs"
 //2.14.8
 dayjs.extend(calendar)
 
@@ -46,7 +46,7 @@ const Messaging = () => {
     const [phone, setPhone] = useState("")
     const [phoneCodeHash, setPhoneCodeHash] = useState("")
     const [newClient, setNewClient] = useState<TelegramClient>()
-    //const [session, setSession] = useState("")
+    // const [session, setSession] = useState("")
     const [dialog, setDialog] = useState<Dialog[]>([])
     const [activeChat, setActiveChat] = useState("")
     const [chatHistory, setChatHistory] = useState<Api.Message[]>([])
@@ -56,7 +56,7 @@ const Messaging = () => {
     const [isLoading, setIsLoading] = useState(false)
     const [chatId, setChatId] = useState<bigInt.BigInteger>()
     const [showMobileChat, setShowMobileChat] = useState(false)
-    //Telegram
+    // Telegram
 
     const apiId = Number(import.meta.env.VITE_TELEGRAM_API_ID)
 
@@ -67,7 +67,7 @@ const Messaging = () => {
 
     const client = new TelegramClient(stringSession, apiId, apiHash, {
         connectionRetries: 10000,
-        //testServers: true,
+        // testServers: true,
     })
 
     // console.log(sessionStorage.getItem("session"))
@@ -228,7 +228,7 @@ const Messaging = () => {
                 message: message,
             })
             if (result) {
-                console.log("result", result)
+                // console.log("result", result)
                 setChatHistory((chat) => [...chat, result])
                 setMessage("")
             }
@@ -313,7 +313,7 @@ const Messaging = () => {
                     isGroup={
                         chatHistory &&
                         chatHistory?.length > 0 &&
-                        //@ts-expect-error
+                        // @ts-expect-error
                         chatHistory[0]._chat.className === "Chat"
                             ? true
                             : false
@@ -365,7 +365,7 @@ const Messaging = () => {
                             <Drawer
                                 opened={openMenu}
                                 onClose={() => setOpenMenu(false)}
-                                //size="75%"
+                                // size="75%"
                                 withCloseButton={false}
                                 overlayBlur={2}
                                 overlayColor="#132013"
@@ -741,7 +741,7 @@ const Messaging = () => {
                                                     <GrAttachment color="rgba(15, 13, 0, 0.5)" />
                                                     <input
                                                         data-testid="file-upload"
-                                                        //ref={fileInputRef}
+                                                        // ref={fileInputRef}
                                                         type="file"
                                                         hidden
                                                         onChange={handleUpload}

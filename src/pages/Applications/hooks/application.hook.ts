@@ -1,4 +1,3 @@
-import { axiosInstance } from "../../../services/api.service"
 import { showNotification } from "@mantine/notifications"
 import { AxiosError, AxiosRequestConfig } from "axios"
 // import { useQuery, useMutation } from "react-query"
@@ -9,6 +8,7 @@ import {
 } from "../interface"
 import useAuthContext from "../../../hooks/auth-hooks/useAuth"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
+import useAxiosInstance from "../../../services/useAxiosInstance"
 
 interface ApplicationRequest {
     status: string
@@ -30,6 +30,7 @@ function useGetApplications({
     // const { auth } =  useAuth()
     // console.log(auth)
     const { state } = useAuthContext()
+    const axiosInstance = useAxiosInstance()
     const getApplications = async () => {
         const { data } = await axiosInstance.get("/applications", {
             params: {
@@ -74,6 +75,7 @@ function useGetApplications({
 
 function useGetApplicationDetails({ id }: { id: string }) {
     const { state } = useAuthContext()
+    const axiosInstance = useAxiosInstance()
     const getApplicationDetails = async () => {
         const { data } = await axiosInstance.get(`/applications/${id}`, {
             headers: {
@@ -101,6 +103,7 @@ function useGetApplicationDetails({ id }: { id: string }) {
 }
 function useUpdateApplication({ id }: { id: string }) {
     const { state } = useAuthContext()
+    const axiosInstance = useAxiosInstance()
     // Get QueryClient from the context
     const queryClient = useQueryClient()
 
@@ -147,6 +150,7 @@ function useGetShiftHistory({
     completed?: boolean
 }) {
     const { state } = useAuthContext()
+    const axiosInstance = useAxiosInstance()
     const getShiftHistory = async () => {
         const { data } = await axiosInstance.get(`/schedule`, {
             params: { operativeId, completed },

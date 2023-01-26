@@ -1,8 +1,8 @@
 import { showNotification } from "@mantine/notifications"
 import { useAuthContext } from "../../pages/auth/context/authContext"
-import { axiosInstance } from "../../services/api.service"
 import { useMutation } from "@tanstack/react-query"
 import { AxiosError, AxiosRequestConfig } from "axios"
+import useAxiosInstance from "../../services/useAxiosInstance"
 
 interface profileImageSucessResponse {
     status: string
@@ -26,6 +26,7 @@ interface profileImageSucessResponse {
 
 function useProfileImageUpload() {
     const { state } = useAuthContext()
+    const axiosInstance = useAxiosInstance()
 
     const uploadPaymentEvidence = async (requestBody: { file: File }) => {
         const config: AxiosRequestConfig = {

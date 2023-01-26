@@ -40,7 +40,7 @@ const ViewAllMaps = () => {
                 </div>
 
                 <div className="flex flex-col lg:flex-row lg:justify-between lg:items-center mt-6 relative">
-                    <div className="flex flex-col w-[35%]">
+                    <div className="flex flex-col lg:w-[35%]">
                         <p className="bg-yellow-10 rounded-full text-3sm font-bold font-creatoMedium mb-4 py-2 px-3 text-center flex items-center gap-3">
                             <HiInformationCircle size={25} color="#FED70A" />{" "}
                             1,051 Operatives
@@ -114,10 +114,10 @@ const ViewAllMaps = () => {
                             ))}
                         </div>
                     </div>
-                    <div className="w-full h-[562px]  mx-8  relative">
+                    <div className="w-full h-[562px]  mt-3 lg:mt-0 lg:mx-8  relative">
                         <div
                             id="map"
-                            className="w-full h-[562px] bg-black-1 hidden lg:block mx-8 rounded-lg  "
+                            className="w-full h-[562px] bg-black-1 lg:block lg:mx-8 rounded-lg  "
                             ref={mapRef}
                         ></div>
                     </div>

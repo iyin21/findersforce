@@ -1,5 +1,4 @@
 import { useMutation, useQuery } from "@tanstack/react-query"
-import { axiosInstance } from "../../services/api.service"
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios"
 import {
     BulkDeleteJobRequest,
@@ -13,6 +12,7 @@ import {
 import { showNotification } from "@mantine/notifications"
 import { FormikValues } from "formik"
 import useAuthContext from "../auth-hooks/useAuth"
+import useAxiosInstance from "../../services/useAxiosInstance"
 
 // get job listing
 function useJobBoards({
@@ -25,6 +25,7 @@ function useJobBoards({
 }: // amount,
 JobBoardRequest) {
     const { state } = useAuthContext()
+    const axiosInstance = useAxiosInstance()
 
     /** API methods */
     const getJobBoards = async () => {
@@ -76,6 +77,7 @@ function useGetSingleJobApplication({
     jobListing: string | undefined
 }) {
     const { state } = useAuthContext()
+    const axiosInstance = useAxiosInstance()
 
     // /** API methods */
     const getSingleJobApplication = async (jobListing: string | undefined) => {
@@ -106,6 +108,7 @@ function useGetSingleJobApplication({
 // get job types
 function useGetJobType() {
     const { state } = useAuthContext()
+    const axiosInstance = useAxiosInstance()
 
     /** API methods */
     const getJobType = async () => {
@@ -135,6 +138,7 @@ function useGetJobType() {
 // get job qualification
 function useGetJobQualification() {
     const { state } = useAuthContext()
+    const axiosInstance = useAxiosInstance()
 
     /** API methods */
     const getJobQualification = async () => {
@@ -167,6 +171,7 @@ function useGetJobQualification() {
 // get job qualification by category
 function useGetJobQualificationCategory() {
     const { state } = useAuthContext()
+    const axiosInstance = useAxiosInstance()
 
     /** API methods */
     const getJobQualificationCategory = async () => {
@@ -199,6 +204,7 @@ function useGetJobQualificationCategory() {
 // delete job listing
 function useDeleteJobList({ id }: { id: string | undefined }) {
     const { state } = useAuthContext()
+    const axiosInstance = useAxiosInstance()
 
     /** API methods */
     const deleteJob = async () => {
@@ -215,6 +221,7 @@ function useDeleteJobList({ id }: { id: string | undefined }) {
 
 function useBulkDeleteJobList() {
     const { state } = useAuthContext()
+    const axiosInstance = useAxiosInstance()
     const bulkDeleteJob = async (requestBody: BulkDeleteJobRequest) => {
         const config: AxiosRequestConfig = {
             headers: {
@@ -253,6 +260,7 @@ function useBulkDeleteJobList() {
 // get job listing by id
 function useGetJobListingById({ id }: { id: string | undefined }) {
     const { state } = useAuthContext()
+    const axiosInstance = useAxiosInstance()
 
     // /** API methods */
     const getJobByID = async (id: string | undefined) => {
@@ -282,6 +290,7 @@ function useGetJobListingById({ id }: { id: string | undefined }) {
 // create job listing
 function useCreateJobList() {
     const { state } = useAuthContext()
+    const axiosInstance = useAxiosInstance()
 
     const createJobListRequest = async (values: FormikValues) => {
         const formData: FormikValues = {
@@ -356,6 +365,7 @@ function useCreateJobList() {
 // update job listing
 function useUpdateJobList({ id }: { id: string | undefined }) {
     const { state } = useAuthContext()
+    const axiosInstance = useAxiosInstance()
 
     const updateJobListRequest = async (values: FormikValues) => {
         const formData: FormikValues = {
@@ -385,12 +395,22 @@ function useUpdateJobList({ id }: { id: string | undefined }) {
 
     return useMutation<any, AxiosError, FormikValues>(
         ["updateJobList", id],
-        (FormikValues) => updateJobListRequest(FormikValues)
+        (FormikValues) => updateJobListRequest(FormikValues),
+        {
+            onSuccess: (data) => {
+                showNotification({
+                    message: data?.message || data?.message,
+                    title: "Success",
+                    color: "green",
+                })
+            },
+        }
     )
 }
 
 function useSearchOperatives({ q, page, limit, signal }: ISearchRequest) {
     const { state } = useAuthContext()
+    const axiosInstance = useAxiosInstance()
 
     /** API methods */
     const getSearchOperatives = async () => {

@@ -12,6 +12,7 @@ export interface ProfileResponse {
     company: {
         _id: string
         name: string
+        logo: string
     }
 }
 
@@ -23,4 +24,16 @@ export interface ProfileRequest {
     inviteCode: string | null
     courseLink: string
     subscriptionPlan: string
+}
+
+export interface InviteProfileResponse {
+    jwt: {
+        token: string
+    }
+    user: {
+        depotCompany: {
+            _id: string
+            name: string
+        }
+    }
 }

@@ -68,7 +68,22 @@ const ApplicationTable = ({
 
             <td>{item?.jobListing?.listingId}</td>
             <td>{item?.jobListing?.jobQualification?.name}</td>
-            {item?.jobListing.jobMeetingPoint === "DEPOT" ? (<td>{item?.jobListing?.jobRate?.jobRateDepotFirstDisplayedToDepot}</td>) : (<td>{item?.jobListing?.jobRate?.jobRateMeetOnsiteDisplayedToDepot}</td>)}
+            {item?.jobListing.jobMeetingPoint === "DEPOT" ? (
+                <td>
+                    {" "}
+                    {item?.jobListing?.jobRate.currency}
+                    {
+                        item?.jobListing?.amountPaidByDepot
+                    }
+                </td>
+            ) : (
+                <td>
+                    {item?.jobListing?.jobRate.currency}
+                    {
+                        item?.jobListing?.amountPaidByDepot
+                    }
+                </td>
+            )}
             <td className="text-green-100 font-medium">
                 {item?.jobMatchPercentage}%
             </td>
@@ -78,29 +93,27 @@ const ApplicationTable = ({
                     <span className="pl-1">{item?.user?.averageRating}</span>
                 </p>
             </td>
-            {activeTab === "pending" ? (
+            {activeTab === "PENDING" ? (
                 <td>
                     {dayjs(item?.createdAt).format("MMM D, YYYY")} |{" "}
                     {dayjs(item?.createdAt).format("h:mm A")}
                 </td>
-            ) : activeTab === "accepted" ? (
+            ) : activeTab === "WON" ? (
                 <td>{dayjs(item?.createdAt).format("MMM D, YYYY")}</td>
             ) : (
                 <td>{dayjs(item?.createdAt).format("MMM D, YYYY")}</td>
             )}
-            {activeTab !== "pending" && (
+            {activeTab !== "PENDING" && (
                 <td>{dayjs(item?.updatedAt).format("MMM D, YYYY")}</td>
             )}
             <td
                 className="cursor-pointer"
                 data-testid="view_application"
-                onClick={
-                    () => {
-                        setActiveId(item?._id)
-                        setPhase(2)
-                        setActiveTab(item?.status)
-                    }
-                }
+                onClick={() => {
+                    setActiveId(item?._id)
+                    setPhase(2)
+                    setActiveTab(item?.status)
+                }}
             >
                 <HiChevronRight size={30} style={{ color: "#889088" }} />
             </td>
@@ -154,7 +167,7 @@ const ApplicationTable = ({
                     }}
                 >
                     <thead>
-                        {activeTab === "pending" && (
+                        {activeTab === "PENDING" && (
                             <tr>
                                 {pendingTableHead.map((item, index) =>
                                     item === "match" ? (
@@ -314,7 +327,7 @@ const ApplicationTable = ({
                             </tr>
                         )}
 
-                        {activeTab === "accepted" && (
+                        {activeTab === "WON" && (
                             <tr>
                                 {approvedTableHead.map((item, index) =>
                                     item === "match" ? (
@@ -473,7 +486,7 @@ const ApplicationTable = ({
                                 )}
                             </tr>
                         )}
-                        {activeTab === "rejected" && (
+                        {activeTab === "LOST" && (
                             <tr>
                                 {passedTableHead.map((item, index) =>
                                     item === "match" ? (
@@ -693,9 +706,20 @@ const ApplicationTable = ({
                                             )}
                                     </p>
                                 </div>
+                                <div className="mt-4">
+                                    <h6 className="text-black-50 text-3sm">
+                                        WAGE
+                                    </h6>
+                                    <p className="text-2md mt-1">
+                                        {
+                                            item?.jobListing?.amountPaidByDepot
+                                        }
+                                    </p>
+                                </div>
+                                
                             </div>
                             <div>
-                                <div className="mt-4">
+                                <div className="mt-2">
                                     <h6 className="text-black-50 text-3sm">
                                         MATCH
                                     </h6>
@@ -704,7 +728,7 @@ const ApplicationTable = ({
                                     </p>
                                 </div>
 
-                                <div className="mt-4">
+                                <div className="mt-2">
                                     <h6 className="text-black-50 text-3sm">
                                         RATING
                                     </h6>
@@ -712,6 +736,37 @@ const ApplicationTable = ({
                                         {item?.user?.averageRating}
                                     </p>
                                 </div>
+                                {activeTab === "WON" ? (
+                                    <div className="mt-4">
+                                        <h6 className="text-black-50 text-3sm">
+                                            DATE APPROVED
+                                        </h6>
+                                        <p className="text-2md mt-1">
+                                            {dayjs(item?.updatedAt).format(
+                                                "MMM D, YYYY"
+                                            ) +
+                                                ", " +
+                                                dayjs(item?.updatedAt).format(
+                                                    "h:mm A"
+                                                )}
+                                        </p>
+                                    </div>
+                                ) : (
+                                    <div className="mt-4">
+                                        <h6 className="text-black-50 text-3sm">
+                                            DATE PASSED
+                                        </h6>
+                                        <p className="text-2md mt-1">
+                                            {dayjs(item?.updatedAt).format(
+                                                "MMM D, YYYY"
+                                            ) +
+                                                ", " +
+                                                dayjs(item?.updatedAt).format(
+                                                    "h:mm A"
+                                                )}
+                                        </p>
+                                    </div>
+                                )}
                             </div>
                         </div>
                     </div>

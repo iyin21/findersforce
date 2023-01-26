@@ -1,4 +1,4 @@
-import { axiosInstance } from "../../services/api.service"
+import { axiosBaseInstance } from "../../services/api.service"
 
 const setProfile = (
     password: string,
@@ -8,12 +8,13 @@ const setProfile = (
     firstName: string,
     lastName: string,
     accountType: string,
-    subscriptionPlan: string | null,
+    
     setIsSubmitting: (val: boolean) => void,
     setErrorMsg: (msg: string) => void,
     showError: (val: boolean) => void,
     setOpened: (val: boolean) => void,
     courseLink?: string,
+    subscriptionPlan?: string | null,
 ) => {
     const requestBody = {
         firstName: firstName,
@@ -24,8 +25,11 @@ const setProfile = (
         courseLink: courseLink,
         subscriptionPlan: subscriptionPlan
     }
-    accountType === "SHIFT-MANAGER" ? delete requestBody.courseLink : null
-    axiosInstance
+    if (accountType === "SHIFT-MANAGER") {
+        delete requestBody.courseLink
+        delete requestBody.subscriptionPlan
+    }
+    axiosBaseInstance
         .post(
             "/invitation/accept",
             requestBody

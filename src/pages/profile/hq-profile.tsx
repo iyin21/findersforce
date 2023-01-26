@@ -16,77 +16,18 @@ import videoBg from "../../assets/video/videoBg.mp4"
 
 const HQProfile = () => {
     const [step, setStep] = useState(0)
-    const [LocationStateArray, setLocationStateArray] = useState([])
     const [openSuccessModal, setOpenSuccessModal] = useState(false)
 
-    const { mutate: mutateUser, isSuccess, data } = useInviteHQ()
     const { mutate, isLoading, isError, data: profileData } = useCreateProfile()
-    // this duplicates the LocationStateArray session storage for regional manager data
-    const regionalData = LocationStateArray.map((i: any) => ({ ...i }))
-    // this duplicates the LocationStateArray session storage for shift manager data
-    const shiftData = LocationStateArray.map((i: any) => ({ ...i }))
 
-    // this deletes the regional manager email from the LocationStateArray session storage in order to separate the regional manager as the backend requires
-    const deleteRegionalManagerData = shiftData.map(function (item: any) {
-        delete item.regional_manager
-        return item
+    const {
+        mutate: mutateUser,
+        isSuccess,
+        data,
+        isLoading: isInviteLoading,
+    } = useInviteHQ({
+        jwt: profileData?.jwt?.token,
     })
-    // this deletes the shift manager email from the LocationStateArray session storage in order to separate the regional manager as the backend requires
-    const deleteShiftManagerData = regionalData.map(function (item: any) {
-        delete item.shift_manager
-        return item
-    })
-
-    // this adds the invited role to the shift manager array in order to send to the backend
-    const addShiftInvitedRoleData = deleteRegionalManagerData.map((v: any) => ({
-        ...v,
-        invitedRole: "SHIFT_MANAGER",
-        companyId: profileData?.user?.depotCompany?._id,
-    }))
-
-    // this adds the invited role to the regional manager array in order to send to the backend
-    const addRegionalInvitedRoleData = deleteShiftManagerData.map((v: any) => ({
-        ...v,
-        invitedRole: "REGIONAL_MANAGER",
-        companyId: profileData?.user?.depotCompany?._id,
-    }))
-    // this changes the shift_manager array to email in order to send to the backend
-    const shiftManagerArray = addShiftInvitedRoleData.map((item: any) => {
-        return {
-            email: item.shift_manager,
-            invitedRole: item.invitedRole,
-            regionAddress: item.regionAddress,
-            companyId: profileData?.user?.depotCompany?._id,
-        }
-    })
-    // this changes the regional_manager array to email in order to send to the backend
-    const regionalManagerArray = addRegionalInvitedRoleData.map((item: any) => {
-        return {
-            email: item.regional_manager,
-            invitedRole: item.invitedRole,
-            regionAddress: item.regionAddress,
-            companyId: profileData?.user?.depotCompany?._id,
-        }
-    })
-
-    // this combines the shift manager and regional manager arrays into one array to send to the backend
-    const finalArray = shiftManagerArray.concat(regionalManagerArray)
-
-    // this functions gets the session storage and parses it
-    const getSessionStorage = async () => {
-        const locationArray: any =
-            window.sessionStorage.getItem("locationArray")
-        const parsedLocationArray = JSON.parse(locationArray)
-
-        setLocationStateArray(parsedLocationArray)
-    }
-
-    const handleSubmit = () => {
-        mutateUser({
-            jwt: profileData?.jwt?.token,
-            invitees: finalArray,
-        })
-    }
 
     useEffect(() => {
         if (isSuccess) {
@@ -95,10 +36,6 @@ const HQProfile = () => {
         }
     }, [data, isError])
 
-    useEffect(() => {
-        getSessionStorage()
-    }, [LocationStateArray])
-
     return (
         <div>
             <video
@@ -106,7 +43,7 @@ const HQProfile = () => {
                 loop
                 muted
                 id="video"
-                className="hidden md:block h-screen w-full object-cover fixed"
+                className="hidden lg:block h-screen w-full object-cover fixed"
                 src={videoBg}
             ></video>
             <div className="grid grid-cols-1 lg:grid-cols-2 text-white h-fit lg:bg-black-60 lg:absolute lg:top-0">
@@ -120,13 +57,13 @@ const HQProfile = () => {
                     {" "}
                     <LandingPageText />
                 </div>
-                <div className="my-4 md:my-8 lg:mr-8 bg-white-100 pt-12 pb-10 px-6 md:px-16 flex flex-col rounded-[10px]">
+                <div className="my-4 md:my-8 lg:mr-8 bg-white-100 z-30 pt-12 pb-10 px-6 md:px-16 flex flex-col rounded-[10px]">
                     <FormikStepper
                         // this is the initial values for the formik form
                         initialValues={HqProfileInitialValue}
                         data-testid="post_job_form"
                         onSubmit={(values) => {
-                            handleSubmit()
+                            // handleSubmit()
                         }}
                         mutate={mutate}
                         isLoading={isLoading}
@@ -134,7 +71,7 @@ const HQProfile = () => {
                         setStep={setStep}
                         step={step}
                     >
-                        {ProfileFormFields.map(
+                        {ProfileFormFields?.map(
                             ({ validationSchema, Component, name }) => (
                                 <FormikStep
                                     key={name}
@@ -145,7 +82,9 @@ const HQProfile = () => {
                                     <Component
                                         setStep={setStep}
                                         step={step}
-                                        LocationStateArray={LocationStateArray}
+                                        profileData={profileData}
+                                        mutateUser={mutateUser}
+                                        isInviteLoading={isInviteLoading}
                                     />
                                 </FormikStep>
                             )
@@ -268,28 +207,36 @@ export function FormikStepper({ ...props }: TWizardProps) {
                                 {props.step === 1 ? (
                                     ""
                                 ) : (
-                                    <Button
-                                        size="normal"
-                                        className="w-full mt-16"
-                                        variant="primary"
-                                        type="submit"
-                                        disabled={props.isLoading}
-                                        style={{
-                                            backgroundColor:
-                                                "rgba(254, 215, 10, 1)",
-                                        }}
-                                        onClick={() => {
-                                            props.step === 0
-                                                ? handleCreateProfile(values)
-                                                : ""
-                                        }}
-                                    >
-                                        {isSubmitting
-                                            ? "Finishing..."
-                                            : isLastStep()
-                                            ? "Finish"
-                                            : "Next"}
-                                    </Button>
+                                    <>
+                                        {props.step === 2 ? (
+                                            ""
+                                        ) : (
+                                            <Button
+                                                size="normal"
+                                                className="w-full mt-16"
+                                                variant="primary"
+                                                type="submit"
+                                                disabled={props.isLoading}
+                                                style={{
+                                                    backgroundColor:
+                                                        "rgba(254, 215, 10, 1)",
+                                                }}
+                                                onClick={() => {
+                                                    props.step === 0
+                                                        ? handleCreateProfile(
+                                                              values
+                                                          )
+                                                        : ""
+                                                }}
+                                            >
+                                                {isSubmitting
+                                                    ? "Finishing..."
+                                                    : isLastStep()
+                                                    ? "Finish"
+                                                    : "Next"}
+                                            </Button>
+                                        )}{" "}
+                                    </>
                                 )}
 
                                 {props.step === 1 && (

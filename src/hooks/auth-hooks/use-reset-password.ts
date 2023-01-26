@@ -1,4 +1,4 @@
-import { axiosInstance } from "../../services/api.service"
+import { axiosBaseInstance } from "../../services/api.service"
 
 const useResetPassword = (
     newPassword: string,
@@ -10,7 +10,7 @@ const useResetPassword = (
     setIsSubmitting: (arg0: boolean) => void,
     passwordChanged: boolean
 ) => {
-    axiosInstance
+    axiosBaseInstance
         .patch(
             "/auth/change-password",
             {

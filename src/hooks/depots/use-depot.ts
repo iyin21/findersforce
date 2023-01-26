@@ -1,5 +1,4 @@
 import { showNotification } from "@mantine/notifications"
-import { axiosInstance } from "../../services/api.service"
 import { useMutation, useQuery } from "@tanstack/react-query"
 import { AxiosError, AxiosRequestConfig } from "axios"
 import useAuthContext from "../../hooks/auth-hooks/useAuth"
@@ -20,10 +19,11 @@ import {
     ISingleJobRateResponse,
     deleteRequest,
 } from "../../types/depot/depot-inteface"
+import useAxiosInstance from "../../services/useAxiosInstance"
 
 export const useInviteDepot = () => {
     const { state } = useAuthContext()
-
+    const axiosInstance = useAxiosInstance()
     const createInvite = async (requestBody: InviteDepotInterfaceRequest) => {
         const newFormData = new FormData()
 
@@ -80,7 +80,7 @@ export const useInviteDepot = () => {
 
 export const useCreateMultipleRates = () => {
     const { state } = useAuthContext()
-
+    const axiosInstance = useAxiosInstance()
     const createMultipleRates = async (requestBody: MultipleRateRequest) => {
         const { data } = await axiosInstance.post(
             "/job-listing/job-rate-multiple",
@@ -123,6 +123,7 @@ export const useCreateMultipleRates = () => {
 
 export const useGetJobRates = ({ company }: JobRateRequest) => {
     const { state } = useAuthContext()
+    const axiosInstance = useAxiosInstance()
     const getJobRates = async () => {
         const { data } = await axiosInstance.get(`/job-listing/job-rate`, {
             params: {
@@ -152,6 +153,7 @@ export const useGetJobRates = ({ company }: JobRateRequest) => {
 
 export const useGetSingleJobRates = ({ id }: JobRateRequest) => {
     const { state } = useAuthContext()
+    const axiosInstance = useAxiosInstance()
     const getSingleJobRates = async () => {
         const { data } = await axiosInstance.get(
             `/job-listing/job-rate/${id}`,
@@ -182,6 +184,7 @@ export const useGetSingleJobRates = ({ id }: JobRateRequest) => {
 
 export const useUpdateSingleJobRates = ({ id }: { id: string }) => {
     const { state } = useAuthContext()
+    const axiosInstance = useAxiosInstance()
     const updateJobRate = async (requestBody: UpdateJobRateRequest) => {
         const { data } = await axiosInstance.patch(
             `/job-listing/job-rate/${id}`,
@@ -219,6 +222,7 @@ export const useUpdateSingleJobRates = ({ id }: { id: string }) => {
 
 export const useCreateJobRates = () => {
     const { state } = useAuthContext()
+    const axiosInstance = useAxiosInstance()
     const createJobRate = async (requestBody: CreateJobRateRequest) => {
         const { data } = await axiosInstance.post(
             `/job-listing/job-rate`,
@@ -258,6 +262,7 @@ export const useCreateJobRates = () => {
 
 export const useGetSchedules = ({ companyId }: ScheduleRequest) => {
     const { state } = useAuthContext()
+    const axiosInstance = useAxiosInstance()
     const getSchedules = async () => {
         const { data } = await axiosInstance.get(`/schedule`, {
             params: {
@@ -287,6 +292,7 @@ export const useGetSchedules = ({ companyId }: ScheduleRequest) => {
 
 export const useGetOperatives = ({ companyId }: OperativeRequest) => {
     const { state } = useAuthContext()
+    const axiosInstance = useAxiosInstance()
     const getOperatives = async () => {
         const { data } = await axiosInstance.get(`/admin/depot-operatives`, {
             params: {
@@ -315,6 +321,7 @@ export const useGetOperatives = ({ companyId }: OperativeRequest) => {
 }
 export const useGetPayments = ({ regionId }: OperativeRequest) => {
     const { state } = useAuthContext()
+    const axiosInstance = useAxiosInstance()
     const getPayments = async () => {
         const { data } = await axiosInstance.get(`/admin/transaction`, {
             params: {
@@ -344,6 +351,7 @@ export const useGetPayments = ({ regionId }: OperativeRequest) => {
 
 export const useDeleteRegion = () => {
     const { state } = useAuthContext()
+    const axiosInstance = useAxiosInstance()
     const deleteRegion = async (requestBody: deleteRequest) => {
         const config: AxiosRequestConfig = {
             headers: {

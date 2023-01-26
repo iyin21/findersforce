@@ -1,7 +1,6 @@
 import User from "../../../assets/User.svg"
 import { Dispatch, SetStateAction, useEffect, useState } from "react"
 import { Indicator, Modal } from "@mantine/core"
-import addressLogo from "../../../assets/svg/addressLogo.svg"
 import useUserNotification from "../../../hooks/notification-hook"
 import { showNotification } from "@mantine/notifications"
 import { CgSpinner } from "react-icons/cg"
@@ -10,6 +9,7 @@ import { HiMenuAlt2 } from "react-icons/hi"
 import dayjs from "dayjs"
 import { IoIosNotifications } from "react-icons/io"
 import Message from "../../../assets/NavbarMessage.svg"
+import userDp from "../../../assets/images/user-dp.png"
 
 interface navInterface {
     setOpenSideBar: Dispatch<SetStateAction<boolean>>
@@ -45,11 +45,28 @@ const NavBar = ({ setOpenSideBar, noTopNav }: navInterface) => {
                             : ""
                     }}
                 >
-                    <img src={addressLogo} alt="address logo" />
+                    {item.eventId ? (
+                        <img
+                            src={
+                                item?.eventId?.user?.profileImageUrl ||
+                                item.eventId?.operative?.profileImageUrl ||
+                                userDp
+                            }
+                            alt="ops profile"
+                            className="rounded-full w-[45px] h-[45px]"
+                        />
+                    ) : (
+                        <img
+                            src={userDp}
+                            alt="ops profile"
+                            className="rounded-full w-[45px] h-[45px]"
+                        />
+                    )}
+
                     <div className="ml-2 md:ml-4 my-2">
                         <span className="text-lg py-[19px]">{item.title}</span>
                         <p className="text-sm md:text-3sm opacity-60 pr-1">
-                            {item?.description?.substring(0, 95).concat("...")}
+                            {item?.description?.substring(0, 95)?.concat("...")}
                         </p>
                     </div>
 
@@ -110,6 +127,7 @@ const NavBar = ({ setOpenSideBar, noTopNav }: navInterface) => {
 
                         <img
                             src={Message}
+                            className="cursor-pointer"
                             alt="messaging"
                             onClick={() => navigate("/messaging")}
                         />

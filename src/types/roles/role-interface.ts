@@ -14,7 +14,6 @@ export interface InviteUserInterface {
 }
 
 export interface InviteHqInterface {
-    jwt: string | undefined
     invitees: {
         email: string[]
         invitedRole: string

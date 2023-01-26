@@ -113,7 +113,11 @@ const PostJobTwo = ({ jobQualification }: PostJobTwoProps) => {
                                 <div key={index} className="relative ">
                                     <img
                                         // @ts-ignore
-                                        src={URL.createObjectURL(item)}
+                                        src={URL?.createObjectURL(
+                                            new Blob([item], {
+                                                type: "application/zip",
+                                            })
+                                        )}
                                         alt="findersforce"
                                         className="w-[100px] h-[100px] object-cover rounded-xl"
                                     />

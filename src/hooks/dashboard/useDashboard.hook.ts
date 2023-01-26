@@ -5,8 +5,8 @@ import {
     DashboardData,
     RegionsResponse,
 } from "../../types/dashboard/interfaces"
-import { axiosInstance } from "../../services/api.service"
 import useAuthContext from "../auth-hooks/useAuth"
+import useAxiosInstance from "../../services/useAxiosInstance"
 
 function useGetDashboardAnalytics({
     dateFrom,
@@ -18,6 +18,7 @@ function useGetDashboardAnalytics({
     regionId?: string | null | undefined
 }) {
     const { state } = useAuthContext()
+    const axiosInstance = useAxiosInstance()
 
     const getDashboardAnalytics = async () => {
         const { data } = await axiosInstance.get("/depot/analytics", {
@@ -45,6 +46,7 @@ function useGetDashboardAnalytics({
 
 function useGetDepotRegions({ id }: { id?: string }) {
     const { state } = useAuthContext()
+    const axiosInstance = useAxiosInstance()
     const getDepotRegions = async () => {
         const { data } = await axiosInstance.get(
             `/depot/company/${id}/regions`,
